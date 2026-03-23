@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注文状況</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            height: 100vh;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ipad-frame {
+            width: 880px;
+            height: 640px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            padding: 8px 24px;
+            font-size: 13px;
+            color: #aaa;
+            flex-shrink: 0;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            background: #f0ece4;
+            width: 100%;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        /* Header */
+        .page-header {
+            text-align: center;
+            padding: 24px 0 16px;
+            flex-shrink: 0;
+        }
+
+        .page-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 14px;
+        }
+
+        .status-legend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.served { background: #22c55e; }
+        .legend-dot.cooking { background: #f59e0b; }
+        .legend-dot.preparing { background: #888; }
+
+        /* Order List */
+        .order-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 32px;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: #fff;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 2px solid transparent;
+        }
+
+        .order-item.highlight {
+            border-color: #3b82f6;
+        }
+
+        .order-item-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            flex-shrink: 0;
+            margin-right: 16px;
+        }
+
+        .order-item-icon.green { background: #22c55e; }
+        .order-item-icon.orange { background: #f59e0b; }
+        .order-item-icon.gray { background: #888; }
+
+        .order-item-info {
+            flex: 1;
+        }
+
+        .order-item-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .order-item-detail {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .status-badge {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .status-badge.served {
+            background: #22c55e;
+            color: #fff;
+        }
+
+        .status-badge.cooking {
+            background: #f59e0b;
+            color: #fff;
+        }
+
+        .status-badge.preparing {
+            background: #888;
+            color: #fff;
+        }
+
+        /* Footer Note */
+        .footer-note {
+            text-align: center;
+            padding: 12px 0;
+            font-size: 13px;
+            color: #777;
+            flex-shrink: 0;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            background: #fff;
+            border-top: 1px solid #e0e0e0;
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0 8px;
+            gap: 3px;
+            color: #888;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-item.active {
+            color: #fff;
+            background: #2d3a2e;
+            border-radius: 8px;
+            margin: 4px;
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: 4px;
+            right: calc(50% - 18px);
+            background: #ef4444;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lang-overlay { display:none; position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:center; justify-content:center; }
+        .lang-overlay.show { display:flex; }
+        .lang-popup { background:#f0ece4; border-radius:14px; padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:14px; min-width:320px; }
+        .lang-popup-btn { display:flex; align-items:center; justify-content:center; gap:10px; padding:18px 24px; background:#fff; border:1.5px solid #ddd; border-radius:10px; font-size:16px; font-weight:600; color:#1a1a1a; cursor:pointer; }
+        .lang-popup-btn:hover { border-color:#2d3a2e; }
+        .lang-popup-btn .flag { font-size:22px; }
+
+        .staff-overlay { display:none; position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:center; justify-content:center; }
+        .staff-overlay.show { display:flex; }
+        .staff-popup { background:#f5f3f0; border-radius:16px; padding:28px 28px 24px; width:480px; position:relative; }
+        .staff-popup-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+        .staff-popup-title { font-size:17px; font-weight:700; color:#1a1a1a; }
+        .staff-popup-close { width:28px; height:28px; border:none; background:none; font-size:20px; color:#999; cursor:pointer; }
+        .staff-popup-close:hover { color:#333; }
+        .staff-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+        .staff-option { display:flex; align-items:center; gap:10px; padding:16px 18px; background:#fff; border:1.5px solid #e0e0e0; border-radius:10px; font-size:14px; font-weight:600; color:#333; cursor:pointer; }
+        .staff-option:hover { border-color:#3b82f6; background:#f8faff; }
+        .staff-option.selected { border-color:#3b82f6; background:#eff6ff; }
+        .staff-option .s-icon { font-size:20px; }
+        .staff-note { text-align:center; font-size:12px; color:#999; margin-bottom:14px; }
+        .staff-call-btn { width:100%; padding:16px; background:#ef4444; color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .staff-call-btn:hover { background:#dc2626; }
+        .staff-call-btn .s-icon { font-size:20px; }
+
+        .payment-btn-area { padding: 0 32px 12px; flex-shrink: 0; }
+        .payment-btn {
+            width: 100%; padding: 14px; background: #2d3a2e; color: #fff; border: none;
+            border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;
+        }
+        .payment-btn:hover { background: #3a4a3b; }
+    </style>
+</head>
+<body>
+    <div class="ipad-frame" style="position:relative;">
+
+    <!-- Staff Popup -->
+    <div class="staff-overlay" id="staffPopup" onclick="if(event.target===this)closeStaff()">
+        <div class="staff-popup">
+            <div class="staff-popup-header">
+                <span class="staff-popup-title">何かお手伝いできることはありますか？</span>
+                <button class="staff-popup-close" onclick="closeStaff()">&times;</button>
+            </div>
+            <div class="staff-grid">
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">💧</span>水を追加</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🚻</span>トイレの場所</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🍽</span>お皿を片付ける</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">❓</span>その他ご質問</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">👶🍴</span>子ども用食器</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🪑</span>ベビーチェア</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🥢🍴</span>箸・フォークを追加</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🧹</span>テーブルの清掃</button>
+            </div>
+            <div class="staff-note">複数選択できます。選択後、下のボタンでスタッフを呼び出します。</div>
+            <button class="staff-call-btn" onclick="closeStaff()"><span class="s-icon">🔔</span>スタッフ呼び出し</button>
+        </div>
+    </div>
+
+    <!-- Language Popup -->
+    <div class="lang-overlay" id="langPopup" onclick="if(event.target===this)closeLang()">
+        <div class="lang-popup">
+            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇯🇵</span>日本語</button>
+            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇺🇸</span>英語</button>
+            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇨🇳</span>中国語</button>
+            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇰🇷</span>韓国語</button>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="page-header">
+                <div class="page-title">注文状況 (Order Status)</div>
+                <div class="status-legend">
+                    <div class="legend-item"><span class="legend-dot served"></span>提供済</div>
+                    <div class="legend-item"><span class="legend-dot cooking"></span>調理中</div>
+                    <div class="legend-item"><span class="legend-dot preparing"></span>準備中</div>
+                </div>
+            </div>
+
+            <div class="order-list">
+                <div class="order-item">
+                    <div class="order-item-icon green"></div>
+                    <div class="order-item-info">
+                        <div class="order-item-name">チーズハンバーグ（x1)</div>
+                        <div class="order-item-detail">標準税率対象</div>
+                    </div>
+                    <span class="status-badge served">提供済</span>
+                </div>
+
+                <div class="order-item">
+                    <div class="order-item-icon green"></div>
+                    <div class="order-item-info">
+                        <div class="order-item-name">チーズハンバーグ（x1)</div>
+                        <div class="order-item-detail">標準税率対象</div>
+                    </div>
+                    <span class="status-badge served">提供済</span>
+                </div>
+
+                <div class="order-item highlight">
+                    <div class="order-item-icon orange"></div>
+                    <div class="order-item-info">
+                        <div class="order-item-name">アイスコーヒー（x1)</div>
+                        <div class="order-item-detail">300 yen / 軽減税率</div>
+                    </div>
+                    <span class="status-badge cooking">調理中</span>
+                </div>
+
+                <div class="order-item">
+                    <div class="order-item-icon gray"></div>
+                    <div class="order-item-info">
+                        <div class="order-item-name">チーズハンバーグ（x1)</div>
+                        <div class="order-item-detail">標準税率対象</div>
+                    </div>
+                    <span class="status-badge preparing">準備中</span>
+                </div>
+            </div>
+
+            <div class="footer-note">※この操作で注文が確定されます。よろしいですか？</div>
+
+            <div class="payment-btn-area">
+                <button class="payment-btn" onclick="window.location.href='payment.html'">お支払いに進む</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Bottom Navigation outside container for proper positioning -->
+    <script>
+        // Insert bottom nav into container
+        document.querySelector('.container').insertAdjacentHTML('beforeend', `
+            <div class="bottom-nav">
+                <button class="nav-item" onclick="window.location.href='menu.html'">
+                    <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                    メニュー
+                </button>
+                <button class="nav-item" onclick="window.location.href='cart.html'">
+                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>
+                    <span class="nav-badge">4</span>
+                    カート
+                </button>
+                <button class="nav-item">
+                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
+                    会話履歴
+                </button>
+                <button class="nav-item active">
+                    <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 00-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21a9 9 0 000-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                    注文履歴
+                </button>
+                <button class="nav-item" onclick="openStaff()">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                    サポート
+                </button>
+                <button class="nav-item" onclick="openLang()">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    言語
+                </button>
+            </div>
+        `);
+
+        function openLang() { document.getElementById('langPopup').classList.add('show'); }
+        function closeLang() { document.getElementById('langPopup').classList.remove('show'); }
+        function openStaff() { document.getElementById('staffPopup').classList.add('show'); }
+        function closeStaff() { document.getElementById('staffPopup').classList.remove('show'); }
+    </script>
+</body>
+</html>

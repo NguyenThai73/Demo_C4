@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>メニュー (AI)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            height: 100vh;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ipad-frame {
+            width: 880px;
+            height: 640px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            background: #f0ece4;
+            width: 100%;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        /* Store Header */
+        .store-header {
+            background: #2d3a2e;
+            color: #fff;
+            padding: 14px 24px;
+            font-size: 18px;
+            font-weight: 700;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .store-header .store-icon {
+            font-size: 20px;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 20px 12px;
+            overflow-x: auto;
+            flex-shrink: 0;
+        }
+
+        .cat-tab {
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s;
+        }
+
+        .cat-tab:hover {
+            background: #e0dcd4;
+        }
+
+        .cat-tab.active {
+            background: #333;
+            color: #fff;
+        }
+
+        .filter-btn {
+            margin-left: auto;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .filter-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: #555;
+        }
+
+        /* Menu Grid */
+        .menu-grid-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            padding: 8px 20px 20px;
+        }
+
+        .menu-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: box-shadow 0.15s;
+        }
+
+        .menu-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .menu-card-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .menu-card-body {
+            padding: 12px 14px 14px;
+        }
+
+        .menu-card-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a1a1a;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            min-height: 36px;
+        }
+
+        .menu-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .menu-card-price {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .add-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 14px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .add-btn:hover {
+            background: #555;
+        }
+
+        .add-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: #fff;
+        }
+
+        /* AI Avatar Button */
+        .ai-avatar-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #1e2a3a;
+            border: 3px solid #3b5998;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            z-index: 10;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .ai-avatar-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .ai-avatar-btn svg {
+            width: 32px;
+            height: 32px;
+            fill: #7eb8ff;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            background: #fff;
+            border-top: 1px solid #e0e0e0;
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0 8px;
+            gap: 3px;
+            text-decoration: none;
+            color: #888;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-item.active {
+            color: #fff;
+            background: #2d3a2e;
+            border-radius: 8px;
+            margin: 4px;
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: 4px;
+            right: calc(50% - 18px);
+            background: #ef4444;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            width: 460px;
+            max-height: 520px;
+            border-radius: 12px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 28px 0;
+        }
+
+        .modal-footer {
+            padding: 0 28px 24px;
+            flex-shrink: 0;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .modal-close {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1.5px solid #999;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .modal-close:hover {
+            border-color: #333;
+            color: #333;
+        }
+
+        .modal-section-label {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 8px;
+            margin-top: 14px;
+        }
+
+        .modal-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-option:last-child {
+            border-bottom: none;
+        }
+
+        .modal-option label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #1a1a1a;
+        }
+
+        .modal-option input[type="radio"],
+        .modal-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #2d3a2e;
+            cursor: pointer;
+        }
+
+        .modal-option .option-price {
+            font-size: 13px;
+            color: #555;
+        }
+
+        /* Quantity */
+        .quantity-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 20px;
+            margin-bottom: 18px;
+        }
+
+        .qty-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            background: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .qty-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .qty-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        /* Modal Buttons */
+        .modal-btns {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-cancel-btn {
+            flex: 1;
+            padding: 14px;
+            background: #fff;
+            color: #333;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .modal-cancel-btn:hover {
+            border-color: #999;
+        }
+
+        .modal-confirm-btn {
+            flex: 1;
+            padding: 14px;
+            background: #2d3a2e;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .modal-confirm-btn:hover {
+            background: #3a4a3b;
+        }
+
+        /* Language Popup */
+        .lang-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+        .lang-overlay.show { display: flex; }
+        .lang-popup {
+            background: #f0ece4;
+            border-radius: 14px;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            min-width: 320px;
+        }
+        .lang-popup-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 18px 24px;
+            background: #fff;
+            border: 1.5px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .lang-popup-btn:hover { border-color: #2d3a2e; background: #f9f9f6; }
+        .lang-popup-btn .flag { font-size: 22px; }
+
+        /* Staff Popup */
+        .staff-overlay { display:none; position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:center; justify-content:center; }
+        .staff-overlay.show { display:flex; }
+        .staff-popup { background:#f5f3f0; border-radius:16px; padding:28px 28px 24px; width:480px; position:relative; }
+        .staff-popup-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+        .staff-popup-title { font-size:17px; font-weight:700; color:#1a1a1a; }
+        .staff-popup-close { width:28px; height:28px; border:none; background:none; font-size:20px; color:#999; cursor:pointer; }
+        .staff-popup-close:hover { color:#333; }
+        .staff-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+        .staff-option { display:flex; align-items:center; gap:10px; padding:16px 18px; background:#fff; border:1.5px solid #e0e0e0; border-radius:10px; font-size:14px; font-weight:600; color:#333; cursor:pointer; transition:all 0.15s; }
+        .staff-option:hover { border-color:#3b82f6; background:#f8faff; }
+        .staff-option.selected { border-color:#3b82f6; background:#eff6ff; }
+        .staff-option .s-icon { font-size:20px; }
+        .staff-note { text-align:center; font-size:12px; color:#999; margin-bottom:14px; }
+        .staff-call-btn { width:100%; padding:16px; background:#ef4444; color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .staff-call-btn:hover { background:#dc2626; }
+        .staff-call-btn .s-icon { font-size:20px; }
+
+        /* AI Mode Popup */
+        .ai-mode-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+        .ai-mode-overlay.show { display: flex; }
+
+        .ai-mode-popup {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px 28px 28px;
+            width: 380px;
+            text-align: center;
+        }
+
+        .ai-mode-popup-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+        }
+
+        .ai-mode-options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .ai-mode-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 24px;
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .ai-mode-btn:hover {
+            border-color: #3b82f6;
+            background: #f0f7ff;
+        }
+
+        .ai-mode-btn.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            color: #1a5dc7;
+        }
+
+        .ai-mode-btn .mode-icon {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+    </style>
+</head>
+<body>
+    <div class="ipad-frame" style="position:relative;">
+
+    <!-- Language Popup -->
+    <div class="lang-overlay" id="langPopup" onclick="if(event.target===this)closeLang()">
+        <div class="lang-popup">
+            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇯🇵</span>日本語</button>
+            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇺🇸</span>英語</button>
+            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇨🇳</span>中国語</button>
+            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇰🇷</span>韓国語</button>
+        </div>
+    </div>
+
+    <!-- Staff Popup -->
+    <div class="staff-overlay" id="staffPopup" onclick="if(event.target===this)closeStaff()">
+        <div class="staff-popup">
+            <div class="staff-popup-header">
+                <span class="staff-popup-title">何かお手伝いできることはありますか？</span>
+                <button class="staff-popup-close" onclick="closeStaff()">&times;</button>
+            </div>
+            <div class="staff-grid">
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">💧</span>水を追加</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🚻</span>トイレの場所</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🍽</span>お皿を片付ける</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">❓</span>その他ご質問</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">👶🍴</span>子ども用食器</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🪑</span>ベビーチェア</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🥢🍴</span>箸・フォークを追加</button>
+                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🧹</span>テーブルの清掃</button>
+            </div>
+            <div class="staff-note">複数選択できます。選択後、下のボタンでスタッフを呼び出します。</div>
+            <button class="staff-call-btn" onclick="closeStaff()"><span class="s-icon">🔔</span>スタッフ呼び出し</button>
+        </div>
+    </div>
+
+    <!-- AI Mode Selection Popup -->
+    <div class="ai-mode-overlay" id="aiModePopup" onclick="if(event.target===this)closeAiMode()">
+        <div class="ai-mode-popup">
+            <div class="ai-mode-popup-title">どちらの方法を使いますか？</div>
+            <div class="ai-mode-options">
+                <button class="ai-mode-btn" onclick="window.location.href='chat_ai.html'">
+                    <svg class="mode-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+                    入力モード
+                </button>
+                <button class="ai-mode-btn selected" onclick="selectAiMode(this)">
+                    <svg class="mode-icon" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                    ボイスモード
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customize Modal -->
+    <div class="modal-overlay" id="customizeModal">
+        <div class="modal">
+            <div class="modal-scroll">
+                <div class="modal-header">
+                    <span class="modal-title">カスタマイズ</span>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+
+                <div class="modal-section-label">辛さの選択(必須)</div>
+                <div class="modal-option">
+                    <label><input type="radio" name="spice" value="normal" checked> 普通</label>
+                </div>
+                <div class="modal-option">
+                    <label><input type="radio" name="spice" value="medium"> 中辛</label>
+                </div>
+                <div class="modal-option">
+                    <label><input type="radio" name="spice" value="hot"> 大辛</label>
+                </div>
+
+                <div class="modal-section-label">トッピングの追加(任意、複数選択可)</div>
+                <div class="modal-option">
+                    <label><input type="checkbox" value="cheese"> チーズ</label>
+                    <span class="option-price">+100円</span>
+                </div>
+                <div class="modal-option">
+                    <label><input type="checkbox" value="avocado"> アボカド</label>
+                    <span class="option-price">+150円</span>
+                </div>
+                <div class="modal-option">
+                    <label><input type="checkbox" value="onion"> フライドオニオン</label>
+                    <span class="option-price">+50円</span>
+                </div>
+
+                <div class="modal-section-label">抜く食材(任意)</div>
+                <div class="modal-option">
+                    <label><input type="checkbox" value="no-onion"> 玉ねぎ</label>
+                </div>
+                <div class="modal-option">
+                    <label><input type="checkbox" value="no-coriander"> パクチー</label>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="quantity-row">
+                    <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                    <span class="qty-value" id="qtyValue">2</span>
+                    <button class="qty-btn" onclick="changeQty(1)">+</button>
+                </div>
+
+                <div class="modal-btns">
+                    <button class="modal-cancel-btn" onclick="closeModal()">キャンセル</button>
+                    <button class="modal-confirm-btn" onclick="confirmAdd()">確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <!-- Store Header -->
+            <div class="store-header">
+                <span class="store-icon">🏮</span>
+                富士屋本店
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <button class="cat-tab active">おすすめ</button>
+                <button class="cat-tab" onclick="this.classList.add('active')">会話履歴</button>
+                <button class="cat-tab">店員</button>
+                <button class="cat-tab">前菜</button>
+                <button class="cat-tab">焼き物</button>
+                <button class="cat-tab">サラダ</button>
+                <button class="filter-btn">
+                    <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm3 5h12v2H6v-2zm4 5h4v2h-4v-2z"/></svg>
+                </button>
+            </div>
+
+            <!-- Menu Grid with AI Avatar -->
+            <div class="menu-grid-wrapper">
+                <div class="menu-grid">
+                    <!-- Item 1 -->
+                    <div class="menu-card" onclick="window.location.href='menu_detail.html'">
+                        <img class="menu-card-img" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80" alt="menu">
+                        <div class="menu-card-body">
+                            <div class="menu-card-name">炙り醤油風 トリプル肉厚 ビーセット</div>
+                            <div class="menu-card-footer">
+                                <span class="menu-card-price">¥600</span>
+                                <button class="add-btn" onclick="event.stopPropagation();addToCart()">
+                                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>
+                                    追加
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="menu-card" onclick="window.location.href='menu_detail.html'">
+                        <img class="menu-card-img" src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400&q=80" alt="menu">
+                        <div class="menu-card-body">
+                            <div class="menu-card-name">炙り醤油風 トリプル肉厚 ビーセット</div>
+                            <div class="menu-card-footer">
+                                <span class="menu-card-price">¥600</span>
+                                <button class="add-btn" onclick="event.stopPropagation();addToCart()">
+                                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>
+                                    追加
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Item 3 -->
+                    <div class="menu-card" onclick="window.location.href='menu_detail.html'">
+                        <img class="menu-card-img" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80" alt="menu">
+                        <div class="menu-card-body">
+                            <div class="menu-card-name">炙り醤油風 トリプル肉厚 ビーセット</div>
+                            <div class="menu-card-footer">
+                                <span class="menu-card-price">¥600</span>
+                                <button class="add-btn" onclick="event.stopPropagation();addToCart()">
+                                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>
+                                    追加
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Item 4 -->
+                    <div class="menu-card" onclick="window.location.href='menu_detail.html'">
+                        <img class="menu-card-img" src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80" alt="menu">
+                        <div class="menu-card-body">
+                            <div class="menu-card-name">炙り醤油風 トリプル肉厚 ビーセット</div>
+                            <div class="menu-card-footer">
+                                <span class="menu-card-price">¥600</span>
+                                <button class="add-btn" onclick="event.stopPropagation();addToCart()">
+                                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>
+                                    追加
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Item 5 -->
+                    <div class="menu-card" onclick="window.location.href='menu_detail.html'">
+                        <img class="menu-card-img" src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80" alt="menu">
+                        <div class="menu-card-body">
+                            <div class="menu-card-name">炙り醤油風 トリプル肉厚 ビーセット</div>
+                            <div class="menu-card-footer">
+                                <span class="menu-card-price">¥600</span>
+                                <button class="add-btn" onclick="event.stopPropagation();addToCart()">
+                                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>
+                                    追加
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Item 6 -->
+                    <div class="menu-card" onclick="window.location.href='menu_detail.html'">
+                        <img class="menu-card-img" src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80" alt="menu">
+                        <div class="menu-card-body">
+                            <div class="menu-card-name">炙り醤油風 トリプル肉厚 ビーセット</div>
+                            <div class="menu-card-footer">
+                                <span class="menu-card-price">¥600</span>
+                                <button class="add-btn" onclick="event.stopPropagation();addToCart()">
+                                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>
+                                    追加
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Avatar Floating Button -->
+                <button class="ai-avatar-btn" onclick="openAiMode()">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                </button>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <div class="bottom-nav">
+                <button class="nav-item active">
+                    <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                    メニュー
+                </button>
+                <button class="nav-item" onclick="window.location.href='cart.html'">
+                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>
+                    <span class="nav-badge" id="cartBadge" style="display:none;">0</span>
+                    カート
+                </button>
+                <button class="nav-item">
+                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
+                    会話履歴
+                </button>
+                <button class="nav-item" onclick="window.location.href='order_status.html'">
+                    <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 00-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21a9 9 0 000-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                    注文履歴
+                </button>
+                <button class="nav-item" onclick="openStaff()">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                    サポート
+                </button>
+                <button class="nav-item" onclick="openLang()">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    言語
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        let cartCount = 0;
+        let qty = 2;
+
+        function addToCart() {
+            qty = 1;
+            document.getElementById('qtyValue').textContent = qty;
+            document.getElementById('customizeModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('customizeModal').classList.remove('show');
+        }
+
+        function changeQty(delta) {
+            qty = Math.max(1, qty + delta);
+            document.getElementById('qtyValue').textContent = qty;
+        }
+
+        function confirmAdd() {
+            cartCount += qty;
+            const badge = document.getElementById('cartBadge');
+            badge.style.display = 'flex';
+            badge.textContent = cartCount;
+            closeModal();
+        }
+
+        function openLang() { document.getElementById('langPopup').classList.add('show'); }
+        function closeLang() { document.getElementById('langPopup').classList.remove('show'); }
+        function openStaff() { document.getElementById('staffPopup').classList.add('show'); }
+        function closeStaff() { document.getElementById('staffPopup').classList.remove('show'); }
+
+        function openAiMode() { document.getElementById('aiModePopup').classList.add('show'); }
+        function closeAiMode() { document.getElementById('aiModePopup').classList.remove('show'); }
+        function selectAiMode(btn) {
+            document.querySelectorAll('.ai-mode-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+    </script>
+</body>
+</html>
