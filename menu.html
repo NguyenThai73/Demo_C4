@@ -682,6 +682,8 @@
 
         const cartSvg = '<svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>';
 
+        let currentItemImg = '';
+
         function renderMenu(category) {
             const grid = document.getElementById('menuGrid');
             const items = menuData[category] || menuData.osusume;
@@ -692,7 +694,7 @@
                         <div class="menu-card-name">${item.name}</div>
                         <div class="menu-card-footer">
                             <span class="menu-card-price">${item.price}</span>
-                            <button class="add-btn" onclick="event.stopPropagation();addToCart()">
+                            <button class="add-btn" onclick="event.stopPropagation();addToCart('${item.img}', this)">
                                 ${cartSvg}
                                 追加
                             </button>
@@ -711,7 +713,8 @@
         // Initial render
         renderMenu('osusume');
 
-        function addToCart() {
+        function addToCart(imgSrc, btnEl) {
+            currentItemImg = imgSrc;
             qty = 1;
             document.getElementById('qtyValue').textContent = qty;
             document.getElementById('customizeModal').classList.add('show');
@@ -726,12 +729,62 @@
             document.getElementById('qtyValue').textContent = qty;
         }
 
+        function flyToCart(imgSrc) {
+            const frame = document.querySelector('.ipad-frame');
+            const frameRect = frame.getBoundingClientRect();
+            const cartBtn = document.getElementById('cartBadge').parentElement;
+            const cartRect = cartBtn.getBoundingClientRect();
+
+            const flyImg = document.createElement('img');
+            flyImg.src = imgSrc;
+            flyImg.style.cssText = `
+                position: fixed;
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 12px;
+                z-index: 9999;
+                pointer-events: none;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                left: ${frameRect.left + frameRect.width / 2 - 40}px;
+                top: ${frameRect.top + frameRect.height / 2 - 40}px;
+                transition: all 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                opacity: 1;
+            `;
+            document.body.appendChild(flyImg);
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    flyImg.style.left = (cartRect.left + cartRect.width / 2 - 16) + 'px';
+                    flyImg.style.top = (cartRect.top + cartRect.height / 2 - 16) + 'px';
+                    flyImg.style.width = '32px';
+                    flyImg.style.height = '32px';
+                    flyImg.style.opacity = '0.4';
+                    flyImg.style.borderRadius = '50%';
+                });
+            });
+
+            setTimeout(() => {
+                flyImg.remove();
+                // Bounce effect on cart badge
+                const badge = document.getElementById('cartBadge');
+                badge.style.transition = 'transform 0.15s';
+                badge.style.transform = 'scale(1.5)';
+                setTimeout(() => {
+                    badge.style.transform = 'scale(1)';
+                }, 150);
+            }, 700);
+        }
+
         function confirmAdd() {
             cartCount += qty;
             const badge = document.getElementById('cartBadge');
             badge.style.display = 'flex';
             badge.textContent = cartCount;
             closeModal();
+            if (currentItemImg) {
+                flyToCart(currentItemImg);
+            }
         }
 
         function openLang() { document.getElementById('langPopup').classList.add('show'); }
