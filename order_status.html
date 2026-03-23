@@ -113,16 +113,32 @@
         }
 
         .order-item-icon {
-            width: 48px;
-            height: 48px;
+            width: 56px;
+            height: 56px;
             border-radius: 8px;
             flex-shrink: 0;
             margin-right: 16px;
+            overflow: hidden;
+            position: relative;
         }
 
-        .order-item-icon.green { background: #22c55e; }
-        .order-item-icon.orange { background: #f59e0b; }
-        .order-item-icon.gray { background: #888; }
+        .order-item-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .order-item-icon .status-border {
+            position: absolute;
+            inset: 0;
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        .order-item-icon .status-border.green { border: 3px solid #22c55e; }
+        .order-item-icon .status-border.orange { border: 3px solid #f59e0b; }
+        .order-item-icon .status-border.gray { border: 3px solid #888; }
 
         .order-item-info {
             flex: 1;
@@ -305,37 +321,49 @@
 
             <div class="order-list">
                 <div class="order-item">
-                    <div class="order-item-icon green"></div>
+                    <div class="order-item-icon">
+                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&q=80" alt="和牛ステーキ">
+                        <div class="status-border green"></div>
+                    </div>
                     <div class="order-item-info">
-                        <div class="order-item-name">チーズハンバーグ（x1)</div>
-                        <div class="order-item-detail">標準税率対象</div>
+                        <div class="order-item-name">和牛ステーキ 特選（x1)</div>
+                        <div class="order-item-detail">¥2,800 / 標準税率対象</div>
                     </div>
                     <span class="status-badge served">提供済</span>
                 </div>
 
                 <div class="order-item">
-                    <div class="order-item-icon green"></div>
+                    <div class="order-item-icon">
+                        <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=200&q=80" alt="海鮮丼">
+                        <div class="status-border green"></div>
+                    </div>
                     <div class="order-item-info">
-                        <div class="order-item-name">チーズハンバーグ（x1)</div>
-                        <div class="order-item-detail">標準税率対象</div>
+                        <div class="order-item-name">海鮮丼 スペシャル（x1)</div>
+                        <div class="order-item-detail">¥1,200 / 標準税率対象</div>
                     </div>
                     <span class="status-badge served">提供済</span>
                 </div>
 
-                <div class="order-item highlight">
-                    <div class="order-item-icon orange"></div>
+                <div class="order-item">
+                    <div class="order-item-icon">
+                        <img src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=200&q=80" alt="天ぷら">
+                        <div class="status-border orange"></div>
+                    </div>
                     <div class="order-item-info">
-                        <div class="order-item-name">アイスコーヒー（x1)</div>
-                        <div class="order-item-detail">300 yen / 軽減税率</div>
+                        <div class="order-item-name">天ぷら盛り合わせ（x1)</div>
+                        <div class="order-item-detail">¥980 / 標準税率対象</div>
                     </div>
                     <span class="status-badge cooking">調理中</span>
                 </div>
 
                 <div class="order-item">
-                    <div class="order-item-icon gray"></div>
+                    <div class="order-item-icon">
+                        <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=200&q=80" alt="抹茶パフェ">
+                        <div class="status-border gray"></div>
+                    </div>
                     <div class="order-item-info">
-                        <div class="order-item-name">チーズハンバーグ（x1)</div>
-                        <div class="order-item-detail">標準税率対象</div>
+                        <div class="order-item-name">抹茶パフェ（x2)</div>
+                        <div class="order-item-detail">¥650 x2 / 軽減税率</div>
                     </div>
                     <span class="status-badge preparing">準備中</span>
                 </div>
