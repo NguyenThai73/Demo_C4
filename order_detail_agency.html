@@ -85,34 +85,34 @@
     <div id="flash-message" class="sticky-flash">🎉 操作を完了しました。</div>
 
     <!-- Enhanced Header Summary (Summary First) -->
-    <div class="summary-header" style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 20px;">
+    <div class="summary-header" style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 25px; border-radius: 12px; margin-bottom: 30px;">
         <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
             <div style="display: flex; align-items: center; gap: 15px;">
-                <div class="badge-type badge-agency" style="font-size: 14px;">Agency注文</div>
+                <div class="badge-type badge-agency" style="font-size: 12px; background-color: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; font-weight: 800; padding: 4px 12px;">Agency注文</div>
                 <div style="font-size: 24px; font-weight: bold;">Order #311</div>
             </div>
         </div>
         
-        <div class="summary-grid" style="width: 100%; border-top: 1px solid #eee; padding-top: 15px;">
+        <div class="summary-grid" style="width: 100%; border-top: 1px solid #eee; padding-top: 20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
             <div class="summary-item">
-                <div class="summary-label">合計金額</div>
-                <div class="summary-primary-value">¥150,000</div>
+                <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">合計金額</div>
+                <div class="summary-primary-value" style="font-size: 20px; font-weight: 800;">¥153,000</div>
             </div>
             <div class="summary-item">
-                <div class="summary-label">入金状況</div>
-                <div class="summary-primary-value" style="color: var(--kintone-success);">入金済み</div>
+                <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">入金状況</div>
+                <div class="summary-primary-value" style="font-size: 18px; font-weight: 700; color: var(--kintone-success);">入金済み</div>
             </div>
             <div class="summary-item">
-                <div class="summary-label">出荷状況</div>
-                <div class="summary-primary-value" style="color: var(--kintone-neutral);">未出荷</div>
+                <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">出荷状況</div>
+                <div class="summary-primary-value" style="font-size: 18px; font-weight: 700; color: var(--kintone-neutral);">未出荷</div>
             </div>
             <div class="summary-item">
-                <div class="summary-label">注文日</div>
-                <div class="summary-value">2026-03-22</div>
+                <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文日</div>
+                <div class="summary-value" style="font-weight: bold;">2026-03-23</div>
             </div>
             <div class="summary-item">
-                <div class="summary-label">配送予定日</div>
-                <div class="summary-value">2026-03-25</div>
+                <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">配送予定日</div>
+                <div class="summary-value" style="font-weight: bold;">2026-03-25</div>
             </div>
         </div>
     </div>
@@ -130,7 +130,9 @@
 
     <!-- Section: Order Overview -->
     <div class="section-card section-info">
-        <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span>📋</span> 注文概要</div>
+        <div class="section-title" style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+            <span><i class="fas fa-clipboard-list" style="margin-right: 12px;"></i></span>
+            注文概要</div>
         <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
             <div class="field-item">
                 <div class="field-label">Partner注文番号 (PO)</div>
@@ -152,7 +154,9 @@
     </div>
 
     <div class="section-card section-info">
-        <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span>🏢</span> 取引先情報</div>
+        <div class="section-title" style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+            <span><i class="fas fa-building" style="margin-right: 12px;"></i></span>
+            取引先情報</div>
         <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
             <div class="field-item">
                 <div class="field-label">Partner ID</div>
@@ -169,7 +173,9 @@
         </div>
     </div>
     <div class="section-card section-info">
-        <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span>🚚</span> 配送先情報</div>
+        <div class="section-title" style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+            <span><i class="fas fa-truck-fast" style="margin-right: 12px;"></i></span>
+            配送先情報</div>
         <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
             <div class="field-item">
                 <div class="field-label">納品先名</div>
@@ -187,8 +193,10 @@
     </div>
 
     <!-- Product Processing Section -->
-    <div class="section-card section-op">
-        <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span>📦</span> 商品・出荷処理 (重要)</div>
+    <div class="section-card section-op" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
+        <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+            <span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span>
+            商品・出荷処理 (重要)</div>
         <table class="k-table">
             <thead>
                 <tr>
