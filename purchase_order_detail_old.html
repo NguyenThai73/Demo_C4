@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>受注詳細 | CREDIE Supplier Portal</title>
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Professional Portal Style */
+        :root {
+            --portal-header-bg: #2c3e50;
+            --credie-bg: #f4f7f9;
+        }
+
+        body {
+            background-color: var(--credie-bg);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Independent Portal Header (Keep as portal) */
+        .portal-header {
+            background-color: var(--portal-header-bg);
+            color: white;
+            height: 50px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .portal-logo { font-size: 18px; font-weight: bold; letter-spacing: 0.5px; }
+        .user-nav { display: flex; align-items: center; gap: 20px; font-size: 13px; }
+        .nav-btn { background: #3498db; color: white; border: none; padding: 5px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+
+        /* Sub Nav / Breadcrumb (Independent style) */
+        .sub-nav {
+            background: white; padding: 12px 25px; font-size: 12px; border-bottom: 1px solid #ddd; color: var(--kintone-blue);
+        }
+        .sub-nav span { color: #999; padding: 0 8px; }
+
+        /* Main Container inside Portal */
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+
+        /* Next Action Card style */
+        .next-action-card {
+            background: white; border-left: 5px solid var(--kintone-warning); padding: 25px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: space-between; gap: 20px;
+        }
+        .next-action-content { display: flex; align-items: center; gap: 15px; font-size: 14px; font-weight: bold; }
+
+        /* Action Buttons Area */
+        .action-btns { display: flex; gap: 12px; }
+        .btn-confirm { background: var(--kintone-blue); color: white; border: none; padding: 12px 22px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(52,152,219,0.2); transition: all 0.2s; font-size: 13px; }
+        .btn-delivery-trigger { background: var(--kintone-success); color: white; border: none; padding: 12px 22px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(46,204,113,0.2); transition: all 0.2s; font-size: 13px; }
+        .btn-issue { background: #e67e22; color: white; border: none; padding: 12px 22px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(230,126,34,0.2); transition: all 0.2s; font-size: 13px; }
+        .btn-invoice-view { background: white; color: #666; border: 1px solid #ddd; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.2s; font-size: 13px; }
+        .btn-invoice-view:hover { background: #f8f9fa; }
+        .btn-confirm:hover, .btn-delivery-trigger:hover, .btn-issue:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* Form Control Buttons Upgrade */
+        .btn-form-save {
+            background: var(--kintone-success);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 8px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        .btn-form-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.3);
+            opacity: 0.95;
+        }
+        .btn-form-cancel {
+            background: white;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        .btn-form-cancel:hover {
+            background: #f8f9fa;
+            border-color: #ccc;
+            color: #333;
+        }
+
+        /* PREMIUM CONFIRMATION MODAL */
+        #custom-confirm-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(44, 62, 80, 0.6); backdrop-filter: blur(4px);
+            z-index: 9999; align-items: center; justify-content: center;
+        }
+        .confirm-modal-box {
+            background: white; width: 420px; border-radius: 12px; padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center;
+            animation: modalPop 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+        @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .confirm-modal-icon { font-size: 48px; color: var(--kintone-blue); margin-bottom: 20px; }
+        .confirm-modal-title { font-size: 18px; font-weight: 800; margin-bottom: 10px; color: #333; }
+        .confirm-modal-desc { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 30px; }
+        .confirm-modal-btns { display: flex; gap: 12px; justify-content: center; }
+        .btn-modal-confirm { background: var(--kintone-blue); color: white; border: none; padding: 10px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-modal-cancel { background: #f1f3f5; color: #666; border: none; padding: 10px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-modal-confirm:hover { opacity: 0.9; }
+        .btn-modal-cancel:hover { background: #e9ecef; }
+
+        /* Hide Areas by default as requested */
+        #registration-area { display: none; border-radius: 12px; }
+        #success-notification { display: none; background-color: #d4edda; color: #155724; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: bold; border: 1px solid #c3e6cb; }
+
+        /* Premium Label Style */
+        .field-label { display: block; font-size: 13px; font-weight: 700; color: #555; margin-bottom: 8px; letter-spacing: 0.2px; }
+
+        /* Premium Input Restyling */
+        .field-input { width: 100%; padding: 12px 15px; border: 1px solid #e0e0e0; border-radius: 10px; background-color: #fcfdfe; font-size: 14px; transition: all 0.2s ease; outline: none; color: #333; }
+        .field-input:focus { border-color: var(--kintone-blue); background-color: white; box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15); }
+
+        /* Action Column Chips Upgrade with Icons */
+        .action-chip-container { display: flex; gap: 12px; justify-content: center; align-items: center; }
+        .action-chip { padding: 6px 14px; border-radius: 50px; font-size: 11px; font-weight: bold; cursor: pointer; transition: all 0.2s; text-decoration: none !important; }
+        .action-chip i { margin-right: 6px; font-size: 12px; }
+        .chip-edit { background: #f1f3f5; color: #495057; border: 1px solid #dee2e6; }
+        .chip-edit:hover { background: #e9ecef; border-color: #adb5bd; }
+        .chip-deliver { background: var(--kintone-success); color: white; border: 1px solid var(--kintone-success); box-shadow: 0 2px 4px rgba(46,204,113,0.15); font-size: 11px; }
+        .chip-deliver:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(46,204,113,0.25); }
+
+        /* Custom History Grid - 4 Columns */
+        .history-grid-agency { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 25px; background: #f8f9fa; padding: 25px; border-radius: 12px; border: 1px solid #eee; }
+        .history-item-agency { text-align: center; }
+        .history-label-agency { font-size: 12px; color: #666; margin-bottom: 8px; font-weight: bold; }
+        .history-val-agency { font-size: 26px; font-weight: 800; line-height: 1.2; }
+
+        footer { text-align: center; padding: 30px; font-size: 12px; color: #999; border-top: 1px solid #ddd; background: white; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+<!-- Custom Confirmation Modal -->
+<div id="custom-confirm-modal">
+    <div class="confirm-modal-box">
+        <div class="confirm-modal-icon"><i id="modal-icon-fa" class="fas fa-question-circle"></i></div>
+        <div id="modal-title" class="confirm-modal-title">実行しますか？</div>
+        <div id="modal-desc" class="confirm-modal-desc">この操作は一度実行すると取り消せません。</div>
+        <div class="confirm-modal-btns">
+            <button class="btn-modal-cancel" onclick="closeConfirmModal()">キャンセル</button>
+            <button id="modal-confirm-action" class="btn-modal-confirm">実行する</button>
+        </div>
+    </div>
+</div>
+
+<header class="portal-header">
+    <div class="portal-logo">CREDIE Supplier Portal</div>
+    <div class="user-nav">
+        <button class="nav-btn">サプライヤー</button>
+        <div style="display: flex; align-items: center; gap: 10px; font-weight: 500;">
+            <i class="fas fa-building" style="color:#bdc3c7;"></i> 山田製造株式会社
+        </div>
+    </div>
+</header>
+
+<div class="sub-nav">
+    ホーム <span>></span> 受注管理 <span>></span> 受注詳細
+</div>
+
+<div class="container">
+    <div id="success-notification"><i class="fas fa-circle-check"></i> アクションを実行しました。ステータスを更新しました。</div>
+
+    <div class="page-header-premium" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 30px;">
+        <h1 style="font-size: 28px; font-weight: 800; margin: 0;">受注詳細</h1>
+        <button id="btn-invoice-header" class="btn-invoice-view" style="display: none;"><i class="fas fa-file-invoice" style="margin-right: 6px;"></i> 請求書を表示</button>
+    </div>
+
+    <!-- Summary Header Card -->
+    <div class="summary-header" style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 25px; margin-bottom: 30px; border-radius: 12px;">
+        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="badge-type badge-agency" style="font-size: 12px; background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; font-weight: 800; padding: 4px 12px;">通常発注</div>
+                <div style="font-size: 24px; font-weight: bold;">PO-2025-015</div>
+            </div>
+        </div>
+        
+        <div class="summary-grid" style="width: 100%; border-top: 1px solid #eee; padding-top: 20px;">
+            <div class="summary-item">
+                <div class="summary-label">発注金額合計</div>
+                <div class="summary-primary-value">¥256,000</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">現在のステータス</div>
+                <div id="main-status" class="summary-primary-value" style="color: var(--kintone-warning);"><i class="fas fa-hourglass-half"></i> 確認待ち</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">支払い</div>
+                <div id="stat-payment" class="summary-primary-value" style="color: #666;">未入金</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">注文日</div>
+                <div class="summary-value">2025/10/25</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">希望納期</div>
+                <div class="summary-value">2025/11/30</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Next Action Guide with Interactivity Trigger -->
+    <div id="action-guide-card" class="next-action-card">
+        <div class="next-action-content">
+            <span id="guide-icon" style="font-size: 30px; color: var(--kintone-warning);"><i class="fas fa-hourglass-start"></i></span>
+            <div>
+                次の対応: <span id="guide-step" style="color: var(--kintone-warning);">注文を確定してください</span><br>
+                <span id="guide-desc" style="font-weight: normal; font-size: 12px; color: #666;">請求書を確認の上、注文の確定を行ってください。</span>
+            </div>
+        </div>
+        <div id="action-btns-area" class="action-btns">
+            <!-- Dynamic Buttons Flow -->
+            <button id="btn-confirm-order" class="btn-confirm" onclick="triggerConfirmModal('ORDER_CONFIRM')"><i class="fas fa-file-signature" style="margin-right: 6px;"></i> 注文を確定する</button>
+            <button id="btn-issue-invoice" class="btn-issue" style="display: none;" onclick="triggerConfirmModal('ISSUE_INVOICE')"><i class="fas fa-receipt" style="margin-right: 6px;"></i> 請求書を発行する</button>
+            <button id="btn-confirm-payment" class="btn-delivery-trigger" style="display: none;" onclick="triggerConfirmModal('PAYMENT_CONFIRM')"><i class="fas fa-hand-holding-dollar" style="margin-right: 6px;"></i> 入金を確認済み</button>
+            <button id="btn-delivery-trigger" class="btn-delivery-trigger" style="display: none;" onclick="showRegistration()"><i class="fas fa-box-open" style="margin-right: 6px;"></i> 納品を登録する</button>
+        </div>
+    </div>
+
+    <!-- Section: Order Overview -->
+    <div class="section-card section-info">
+        <div class="section-title"><span><i class="fas fa-clipboard-list" style="margin-right: 12px;"></i></span> 発注基本設定</div>
+        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="field-item">
+                <div class="field-label">会社名</div>
+                <div class="field-value" style="font-weight: bold; color: var(--kintone-blue);">株式会社クレディー</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">部門</div>
+                <div class="field-value">購買本部 購買戦略課</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">発注者</div>
+                <div class="field-value">田中 太郎 様</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Item Table -->
+    <div class="section-card section-op">
+        <div class="section-title"><span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span> 注文内容</div>
+        <table class="k-table premium-table">
+            <thead>
+                <tr>
+                    <th style="width: 35%">資材・材料名 / SKU</th>
+                    <th style="width: 15%; text-align: right;">発注数量</th>
+                    <th style="width: 15%; text-align: right;">単価</th>
+                    <th style="width: 15%; text-align: right;">金額</th>
+                    <th style="width: 20%; text-align: center;">ステータス</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="product-name-cell">
+                        <div style="font-weight: bold; color: #1a1a1a; margin-bottom: 4px;">Rice Silica 50mL (RC50-V01)</div>
+                        <div style="font-size: 11px; color: #999;">SKU: RC50-V01</div>
+                    </td>
+                    <td style="text-align: right;">150 個</td>
+                    <td style="text-align: right;">¥1,000</td>
+                    <td style="text-align: right; font-weight: bold;">¥150,000</td>
+                    <td style="text-align: center;"><span id="item-status-0" class="badge-type" style="background:#fff3cd; color:#856404; font-size:11px;"><i class="fas fa-hourglass-half" style="font-size: 10px; margin-right: 4px;"></i> 入荷待ち</span></td>
+                </tr>
+                <tr>
+                    <td class="product-name-cell">
+                        <div style="font-weight: bold; color: #1a1a1a; margin-bottom: 4px;">Rice Silica 30mL (RC30-V01)</div>
+                        <div style="font-size: 11px; color: #999;">SKU: RC30-V01</div>
+                    </td>
+                    <td style="text-align: right;">200 個</td>
+                    <td style="text-align: right;">¥800</td>
+                    <td style="text-align: right; font-weight: bold;">¥160,000</td>
+                    <td style="text-align: center;"><span id="item-status-1" class="badge-type" style="background:#fff3cd; color:#856404; font-size:11px;"><i class="fas fa-hourglass-half" style="font-size: 10px; margin-right: 4px;"></i> 入荷待ち</span></td>
+                </tr>
+                <tr>
+                    <td class="product-name-cell">
+                        <div style="font-weight: bold; color: #1a1a1a; margin-bottom: 4px;">Silica Lotion 100mL (SL100-V01)</div>
+                        <div style="font-size: 11px; color: #999;">SKU: SL100-V01</div>
+                    </td>
+                    <td style="text-align: right;">50 個</td>
+                    <td style="text-align: right;">¥2,500</td>
+                    <td style="text-align: right; font-weight: bold;">¥125,000</td>
+                    <td style="text-align: center;"><span id="item-status-2" class="badge-type" style="background:#fff3cd; color:#856404; font-size:11px;"><i class="fas fa-hourglass-half" style="font-size: 10px; margin-right: 4px;"></i> 入荷待ち</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Section: Delivery tracking with Summary Dashboard -->
+    <div class="section-card section-info">
+        <div class="section-title"><span><i class="fas fa-chart-pie" style="margin-right: 12px;"></i></span> 納品進捗サマリー</div>
+        <div class="history-grid-agency">
+            <div class="history-item-agency">
+                <div class="history-label-agency">発注数量</div>
+                <div class="history-val-agency">400</div>
+            </div>
+            <div class="history-item-agency">
+                <div class="history-label-agency">納品済合計</div>
+                <div id="stat-delivered" class="history-val-agency" style="color: var(--kintone-success);">0</div>
+            </div>
+            <div class="history-item-agency">
+                <div class="history-label-agency">返品数量</div>
+                <div id="stat-returned" class="history-val-agency" style="color: var(--kintone-danger);">0</div>
+            </div>
+            <div class="history-item-agency">
+                <div class="history-label-agency">未納品数量</div>
+                <div id="stat-pending" class="history-val-agency" style="color: #666;">400</div>
+            </div>
+        </div>
+
+        <table id="history-table" class="k-table premium-table" style="font-size: 13px;">
+            <thead>
+                <tr>
+                    <th style="width: 10%; text-align: center;">回目</th>
+                    <th style="width: 16%; text-align: center;">配送予定日</th>
+                    <th>配送内容</th>
+                    <th style="width: 12%; text-align: center;">ステータス</th>
+                    <th style="width: 28%; text-align: center;">操作</th>
+                </tr>
+            </thead>
+            <tbody id="fulfillment-history-body">
+                <tr id="empty-row">
+                    <td colspan="5" style="text-align: center; color: #999; padding: 30px;">
+                        納品データがありません。注文確定後に納品登録を実行してください。
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Interaction: Registration Form (Hidden by default) -->
+    <div id="registration-area" class="section-card section-op" style="background:#fcfdfe; border: 1px dashed var(--kintone-blue);">
+        <div class="section-title"><span><i class="fas fa-truck-fast" style="margin-right: 12px;"></i></span> 納品を登録する</div>
+        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px;">
+            <div class="field-item">
+                <div class="field-label">配送予定日<span style="color:var(--kintone-danger)">*</span></div>
+                <input type="date" id="input-date" class="field-input" value="2025-11-25">
+            </div>
+            <div class="field-item">
+                <div class="field-label">配送担当者</div>
+                <input type="text" id="delivery-staff" class="field-input" placeholder="氏名を入力">
+            </div>
+            <div class="field-item">
+                <div class="field-label">備考</div>
+                <input type="text" id="input-note" class="field-input" placeholder="配送に関する特記事項">
+            </div>
+        </div>
+
+        <div class="field-label" style="margin-bottom: 12px;">商品別 配送数量の入力 <span style="color:var(--kintone-danger)">*</span></div>
+        <table class="k-table" style="margin-bottom: 20px; border: 1px solid #eee;">
+            <thead style="background: #f8f9fa;">
+                <tr>
+                    <th style="font-size: 11px;">商品名</th>
+                    <th style="width: 100px; text-align: right; font-size: 11px;">発注数</th>
+                    <th style="width: 100px; text-align: right; font-size: 11px;">既納品</th>
+                    <th style="width: 130px; text-align: center; font-size: 11px;">今回の配送</th>
+                </tr>
+            </thead>
+            <tbody id="registration-product-list">
+                <!-- Dynamic Content -->
+            </tbody>
+        </table>
+
+        <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px;">
+            <button class="btn-form-cancel" onclick="hideRegistration()">キャンセル</button>
+            <button class="btn-form-save" onclick="triggerConfirmModal('delivery')"><i class="fas fa-save" style="margin-right: 8px;"></i> 登録を申請する</button>
+        </div>
+    </div>
+
+    <div class="footer-action" style="margin-top: 40px;">
+        <button c    let iterationCount = 0;
+    let totalConfirmedDelivered = 0; // Quantity actually marked as delivered in history
+
+    /* MODAL LOGIC */
+    function triggerConfirmModal(type, extraParams = null) {
+        nextActionType = type;
+        const modal = document.getElementById('custom-confirm-modal');
+        const icon = document.getElementById('modal-icon-fa');
+        const title = document.getElementById('modal-title');
+        const desc = document.getElementById('modal-desc');
+        const confirmBtn = document.getElementById('modal-confirm-action');
+
+        if (type === 'ORDER_CONFIRM') {
+            icon.className = 'fas fa-file-invoice';
+            icon.style.color = 'var(--kintone-blue)';
+            title.innerText = '注文を確定しますか？';
+            desc.innerText = '注文を確定すると、ステータスが「入金待ち」に移行し、請求書の発行が可能になります。';
+            confirmBtn.onclick = function() { closeConfirmModal(); confirmOrder(); };
+        } else if (type === 'ISSUE_INVOICE') {
+            icon.className = 'fas fa-receipt';
+            icon.style.color = '#e67e22';
+            title.innerText = '請求書を発行しますか？';
+            desc.innerText = '請求書を発行し、取引先側へ入金依頼を通知します。';
+            confirmBtn.onclick = function() { closeConfirmModal(); issueInvoice(); };
+        } else if (type === 'PAYMENT_CONFIRM') {
+            icon.className = 'fas fa-hand-holding-dollar';
+            icon.style.color = 'var(--kintone-success)';
+            title.innerText = '入金を確認済みですか？';
+            desc.innerText = '入金を確認済みにすると、ステータスが「配送準備中」に移行し、納品登録が可能になります。';
+            confirmBtn.onclick = function() { closeConfirmModal(); finalizePayment(); };
+        } else if (type === 'delivery') {
+            const inputs = document.querySelectorAll('.prod-qty-input');
+            let batchTotal = 0;
+            let hasError = false;
+
+            inputs.forEach(input => {
+                const idx = parseInt(input.getAttribute('data-idx'));
+                const val = parseInt(input.value) || 0;
+                const remain = products[idx].order - products[idx].planned;
+                if (val < 0) { alert('数量は0以上を入力してください。'); hasError = true; }
+                if (val > remain) {
+                    alert(`${products[idx].name} の数量 (${val}) が残り (${remain}) を超えています。`);
+                    hasError = true;
+                }
+                batchTotal += val;
+            });
+
+            if (hasError) return;
+            if (batchTotal === 0) { alert("配送数量を入力してください。"); return; }
+
+            icon.className = 'fas fa-truck-fast';
+            icon.style.color = 'var(--kintone-blue)';
+            title.innerText = '納品情報を登録しますか？';
+            desc.innerText = `合計 ${batchTotal} 個 の納品予定を登録します。`;
+            confirmBtn.onclick = function() { closeConfirmModal(); registerFulfillment(); };
+        } else if (type === 'fulfillment') {
+            icon.className = 'fas fa-flag-checkered';
+            icon.style.color = 'var(--kintone-success)';
+            title.innerText = '完納を報告しますか？';
+            desc.innerText = 'すべての配送が完了したことを報告し、お取引を完了ステータスに変更します。';
+            confirmBtn.onclick = function() { closeConfirmModal(); markAllDone(); };
+        } else if (type === 'DELIVERY_REPORT') {
+            icon.className = 'fas fa-circle-check';
+            icon.style.color = 'var(--kintone-success)';
+            title.innerText = '納品完了を報告しますか？';
+            desc.innerText = '報告を行うと、対象の配送履歴が「納品済み」として確定されます。';
+            confirmBtn.onclick = function() { closeConfirmModal(); markAsDelivered(extraParams); };
+        }
+
+        modal.style.display = 'flex';
+    }
+
+    function closeConfirmModal() {
+        document.getElementById('custom-confirm-modal').style.display = 'none';
+    }
+
+    /* WORKFLOW ACTIONS */
+
+    function confirmOrder() {
+        document.getElementById('main-status').innerHTML = '<i class="fas fa-money-bill-transfer" style="margin-right: 6px;"></i> 入金待ち';
+        document.getElementById('main-status').style.color = '#e67e22';
+        document.getElementById('action-guide-card').style.borderLeftColor = '#e67e22';
+        document.getElementById('guide-icon').innerHTML = '<i class="fas fa-file-invoice-dollar" style="color:#e67e22;"></i>';
+        document.getElementById('guide-step').innerHTML = '請求書を発行してください';
+        document.getElementById('guide-step').style.color = '#e67e22';
+        document.getElementById('guide-desc').innerHTML = '注文が確定されました。次に請求書を発行し、入金依頼を行ってください。';
+        document.getElementById('btn-confirm-order').style.display = 'none';
+        document.getElementById('btn-issue-invoice').style.display = 'inline-block';
+        
+        products.forEach((p, idx) => {
+            const itemStatus = document.getElementById(`item-status-${idx}`);
+            if (itemStatus) {
+                itemStatus.innerHTML = '<i class="fas fa-money-bill-transfer" style="margin-right: 4px; font-size: 10px;"></i> 入金待ち';
+                itemStatus.style.backgroundColor = '#fef5e7';
+                itemStatus.style.color = '#e67e22';
+            }
+        });
+        showNotification('注文を確定しました。');
+    }
+
+    function issueInvoice() {
+        document.getElementById('guide-step').innerHTML = '入金を確認してください';
+        document.getElementById('guide-desc').innerHTML = '請求書が発行されました。取引先側の入金完了を待ち、確認後にボタンを押してください。';
+        document.getElementById('btn-issue-invoice').style.display = 'none';
+        document.getElementById('btn-confirm-payment').style.display = 'inline-block';
+        document.getElementById('btn-invoice-header').style.display = 'inline-block';
+        showNotification('請求書を発行しました。');
+    }
+
+    function finalizePayment() {
+        document.getElementById('main-status').innerHTML = '<i class="fas fa-box" style="margin-right: 6px;"></i> 配送準備中';
+        document.getElementById('main-status').style.color = '#7f8c8d';
+        document.getElementById('stat-payment').innerHTML = '入金済み';
+        document.getElementById('stat-payment').style.color = 'var(--kintone-success)';
+        document.getElementById('guide-icon').innerHTML = '<i class="fas fa-truck-ramp-box" style="color:var(--kintone-blue);"></i>';
+        document.getElementById('guide-step').innerHTML = '納品を登録してください';
+        document.getElementById('guide-step').style.color = 'var(--kintone-blue)';
+        document.getElementById('guide-desc').innerHTML = '入金가 確認されました。商品の配送準備が整い次第、納品登録を行ってください。';
+        document.getElementById('btn-confirm-payment').style.display = 'none';
+        document.getElementById('btn-delivery-trigger').style.display = 'inline-block';
+        
+        products.forEach((p, idx) => {
+            const itemStatus = document.getElementById(`item-status-${idx}`);
+            if (itemStatus) {
+                itemStatus.innerHTML = '<i class="fas fa-box" style="margin-right: 4px; font-size: 10px;"></i> 配送準備中';
+                itemStatus.style.backgroundColor = '#f8f9fa';
+                itemStatus.style.color = '#7f8c8d';
+            }
+        });
+        showNotification('入金を確認しました。');
+    }
+
+    function showRegistration() {
+        document.getElementById('registration-area').style.display = 'block';
+        renderRegistrationTable();
+        document.getElementById('registration-area').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function renderRegistrationTable() {
+        const tbody = document.getElementById('registration-product-list');
+        tbody.innerHTML = '';
+        products.forEach((p, idx) => {
+            const remain = p.order - p.planned;
+            tbody.innerHTML += `
+                <tr>
+                    <td style="font-weight: bold; padding: 12px;">${p.name}</td>
+                    <td style="text-align: right; padding: 12px;">${p.order}</td>
+                    <td style="text-align: right; color: var(--kintone-success); font-weight: bold; padding: 12px;">${p.planned}</td>
+                    <td style="padding: 12px; text-align: center;">
+                        <input type="number" class="field-input prod-qty-input" data-idx="${idx}" 
+                               style="text-align: right; width: 100px; padding: 6px;" 
+                               value="${remain > 0 ? remain : 0}" min="0" max="${remain}">
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function hideRegistration() {
+        document.getElementById('registration-area').style.display = 'none';
+    }
+
+    function registerFulfillment() {
+        const inputs = document.querySelectorAll('.prod-qty-input');
+        const date = document.getElementById('input-date').value;
+        const note = document.getElementById('input-note').value || '---';
+        
+        iterationCount++;
+        let batchItems = [];
+        let batchTotal = 0;
+
+        inputs.forEach(input => {
+            const idx = parseInt(input.getAttribute('data-idx'));
+            const val = parseInt(input.value) || 0;
+            if (val > 0) {
+                products[idx].planned += val;
+                batchItems.push(`${products[idx].name} (${val}個)`);
+                batchTotal += val;
+            }
+        });
+
+        const tbody = document.getElementById('fulfillment-history-body');
+        const emptyRow = document.getElementById('empty-row');
+        if (emptyRow) emptyRow.style.display = 'none';
+        
+        const newRow = tbody.insertRow(-1);
+        newRow.innerHTML = `
+            <td style="text-align: center; font-weight: bold;">${iterationCount}回目</td>
+            <td style="text-align: center;">${date}</td>
+            <td>
+                <div style="font-size: 11px; color: #666;">${batchItems.join('<br>')}</div>
+                <div style="font-weight: 800; margin-top: 5px;">合計 ${batchTotal} 個</div>
+            </td>
+            <td style="text-align: center;"><span id="status-badge-${iterationCount}" class="badge-type" style="background:#e1f5fe; color:#0288d1; font-size:11px;"><i class="fas fa-truck-fast"></i> 配送中</span></td>
+            <td style="text-align: center;">
+                <div class="action-chip-container">
+                    <span class="action-chip chip-deliver" onclick="triggerConfirmModal('DELIVERY_REPORT', {id: ${iterationCount}, qty: ${batchTotal}})"><i class="fas fa-circle-check"></i> 配送完了を報告</span>
+                </div>
+            </td>
+        `;
+
+        updateDashboard();
+        hideRegistration();
+        showNotification(`第${iterationCount}回目の納品を登録しました。`);
+
+        document.getElementById('main-status').innerHTML = '<i class="fas fa-truck-fast" style="margin-right: 6px;"></i> 配送中';
+        document.getElementById('main-status').style.color = 'var(--kintone-blue)';
+        products.forEach((p, idx) => {
+            const itemStatus = document.getElementById(`item-status-${idx}`);
+            if (itemStatus) {
+                itemStatus.innerHTML = '<i class="fas fa-truck-fast" style="margin-right: 4px; font-size: 10px;"></i> 配送中';
+                itemStatus.style.backgroundColor = '#e1f5fe';
+                itemStatus.style.color = '#0288d1';
+            }
+        });
+
+        const allPlanned = products.every(p => p.planned >= p.order);
+        if (allPlanned) {
+            document.getElementById('btn-delivery-trigger').style.display = 'none';
+            document.getElementById('guide-step').innerHTML = '最終報告を行ってください';
+            document.getElementById('guide-desc').innerHTML = 'すべての数量の配送登録が完了しました。物理的な配送が完了したら報告してください。';
+            document.getElementById('action-btns-area').innerHTML = `<button class="btn-confirm" onclick="triggerConfirmModal('fulfillment')"><i class="fas fa-flag-checkered"></i> 完納を報告する</button>`;
+        }
+    }
+
+    function markAsDelivered(params) {
+        totalConfirmedDelivered += params.qty;
+        const badge = document.getElementById(`status-badge-${params.id}`);
+        badge.innerHTML = '<i class="fas fa-circle-check"></i> 納品済み';
+        badge.style.background = '#e8f5e9'; badge.style.color = '#2e7d32';
+        badge.closest('tr').querySelector('.action-chip-container').innerHTML = '<span style="color:#999; font-size:11px;">✓ 処理済み</span>';
+        
+        updateDashboard();
+        showNotification('配送完了を確認しました。');
+
+        if (totalConfirmedDelivered >= ORDERED_TOTAL) {
+            markAllDone();
+        }
+    }
+
+    function updateDashboard() {
+        const plannedSum = products.reduce((sum, p) => sum + p.planned, 0);
+        document.getElementById('stat-delivered').innerText = totalConfirmedDelivered;
+        document.getElementById('stat-pending').innerText = ORDERED_TOTAL - plannedSum;
+    }
+
+    function markAllDone() {
+        document.getElementById('main-status').innerHTML = '<i class="fas fa-circle-check"></i> 納品済み';
+        document.getElementById('main-status').style.color = 'var(--kintone-success)';
+        document.getElementById('guide-icon').innerHTML = '<i class="fas fa-check-double" style="color:var(--kintone-success);"></i>';
+        document.getElementById('guide-step').innerHTML = 'お取引完了';
+        document.getElementById('guide-step').style.color = 'var(--kintone-success)';
+        document.getElementById('guide-desc').innerHTML = '完納が報告されました。ありがとうございました。';
+        showNotification('完納を報告しました。');
+    }
+
+    function showNotification(msg) {
+        const n = document.getElementById('success-notification');
+        n.innerHTML = '<i class="fas fa-circle-check"></i> ' + msg;
+        n.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => { n.style.display = 'none'; }, 4000);
+    }
+�した。物理的な配送が完了したら報告してください。';
+            document.getElementById('action-btns-area').innerHTML = `<button class="btn-confirm" onclick="triggerConfirmModal('fulfillment')"><i class="fas fa-flag-checkered"></i> 完納を報告する</button>`;
+        }
+    }
+
+    function markAsDelivered(params) {
+        const actionArea = document.getElementById(`action-area-${rowIdx}`);
+        actionArea.innerHTML = '<span style="color:#999; font-size:11px;"><i class="fas fa-check-double" style="margin-right: 4px;"></i> 処理済み</span>';
+
+        if (totalDeliveredQty >= ORDERED_QTY) {
+            document.getElementById('main-status').innerHTML = '<i class="fas fa-circle-check" style="margin-right: 6px;"></i> 納品済み';
+            document.getElementById('main-status').style.color = 'var(--kintone-success)';
+            document.getElementById('item-status').innerHTML = '<i class="fas fa-circle-check" style="margin-right: 4px; font-size: 10px;"></i> 納品済み';
+            document.getElementById('item-status').style.backgroundColor = '#e8f5e9';
+            document.getElementById('item-status').style.color = '#2e7d32';
+            
+            document.getElementById('action-guide-card').style.borderLeftColor = 'var(--kintone-success)';
+            document.getElementById('guide-icon').innerHTML = '<i class="fas fa-face-smile" style="color:var(--kintone-success);"></i>';
+            document.getElementById('guide-step').innerHTML = '納品済み';
+            document.getElementById('guide-step').style.color = 'var(--kintone-success)';
+            document.getElementById('guide-desc').innerHTML = '全ての資材が正常に納品されました。ありがとうございました。';
+        } else {
+            document.getElementById('guide-step').innerHTML = '分納継続中';
+            document.getElementById('guide-desc').innerHTML = `現在 ${totalDeliveredQty} / ${ORDERED_QTY} 個の納品が完了しています。残りの分納を進めてください。`;
+        }
+
+        document.getElementById('success-notification').style.display = 'block';
+        document.getElementById('success-notification').innerHTML = `<i class="fas fa-circle-check"></i> 第${rowIdx}回目の配送完了を報告しました。ステータスが更新されました。`;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規発注登録 | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific to Premium Create Form */
+        .form-action-bar { position: sticky; top: 98px; z-index: 50; background: rgba(255,255,255,0.9); backdrop-filter: blur(4px); padding: 10px 20px; border-bottom: 1px solid #ddd; display: flex; gap: 10px; margin: 0 auto 20px; max-width: 1200px; width: 100%; }
+        .btn-save { background-color: var(--kintone-blue); color: white; border: none; padding: 10px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: opacity 0.2s; }
+        .btn-save:hover { opacity: 0.8; }
+        .btn-cancel-form { background-color: white; color: var(--kintone-blue); border: 1px solid var(--kintone-blue); padding: 10px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        
+        .field-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; background: white; transition: border-color 0.2s; }
+        .field-input:focus { border-color: var(--kintone-blue); outline: none; }
+        .field-input.readonly { background-color: #f5f6f7; color: #666; border-color: #eee; }
+        
+        .lookup-group { display: flex; gap: 8px; align-items: center; }
+        .btn-lookup { background: white; border: 1px solid var(--kintone-blue); color: var(--kintone-blue); padding: 8px 16px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap; }
+        .btn-user-lookup { background: #eef1f5; border: 1px solid #ddd; padding: 6px 10px; border-radius: 4px; color: #555; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 14px; }
+        
+        .premium-table th { background-color: #f8f9fa; font-weight: bold; font-size: 12px; color: #666; padding: 12px 10px; border-top: 1px solid #eee; border-bottom: 2px solid #eee; white-space: nowrap; }
+        .premium-table td { padding: 10px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+        
+        .rich-editor-placeholder { border: 1px solid #ddd; border-radius: 4px; padding: 15px; min-height: 120px; background: #fafafa; }
+        .summary-box-readonly { background-color: #f7f9fa; border: 1px solid #e3e7e8; padding: 10px; border-radius: 4px; color: #666; text-align: right; min-height: 40px; }
+    </style>
+</head>
+<body>
+
+<div class="kintone-header-top">
+    <div class="header-content-inner">
+        <div class="header-logo"><span class="k-icon">k</span> kintone</div>
+        <div class="header-user">
+            <span>✉</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                <span>Administrator</span>
+                <span style="font-size: 10px;">▼</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kintone-header-sub">
+    <div class="header-content-inner">
+        <div class="header-sub-left"><span>☰</span> <span onclick="location.href='purchase_index.html'" style="cursor:pointer">🏠</span> <span>🔔</span> <span>⭐</span></div>
+        <div class="header-sub-right">
+            <span>⚙</span> <span>❓</span>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="アプリ内検索">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kintone-app-title-bar" style="position: sticky; top: 0; z-index: 100;">
+    <div class="header-content-inner" style="padding: 12px 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="app-icon" style="background-color: #3498db;">📦</div>
+            <div class="app-name">発注管理</div>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <a href="https://silica-link-fe.vercel.app/agency/order-list" style="text-decoration: none; padding: 6px 15px; border: 1px solid white; color: white; font-size: 13px; font-weight: bold; border-radius: 4px;">代理店のポータルへのログイン</a>
+            <a href="https://silica-link-fe.vercel.app/supplier/order-list" style="text-decoration: none; padding: 6px 15px; background: white; color: var(--kintone-blue); font-size: 13px; font-weight: bold; border-radius: 4px;">仕入のポータルへのログイン</a>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="breadcrumb">
+        🏠 <span>/</span> アプリ: 発注管理 <span>/</span> 新規レコードの作成
+    </div>
+
+    <!-- Sticky Action Bar -->
+    <div class="form-action-bar">
+        <button class="btn-cancel-form" onclick="history.back()">キャンセル</button>
+        <button class="btn-save" onclick="location.href='purchase_order_list.html'">保存</button>
+    </div>
+
+    <!-- Summary Header -->
+    <div class="summary-header" style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 20px; margin: 0 auto 25px; max-width: 1200px; width: 100%;">
+        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="badge-type badge-agency" style="background-color: #3498db;">新規登録</div>
+                <div style="font-size: 24px; font-weight: bold; color: #ccc;">PO #Auto-generated</div>
+            </div>
+        </div>
+        
+        <div class="summary-grid" style="width: 100%; border-top: 1px solid #eee; padding-top: 15px;">
+            <div class="summary-item">
+                <div class="summary-label">発注金額合計</div>
+                <div class="summary-primary-value">¥0</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">ステータス</div>
+                <div class="summary-primary-value" style="color: var(--kintone-neutral);">下書き</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">発注日<span style="color:#e74c3c">*</span></div>
+                <div class="summary-value"><input type="date" value="2026-03-24" style="border:none; font-size:inherit; font-family:inherit; color:inherit; background:transparent;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 基本情報 -->
+    <div class="section-card section-info">
+        <div class="section-title"><span>📋</span> 基本情報</div>
+        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="field-item">
+                <div class="field-label">仕入先<span style="color:#e74c3c">*</span></div>
+                <div class="lookup-group">
+                    <input type="text" class="field-input" placeholder="選択してください">
+                    <button class="btn-lookup">取得</button>
+                </div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">発注ステータス<span style="color:#e74c3c">*</span></div>
+                <select class="field-input">
+                    <option>一次承認待ち</option>
+                    <option>案作成中</option>
+                </select>
+            </div>
+            <div class="field-item">
+                <div class="field-label">入荷予定日</div>
+                <input type="date" class="field-input">
+            </div>
+            <div class="field-item">
+                <div class="field-label">最終入荷日</div>
+                <input type="date" class="field-input readonly" readonly>
+            </div>
+            <div class="field-item">
+                <div class="field-label">納品状況</div>
+                <select class="field-input">
+                    <option>---</option>
+                    <option>未入荷</option>
+                    <option>分納</option>
+                    <option>完納</option>
+                </select>
+            </div>
+            <div class="field-item">
+                <div class="field-label">検収日</div>
+                <input type="date" class="field-input">
+            </div>
+        </div>
+        <div class="field-item" style="margin-top: 20px;">
+            <div class="field-label">備考</div>
+            <div class="rich-editor-placeholder">
+                <span style="color: #999; font-style: italic;">発注に関する詳細事項を入力してください...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 担当者情報 -->
+    <div class="section-card section-info" style="margin: 0 auto 30px; max-width: 1200px; width: 100%;">
+        <div class="section-title"><span>👥</span> 担当者情報</div>
+        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="field-item">
+                <div class="field-label">担当部所者</div>
+                <div class="lookup-group">
+                    <input type="text" class="field-input" placeholder="ユーザーを選択">
+                    <button class="btn-user-lookup">🔍 👤</button>
+                </div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">仕入担当者<span style="color:#e74c3c">*</span></div>
+                <div class="lookup-group">
+                    <input type="text" class="field-input" value="Administrator">
+                    <button class="btn-user-lookup">🔍 👤</button>
+                </div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">実施担当者</div>
+                <div class="lookup-group">
+                    <input type="text" class="field-input" placeholder="ユーザーを選択">
+                    <button class="btn-user-lookup">🔍 👤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 取引先情報 -->
+    <div class="section-card section-info" style="margin: 0 auto 30px; max-width: 1200px; width: 100%;">
+        <div class="section-title"><span>🏭</span> 取引先情報 (自動反映)</div>
+        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="field-item"><div class="field-label">仕入先ID</div><div class="field-input readonly">---</div></div>
+            <div class="field-item"><div class="field-label">仕入先名</div><div class="field-input readonly">---</div></div>
+            <div class="field-item"><div class="field-label">仕入先電話番号</div><div class="field-input readonly">---</div></div>
+            <div class="field-item"><div class="field-label">仕入先メールアドレス</div><div class="field-input readonly">---</div></div>
+            <div class="field-item"><div class="field-label">仕入先郵便番号</div><div class="field-input readonly">---</div></div>
+            <div class="field-item">
+                <div class="field-label">仕入先住所</div>
+                <div class="field-input readonly" style="height: auto; min-height: 40px;">---</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 発注サマリー -->
+    <div class="section-card section-info" style="margin: 0 auto 30px; max-width: 1200px; width: 100%;">
+        <div class="section-title"><span>📊</span> 発注サマリー (自動計算)</div>
+        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="field-item"><div class="field-label">発注数量合計</div><div class="summary-box-readonly">0</div></div>
+            <div class="field-item"><div class="field-label">入荷済数量合計</div><div class="summary-box-readonly">0</div></div>
+            <div class="field-item"><div class="field-label">未入荷数量合計</div><div class="summary-box-readonly">0</div></div>
+            <div class="field-item"><div class="field-label">発注合計金額</div><div class="summary-box-readonly">¥0</div></div>
+            <div class="field-item"><div class="field-label">入荷進捗</div><div class="summary-box-readonly" style="text-align: center;">0 / 0</div></div>
+        </div>
+    </div>
+
+    <!-- 発注明細 -->
+    <div class="section-card section-op" style="margin: 0 auto 30px; max-width: 1200px; width: 100%;">
+        <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>📦 発注明細</span>
+            <button class="btn-lookup" style="padding: 6px 15px;" onclick="addProductRow()">+ 行を追加する</button>
+        </div>
+        <div style="overflow-x: auto; margin-top: 15px;">
+            <table class="k-table premium-table" style="min-width: 1200px;">
+                <thead>
+                    <tr>
+                        <th style="width: 150px;">商品SKU</th>
+                        <th style="width: 200px;">商品名</th>
+                        <th style="width: 130px;">入荷予定日</th>
+                        <th style="width: 100px; text-align: right;">発注数量</th>
+                        <th style="width: 100px; text-align: right;">入荷済数量</th>
+                        <th style="width: 100px; text-align: right;">未入荷数量</th>
+                        <th style="width: 100px; text-align: right;">返品数 (不良)</th>
+                        <th style="width: 120px; text-align: right;">単価</th>
+                        <th style="width: 120px; text-align: right;">金額</th>
+                        <th style="width: 50px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="product-tbody">
+                    <tr>
+                        <td>
+                            <div class="lookup-group">
+                                <input type="text" class="field-input" placeholder="SKUを入力">
+                                <button class="btn-lookup">取得</button>
+                            </div>
+                        </td>
+                        <td><input type="text" class="field-input readonly" readonly placeholder="Lookupで反映"></td>
+                        <td><input type="date" class="field-input"></td>
+                        <td><input type="number" class="field-input" value="0" style="text-align: right;"></td>
+                        <td><input type="number" class="field-input readonly" value="0" readonly style="text-align: right;"></td>
+                        <td><input type="number" class="field-input readonly" value="0" readonly style="text-align: right;"></td>
+                        <td><input type="number" class="field-input" value="0" style="text-align: right;"></td>
+                        <td><input type="number" class="field-input" value="0" style="text-align: right;"></td>
+                        <td style="text-align: right; font-weight: bold; color: #666;">¥0</td>
+                        <td style="text-align: center; color: #ff5252; cursor: pointer;" onclick="removeRow(this)">✖</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function addProductRow() {
+        const tbody = document.getElementById('product-tbody');
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>
+                <div class="lookup-group">
+                    <input type="text" class="field-input" placeholder="SKUを入力">
+                    <button class="btn-lookup">取得</button>
+                </div>
+            </td>
+            <td><input type="text" class="field-input readonly" readonly placeholder="Lookupで反映"></td>
+            <td><input type="date" class="field-input"></td>
+            <td><input type="number" class="field-input" value="0" style="text-align: right;"></td>
+            <td><input type="number" class="field-input readonly" value="0" readonly style="text-align: right;"></td>
+            <td><input type="number" class="field-input readonly" value="0" readonly style="text-align: right;"></td>
+            <td><input type="number" class="field-input" value="0" style="text-align: right;"></td>
+            <td><input type="number" class="field-input" value="0" style="text-align: right;"></td>
+            <td style="text-align: right; font-weight: bold; color: #666;">¥0</td>
+            <td style="text-align: center; color: #ff5252; cursor: pointer;" onclick="removeRow(this)">✖</td>
+        `;
+        tbody.appendChild(newRow);
+    }
+
+    function removeRow(btn) {
+        const row = btn.closest('tr');
+        if (document.querySelectorAll('#product-tbody tr').length > 1) {
+            row.remove();
+        } else {
+            alert('少なくとも1件の明細が必要です。');
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タスク詳細 #499 | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background-color: var(--kintone-body-bg);">
+
+<div class="kintone-header-top">
+    <div class="header-content-inner">
+        <div class="header-logo">kintone</div>
+        <div class="header-user">
+            <span>✉</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                <span>Administrator</span>
+                <span style="font-size: 10px;">▼</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kintone-header-sub">
+    <div class="header-content-inner">
+        <div class="header-sub-left">
+            <span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span>
+        </div>
+        <div class="header-user">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="アプリ内検索" style="width: 250px;">
+                <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #999;">🔍</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kintone-app-title-bar">
+    <div class="header-content-inner">
+        <div style="display: flex; align-items: center;">
+            <div class="app-icon" style="background-color: #5cb85c;">📋</div>
+            <div class="app-title">入出荷タスクを確認する</div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="breadcrumb">
+        🏠 <span>/</span> アプリ: 入出荷タスクを確認する <span>/</span> レコード: #499
+    </div>
+
+    <div class="kintone-action-toolbar">
+        <div class="action-icon-btn">︿</div>
+        <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
+        <div class="action-icon-btn">+</div>
+        <div class="action-icon-btn">✎</div>
+        <div class="action-icon-btn">📄</div>
+        <div class="action-icon-btn">⚙ <span>▼</span></div>
+        <div class="action-icon-btn">⋯</div>
+    </div>
+
+    <!-- Enhanced Header Summary (Summary First) -->
+    <div class="summary-header" style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 20px;">
+        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="badge-type" style="background-color: #fff1f0; color: #f5222d; padding: 4px 12px; border-radius: 4px; font-size: 14px; font-weight: bold;">🛑 返品タスク</div>
+                <div style="font-size: 24px; font-weight: bold;">Task #535</div>
+            </div>
+        </div>
+        
+        <div class="summary-grid" style="width: 100%; border-top: 1px solid #eee; padding-top: 15px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;">
+            <div class="summary-item">
+                <div class="summary-label">数量</div>
+                <div class="summary-primary-value col-important">50</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">指示元注文</div>
+                <div class="summary-primary-value"><a href="order_detail_shopify.html" style="color: var(--kintone-blue);">#309</a></div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">作業種別</div>
+                <div class="summary-value" style="font-weight: bold;">返品受付</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">ステータス</div>
+                <div class="summary-primary-value col-important" style="color: #389e0d;">完了</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">実行期限</div>
+                <div class="summary-primary-value">2026-03-30</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Next Step for Task if needed -->
+    <div class="next-action-card">
+        <div class="next-action-content">
+            <span>✅</span>
+            <div>
+                次の対応: <span style="color: var(--kintone-success);">在庫同期の確認</span><br>
+                <span style="font-weight: normal; font-size: 12px; color: #666;">このタスクは正常に完了しました。関連する注文ステータスが「配送済み」になっているか確認してください。</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Basic Info Section -->
+    <div class="section-card section-info">
+        <div class="section-title"><span>📋</span> タスク詳細情報</div>
+        <div class="field-grid">
+            <div class="field-item">
+                <div class="field-label">タスクID</div>
+                <div class="field-value-box">499</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">担当者 <span class="required-mark">*</span></div>
+                <div class="field-value-box" style="display: flex; align-items: center; gap: 8px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" style="width: 20px; height: 20px;">
+                    Test staff
+                </div>
+            </div>
+            <div class="field-item" style="grid-column: span 2;">
+                <div class="field-label">備考</div>
+                <div class="field-value-box">梱包完了。送り状添付済み。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Details -->
+    <div class="section-card section-op">
+        <div class="section-title"><span>📦</span> 商品明細</div>
+        <table class="k-table">
+            <thead>
+                <tr>
+                    <th style="min-width: 250px;">商品SKU <span class="required-mark">*</span></th>
+                    <th style="width: 100px; text-align: right;">数量 <span class="required-mark">*</span></th>
+                    <th style="width: 100px; text-align: center;">単位 <span class="required-mark">*</span></th>
+                    <th>商品・資材SKU <span class="required-mark">*</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="field-value-link">KM300-V01</td>
+                    <td style="text-align: right;" class="col-important">15</td>
+                    <td style="text-align: center;">本</td>
+                    <td>米ぬかの恵み 300mL</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Packing Info -->
+    <div class="section-card">
+        <div class="section-title">▼ 梱包・出荷情報</div>
+        <div class="field-grid">
+            <div class="field-item">
+                <div class="field-label">配送業社</div>
+                <div class="field-value-box">sagawa</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">サイズ種別</div>
+                <div class="field-value-box">60</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">梱包重量 (KG)</div>
+                <div class="field-value-box">2</div>
+            </div>
+            <div class="field-item" style="grid-column: span 2;">
+                <div class="field-label">送り状URL</div>
+                <div class="field-value-box field-value-link">https://tracking.sagawa.co.jp/...</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
