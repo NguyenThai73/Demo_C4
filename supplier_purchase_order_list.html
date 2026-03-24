@@ -103,9 +103,28 @@
         .chip-wait { background: #fff3e0; color: #ef6c00; }
         .chip-done { background: #e8f5e9; color: #2e7d32; }
 
-        /* Amount & Progress */
-        .val-primary { font-size: 16px; font-weight: 800; color: #2c3e50; }
         .val-secondary { font-size: 12px; color: #95a5a6; }
+
+        /* Sub Nav / Breadcrumb */
+        .sub-nav {
+            background: white;
+            padding: 12px 25px;
+            font-size: 12px;
+            border-bottom: 1px solid #ddd;
+            color: var(--kintone-blue);
+        }
+        .sub-nav span {
+            color: #999;
+            padding: 0 8px;
+        }
+        .sub-nav a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .sub-nav a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
 
         .date-input {
             padding: 8px 12px;
@@ -149,6 +168,10 @@
         <span><i class="fas fa-user-circle" style="margin-right: 8px;"></i>山田 太郎 様</span>
         <i class="fas fa-sign-out-alt" style="margin-left: 15px; cursor: pointer; color: #bdc3c7;"></i>
     </div>
+</div>
+
+<div class="sub-nav">
+    <a href="#">ホーム</a> <span>></span> <a href="supplier_purchase_order_list.html">受注管理</a> <span>></span> 受注一覧
 </div>
 
 <div class="portal-main">
