@@ -18,15 +18,14 @@
         .shipment-input-table td, .return-input-table td { border: 1px solid #ddd; padding: 8px; }
         .shipment-input-table input, .return-input-table input { width: 100%; padding: 6px 10px; border: 1px solid #ccc; border-radius: 8px; }
         
-        #flash-message { display: none; border-radius: 12px; }
+        #flash-message { display: none; border-radius: 12px; z-index: 2000; }
 
-        /* Premium Overrides */
         .next-action-card { 
             background: white; border-left: 5px solid var(--kintone-blue); padding: 25px; border-radius: 12px; margin-bottom: 30px; 
             box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: space-between; gap: 20px; 
         }
         .next-action-content { display: flex; align-items: center; gap: 15px; font-size: 14px; font-weight: bold; }
-        .btn-primary-action-large, .btn-submit-ship, .btn-cancel-ship { border-radius: 8px; font-weight: bold; }
+        .btn-primary-action-large, .btn-submit-ship, .btn-cancel-ship { border-radius: 8px; font-weight: bold; cursor: pointer; }
         .badge-status { border-radius: 12px; }
     </style>
 </head>
@@ -81,10 +80,8 @@
         <div class="action-icon-btn">⋯</div>
     </div>
 
-    <!-- Success Message - Sticky -->
     <div id="flash-message" class="sticky-flash">🎉 操作を完了しました。</div>
 
-    <!-- Enhanced Header Summary (Summary First) -->
     <div class="summary-header" style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 25px; border-radius: 12px; margin-bottom: 30px;">
         <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
             <div style="display: flex; align-items: center; gap: 15px;">
@@ -96,15 +93,15 @@
         <div class="summary-grid" style="width: 100%; border-top: 1px solid #eee; padding-top: 20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
             <div class="summary-item">
                 <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">合計金額</div>
-                <div class="summary-primary-value" style="font-size: 20px; font-weight: 800;">¥153,000</div>
+                <div id="summary-total" class="summary-primary-value" style="font-size: 20px; font-weight: 800;">¥0</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">入金状況</div>
-                <div class="summary-primary-value" style="font-size: 18px; font-weight: 700; color: var(--kintone-success);">入金済み</div>
+                <div id="summary-payment" class="summary-primary-value" style="font-size: 18px; font-weight: 700; color: #999;">未入金</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">出荷状況</div>
-                <div class="summary-primary-value" style="font-size: 18px; font-weight: 700; color: var(--kintone-neutral);">未出荷</div>
+                <div id="summary-shipping" class="summary-primary-value" style="font-size: 18px; font-weight: 700; color: #999;">未出荷</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文日</div>
@@ -117,18 +114,10 @@
         </div>
     </div>
 
-    <!-- Action priority Guide -->
-    <div class="next-action-card">
-        <div class="next-action-content">
-            <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-file-export"></i></span>
-            <div>
-                次の対応: <span style="color: var(--kintone-blue);">出荷指示の作成</span><br>
-                <span style="font-weight: normal; font-size: 12px; color: #666;">この注文は入金済みです。在庫を確認し、出荷指示（タスク作成・赤黒伝票）へ進んでください。</span>
-            </div>
-        </div>
+    <div id="next-action-area" class="next-action-card">
+        <!-- Rendered by JS -->
     </div>
 
-    <!-- Section: Order Overview -->
     <div class="section-card section-info">
         <div class="section-title" style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
             <span><i class="fas fa-clipboard-list" style="margin-right: 12px;"></i></span>
@@ -172,6 +161,7 @@
             </div>
         </div>
     </div>
+
     <div class="section-card section-info">
         <div class="section-title" style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
             <span><i class="fas fa-truck-fast" style="margin-right: 12px;"></i></span>
@@ -192,7 +182,6 @@
         </div>
     </div>
 
-    <!-- Product Processing Section -->
     <div class="section-card section-op" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
         <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
             <span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span>
@@ -207,60 +196,38 @@
                     <th style="width: 100px; text-align: right;">未出荷</th>
                     <th style="width: 100px; text-align: right;">返品</th>
                     <th style="width: 120px;">ステータス</th>
-                    <th style="width: 180px;">操作</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td class="col-highlight">Rice Silica 50mL (RC50-V01)</td>
-                    <td style="text-align: right;">500</td>
-                    <td style="text-align: center;">個</td>
-                    <td style="text-align: right;">0</td>
-                    <td style="text-align: right; background-color: #fffaf0;">
-                        <div class="primary-value-huge">500</div>
-                        <div class="secondary-info" style="color: var(--kintone-danger);">未出荷</div>
-                    </td>
-                    <td style="text-align: right; color: #999;">0</td>
-                    <td><span class="badge-status status-neutral" style="font-size: 11px;">未着手</span></td>
-                    <td style="text-align: center;">
-                        <div style="display: flex; align-items: center; justify-content: center;">
-                            <button class="btn-primary-action" onclick="toggleShipmentInput()" style="padding: 6px 15px; min-width: 60px; border-radius: 8px; background-color: var(--kintone-blue); color: white; border: none; font-weight: bold; cursor: pointer;">出荷</button>
-                        </div>
-                    </td>
-                </tr>
+            <tbody id="product-tbody">
+                <!-- JS handles this -->
             </tbody>
         </table>
 
-        <!-- Shipment Input Section -->
-        <div id="shipment-input-area">
-            <div style="font-weight: bold; margin-bottom: 10px; color: var(--kintone-blue);">➡ 出荷</div>
+        <div id="shipment-input-area" style="display: none; margin-top: 25px; padding-top: 20px; border-top: 2px solid var(--kintone-blue); background: #ffffff; padding: 20px; border-radius: 8px;">
+            <div style="font-weight: 800; margin-bottom: 20px; color: var(--kintone-blue); font-size: 15px;">
+                <i class="fas fa-truck-ramp-box" style="margin-right: 10px;"></i> 納品を登録する
+            </div>
             <table class="shipment-input-table">
                 <thead>
                     <tr>
                         <th style="width: 150px;">納品SKU</th>
                         <th>商品名</th>
-                        <th style="width: 120px;">数量</th>
+                        <th style="width: 120px;">納品登録数</th>
                         <th>コメント</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>RC50-V01</td>
-                        <td>Rice Silica 50mL</td>
-                        <td><input type="number" value="500"></td>
-                        <td><input type="text" placeholder="指示事項を入力"></td>
-                    </tr>
-                </tbody>
+                <tbody id="fulfillment-input-body"></tbody>
             </table>
-            <div class="shipment-footer-btns">
-                <button class="btn-cancel-ship" onclick="toggleShipmentInput()">選択を解除</button>
-                <button class="btn-submit-ship" onclick="submitShipment()">出荷依頼を確定</button>
+            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+                <button class="btn-cancel-ship" style="padding: 10px 25px; border: 1px solid #ccc; background: #fff;" onclick="hideShipmentInput()">キャンセル</button>
+                <button class="btn-submit-ship" style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;" onclick="submitShipment()">納品を确定する</button>
             </div>
         </div>
 
-        <!-- Return Input Section -->
-        <div id="return-input-area" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 2px solid var(--kintone-danger);">
-            <div style="font-weight: bold; margin-bottom: 10px; color: var(--kintone-danger);">➡ 返品処理の作成</div>
+        <div id="return-input-area" style="display: none; margin-top: 25px; padding-top: 20px; border-top: 2px solid var(--kintone-danger); background: #fffcfc; padding: 20px; border-radius: 8px;">
+            <div style="font-weight: 800; margin-bottom: 20px; color: var(--kintone-danger); font-size: 15px;">
+                <i class="fas fa-rotate-left" style="margin-right: 10px;"></i> 返品を登録する
+            </div>
             <table class="return-input-table">
                 <thead>
                     <tr>
@@ -270,30 +237,19 @@
                         <th>理由</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>RC50-V01</td>
-                        <td>Rice Silica 50mL</td>
-                        <td><input type="number" value="1"></td>
-                        <td><input type="text" placeholder="理由を入力"></td>
-                    </tr>
-                </tbody>
+                <tbody id="return-input-body"></tbody>
             </table>
-            <div class="shipment-footer-btns">
-                <button class="btn-cancel-ship" onclick="toggleReturnInput()">選択を解除</button>
-                <button class="btn-submit-ship" style="background-color: var(--kintone-danger);" onclick="submitReturn()">返品を確定</button>
+            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+                <button class="btn-cancel-ship" style="padding: 10px 25px; border: 1px solid #ccc; background: #fff;" onclick="hideReturnInput()">キャンセル</button>
+                <button class="btn-submit-ship" style="padding: 10px 30px; background-color: var(--kintone-danger); color: white; border: none;" onclick="submitReturn()">返品を确定する</button>
             </div>
         </div>
     </div>
 
-    <!-- Simplified History Sections -->
     <div class="section-card section-hist">
         <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span>📜</span> 出荷履歴 (直近)</div>
         <div id="shipment-history-container">
-            <div class="empty-history-state" id="no-shipment-history">
-                <div style="font-size: 24px; margin-bottom: 5px;">📜</div>
-                履歴はありません
-            </div>
+            <div class="empty-history-state" id="no-shipment-history">履歴はありません</div>
             <table class="k-table" id="shipment-history-table" style="font-size: 11px; display: none;">
                 <thead>
                     <tr>
@@ -312,10 +268,7 @@
     <div class="section-card section-hist">
         <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span>🛑</span> 返品履歴</div>
         <div id="return-history-container">
-            <div class="empty-history-state" id="no-return-history">
-                <div style="font-size: 24px; margin-bottom: 5px;">🛑</div>
-                履歴はありません
-            </div>
+            <div class="empty-history-state" id="no-return-history">履歴はありません</div>
             <table class="k-table" id="return-history-table" style="font-size: 11px; display: none;">
                 <thead>
                     <tr>
@@ -330,63 +283,116 @@
             </table>
         </div>
     </div>
-
 </div>
 
 <script>
-    function toggleShipmentInput() {
+    let orderState = {
+        status: 'CONFIRM_WAIT',
+        totalAmount: 153000,
+        tempAmount: 0,
+        isConfirmed: false,
+        isPaid: false,
+        items: [
+            { id: 'RC50-V01', name: 'Rice Silica 50mL', orderQty: 500, deliveredQty: 0, returnQty: 0, price: 153000 }
+        ],
+        historyCount: 0
+    };
+
+    function updateUI() {
+        const nextActionArea = document.getElementById('next-action-area');
+        const summaryTotal = document.getElementById('summary-total');
+        const summaryPayment = document.getElementById('summary-payment');
+        const summaryShipping = document.getElementById('summary-shipping');
+        const productTbody = document.getElementById('product-tbody');
+
+        summaryTotal.innerText = orderState.isConfirmed ? `¥${orderState.totalAmount.toLocaleString()}` : `¥0`;
+        summaryPayment.innerText = orderState.isPaid ? '入金済み' : (orderState.isConfirmed ? '入金待ち' : '未入金');
+        summaryPayment.style.color = orderState.isPaid ? 'var(--kintone-success)' : (orderState.isConfirmed ? 'var(--kintone-warning)' : '#999');
+        
+        const totalOrdered = orderState.items.reduce((acc, item) => acc + item.orderQty, 0);
+        const totalDelivered = orderState.items.reduce((acc, item) => acc + item.deliveredQty, 0);
+        summaryShipping.innerText = totalDelivered >= totalOrdered ? '完納' : (totalDelivered > 0 ? '分納中' : (orderState.isPaid ? '準備中' : '未出荷'));
+        summaryShipping.style.color = totalDelivered >= totalOrdered ? 'var(--kintone-success)' : (totalDelivered > 0 ? 'var(--kintone-blue)' : '#999');
+
+        let guideHtml = '';
+        if (orderState.status === 'CONFIRM_WAIT') {
+            guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-warning);"><i class="fas fa-file-signature"></i></span><div>次の対応: <span style="color: var(--kintone-warning);">注文の確認</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">内容を確認し、受諾または却下を選択してください。</span></div></div><div style="display: flex; gap: 12px;"><button class="btn-cancel-ship" style="padding: 10px 20px; border: 1px solid #ccc;" onclick="rejectOrder()">却下する</button><button class="btn-submit-ship" style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;" onclick="confirmOrder()">注文を确定する</button></div>`;
+        } else if (orderState.status === 'PAYMENT_WAIT') {
+            guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-warning);"><i class="fas fa-coins"></i></span><div>次の対応: <span style="color: var(--kintone-warning);">入金確認</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">顧客の入金が完了したら、ボタンを押して進めてください。</span></div></div><button class="btn-submit-ship" style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;" onclick="verifyPayment()">入金完了を确认する</button>`;
+        } else if (orderState.status === 'DELIVERY_READY' || (orderState.status === 'FINISHED' && totalDelivered < totalOrdered)) {
+            guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-truck-fast"></i></span><div>次の対応: <span style="color: var(--kintone-blue);">配送・納品登録</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">配送準備が整いました。納品登録を行ってください。</span></div></div><div style="display: flex; gap: 12px;">${totalDelivered > 0 ? `<button class="btn-cancel-ship" style="padding: 10px 20px; color: var(--kintone-danger); border-color: var(--kintone-danger);" onclick="showReturnInput()">返品をする</button>` : ''}<button class="btn-submit-ship" style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;" onclick="showShipmentInput()">納品を登録する</button></div>`;
+        } else if (orderState.status === 'FINISHED') {
+            guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span><div>状況: <span style="color: var(--kintone-success);">取引完了</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">全てのプロセスが完了しました。</span></div></div><button class="btn-cancel-ship" style="padding: 10px 20px; color: var(--kintone-danger); border-color: var(--kintone-danger);" onclick="showReturnInput()">返品をする</button>`;
+        }
+        nextActionArea.innerHTML = guideHtml;
+
+        productTbody.innerHTML = orderState.items.map(item => {
+            const remaining = item.orderQty - item.deliveredQty;
+            const progress = (item.deliveredQty / item.orderQty) * 100;
+            return `<tr><td>${item.name} (${item.id})</td><td style="text-align: right;">${item.orderQty}</td><td style="text-align: center;">個</td><td style="text-align: right;">${item.deliveredQty}</td><td style="text-align: right; background-color: ${remaining > 0 ? '#fffaf0' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--kintone-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td style="text-align: right; color: ${item.returnQty > 0 ? 'var(--kintone-danger)' : '#999'}">${item.returnQty}</td><td style="text-align: center;"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '完納' : (progress > 0 ? '分納中' : '未出荷')}</span></td></tr>`;
+        }).join('');
+    }
+
+    function confirmOrder() { orderState.isConfirmed = true; orderState.status = 'PAYMENT_WAIT'; showToast('注文を確定しました。'); updateUI(); }
+    function rejectOrder() { if(confirm('却下しますか？')) location.href = 'order_list_view.html'; }
+    function verifyPayment() { orderState.isPaid = true; orderState.status = 'DELIVERY_READY'; showToast('入金を確認しました。'); updateUI(); }
+    
+    function showShipmentInput() {
         const area = document.getElementById('shipment-input-area');
-        area.style.display = area.style.display === 'block' ? 'none' : 'block';
-        if(area.style.display === 'block') area.scrollIntoView({behavior: 'smooth'});
+        const tbody = document.getElementById('fulfillment-input-body');
+        tbody.innerHTML = orderState.items.filter(i => i.orderQty > i.deliveredQty).map(i => `<tr><td>${i.id}</td><td>${i.name}</td><td><input type="number" id="shp-qty-${i.id}" value="${i.orderQty - i.deliveredQty}" max="${i.orderQty - i.deliveredQty}" min="1" style="width: 80px;"></td><td><input type="text" id="shp-note-${i.id}" style="width: 100%;"></td></tr>`).join('');
+        area.style.display = 'block';
     }
-    function toggleReturnInput() {
-        const area = document.getElementById('return-input-area');
-        area.style.display = area.style.display === 'block' ? 'none' : 'block';
-        if(area.style.display === 'block') area.scrollIntoView({behavior: 'smooth'});
-    }
+    function hideShipmentInput() { document.getElementById('shipment-input-area').style.display = 'none'; }
     function submitShipment() {
-        // Hide area
-        document.getElementById('shipment-input-area').style.display = 'none';
-        
-        // Switch table visibility
-        document.getElementById('no-shipment-history').style.display = 'none';
-        document.getElementById('shipment-history-table').style.display = 'table';
-        
-        // Add new row
-        const body = document.getElementById('shipment-history-body');
-        const now = new Date().toISOString().split('T')[0];
-        const newRow = `<tr>
-            <td><a href="task_detail.html" class="field-value-link">#532</a></td>
-            <td><span class="badge-status status-warn" style="font-size: 10px;">出荷準備中</span></td>
-            <td>${now}</td>
-            <td>Rice Silica 50mL x 500</td>
-            <td>-</td>
-        </tr>`;
-        body.insertAdjacentHTML('afterbegin', newRow);
-
-        document.getElementById('flash-message').style.display = 'block';
-        setTimeout(() => { document.getElementById('flash-message').style.display = 'none'; }, 3000);
+        orderState.items.forEach(i => {
+            const el = document.getElementById(`shp-qty-${i.id}`);
+            if (el) {
+                const q = parseInt(el.value);
+                i.deliveredQty += q;
+                addLog('SHIP', i.name, q, document.getElementById(`shp-note-${i.id}`).value);
+            }
+        });
+        if (orderState.items.every(i => i.deliveredQty >= i.orderQty)) orderState.status = 'FINISHED';
+        hideShipmentInput(); showToast('納品を登録しました。'); updateUI();
     }
+
+    function showReturnInput() {
+        const area = document.getElementById('return-input-area');
+        const tbody = document.getElementById('return-input-body');
+        tbody.innerHTML = orderState.items.filter(i => i.deliveredQty > 0).map(i => `<tr><td>${i.id}</td><td>${i.name}</td><td><input type="number" id="ret-qty-${i.id}" value="1" max="${i.deliveredQty}" min="1" style="width: 80px;"></td><td><input type="text" id="ret-reason-${i.id}" style="width: 100%;"></td></tr>`).join('');
+        area.style.display = 'block';
+    }
+    function hideReturnInput() { document.getElementById('return-input-area').style.display = 'none'; }
     function submitReturn() {
-        document.getElementById('return-input-area').style.display = 'none';
-        document.getElementById('no-return-history').style.display = 'none';
-        document.getElementById('return-history-table').style.display = 'table';
-        
-        const body = document.getElementById('return-history-body');
-        const now = new Date().toISOString().split('T')[0];
-        const newRow = `<tr>
-            <td><a href="task_detail.html" class="field-value-link">#533</a></td>
-            <td><span class="badge-status status-alert" style="font-size: 10px;">返品受付</span></td>
-            <td>${now}</td>
-            <td>Rice Silica 50mL x 5</td>
-            <td>破損につき返品</td>
-        </tr>`;
-        body.insertAdjacentHTML('afterbegin', newRow);
-
-        document.getElementById('flash-message').style.display = 'block';
-        setTimeout(() => { document.getElementById('flash-message').style.display = 'none'; }, 3000);
+        orderState.items.forEach(i => {
+            const el = document.getElementById(`ret-qty-${i.id}`);
+            if (el) {
+                const q = parseInt(el.value);
+                i.deliveredQty -= q; i.returnQty += q;
+                addLog('RET', i.name, q, document.getElementById(`ret-reason-${i.id}`).value);
+            }
+        });
+        if (orderState.status === 'FINISHED') orderState.status = 'DELIVERY_READY';
+        hideReturnInput(); showToast('返品を登録しました。'); updateUI();
     }
-</script>
 
+    function addLog(type, name, qty, note) {
+        orderState.historyCount++;
+        const tableId = type === 'SHIP' ? 'shipment-history-table' : 'return-history-table';
+        const emptyId = type === 'SHIP' ? 'no-shipment-history' : 'no-return-history';
+        const bodyId = type === 'SHIP' ? 'shipment-history-body' : 'return-history-body';
+        document.getElementById(emptyId).style.display = 'none';
+        document.getElementById(tableId).style.display = 'table';
+        const row = `<tr><td>#${type}-${100 + orderState.historyCount}</td><td><span class="badge-status ${type==='SHIP'?'status-ok':'status-alert'}">${type==='SHIP'?'完了':'返品'}</span></td><td>${new Date().toISOString().split('T')[0]}</td><td>${name} x ${qty}</td><td>${note || '-'}</td></tr>`;
+        document.getElementById(bodyId).insertAdjacentHTML('afterbegin', row);
+    }
+
+    function showToast(m) {
+        const f = document.getElementById('flash-message'); f.innerText = `🎉 ${m}`; f.style.display = 'block';
+        setTimeout(() => f.style.display = 'none', 3000);
+    }
+    window.onload = updateUI;
+</script>
 </body>
 </html>
