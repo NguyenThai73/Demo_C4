@@ -3,111 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supplier Login | Silica Link</title>
+    <title>ログイン | Supplier Portal</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome 6.x CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
         
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f5f6f7;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
         }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        .portal-header {
+            background-color: #4b5464;
+            color: white;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .bg-login {
-            background-image: url('images/login_bg.png');
-            background-size: cover;
-            background-position: center;
+        .header-logo {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .header-logo span { font-weight: 400; margin-left: 8px; font-size: 14px; opacity: 0.9; }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
-        .btn-premium {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .company-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.2);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11px;
         }
 
-        .btn-premium:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
-            filter: brightness(1.1);
+        .btn-logout {
+            border: 1px solid rgba(255,255,255,0.4);
+            background: transparent;
+            color: white;
+            padding: 4px 16px;
+            border-radius: 50px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-logout:hover { background: rgba(255,255,255,0.1); }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            padding-top: 100px;
         }
 
-        .input-premium:focus {
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        .login-card {
+            background: white;
+            width: 440px;
+            padding: 45px 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .login-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 20px;
             outline: none;
+            transition: all 0.2s;
+        }
+        .form-input:focus { border-color: #1e6fff; }
+        .form-input.password-bg { background-color: #f0f4ff; border-color: #d0daff; }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #333;
+            margin-bottom: 25px;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            background: #1e6fff;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 15px;
+        }
+        .btn-login:hover { opacity: 0.9; }
+
+        .forgot-link {
+            display: block;
+            text-align: center;
+            font-size: 11px;
+            color: #1e6fff;
+            text-decoration: none;
+            margin-bottom: 35px;
+        }
+
+        .footer-note {
+            font-size: 10px;
+            color: #999;
+            line-height: 1.6;
         }
     </style>
 </head>
-<body class="bg-login min-h-screen flex items-center justify-center p-6">
+<body>
 
-    <div class="glass-panel max-w-md w-full rounded-2xl p-10 space-y-8">
-        <!-- Logo & Header -->
-        <div class="text-center">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-[#3498db] text-white rounded-xl mb-4 shadow-lg">
-                <i class="fas fa-ship text-2xl"></i>
+    <header class="portal-header">
+        <div class="header-logo">CREDIE <span>Supplier Portal</span></div>
+        <div class="header-right">
+            <div class="company-badge">
+                <i class="fas fa-building"></i> 株式会社
             </div>
-            <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">Silica Link</h1>
-            <p class="text-slate-500 font-medium mt-2">Supplier Portal Access</p>
-        </div>
-
-        <form onsubmit="handleLogin(event)" class="space-y-6">
-            <div>
-                <label class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Company Email</label>
-                <div class="relative">
-                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                        <i class="fas fa-envelope"></i>
-                    </span>
-                    <input type="email" value="yamada@logitech.com" required
-                        class="input-premium w-full pl-10 pr-4 py-3 bg-white/50 border border-slate-200 rounded-xl text-slate-800 transition-all font-medium">
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Password</label>
-                <div class="relative">
-                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                        <i class="fas fa-lock"></i>
-                    </span>
-                    <input type="password" value="••••••••" required
-                        class="input-premium w-full pl-10 pr-4 py-3 bg-white/50 border border-slate-200 rounded-xl text-slate-800 transition-all font-medium">
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between text-sm">
-                <label class="flex items-center text-slate-600 font-medium cursor-pointer">
-                    <input type="checkbox" checked class="mr-2 rounded border-gray-300 text-[#3498db] focus:ring-[#3498db]">
-                    Remember me
-                </label>
-                <a href="#" class="text-[#3498db] font-bold hover:underline">Forgot?</a>
-            </div>
-
-            <button type="submit" class="btn-premium w-full py-4 text-white font-extrabold rounded-xl shadow-lg flex items-center justify-center gap-3">
-                <span>LOGIN TO PORTAL</span>
-                <i class="fas fa-arrow-right text-xs"></i>
+            <button class="btn-logout" onclick="location.href='purchase_index.html'">
+                ログアウト <i class="fas fa-sign-out-alt"></i>
             </button>
-        </form>
-
-        <div class="pt-6 border-t border-slate-100 text-center">
-            <p class="text-sm text-slate-500">Need help? <a href="#" class="text-[#3498db] font-bold">Contact Support</a></p>
         </div>
-    </div>
+    </header>
+
+    <main class="login-container">
+        <div class="login-card">
+            <h1 class="login-title">ログイン</h1>
+            <p class="login-subtitle">※登録のメールアドレスとパスワードを入力してください。</p>
+
+            <form onsubmit="handleLogin(event)">
+                <div>
+                    <label class="form-label">メールアドレス</label>
+                    <input type="email" value="test_supplier@yopmail.com" class="form-input" required>
+                </div>
+
+                <div style="position: relative;">
+                    <label class="form-label">パスワード</label>
+                    <input type="password" value="••••••••••" class="form-input password-bg" required>
+                    <i class="far fa-eye-slash" style="position: absolute; right: 12px; top: 38px; color: #999; cursor: pointer; font-size: 13px;"></i>
+                </div>
+
+                <label class="remember-me">
+                    <input type="checkbox" checked style="width: 14px; height: 14px;">
+                    次回から自動ログインする
+                </label>
+
+                <button type="submit" class="btn-login">ログイン</button>
+            </form>
+
+            <a href="#" class="forgot-link">パスワードをお忘れの方はこちら</a>
+
+            <div class="footer-note">
+                ※本ポータルはサプライヤー専用です。<br>
+                ログイン情報が不明な場合は、弊社営業窓口までお問い合わせください。
+            </div>
+        </div>
+    </main>
 
     <script>
         function handleLogin(e) {
             e.preventDefault();
-            // Simulate login latency
             const btn = e.target.querySelector('button');
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             btn.disabled = true;
 
             setTimeout(() => {
