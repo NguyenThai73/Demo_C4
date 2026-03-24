@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>受注詳細 (配送待ち) | CREDIE Supplier Portal</title>
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Professional Portal Style */
+        :root {
+            --portal-header-bg: #2c3e50;
+            --credie-bg: #f4f7f9;
+        }
+
+        body {
+            background-color: var(--credie-bg);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Independent Portal Header (Keep as portal) */
+        .portal-header {
+            background-color: var(--portal-header-bg);
+            color: white;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .portal-logo {
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 13px;
+        }
+
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Sub Nav / Breadcrumb (Independent style) */
+        .sub-nav {
+            background: white;
+            padding: 12px 25px;
+            font-size: 12px;
+            border-bottom: 1px solid #ddd;
+            color: var(--kintone-blue);
+        }
+
+        .sub-nav span {
+            color: #999;
+            padding: 0 8px;
+        }
+
+        /* Main Container inside Portal */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Next Action Card style */
+        .next-action-card {
+            background: white;
+            border-left: 5px solid var(--kintone-blue);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .next-action-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Action Buttons Area */
+        .action-btns {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-confirm {
+            background: var(--kintone-blue);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .btn-delivery-trigger {
+            background: var(--kintone-success);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2);
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .btn-issue {
+            background: #e67e22;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(230, 126, 34, 0.2);
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .btn-invoice-view {
+            background: white;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .btn-invoice-view:hover {
+            background: #f8f9fa;
+        }
+
+        .btn-confirm:hover,
+        .btn-delivery-trigger:hover,
+        .btn-issue:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* Form Control Buttons Upgrade */
+        .btn-form-save {
+            background: var(--kintone-success);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 8px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .btn-form-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.3);
+            opacity: 0.95;
+        }
+
+        .btn-form-cancel {
+            background: white;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .btn-form-cancel:hover {
+            background: #f8f9fa;
+            border-color: #ccc;
+            color: #333;
+        }
+
+        /* PREMIUM CONFIRMATION MODAL */
+        #custom-confirm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 62, 80, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirm-modal-box {
+            background: white;
+            width: 420px;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            animation: modalPop 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        @keyframes modalPop {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .confirm-modal-icon {
+            font-size: 48px;
+            color: var(--kintone-blue);
+            margin-bottom: 20px;
+        }
+
+        .confirm-modal-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .confirm-modal-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .confirm-modal-btns {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-modal-confirm {
+            background: var(--kintone-blue);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-modal-cancel {
+            background: #f1f3f5;
+            color: #666;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-modal-confirm:hover {
+            opacity: 0.9;
+        }
+
+        .btn-modal-cancel:hover {
+            background: #e9ecef;
+        }
+
+        /* Hide Areas by default as requested */
+        #registration-area {
+            display: none;
+            border-radius: 12px;
+        }
+
+        #success-notification {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            border: 1px solid #c3e6cb;
+        }
+
+        /* Premium Label Style */
+        .field-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #555;
+            margin-bottom: 8px;
+            letter-spacing: 0.2px;
+        }
+
+        /* Premium Input Restyling */
+        .field-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            background-color: #fcfdfe;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            outline: none;
+            color: #333;
+        }
+
+        .field-input:focus {
+            border-color: var(--kintone-blue);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
+        }
+
+        /* Action Column Chips Upgrade with Icons */
+        .action-chip-container {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .action-chip {
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none !important;
+        }
+
+        .action-chip i {
+            margin-right: 6px;
+            font-size: 12px;
+        }
+
+        .chip-edit {
+            background: #f1f3f5;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+
+        .chip-edit:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        .chip-deliver {
+            background: var(--kintone-success);
+            color: white;
+            border: 1px solid var(--kintone-success);
+            box-shadow: 0 2px 4px rgba(46, 204, 113, 0.15);
+            font-size: 11px;
+        }
+
+        .chip-deliver:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(46, 204, 113, 0.25);
+        }
+
+        /* Custom History Grid - 4 Columns */
+        .history-grid-agency {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+        }
+
+        .history-item-agency {
+            text-align: center;
+        }
+
+        .history-label-agency {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .history-val-agency {
+            font-size: 26px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #ddd;
+            background: white;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="custom-confirm-modal">
+        <div class="confirm-modal-box">
+            <div class="confirm-modal-icon"><i id="modal-icon-fa" class="fas fa-question-circle"></i></div>
+            <div id="modal-title" class="confirm-modal-title">実行しますか？</div>
+            <div id="modal-desc" class="confirm-modal-desc">この操作は一度実行すると取り消せません。</div>
+            <div class="confirm-modal-btns">
+                <button class="btn-modal-cancel" onclick="closeConfirmModal()">キャンセル</button>
+                <button id="modal-confirm-action" class="btn-modal-confirm">実行する</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="portal-header">
+        <div class="portal-logo">CREDIE Supplier Portal</div>
+        <div class="user-nav">
+            <button class="nav-btn">サプライヤー</button>
+            <div style="display: flex; align-items: center; gap: 10px; font-weight: 500;">
+                <i class="fas fa-building" style="color:#bdc3c7;"></i> 株式会社ロジテック
+            </div>
+        </div>
+    </header>
+
+    <div class="sub-nav">
+        ホーム <span>></span> 受注管理 <span>></span> 受注詳細
+    </div>
+
+    <div class="container">
+        <div id="success-notification"><i class="fas fa-circle-check"></i> アクションを実行しました。ステータスを更新しました。</div>
+
+        <div class="page-header-premium"
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 30px;">
+            <h1 style="font-size: 28px; font-weight: 800; margin: 0;">受注詳細</h1>
+            <button id="btn-invoice-header" class="btn-invoice-view"><i
+                    class="fas fa-file-invoice" style="margin-right: 6px;"></i> 請求書を表示</button>
+        </div>
+
+        <!-- Summary Header Card -->
+        <div class="summary-header"
+            style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 25px; margin-bottom: 30px; border-radius: 12px; background: white; border: 1px solid #eee; display: flex;">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="badge-type badge-agency"
+                        style="font-size: 12px; background-color: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; font-weight: 800; padding: 4px 12px; border-radius: 4px;">
+                        国内取引</div>
+                    <div style="font-size: 24px; font-weight: bold;">PO-0008</div>
+                </div>
+            </div>
+
+            <div class="summary-grid" style="width: 100%; border-top: 1px solid #eee; padding-top: 20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
+                <div class="summary-item">
+                    <div class="summary-label" style="font-size: 11px; color: #999; margin-bottom: 5px;">発注金額合計</div>
+                    <div class="summary-primary-value" style="font-size: 20px; font-weight: 800;">¥300,000</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label" style="font-size: 11px; color: #999; margin-bottom: 5px;">現在のステータス</div>
+                    <div id="main-status" class="summary-primary-value" style="color: var(--kintone-blue); font-size: 20px; font-weight: 800;"><i
+                            class="fas fa-box"></i> 配送準備中</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label" style="font-size: 11px; color: #999; margin-bottom: 5px;">支払い</div>
+                    <div id="stat-payment" class="summary-primary-value" style="color: var(--kintone-success); font-size: 20px; font-weight: 800;">入金済み</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label" style="font-size: 11px; color: #999; margin-bottom: 5px;">注文日</div>
+                    <div class="summary-value" style="font-size: 16px;">2026/03/20</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label" style="font-size: 11px; color: #999; margin-bottom: 5px;">希望納期</div>
+                    <div class="summary-value" style="font-size: 16px;">2026/04/10</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Action Guide with Interactivity Trigger -->
+        <div id="action-guide-card" class="next-action-card">
+            <div class="next-action-content">
+                <span id="guide-icon" style="font-size: 30px; color: var(--kintone-blue);"><i
+                        class="fas fa-truck-ramp-box"></i></span>
+                <div>
+                    次の対応: <span id="guide-step" style="color: var(--kintone-blue);">納品 को đăng ký</span><br>
+                    <span id="guide-desc"
+                        style="font-weight: normal; font-size: 12px; color: #666;">入金が確認されました。商品の配送準備が整い次第、納品登録を行ってください。</span>
+                </div>
+            </div>
+            <div class="action-btns">
+                <!-- Dynamic Buttons Flow -->
+                <button id="btn-confirm-order" class="btn-confirm" style="display: none;" onclick="triggerConfirmModal('ORDER_CONFIRM')"><i
+                        class="fas fa-file-signature" style="margin-right: 6px;"></i> 注文を確定する</button>
+                <button id="btn-issue-invoice" class="btn-issue" style="display: none;"
+                    onclick="triggerConfirmModal('ISSUE_INVOICE')"><i class="fas fa-receipt"
+                        style="margin-right: 6px;"></i> 請求書を発行する</button>
+                <button id="btn-confirm-payment" class="btn-delivery-trigger" style="display: none;"
+                    onclick="triggerConfirmModal('PAYMENT_CONFIRM')"><i class="fas fa-hand-holding-dollar"
+                        style="margin-right: 6px;"></i> 入金を確認済み</button>
+                <button id="btn-delivery-trigger" class="btn-delivery-trigger" 
+                    onclick="showRegistration()"><i class="fas fa-box-open" style="margin-right: 6px;"></i>
+                    納品を登録する</button>
+            </div>
+        </div>
+
+        <!-- Section: Order Overview -->
+        <div class="section-card section-info" style="background: white; border-radius: 12px; padding: 25px; margin-bottom: 30px; border: 1px solid #eee;">
+            <div class="section-title" style="font-size: 18px; font-weight: 800; margin-bottom: 20px;"><span><i class="fas fa-clipboard-list" style="margin-right: 12px;"></i></span>
+                発注基本設定</div>
+            <div class="field-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                <div class="field-item">
+                    <div class="field-label">会社名</div>
+                    <div class="field-value" style="font-weight: bold; color: var(--kintone-blue);">株式会社クレディー</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">部門</div>
+                    <div class="field-value">購買本部 購買戦略課</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">発注者</div>
+                    <div class="field-value">田中 太郎 様</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Item Table -->
+        <div class="section-card section-op" style="background: white; border-radius: 12px; padding: 25px; margin-bottom: 30px; border: 1px solid #eee;">
+            <div class="section-title" style="font-size: 18px; font-weight: 800; margin-bottom: 20px;"><span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span>
+                注文内容</div>
+            <table class="k-table premium-table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #eee;">
+                        <th style="width: 35%; text-align: left; padding: 12px;">資材・材料名 / SKU</th>
+                        <th style="width: 15%; text-align: right; padding: 12px;">発注数量</th>
+                        <th style="width: 15%; text-align: right; padding: 12px;">単価</th>
+                        <th style="width: 15%; text-align: right; padding: 12px;">金額</th>
+                        <th style="width: 20%; text-align: center; padding: 12px;">ステータス</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 15px;">
+                            <div style="font-weight: bold; color: #1a1a1a; margin-bottom: 4px;">プレミアムセラミック原料</div>
+                            <div style="font-size: 11px; color: #999;">SKU: SIL-CR01</div>
+                        </td>
+                        <td style="text-align: right; padding: 15px;">300 kg</td>
+                        <td style="text-align: right; padding: 15px;">¥1,000</td>
+                        <td style="text-align: right; font-weight: bold; padding: 15px;">¥300,000</td>
+                        <td style="text-align: center; padding: 15px;"><span id="item-status-0" class="badge-type"
+                                style="background:#f8f9fa; color:#7f8c8d; font-size:11px; padding: 4px 10px; border-radius: 4px;"><i
+                                    class="fas fa-box" style="font-size: 10px; margin-right: 4px;"></i>
+                                配送準備中</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section: Delivery tracking with Summary Dashboard -->
+        <div class="section-card section-info" style="background: white; border-radius: 12px; padding: 25px; margin-bottom: 30px; border: 1px solid #eee;">
+            <div class="section-title" style="font-size: 18px; font-weight: 800; margin-bottom: 20px;"><span><i class="fas fa-chart-pie" style="margin-right: 12px;"></i></span>
+                納品進捗サマリー</div>
+            <div class="history-grid-agency">
+                <div class="history-item-agency">
+                    <div class="history-label-agency">発注数量</div>
+                    <div id="stat-ordered" class="history-val-agency">300</div>
+                </div>
+                <div class="history-item-agency">
+                    <div class="history-label-agency">納品済合計</div>
+                    <div id="stat-delivered" class="history-val-agency" style="color: var(--kintone-success);">0</div>
+                </div>
+                <div class="history-item-agency">
+                    <div class="history-label-agency">返品数量</div>
+                    <div id="stat-returned" class="history-val-agency" style="color: var(--kintone-danger);">0</div>
+                </div>
+                <div class="history-item-agency">
+                    <div class="history-label-agency">未納品数量</div>
+                    <div id="stat-pending" class="history-val-agency" style="color: #666;">300</div>
+                </div>
+            </div>
+
+            <table id="history-table" class="k-table premium-table" style="font-size: 13px; width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #eee;">
+                        <th style="width: 10%; text-align: center; padding: 12px;">回目</th>
+                        <th style="width: 16%; text-align: right; padding: 12px;">配送数量</th>
+                        <th style="width: 16%; text-align: center; padding: 12px;">配送予定日</th>
+                        <th style="text-align: left; padding: 12px;">備考</th>
+                        <th style="width: 12%; text-align: center; padding: 12px;">ステータス</th>
+                        <th style="width: 28%; text-align: center; padding: 12px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="history-body">
+                    <tr id="empty-row">
+                        <td colspan="6" style="text-align: center; color: #999; padding: 30px;">
+                            納品データがありません。納品登録を実行してください。
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Interaction: Registration Form (Hidden by default) -->
+        <div id="registration-area" class="section-card section-op"
+            style="background:#fcfdfe; border: 1px dashed var(--kintone-blue); border-radius: 12px; padding: 25px; margin-bottom: 30px;">
+            <div class="section-title" style="font-size: 18px; font-weight: 800; margin-bottom: 20px;"><span><i class="fas fa-truck-fast" style="margin-right: 12px;"></i></span>
+                納品を登録する</div>
+
+            <!-- Per-product quantity table -->
+            <table class="k-table premium-table" style="margin-bottom: 20px; width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #eee;">
+                        <th style="width:40%; text-align: left; padding: 12px;">資材・材料名 / SKU</th>
+                        <th style="width:15%; text-align:right; padding: 12px;">発注数量</th>
+                        <th style="width:15%; text-align:right; padding: 12px;">残数量</th>
+                        <th style="width:30%; text-align:right; padding: 12px;">今回配送数量<span style="color:var(--kintone-danger)">*</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 15px;">
+                            <div style="font-weight:bold; color:#1a1a1a; margin-bottom:3px;">プレミアムセラミック原料</div>
+                            <div style="font-size:11px; color:#999;">SKU: SIL-CR01</div>
+                        </td>
+                        <td style="text-align:right; padding: 15px;">300 kg</td>
+                        <td id="remaining-0" style="text-align:right; padding: 15px;">300 kg</td>
+                        <td style="padding: 15px;"><input type="number" id="input-qty-0" class="field-input" value="300" min="0" max="300" style="text-align:right; width:100%;"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="field-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                <div class="field-item">
+                    <div class="field-label">配送予定日<span style="color:var(--kintone-danger)">*</span></div>
+                    <input type="date" id="input-date" class="field-input" value="2026-03-25">
+                </div>
+                <div class="field-item">
+                    <div class="field-label">備考</div>
+                    <input type="text" id="input-note" class="field-input" placeholder="配送に関する特記事項">
+                </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px;">
+                <button class="btn-form-cancel" onclick="hideRegistration()">キャンセル</button>
+                <button class="btn-form-save" onclick="triggerConfirmModal('REGISTRATION_SAVE')"><i class="fas fa-save"
+                        style="margin-right: 8px;"></i> 登録する</button>
+            </div>
+        </div>
+
+        <div class="footer-action" style="margin-top: 40px;">
+            <button class="btn-back"
+                style="background:white; border:1px solid #ddd; color:#666; padding:10px 20px; border-radius:6px; font-weight:bold; cursor:pointer;"
+                onclick="location.href='supplier_purchase_order_list.html'"><i class="fas fa-arrow-left"
+                    style="margin-right: 8px;"></i> 発注一覧に戻る</button>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 Silica Link Operational Portal. All rights reserved.
+    </footer>
+
+    <script>
+        const PRODUCTS = [
+            { name: 'プレミアムセラミック原料',    sku: 'SIL-CR01', orderedQty: 300, plannedQty: 0, deliveredQty: 0 },
+        ];
+        const ORDERED_QTY = PRODUCTS.reduce((s, p) => s + p.orderedQty, 0); 
+        let totalPlannedQty = 0;
+        let totalDeliveredQty = 0;
+        let iterationCount = 0;
+
+        /* MODAL LOGIC */
+        function triggerConfirmModal(type, extraParams = null) {
+            const modal = document.getElementById('custom-confirm-modal');
+            const icon = document.getElementById('modal-icon-fa');
+            const title = document.getElementById('modal-title');
+            const desc = document.getElementById('modal-desc');
+            const confirmBtn = document.getElementById('modal-confirm-action');
+
+            modal.style.display = 'flex';
+
+            if (type === 'REGISTRATION_SAVE') {
+                const qtys = PRODUCTS.map((p, i) => parseInt(document.getElementById(`input-qty-${i}`).value) || 0);
+                if (qtys.every(q => q === 0)) {
+                    alert('少なくとも1つの商品に1以上の数量を入力してください。');
+                    closeConfirmModal();
+                    return;
+                }
+                let validationError = null;
+                PRODUCTS.forEach((p, i) => {
+                    const rem = p.orderedQty - p.plannedQty;
+                    if (qtys[i] > rem) validationError = `「${p.name}」の数量が残数量 (${rem} kg) を超えています。`;
+                });
+                if (validationError) { alert(validationError); closeConfirmModal(); return; }
+
+                const summary = PRODUCTS.map((p, i) => qtys[i] > 0 ? `${p.name}: ${qtys[i]} kg` : null).filter(Boolean).join('、');
+                icon.className = 'fas fa-truck-ramp-box';
+                icon.style.color = 'var(--kintone-success)';
+                title.innerText = '納品情報を登録しますか？';
+                desc.innerText = summary + ' の納品予定を登録します。';
+                confirmBtn.onclick = function () { closeConfirmModal(); registerFulfillment(); };
+            } else if (type === 'DELIVERY_REPORT') {
+                icon.className = 'fas fa-circle-check';
+                icon.style.color = 'var(--kintone-success)';
+                title.innerText = '納品完了を報告しますか？';
+                desc.innerText = '報告を行うと、対象の配送履歴が「納品済み」として確定されます。';
+                confirmBtn.onclick = function () { closeConfirmModal(); markAsDelivered(extraParams); };
+            }
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('custom-confirm-modal').style.display = 'none';
+        }
+
+        /* WORKFLOW ACTIONS */
+
+        function showRegistration() {
+            document.getElementById('registration-area').style.display = 'block';
+            document.getElementById('registration-area').scrollIntoView({ behavior: 'smooth' });
+
+            PRODUCTS.forEach((p, i) => {
+                const rem = p.orderedQty - p.plannedQty;
+                document.getElementById(`input-qty-${i}`).value = rem;
+                document.getElementById(`input-qty-${i}`).max = rem;
+                document.getElementById(`remaining-${i}`).innerText = rem + ' kg';
+            });
+        }
+
+        function hideRegistration() {
+            document.getElementById('registration-area').style.display = 'none';
+        }
+
+        function registerFulfillment() {
+            const qtys = PRODUCTS.map((p, i) => parseInt(document.getElementById(`input-qty-${i}`).value) || 0);
+            const date = document.getElementById('input-date').value;
+            const note = document.getElementById('input-note').value || '---';
+            const totalQty = qtys.reduce((a, b) => a + b, 0);
+
+            // Update per-product plannedQty
+            PRODUCTS.forEach((p, i) => { p.plannedQty += qtys[i]; });
+            totalPlannedQty += totalQty;
+            iterationCount++;
+
+            const tbody = document.getElementById('history-body');
+            const emptyRow = document.getElementById('empty-row');
+            if (emptyRow) emptyRow.style.display = 'none';
+
+            const productDetails = PRODUCTS
+                .map((p, i) => qtys[i] > 0
+                    ? `<div style="margin-bottom:2px;"><span style="font-weight:600">${p.name}</span>: ${qtys[i]} kg</div>`
+                    : '')
+                .join('');
+
+            const newRow = tbody.insertRow(-1);
+            newRow.id = `fulfillment-row-${iterationCount}`;
+            newRow.style.borderBottom = '1px solid #eee';
+            newRow.innerHTML = `
+                <td style="text-align: center; font-weight: bold; padding: 15px;">${iterationCount}回目</td>
+                <td style="font-size:12px; line-height:1.6; padding: 15px;">${productDetails}</td>
+                <td style="text-align: center; padding: 15px;">${date}</td>
+                <td style="padding: 15px;">${note}</td>
+                <td style="text-align: center; padding: 15px;"><span id="status-badge-${iterationCount}" class="badge-type" style="background:#e1f5fe; color:#0288d1; font-size:11px; padding: 4px 10px; border-radius: 4px;"><i class="fas fa-truck-fast" style="font-size: 10px; margin-right: 4px;"></i> 配送中</span></td>
+                <td style="text-align: center; padding: 15px;">
+                    <div id="action-area-${iterationCount}" class="action-chip-container">
+                        <span class="action-chip chip-edit" onclick="alert('この機能はデモ版では制限されています。')"><i class="fas fa-pen-to-square"></i> 編集</span>
+                        <span class="action-chip chip-deliver" onclick="triggerConfirmModal('DELIVERY_REPORT', {rowId: ${iterationCount}, qty: ${totalQty}, productQtys: ${JSON.stringify(qtys)}})"><i class="fas fa-circle-check"></i> 配送完了を報告</span>
+                    </div>
+                </td>
+            `;
+
+            const totalRemaining = PRODUCTS.reduce((s, p) => s + (p.orderedQty - p.plannedQty), 0);
+            document.getElementById('stat-pending').innerHTML = totalRemaining;
+
+            const allPlanned = PRODUCTS.every(p => p.plannedQty >= p.orderedQty);
+            if (allPlanned) {
+                document.getElementById('btn-delivery-trigger').style.display = 'none';
+                document.getElementById('guide-desc').innerHTML = '全ての資材の納品登録が完了しました。配送状況に応じて「納品済み」の報告を行ってください。';
+            }
+
+            document.getElementById('main-status').innerHTML = '<i class="fas fa-truck-fast" style="margin-right: 6px;"></i> 配送中';
+            document.getElementById('main-status').style.color = 'var(--kintone-blue)';
+            // Only update items that are not yet 納品済み
+            PRODUCTS.forEach((p, i) => {
+                if (p.deliveredQty < p.orderedQty) {
+                    const el = document.getElementById(`item-status-${i}`);
+                    if (el) { 
+                        el.innerHTML = '<i class="fas fa-truck-fast" style="margin-right: 4px; font-size: 10px;"></i> 配送中'; 
+                        el.style.backgroundColor = '#e1f5fe'; 
+                        el.style.color = '#0288d1'; 
+                    }
+                }
+            });
+
+            hideRegistration();
+            document.getElementById('success-notification').style.display = 'block';
+            document.getElementById('success-notification').innerHTML = `<i class="fas fa-circle-check"></i> 第${iterationCount}回目の納品情報を登録しました。ステータスが「配送中」に更新されました。`;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function markAsDelivered(params) {
+            const rowIdx = params.rowId;
+            const qty = params.qty;
+
+            const productQtys = params.productQtys || [];
+            totalDeliveredQty += qty;
+
+            // Update per-product deliveredQty and item status badges
+            PRODUCTS.forEach((p, i) => {
+                const pQty = productQtys[i] || 0;
+                if (pQty > 0) {
+                    p.deliveredQty += pQty;
+                    const badge = document.getElementById(`item-status-${i}`);
+                    if (badge) {
+                        if (p.deliveredQty >= p.orderedQty) {
+                            badge.innerHTML = '<i class="fas fa-circle-check" style="margin-right: 4px; font-size: 10px;"></i> 納品済み';
+                            badge.style.backgroundColor = '#e8f5e9';
+                            badge.style.color = '#2e7d32';
+                        } else {
+                            badge.innerHTML = '<i class="fas fa-truck-fast" style="margin-right: 4px; font-size: 10px;"></i> 配送中';
+                            badge.style.backgroundColor = '#e1f5fe';
+                            badge.style.color = '#0288d1';
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('stat-delivered').innerHTML = totalDeliveredQty;
+
+            const statusBadge = document.getElementById(`status-badge-${rowIdx}`);
+            statusBadge.innerHTML = '<i class="fas fa-circle-check" style="font-size: 10px; margin-right: 4px;"></i> 納品済み';
+            statusBadge.style.backgroundColor = '#e8f5e9';
+            statusBadge.style.color = '#2e7d32';
+
+            const actionArea = document.getElementById(`action-area-${rowIdx}`);
+            actionArea.innerHTML = '<span style="color:#999; font-size:11px;"><i class="fas fa-check-double" style="margin-right: 4px;"></i> 処理済み</span>';
+
+            const allDelivered = PRODUCTS.every(p => p.deliveredQty >= p.orderedQty);
+            if (allDelivered) {
+                document.getElementById('main-status').innerHTML = '<i class="fas fa-circle-check" style="margin-right: 6px;"></i> 納品済み';
+                document.getElementById('main-status').style.color = 'var(--kintone-success)';
+                document.getElementById('action-guide-card').style.borderLeftColor = 'var(--kintone-success)';
+                document.getElementById('guide-icon').innerHTML = '<i class="fas fa-face-smile" style="color:var(--kintone-success);"></i>';
+                document.getElementById('guide-step').innerHTML = '納品済み';
+                document.getElementById('guide-step').style.color = 'var(--kintone-success)';
+                document.getElementById('guide-desc').innerHTML = '全ての資材が正常に納品されました。ありがとうございました。';
+            } else {
+                document.getElementById('guide-step').innerHTML = '分納継続中';
+                document.getElementById('guide-desc').innerHTML = `現在 ${totalDeliveredQty} / ${ORDERED_QTY} kg の納品が完了しています。残りの分納を進めてください。`;
+            }
+
+            document.getElementById('success-notification').style.display = 'block';
+            document.getElementById('success-notification').innerHTML = `<i class="fas fa-circle-check"></i> 第${rowIdx}回目の配送完了を報告しました。ステータスが更新されました。`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+
+</html>

@@ -107,6 +107,33 @@
         .val-primary { font-size: 16px; font-weight: 800; color: #2c3e50; }
         .val-secondary { font-size: 12px; color: #95a5a6; }
 
+        .date-input {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s;
+            background: #fcfdfe;
+        }
+        .date-input:focus {
+            border-color: var(--kintone-blue);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .portal-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 20px;
+            border: 1px solid #eee;
+        }
+
     </style>
 </head>
 <body>
@@ -132,15 +159,37 @@
 
     <!-- Controls -->
     <div class="portal-controls">
-        <div class="search-box">
-            <i class="fas fa-search" style="color: #bdc3c7;"></i>
-            <input type="text" placeholder="発注ID、商品名で検索...">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="search-box">
+                <i class="fas fa-search" style="color: #bdc3c7;"></i>
+                <input type="text" placeholder="発注ID、商品名で検索...">
+            </div>
+            <div class="filter-btns" id="status-filters">
+                <button class="btn-portal-filter active">すべて</button>
+                <button class="btn-portal-filter">注文確認待ち</button>
+                <button class="btn-portal-filter">配送準備中</button>
+                <button class="btn-portal-filter">配送中</button>
+                <button class="btn-portal-filter">納品済み</button>
+            </div>
         </div>
-        <div class="filter-btns">
-            <button class="btn-portal-filter active">すべて</button>
-            <button class="btn-portal-filter">承認待ち</button>
-            <button class="btn-portal-filter">入荷待ち</button>
-            <button class="btn-portal-filter">完納</button>
+        
+        <!-- Date Search Row -->
+        <div style="display: flex; align-items: center; gap: 20px; border-top: 1px solid #f2f2f2; padding-top: 20px;">
+            <div style="font-weight: bold; color: #7f8c8d; font-size: 13px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-calendar-day" style="color: var(--kintone-blue);"></i> 発注日:
+            </div>
+            <div class="filter-btns" id="date-quick-filters">
+                <button class="btn-portal-filter">今週</button>
+                <button class="btn-portal-filter">今月</button>
+                <button class="btn-portal-filter active">すべて</button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px; margin-left: auto; background: #f8f9fa; padding: 5px 15px; border-radius: 50px; border: 1px solid #eee;">
+                <span style="font-size: 12px; font-weight: bold; color: #95a5a6;">期間指定:</span>
+                <input type="date" class="date-input">
+                <span style="color: #bdc3c7;">～</span>
+                <input type="date" class="date-input">
+                <button class="btn-portal-filter active" style="padding: 6px 20px; margin-left: 5px;">適用</button>
+            </div>
         </div>
     </div>
 
@@ -173,7 +222,7 @@
                         <div class="val-secondary">150個注文</div>
                     </td>
                     <td style="text-align: center;">
-                        <span class="status-chip chip-confirm"><i class="fas fa-truck-loading"></i> 入荷待ち</span>
+                        <span class="status-chip chip-wait"><i class="fas fa-hourglass-half"></i> 注文確認待ち</span>
                     </td>
                     <td style="text-align: right;">
                         <div style="font-weight: 800; font-size: 15px; color: #7f8c8d;">0 <span style="font-size: 11px; font-weight: normal; color: #bdc3c7;">/ 150</span></div>
@@ -182,7 +231,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <a href="#" class="po-id-link">PO-0008</a>
+                        <a href="purchase_order_detail_v2.html" class="po-id-link">PO-0008</a>
                         <span style="font-size: 11px; color: #95a5a6;">国内取引</span>
                     </td>
                     <td>
@@ -192,14 +241,14 @@
                     <td style="font-weight: 700;">株式会社ロジテック</td>
                     <td style="text-align: right;">
                         <div class="val-primary">¥300,000</div>
-                        <div class="val-secondary">300個注文</div>
+                        <div class="val-secondary">300 kg 注文</div>
                     </td>
                     <td style="text-align: center;">
-                        <span class="status-chip chip-done"><i class="fas fa-check-circle"></i> 完納済</span>
+                        <span class="status-chip chip-confirm"><i class="fas fa-box"></i> 配送準備中</span>
                     </td>
                     <td style="text-align: right;">
-                        <div style="font-weight: 800; font-size: 15px; color: var(--kintone-success);">300 <span style="font-size: 11px; font-weight: normal; color: #bdc3c7;">/ 300</span></div>
-                        <div style="font-size: 11px; color: #bdc3c7;">完了</div>
+                        <div style="font-weight: 800; font-size: 15px; color: #7f8c8d;">0 <span style="font-size: 11px; font-weight: normal; color: #bdc3c7;">/ 300</span></div>
+                        <div style="font-size: 11px; color: var(--kintone-danger);">未納品: 300</div>
                     </td>
                 </tr>
             </tbody>
@@ -207,6 +256,17 @@
     </div>
 
 </div>
+
+<script>
+    // Simple filter button interaction
+    document.querySelectorAll('.filter-btns button').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const parent = this.parentElement;
+            parent.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+</script>
 
 </body>
 </html>
