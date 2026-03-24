@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Login | Silica Link</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .bg-login {
+            background-image: url('images/login_bg.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .btn-premium {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .input-premium:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-login min-h-screen flex items-center justify-center p-6">
+
+    <div class="glass-panel max-w-md w-full rounded-2xl p-10 space-y-8">
+        <!-- Logo & Header -->
+        <div class="text-center">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-[#3498db] text-white rounded-xl mb-4 shadow-lg">
+                <i class="fas fa-ship text-2xl"></i>
+            </div>
+            <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">Silica Link</h1>
+            <p class="text-slate-500 font-medium mt-2">Supplier Portal Access</p>
+        </div>
+
+        <form onsubmit="handleLogin(event)" class="space-y-6">
+            <div>
+                <label class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Company Email</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                    <input type="email" value="yamada@logitech.com" required
+                        class="input-premium w-full pl-10 pr-4 py-3 bg-white/50 border border-slate-200 rounded-xl text-slate-800 transition-all font-medium">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-2">Password</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                    <input type="password" value="••••••••" required
+                        class="input-premium w-full pl-10 pr-4 py-3 bg-white/50 border border-slate-200 rounded-xl text-slate-800 transition-all font-medium">
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between text-sm">
+                <label class="flex items-center text-slate-600 font-medium cursor-pointer">
+                    <input type="checkbox" checked class="mr-2 rounded border-gray-300 text-[#3498db] focus:ring-[#3498db]">
+                    Remember me
+                </label>
+                <a href="#" class="text-[#3498db] font-bold hover:underline">Forgot?</a>
+            </div>
+
+            <button type="submit" class="btn-premium w-full py-4 text-white font-extrabold rounded-xl shadow-lg flex items-center justify-center gap-3">
+                <span>LOGIN TO PORTAL</span>
+                <i class="fas fa-arrow-right text-xs"></i>
+            </button>
+        </form>
+
+        <div class="pt-6 border-t border-slate-100 text-center">
+            <p class="text-sm text-slate-500">Need help? <a href="#" class="text-[#3498db] font-bold">Contact Support</a></p>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            // Simulate login latency
+            const btn = e.target.querySelector('button');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                window.location.href = 'supplier_purchase_order_list.html';
+            }, 800);
+        }
+    </script>
+</body>
+</html>
