@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Stylesto match purchase_order_detail.html exactly */
+        /* Styles to match purchase_order_detail.html exactly */
         :root {
             --portal-header-bg: #2c3e50;
             --credie-bg: #f4f7f9;
@@ -90,6 +90,51 @@
             margin-bottom: 30px;
         }
 
+        /* Summary Header Card (New matching style) */
+        .summary-header {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid #eee;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            width: 100%;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+            margin-top: 15px;
+        }
+
+        .summary-item {
+            text-align: left;
+        }
+
+        .summary-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .summary-primary-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #333;
+        }
+
+        .summary-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #555;
+        }
+
         /* Section Cards */
         .section-card {
             background: white;
@@ -114,7 +159,7 @@
             margin-right: 12px;
         }
 
-        /* Field Grid from purchase_order_detail */
+        /* Field Grid */
         .field-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -130,13 +175,6 @@
             letter-spacing: 0.2px;
         }
 
-        .field-value {
-            font-size: 15px;
-            color: #333;
-            min-height: 24px;
-        }
-
-        /* Value Box Styling to mimic the task detail looks while using PO detail styles */
         .field-box {
             background-color: #f8f9fa;
             border: 1px solid #e9ecef;
@@ -217,10 +255,6 @@
             vertical-align: middle;
         }
 
-        .premium-table tr:last-child td {
-            border-bottom: none;
-        }
-
         .badge-type {
             padding: 4px 12px;
             border-radius: 6px;
@@ -269,6 +303,39 @@
             </div>
         </div>
 
+        <!-- Summary Header Card (NEW - Exactly like order detail) -->
+        <div class="summary-header">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="font-size: 24px; font-weight: bold; color: #333;">TASK-527</div>
+                    <span class="badge-type" style="background:#d4edda; color:#155724; font-size: 12px;">完了</span>
+                </div>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-label">タスク数量合計</div>
+                    <div class="summary-primary-value">3</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">ステータス</div>
+                    <div class="summary-primary-value" style="color: var(--kintone-success);">完了</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">実行期限</div>
+                    <div class="summary-value">2026-03-31</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">倉庫</div>
+                    <div class="summary-value">岐阜倉庫</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">担当者</div>
+                    <div class="summary-value">Test staff</div>
+                </div>
+            </div>
+        </div>
+
         <div class="action-btns">
             <button class="btn-confirm"><i class="fas fa-truck-loading" style="margin-right: 8px;"></i> 出荷（販売）作業実行</button>
         </div>
@@ -287,38 +354,12 @@
                     <div class="field-box"><a href="#">320</a></div>
                 </div>
                 <div class="field-item">
-                    <label class="field-label">数量</label>
-                    <div class="field-box">3</div>
-                </div>
-                <div class="field-item">
-                    <label class="field-label">ステータス<span class="required-star">*</span></label>
-                    <div class="field-box">
-                        <span class="badge-type" style="background:#d4edda; color:#155724;">完了</span>
-                    </div>
-                </div>
-                <div class="field-item">
                     <label class="field-label">タスク種別<span class="required-star">*</span></label>
                     <div class="field-box">出荷（販売）</div>
                 </div>
                 <div class="field-item">
                     <label class="field-label">SKU種別<span class="required-star">*</span></label>
                     <div class="field-box">商品</div>
-                </div>
-                <div class="field-item">
-                    <label class="field-label">実行期限</label>
-                    <div class="field-box">2026-03-31</div>
-                </div>
-                <div class="field-item">
-                    <label class="field-label">倉庫<span class="required-star">*</span></label>
-                    <div class="field-box"><a href="#">岐阜倉庫</a></div>
-                </div>
-                <div class="field-item">
-                    <label class="field-label">担当者<span class="required-star">*</span></label>
-                    <div class="field-box"><i class="fas fa-user-circle" style="margin-right: 6px;"></i> Test staff</div>
-                </div>
-                <div class="field-item">
-                    <label class="field-label">備考</label>
-                    <div class="field-box">---</div>
                 </div>
             </div>
         </div>
@@ -352,7 +393,7 @@
             </div>
         </div>
 
-        <!-- Shipping Info collapsible style -->
+        <!-- Shipping Info -->
         <div class="section-card">
             <div class="section-title">
                 <i class="fas fa-truck-ramp-box"></i> 梱包・出荷情報
