@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>未対応の注文一覧 | Silica Link</title>
+    <style>
+        :root {
+            --kintone-blue: #3498db;
+            --kintone-header-bg: #fff;
+            --kintone-body-bg: #f5f6f7;
+            --kintone-border: #e3e7e8;
+            --kintone-status-blue: #0081cc;
+            --kintone-status-bg: #e5f3ff;
+            --kintone-rakuten-text: #bf0000;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+            background-color: var(--kintone-body-bg);
+            color: #333;
+            font-size: 14px;
+        }
+
+        /* Top Header */
+        header {
+            background-color: #fff;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 2px solid var(--kintone-blue);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .logo { font-weight: bold; color: var(--kintone-blue); font-size: 18px; display: flex; align-items: center; gap: 8px; }
+        
+        .header-icons { display: flex; gap: 15px; color: #666; font-size: 18px; }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        .search-container { position: relative; }
+        .search-input {
+            padding: 6px 30px 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            width: 200px;
+            font-size: 12px;
+        }
+
+        .user-profile { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+        .avatar { width: 32px; height: 32px; border-radius: 50%; background-color: #ccc; }
+
+        /* Main Content */
+        .main-container { padding: 10px 20px; }
+
+        .breadcrumb { font-size: 11px; color: var(--kintone-blue); margin-bottom: 10px; }
+        .breadcrumb span { color: #999; margin: 0 5px; }
+
+        .app-title-section { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .app-icon {
+            width: 32px; height: 32px; background-color: #f39c12; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;
+        }
+        .app-name { font-size: 18px; font-weight: bold; }
+
+        /* Control Bar */
+        .control-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .view-selector {
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .graph-btn {
+            background-color: var(--kintone-blue);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .icon-btn {
+            border: 1px solid #ccc; background-color: #f8f8f8; padding: 6px 10px; border-radius: 4px; cursor: pointer; color: #666;
+        }
+
+        /* List Table View */
+        .list-card {
+            background-color: white;
+            border: 1px solid var(--kintone-border);
+            border-radius: 2px;
+            overflow: hidden;
+            border-top: 3px solid #f39c12;
+        }
+
+        .k-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .k-table th {
+            background-color: #f7f9fa;
+            border: 1px solid #e3e7e8;
+            padding: 8px;
+            text-align: left;
+            font-weight: normal;
+            color: #666;
+        }
+        .k-table td { border: 1px solid #e3e7e8; padding: 8px; background-color: #fff; }
+
+        .badge-pending {
+            display: inline-block;
+            background-color: #fff4e5;
+            color: #f39c12;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            border: 1px solid #ffe8cc;
+        }
+
+        .channel-icon {
+            display: inline-block;
+            width: 14px; height: 14px; border-radius: 2px; margin-right: 5px; vertical-align: middle;
+        }
+        .channel-shopify { background-color: #95bf47; }
+        .channel-agency { background-color: #9c27b0; }
+
+        .action-cell { text-align: right; white-space: nowrap; }
+        .action-icon {
+            cursor: pointer; font-size: 14px; margin-left: 8px; color: #3498db;
+        }
+        .action-icon.delete { color: #5dade2; }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding-bottom: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+        .page-btn {
+            border: 1px solid #ccc; background-color: #fff; padding: 4px 10px; border-radius: 4px; cursor: pointer;
+        }
+        .page-btn:disabled { color: #ccc; cursor: default; }
+
+        /* Alignment Helpers */
+        .text-right { text-align: right !important; }
+        .text-center { text-align: center !important; }
+        .text-left { text-align: left !important; }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <div class="logo">kintone</div>
+        <div class="header-icons">
+            <span>🏠</span> <span>🔔</span> <span>⭐</span>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="アプリ内検索">
+        </div>
+        <div class="user-profile">
+            <span>Administrator</span>
+            <div class="avatar"></div>
+        </div>
+    </div>
+</header>
+
+<div class="main-container">
+    <div class="breadcrumb">🏠 <span>/</span> アプリ: 注文一覧を見る</div>
+
+    <div class="app-title-section">
+        <div class="app-icon">⏳</div>
+        <div class="app-name">未対応の注文一覧 (確定待ち)</div>
+    </div>
+
+    <div class="control-bar">
+        <button class="view-selector">⚠️ 確定待ちのみ <span>▼</span></button>
+        <button class="graph-btn">📊 <span>▼</span></button>
+        <button class="icon-btn">🔍</button>
+        <button class="icon-btn">📈</button>
+        <div style="flex-grow: 1;"></div>
+        <button class="icon-btn" style="background-color: #fff; border: 1px solid #ccc; font-size: 18px;">+</button>
+        <button class="icon-btn">⚙ <span>▼</span></button>
+        <button class="icon-btn">⋮</button>
+    </div>
+
+    <div class="list-card">
+        <table class="k-table">
+            <thead>
+                <tr>
+                    <th class="text-center">注文ID</th>
+                    <th class="text-center">注文日時</th>
+                    <th>チャネル</th>
+                    <th class="text-center">顧客区分</th>
+                    <th>顧客表示名</th>
+                    <th class="text-right">注文金額</th>
+                    <th class="text-center">注文ステータス</th>
+                    <th class="text-right">出荷進捗</th>
+                    <th class="text-center">配送予定日</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;" onclick="location.href='order_detail_view.html'">312</td>
+                    <td class="text-center">2026-03-24 09:15</td>
+                    <td><span class="channel-icon channel-shopify"></span> Shopify</td>
+                    <td class="text-center">B2C</td>
+                    <td>田中 太郎</td>
+                    <td class="text-right">45,000</td>
+                    <td class="text-center"><span class="badge-pending">確定待ち</span></td>
+                    <td class="text-right">0/3</td>
+                    <td class="text-center">---</td>
+                    <td class="action-cell">
+                        <span class="action-icon">✎</span>
+                        <span class="action-icon delete">✖</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;" onclick="location.href='order_detail_agency.html'">315</td>
+                    <td class="text-center">2026-03-24 10:42</td>
+                    <td><span class="channel-icon channel-agency"></span> Agency</td>
+                    <td class="text-center">B2B</td>
+                    <td>株式会社サンプル</td>
+                    <td class="text-right">210,000</td>
+                    <td class="text-center"><span class="badge-pending">確定待ち</span></td>
+                    <td class="text-right">0/24</td>
+                    <td class="text-center">---</td>
+                    <td class="action-cell">
+                        <span class="action-icon">✎</span>
+                        <span class="action-icon delete">✖</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;" onclick="location.href='order_detail_view.html'">318</td>
+                    <td class="text-center">2026-03-24 14:20</td>
+                    <td><span class="channel-icon channel-shopify"></span> Shopify</td>
+                    <td class="text-center">B2C</td>
+                    <td>鈴木 一郎</td>
+                    <td class="text-right">12,500</td>
+                    <td class="text-center"><span class="badge-pending">確定待ち</span></td>
+                    <td class="text-right">0/1</td>
+                    <td class="text-center">---</td>
+                    <td class="action-cell">
+                        <span class="action-icon">✎</span>
+                        <span class="action-icon delete">✖</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <button class="page-btn" disabled>⏮ 最初</button>
+        <button class="page-btn" disabled>◀ 前へ</button>
+        <span>ページ <strong>1 / 1</strong> (全 <strong>3</strong> 件)</span>
+        <button class="page-btn" disabled>次へ ▶</button>
+        <button class="page-btn" disabled>最後 ⏭</button>
+        <select style="margin-left: 10px; padding: 4px;">
+            <option>10件/ページ</option>
+            <option>20件/ページ</option>
+            <option>50件/ページ</option>
+        </select>
+    </div>
+</div>
+
+</body>
+</html>
