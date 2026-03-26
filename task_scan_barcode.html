@@ -39,22 +39,30 @@
 
         .scan-container { padding: 15px; max-width: 500px; margin: 0 auto; }
 
-        /* Product Card - Matching Agency's Process Card Style */
+        /* Product Card */
         .product-card {
             background: #fffaf0; border: 1.5px solid #ffedcc;
             padding: 15px; border-radius: 12px; margin-bottom: 20px;
+            position: relative;
         }
         .sku-code { color: #2e7d32; font-weight: 800; font-size: 14px; margin-bottom: 8px; }
         .product-name { font-weight: 800; font-size: 18px; margin-bottom: 12px; color: var(--text-dark); }
         .required-qty { color: var(--kintone-danger); font-weight: 800; font-size: 14px; }
+        
+        .total-picked-badge {
+            position: absolute; top: 15px; right: 15px;
+            background: white; border: 2px solid var(--kintone-blue);
+            color: var(--kintone-blue); padding: 5px 15px; border-radius: 20px;
+            font-size: 13px; font-weight: 800;
+        }
 
         /* Step Card */
         .step-card {
             background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            border: 1px solid transparent;
+            border: 2px solid transparent;
         }
-        .step-card.active { border: 2px solid var(--kintone-success); }
+        .step-card.active { border-color: var(--kintone-blue); }
         
         .step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; font-weight: 800; font-size: 14px; color: var(--text-dark); }
         .step-num { 
@@ -76,173 +84,186 @@
             border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px;
             cursor: pointer; transition: 0.2s;
         }
-        .camera-btn:active { transform: scale(0.95); opacity: 0.9; }
 
         /* Qty Picker */
         .qty-picker { display: flex; align-items: center; justify-content: center; gap: 25px; margin: 20px 0; }
         .qty-btn { 
             width: 48px; height: 48px; border-radius: 50%; border: none;
             display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold;
-            cursor: pointer; transition: 0.2s;
+            cursor: pointer;
         }
         .btn-minus { background: #eee; color: #666; }
         .btn-plus { background: var(--kintone-blue); color: white; }
-        .btn-minus:active, .btn-plus:active { transform: scale(0.9); }
 
         .qty-display { 
             border: 2px solid var(--kintone-blue); border-radius: 8px; width: 100px; height: 55px;
             display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800;
             color: var(--text-dark); background: white;
         }
-        
-        .quick-qty-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-        .quick-btn { 
-            background: #f1f3f4; border: none; padding: 10px 0; border-radius: 8px;
-            font-size: 13px; font-weight: 800; cursor: pointer; color: var(--text-dark); transition: 0.2s;
+
+        /* Scan Log */
+        .scan-log-container { margin-top: 25px; }
+        .scan-log-title { font-size: 13px; font-weight: 800; color: var(--text-label); margin-bottom: 10px; }
+        .scan-row { 
+            background: #fff; border-left: 4px solid var(--kintone-success); 
+            padding: 10px 15px; border-radius: 8px; display: flex; justify-content: space-between;
+            align-items: center; font-size: 12px; margin-bottom: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-        .quick-btn:active { background: #e0e2e4; }
 
         /* Footer Action */
         .footer-action {
             position: fixed; bottom: 0; left: 0; width: 100%; padding: 20px;
             background: white; border-top: 1px solid #eee; box-sizing: border-box;
             box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
+            display: flex; gap: 12px;
         }
         .btn-confirm {
-            background: #ddd; color: white; width: 100%; border: none; padding: 15px;
+            flex: 1; background: #ddd; color: white; border: none; padding: 15px;
             border-radius: 10px; font-weight: 800; font-size: 16px; cursor: not-allowed;
-            display: flex; align-items: center; justify-content: center; gap: 12px; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
         }
-        .btn-confirm.ready { background: var(--kintone-success); cursor: pointer; box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2); }
+        .btn-confirm.ready { background: var(--kintone-success); cursor: pointer; }
+        .btn-main-finish { 
+            flex: 1; background: var(--kintone-blue); color: white; border: none;
+            padding: 15px; border-radius: 10px; font-weight: 800; font-size: 16px;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+        }
     </style>
 </head>
 <body>
 
 <div class="scan-header">
     <div class="task-id-text">Task ID: <span>527</span></div>
-    <div class="progress-text">進捗: 0 / 1 行</div>
+    <div class="progress-text">累計ピッキング数: <span id="header-total-qty">0</span> / 3</div>
 </div>
 
 <div class="scan-container">
-    <!-- Product Info - Match Agency Product Card Colors -->
+    <!-- Product Info -->
     <div class="product-card">
         <div class="sku-code">CER-BASE-01</div>
         <div class="product-name">セラミック基板用素材 PREMIUM</div>
         <div class="required-qty">必要数量: 3 箱</div>
+        <div class="total-picked-badge" id="total-badge">完了: 0 箱</div>
     </div>
 
-    <!-- Step 1: Shelf -->
-    <div class="step-card completed">
-        <div class="step-header">
-            <div class="step-num"><span>1</span></div>
-            <span>ステップ1: 棚番号をスキャン</span>
-        </div>
-        <div class="input-group">
-            <div class="input-field">
-                <i class="fas fa-location-dot" style="color: #bbb;"></i>
-                <input type="text" value="A-01-02" readonly>
+    <!-- Multi-Scan Steps -->
+    <div id="scan-form">
+        <div class="step-card active" id="card-shelf">
+            <div class="step-header">
+                <div class="step-num"><span>1</span></div>
+                <span>棚・ロットをスキャン</span>
             </div>
-            <div class="camera-btn"><i class="fas fa-camera"></i></div>
-        </div>
-    </div>
-
-    <!-- Step 2: SKU -->
-    <div class="step-card active">
-        <div class="step-header">
-            <div class="step-num"><span>2</span></div>
-            <span>ステップ2: 商品・資材SKUをスキャン</span>
-        </div>
-        <div class="input-group">
-            <div class="input-field">
-                <i class="fas fa-box-open" style="color: #bbb;"></i>
-                <input type="text" placeholder="商品コード" id="sku-input">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="input-field">
+                    <i class="fas fa-location-dot" style="color: #bbb;"></i>
+                    <input type="text" placeholder="棚コード" id="shelf-input">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-hashtag" style="color: #bbb;"></i>
+                    <input type="text" placeholder="ロット番号" id="lot-input">
+                </div>
             </div>
-            <div class="camera-btn" onclick="simulateScan('sku')"><i class="fas fa-camera"></i></div>
         </div>
-    </div>
 
-    <!-- Step 3: Lot -->
-    <div class="step-card">
-        <div class="step-header">
-            <div class="step-num"><span>3</span></div>
-            <span>ステップ3: ロット番号を入力</span>
-        </div>
-        <div class="input-group">
-            <div class="input-field">
-                <i class="fas fa-hashtag" style="color: #bbb;"></i>
-                <input type="text" placeholder="LOT番号">
+        <div class="step-card" id="card-qty">
+            <div class="step-header">
+                <div class="step-num"><span>2</span></div>
+                <span>この棚からのピッキング数量</span>
             </div>
-            <div class="camera-btn"><i class="fas fa-camera"></i></div>
+            <div class="qty-picker">
+                <button class="qty-btn btn-minus" onclick="changeQty(-1)">−</button>
+                <div class="qty-display" id="current-qty">0</div>
+                <button class="qty-btn btn-plus" onclick="changeQty(1)">＋</button>
+            </div>
         </div>
     </div>
 
-    <!-- Step 4: Qty -->
-    <div class="step-card" id="step-qty" style="border: 2px solid var(--kintone-success); background-color: #fafffa;">
-        <div class="step-header">
-            <i class="fas fa-check-circle" style="color: var(--kintone-success); font-size: 22px;"></i>
-            <span>ステップ4: 実際にピッキングした数量</span>
-        </div>
-        
-        <div class="qty-picker">
-            <button class="qty-btn btn-minus" onclick="changeQty(-1)">−</button>
-            <div class="qty-display" id="current-qty">0</div>
-            <button class="qty-btn btn-plus" onclick="changeQty(1)">＋</button>
-        </div>
-
-        <div class="quick-qty-grid">
-            <button class="quick-btn" onclick="addQty(1)">+1</button>
-            <button class="quick-btn" onclick="addQty(5)">+5</button>
-            <button class="quick-btn" onclick="addQty(10)">+10</button>
-            <button class="quick-btn" onclick="addQty(20)">+20</button>
-            <button class="quick-btn" onclick="addQty(50)">+50</button>
+    <!-- Scan History -->
+    <div class="scan-log-container">
+        <div class="scan-log-title">今回の作業履歴</div>
+        <div id="scan-history">
+            <div style="color: #999; font-style: italic; font-size: 12px; text-align: center; padding: 10px;">履歴はありません</div>
         </div>
     </div>
 
-    <div style="height: 120px;"></div> <!-- Spacer -->
+    <div style="height: 120px;"></div>
 </div>
 
 <div class="footer-action">
-    <button class="btn-confirm" id="confirm-btn" onclick="finishScan()">
-        <i class="fas fa-check"></i> 確認して次へ <span id="footer-qty">0</span> / 3
+    <button class="btn-confirm" id="confirm-btn" onclick="addScanRecord()">
+        <i class="fas fa-plus"></i> スキャン内容を追加
+    </button>
+    <button class="btn-main-finish" id="finish-btn" style="display: none;" onclick="finishAll()">
+        <i class="fas fa-check-double"></i> ピッキング完了
     </button>
 </div>
 
 <script>
-    let qty = 0;
+    let totalPicked = 0;
+    let currentQty = 0;
     const target = 3;
 
-    function simulateScan(type) {
-        if(type === 'sku') {
-            document.getElementById('sku-input').value = 'CER-BASE-01';
-            updateQtyUI();
-        }
-    }
-
     function changeQty(v) {
-        qty = Math.max(0, qty + v);
-        updateQtyUI();
-    }
-
-    function addQty(v) {
-        qty = qty + v;
-        updateQtyUI();
-    }
-
-    function updateQtyUI() {
-        document.getElementById('current-qty').innerText = qty;
-        document.getElementById('footer-qty').innerText = qty;
+        currentQty = Math.max(0, currentQty + v);
+        document.getElementById('current-qty').innerText = currentQty;
         
         const btn = document.getElementById('confirm-btn');
-        if(qty >= target) {
+        if (currentQty > 0) {
             btn.classList.add('ready');
+            btn.style.cursor = 'pointer';
         } else {
             btn.classList.remove('ready');
+            btn.style.cursor = 'not-allowed';
         }
     }
 
-    function finishScan() {
-        if(qty >= target) {
+    function addScanRecord() {
+        if (currentQty <= 0) return;
+
+        const shelf = document.getElementById('shelf-input').value || '不明な棚';
+        const lot = document.getElementById('lot-input').value || 'LOT-AUTO';
+        
+        // Add to total
+        totalPicked += currentQty;
+        
+        // Add to UI history
+        const history = document.getElementById('scan-history');
+        if (totalPicked === currentQty) history.innerHTML = ''; // Clear empty message
+        
+        const row = `<div class="scan-row">
+            <div>
+                <span style="font-weight: 800;">棚: ${shelf}</span><br>
+                <span style="color: #666;">LOT: ${lot}</span>
+            </div>
+            <div style="font-size: 16px; font-weight: 800; color: var(--kintone-blue);">+ ${currentQty}</div>
+        </div>`;
+        history.insertAdjacentHTML('afterbegin', row);
+
+        // Update Total Displays
+        document.getElementById('header-total-qty').innerText = totalPicked;
+        document.getElementById('total-badge').innerText = `完了: ${totalPicked} 箱`;
+        
+        // Final button logic
+        if (totalPicked >= target) {
+            document.getElementById('finish-btn').style.display = 'flex';
+        }
+
+        // Reset current session
+        currentQty = 0;
+        document.getElementById('current-qty').innerText = '0';
+        document.getElementById('shelf-input').value = '';
+        document.getElementById('lot-input').value = '';
+        document.getElementById('confirm-btn').classList.remove('ready');
+    }
+
+    function finishAll() {
+        if (totalPicked >= target) {
             location.href = 'task_detail.html?status=in-progress';
+        } else {
+            if (confirm('必要数量に達していませんが、完了しますか？')) {
+                location.href = 'task_detail.html?status=in-progress';
+            }
         }
     }
 </script>
