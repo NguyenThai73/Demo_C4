@@ -199,7 +199,7 @@
         }
 
         .order-btn {
-            padding: 14px 40px;
+            padding: 14px 28px;
             background: #2d3a2e;
             color: #fff;
             border: none;
@@ -207,6 +207,8 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
+            display: flex;
+            align-items: center;
         }
 
         .order-btn:hover {
@@ -369,7 +371,10 @@
                     </div>
                     <span class="cart-total-price" id="totalPrice">¥1,680</span>
                 </div>
-                <button class="order-btn" onclick="window.location.href='order_status.html'">注文完了</button>
+                <button class="order-btn" onclick="window.location.href='order_status.html'">
+                    <span id="orderBtnText">この内容で注文する</span>
+                    <span id="orderBtnSub" style="font-size:12px;font-weight:400;margin-left:8px;opacity:0.85"></span>
+                </button>
             </div>
         </div>
 
@@ -427,7 +432,12 @@
             }
             document.getElementById('totalPrice').textContent = '¥' + total.toLocaleString();
             document.getElementById('totalBadge').textContent = count;
+            // Update order button sub-text
+            document.getElementById('orderBtnSub').textContent = count + '品 · ¥' + total.toLocaleString();
         }
+
+        // Initialize sub-text on load
+        updateTotal();
 
         function openLang() { document.getElementById('langPopup').classList.add('show'); }
         function closeLang() { document.getElementById('langPopup').classList.remove('show'); }

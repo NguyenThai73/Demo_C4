@@ -752,10 +752,20 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.15s;
         }
 
         .welcome-free-input button:hover {
             background: #2563eb;
+        }
+
+        .welcome-free-input button.has-mood {
+            background: #2d3a2e;
+        }
+
+        .welcome-free-input button.has-mood:hover {
+            background: #3a4a3b;
         }
 
         .welcome-skip {
@@ -809,7 +819,7 @@
             <div class="welcome-or">― または自由に入力 ―</div>
             <div class="welcome-free-input">
                 <input type="text" id="welcomeFreeInput" placeholder="例: 今日は記念日なので特別なものを…">
-                <button onclick="submitFreeInput()">送信</button>
+                <button id="welcomeSubmitBtn" onclick="submitFreeInput()">この気分で提案してもらう</button>
             </div>
 
             <button class="welcome-skip" onclick="closeWelcome()">スキップしてメニューを見る →</button>
@@ -917,7 +927,7 @@
 
                 <div class="modal-btns">
                     <button class="modal-cancel-btn" onclick="closeModal()">キャンセル</button>
-                    <button class="modal-confirm-btn" onclick="confirmAdd()">確定</button>
+                    <button class="modal-confirm-btn" onclick="confirmAdd()">この内容でカートに入れる</button>
                 </div>
             </div>
         </div>
@@ -1170,6 +1180,11 @@
         function selectPrompt(chip, text) {
             document.querySelectorAll('.prompt-chip').forEach(c => c.classList.remove('selected'));
             chip.classList.add('selected');
+            // Update submit button to contextual label
+            const btn = document.getElementById('welcomeSubmitBtn');
+            const shortLabel = text.replace(/が食べたい$|です$|が欲しい$|を教えて$|は？$/, '');
+            btn.textContent = '「' + shortLabel + '」で探す';
+            btn.classList.add('has-mood');
             // Save mood to localStorage and close
             localStorage.setItem('aiMood', text);
             setTimeout(() => closeWelcome(), 400);
@@ -1185,6 +1200,18 @@
         // Enter key on free input
         document.getElementById('welcomeFreeInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') submitFreeInput();
+        });
+
+        // Update submit button when typing in free input
+        document.getElementById('welcomeFreeInput').addEventListener('input', function(e) {
+            const btn = document.getElementById('welcomeSubmitBtn');
+            if (this.value.trim()) {
+                btn.textContent = 'この内容で提案してもらう';
+                btn.classList.add('has-mood');
+            } else {
+                btn.textContent = 'この気分で提案してもらう';
+                btn.classList.remove('has-mood');
+            }
         });
 
         function closeWelcome() {

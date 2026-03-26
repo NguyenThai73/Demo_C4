@@ -169,7 +169,7 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
 
-        /* Suggestion Chips */
+        /* Dynamic Suggestion Chips */
         .suggestion-chips {
             display: flex;
             gap: 8px;
@@ -193,14 +193,71 @@
         }
 
         .chip:hover {
+            border-color: #3b82f6;
+            background: #f0f7ff;
+        }
+
+        .chip.primary {
+            background: #2d3a2e;
+            color: #fff;
+            border-color: #2d3a2e;
+        }
+
+        .chip.primary:hover {
+            background: #3a4a3b;
+            border-color: #3a4a3b;
+        }
+
+        /* Action Row */
+        .action-row {
+            display: flex;
+            gap: 8px;
+            padding: 10px 20px 4px;
+            background: #fff;
+            border-top: 1px solid #f0f0f0;
+            flex-shrink: 0;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: #f7f7f7;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .action-btn:hover {
             border-color: #999;
-            background: #f9f9f9;
+            background: #f0f0f0;
+        }
+
+        .action-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .action-btn.highlight {
+            background: #eff6ff;
+            border-color: #93c5fd;
+            color: #2563eb;
+        }
+
+        .action-btn.highlight:hover {
+            background: #dbeafe;
         }
 
         /* Input Area */
         .input-area {
             background: #fff;
-            border-top: 1px solid #e8e8e8;
             flex-shrink: 0;
         }
 
@@ -269,20 +326,28 @@
         }
 
         .send-btn {
-            width: 36px;
-            height: 36px;
+            padding: 8px 16px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            background: none;
+            gap: 6px;
+            background: #2d3a2e;
+            color: #fff;
             border: none;
+            border-radius: 22px;
             cursor: pointer;
-            color: #888;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+
+        .send-btn:hover {
+            background: #3a4a3b;
         }
 
         .send-btn svg {
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
             fill: currentColor;
         }
 
@@ -357,57 +422,45 @@
         </div>
 
         <!-- Chat Area -->
-        <div class="chat-area">
-            <!-- Bot message -->
-            <div class="message-row sent">
-                <div class="msg-avatar ai-avatar">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="ai">
-                </div>
-                <div class="message-bubble">東京の介護職の求人情報はこちらです：<br>www.webb/search/Tokyo/caregiver</div>
-            </div>
-
-            <!-- User message -->
+        <div class="chat-area" id="chatArea">
+            <!-- AI greeting -->
             <div class="message-row received">
-                <div class="msg-avatar bot-avatar">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="user">
-                </div>
-                <div class="message-bubble">見ました、ありがとう。</div>
-            </div>
-
-            <!-- Bot message -->
-            <div class="message-row sent">
                 <div class="msg-avatar ai-avatar">
                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="ai">
                 </div>
-                <div class="message-bubble">はい、何かご不明な点がございましたら、お気軽にメッセージをお送りください。良い一日をお過ごしください。</div>
+                <div class="message-bubble">いらっしゃいませ！何をお探しですか？お気軽にご質問ください。</div>
             </div>
 
-            <!-- Suggestion Chips -->
-            <div class="suggestion-chips">
-                <button class="chip">今日のおすすめ<br>の料理を聞いてみる</button>
-                <button class="chip">人気ランキング上位<br>の料理を聞いてみる</button>
-                <button class="chip">人気ランキング上位<br>の料理を聞いてみる</button>
+            <!-- Dynamic Suggestion Chips -->
+            <div class="suggestion-chips" id="dynamicChips">
+                <!-- Chips are rendered by JS based on conversation state -->
             </div>
+        </div>
+
+        <!-- Action Row -->
+        <div class="action-row" id="actionRow">
+            <button class="action-btn" onclick="goToMenu()">
+                <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                候補を見る
+            </button>
+            <button class="action-btn" onclick="window.location.href='cart.html'">
+                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>
+                カートを確認
+            </button>
+            <button class="action-btn highlight" onclick="switchToVoice()">
+                <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                話す
+            </button>
         </div>
 
         <!-- Input Area -->
         <div class="input-area">
-            <div class="input-toolbar">
-                <button class="toolbar-btn">
-                    <svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7.01 2 18h10.99l-3.59-3.59c1.3-1 2.85-1.57 4.6-1.57 2.83 0 5.26 1.67 6.37 4.08l2.13-.81C20.97 12.51 17.07 8 12.5 8z"/></svg>
-                </button>
-                <button class="toolbar-btn">
-                    <svg viewBox="0 0 24 24"><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.57 0-8.47 4.51-9.99 8.08l2.13.81C4.74 13.67 7.17 12 10 12c1.75 0 3.3.57 4.6 1.57L11 17.16h11V6.17l-3.6 4.43z"/></svg>
-                </button>
-                <button class="toolbar-btn">
-                    <svg viewBox="0 0 24 24"><path d="M19 2h-4.18C14.4.84 13.3 0 12 0S9.6.84 9.18 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/></svg>
-                </button>
-            </div>
             <div class="input-row">
                 <button class="emoji-btn">😊</button>
-                <input type="text" class="chat-input" placeholder="質問してみましょう">
-                <button class="send-btn">
+                <input type="text" class="chat-input" id="chatInput" placeholder="質問してみましょう" onkeydown="if(event.key==='Enter')sendMessage()">
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">
                     <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    送信
                 </button>
             </div>
         </div>
@@ -443,10 +496,175 @@
     </div>
 
     <script>
+        // ===== Conversation State Machine =====
+        // States: 'initial' | 'asked' | 'suggested' | 'added' | 'confirming'
+        let conversationState = 'initial';
+
+        const chipSets = {
+            initial: [
+                { text: '今日のおすすめは？', icon: '' },
+                { text: '人気メニューを見せて', icon: '' },
+                { text: '予算で選びたい', icon: '' },
+            ],
+            asked: [
+                { text: 'もう少し詳しく教えて', icon: '' },
+                { text: '他の候補を見る', icon: '' },
+                { text: 'この料理をカートに入れる', icon: '', primary: true },
+            ],
+            suggested: [
+                { text: 'この料理をカートに入れる', icon: '', primary: true },
+                { text: '他にもおすすめある？', icon: '' },
+                { text: 'デザートも見たい', icon: '' },
+            ],
+            added: [
+                { text: '他にもおすすめある？', icon: '' },
+                { text: 'デザートも見たい', icon: '' },
+                { text: 'ドリンクも頼みたい', icon: '' },
+                { text: 'この内容で注文する', icon: '', primary: true },
+            ],
+            confirming: [
+                { text: '注文を確定する', icon: '', primary: true },
+                { text: 'やっぱり変更する', icon: '' },
+            ]
+        };
+
+        const sendBtnLabels = {
+            initial: '話しかける',
+            asked: '送信',
+            suggested: '送信',
+            added: '送信',
+            confirming: '注文を確定する'
+        };
+
+        function renderChips() {
+            const container = document.getElementById('dynamicChips');
+            const chips = chipSets[conversationState] || chipSets.initial;
+            container.innerHTML = chips.map(c =>
+                `<button class="chip${c.primary ? ' primary' : ''}" onclick="chipAction('${c.text}')">${c.text}</button>`
+            ).join('');
+            // Update send button label
+            const sendBtn = document.getElementById('sendBtn');
+            const label = sendBtnLabels[conversationState] || '送信';
+            sendBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>${label}`;
+        }
+
+        function chipAction(text) {
+            if (text === 'この料理をカートに入れる') {
+                addUserMessage(text);
+                addAiMessage('「鯛の塩焼き」をカートに追加しました！他にご注文はありますか？');
+                conversationState = 'added';
+            } else if (text === 'この内容で注文する') {
+                addUserMessage(text);
+                addAiMessage('ご注文内容を確認します：\n・鯛の塩焼き ×1\n合計: ¥1,280\nよろしいですか？');
+                conversationState = 'confirming';
+            } else if (text === '注文を確定する') {
+                addUserMessage(text);
+                addAiMessage('ご注文ありがとうございます！調理を開始します。');
+                window.location.href = 'order_status.html';
+                return;
+            } else if (text === 'やっぱり変更する') {
+                addUserMessage(text);
+                addAiMessage('承知しました。変更したい内容を教えてください。');
+                conversationState = 'added';
+            } else {
+                addUserMessage(text);
+                // Simulate AI response
+                simulateAiResponse(text);
+            }
+            renderChips();
+            scrollToBottom();
+        }
+
+        function simulateAiResponse(userText) {
+            if (conversationState === 'initial') {
+                if (userText.includes('おすすめ')) {
+                    addAiMessage('本日のおすすめは「鯛の塩焼き」(¥1,280)です。新鮮な鯛を丁寧に焼き上げました。さっぱりとした味わいが人気です。');
+                } else if (userText.includes('人気')) {
+                    addAiMessage('人気ランキングTOP3はこちらです：\n1. 鯛の塩焼き (¥1,280)\n2. 特選和牛ステーキ (¥2,480)\n3. 海鮮サラダ (¥980)');
+                } else if (userText.includes('予算')) {
+                    addAiMessage('ご予算はおいくらぐらいですか？例えば「2000円以内」のようにお伝えください。');
+                } else {
+                    addAiMessage('かしこまりました。お好みに合わせてメニューをご提案しますね。');
+                }
+                conversationState = 'asked';
+            } else if (conversationState === 'asked') {
+                if (userText.includes('詳しく')) {
+                    addAiMessage('「鯛の塩焼き」は当店の看板メニューです。明石産の天然鯛を使用し、備長炭でじっくり焼き上げています。大根おろしとすだちを添えてお召し上がりください。');
+                    conversationState = 'suggested';
+                } else if (userText.includes('他の候補')) {
+                    addAiMessage('他にもおすすめがあります：\n・海鮮サラダ (¥980) - 新鮮な魚介をたっぷり\n・季節の天ぷら盛り合わせ (¥1,180)\nいかがですか？');
+                } else {
+                    addAiMessage('承知しました。こちらはいかがでしょうか？');
+                    conversationState = 'suggested';
+                }
+            } else if (conversationState === 'added') {
+                if (userText.includes('デザート')) {
+                    addAiMessage('デザートのおすすめです：\n・抹茶わらびもち (¥580)\n・季節のフルーツパフェ (¥780)\nカートに追加しますか？');
+                } else if (userText.includes('ドリンク')) {
+                    addAiMessage('ドリンクメニューです：\n・生ビール (¥580)\n・日本酒 獺祭 (¥880)\n・ウーロン茶 (¥280)\nいかがですか？');
+                } else {
+                    addAiMessage('かしこまりました。何かございましたらお声がけください。');
+                }
+            } else {
+                addAiMessage('かしこまりました。');
+            }
+        }
+
+        function addUserMessage(text) {
+            const chatArea = document.getElementById('chatArea');
+            const chipsEl = document.getElementById('dynamicChips');
+            const row = document.createElement('div');
+            row.className = 'message-row sent';
+            row.innerHTML = `
+                <div class="msg-avatar ai-avatar">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="user">
+                </div>
+                <div class="message-bubble">${text}</div>
+            `;
+            chatArea.insertBefore(row, chipsEl);
+        }
+
+        function addAiMessage(text) {
+            const chatArea = document.getElementById('chatArea');
+            const chipsEl = document.getElementById('dynamicChips');
+            const row = document.createElement('div');
+            row.className = 'message-row received';
+            row.innerHTML = `
+                <div class="msg-avatar ai-avatar">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="ai">
+                </div>
+                <div class="message-bubble">${text.replace(/\n/g, '<br>')}</div>
+            `;
+            chatArea.insertBefore(row, chipsEl);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+            input.value = '';
+            chipAction(text);
+        }
+
+        function switchToVoice() {
+            const session = JSON.parse(localStorage.getItem('currentSession') || '{}');
+            if (session.orderMode === 'ai') {
+                window.location.href = 'menu_ai.html';
+            }
+        }
+
+        function scrollToBottom() {
+            const chatArea = document.getElementById('chatArea');
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
         function goToMenu() {
             const session = JSON.parse(localStorage.getItem('currentSession') || '{}');
             window.location.href = session.orderMode === 'ai' ? 'menu_ai.html' : 'menu.html';
         }
+
+        // Initialize
+        renderChips();
     </script>
 </body>
 </html>
