@@ -8,20 +8,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Stylesto match purchase_order_detail.html exactly */
         :root {
-            --kintone-blue: #3498db;
-            --kintone-header-bg: #fff;
-            --kintone-body-bg: #f5f6f7;
-            --kintone-border: #e3e7e8;
             --portal-header-bg: #2c3e50;
             --credie-bg: #f4f7f9;
+            --kintone-blue: #3498db;
+            --kintone-success: #2ecc71;
+            --kintone-warning: #f39c12;
+            --kintone-danger: #e74c3c;
         }
 
         body {
             background-color: var(--credie-bg);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
             margin: 0;
             padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
         }
 
         /* Independent Portal Header */
@@ -34,284 +35,370 @@
             justify-content: space-between;
             padding: 0 25px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: sticky; top: 0; z-index: 1000;
         }
 
-        .portal-logo { font-size: 18px; font-weight: bold; letter-spacing: 0.5px; }
+        .portal-logo {
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
 
-        .user-nav { display: flex; align-items: center; gap: 20px; font-size: 13px; }
-        .nav-btn { background: #3498db; color: white; border: none; padding: 5px 15px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 13px;
+        }
+
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
         /* Sub Nav / Breadcrumb */
         .sub-nav {
             background: white;
             padding: 12px 25px;
-            font-size: 11px;
+            font-size: 12px;
             border-bottom: 1px solid #ddd;
             color: var(--kintone-blue);
         }
-        .sub-nav span { color: #999; padding: 0 8px; }
 
+        .sub-nav span {
+            color: #999;
+            padding: 0 8px;
+        }
+
+        /* Main Container */
         .container {
-            max-width: 1100px;
-            margin: 20px auto;
+            max-width: 1200px;
+            margin: 30px auto;
             padding: 0 20px;
         }
 
-        .page-header {
+        .page-header-premium {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
         }
-        .app-icon {
-            width: 36px; height: 36px; background-color: #7ed321; border-radius: 6px;
-            display: flex; align-items: center; justify-content: center; color: white; font-size: 22px;
-        }
-        .app-name { font-size: 22px; font-weight: bold; color: #333; }
 
         /* Section Cards */
         .section-card {
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            border: 1px solid #eee;
         }
 
         .section-title {
+            color: var(--kintone-blue);
+            font-weight: 800;
             font-size: 15px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
+            border-bottom: none;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
         }
 
-        /* Field Grid */
+        .section-title i {
+            margin-right: 12px;
+        }
+
+        /* Field Grid from purchase_order_detail */
         .field-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px 40px;
         }
 
         .field-label {
-            font-size: 12px;
-            font-weight: bold;
-            color: #666;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #555;
+            margin-bottom: 8px;
+            letter-spacing: 0.2px;
         }
-        .required-mark { color: #e74c3c; margin-left: 4px; }
 
-        .field-value-box {
-            background-color: #f7f9fa;
-            border: 1px solid #e3e7e8;
-            padding: 10px 12px;
-            border-radius: 2px;
-            font-size: 14px;
-            min-height: 40px;
+        .field-value {
+            font-size: 15px;
             color: #333;
+            min-height: 24px;
         }
 
-        .field-value-box a { color: var(--kintone-blue); text-decoration: none; font-weight: bold; }
+        /* Value Box Styling to mimic the task detail looks while using PO detail styles */
+        .field-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 12px 15px;
+            border-radius: 10px;
+            color: #333;
+            font-size: 14px;
+        }
 
-        /* Badge Status */
-        .badge-status {
-            background-color: #e5f3ff;
-            color: #0081cc;
-            padding: 2px 10px;
-            border-radius: 12px;
+        .field-box a {
+            color: var(--kintone-blue);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Action Buttons Area */
+        .action-btns {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .btn-confirm {
+            background: var(--kintone-danger);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(231, 76, 60, 0.2);
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .btn-blue {
+            background: var(--kintone-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+        }
+
+        .btn-success {
+            background: var(--kintone-success);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2);
+        }
+
+        /* Premium Table Style */
+        .premium-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 15px;
+        }
+
+        .premium-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #666;
+            border-bottom: 2px solid #eee;
+        }
+
+        .premium-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        .premium-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge-type {
+            padding: 4px 12px;
+            border-radius: 6px;
             font-size: 11px;
             font-weight: bold;
         }
 
-        /* Buttons Area */
-        .top-action-bar { margin-bottom: 20px; }
-        .btn-action {
-            background-color: #ffcccc;
-            color: #333;
-            border: 1px solid #f5b7b1;
-            padding: 8px 16px;
-            border-radius: 4px;
+        footer {
+            text-align: center;
+            padding: 30px;
             font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            color: #999;
+            border-top: 1px solid #ddd;
+            background: white;
+            margin-top: 50px;
         }
 
-        .btn-blue { background-color: var(--kintone-blue); color: white; border: none; }
-        .btn-teal { background-color: #009688; color: white; border: none; }
-
-        /* Table Style */
-        .k-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
-        .k-table th { background-color: #f7f9fa; border: 1px solid #e3e7e8; padding: 10px; text-align: left; color: #666; font-weight: normal; }
-        .k-table td { border: 1px solid #e3e7e8; padding: 12px 10px; background-color: #fff; }
-
-        footer { text-align: center; padding: 20px; font-size: 12px; color: #999; }
-
+        .required-star {
+            color: var(--kintone-danger);
+            margin-left: 4px;
+        }
     </style>
 </head>
 <body>
 
-<header class="portal-header">
-    <div class="portal-logo">Silica Link Portal</div>
-    <div class="user-nav">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <i class="fas fa-bell"></i>
-            <i class="fas fa-cog"></i>
-            <div style="width: 32px; height: 32px; border-radius: 50%; background-color: #ccc;"></div>
-            <span>Administrator</span>
+    <header class="portal-header">
+        <div class="portal-logo">Silica Link Operational Portal</div>
+        <div class="user-nav">
+            <button class="nav-btn">管理者</button>
+            <div style="display: flex; align-items: center; gap: 10px; font-weight: 500;">
+                <i class="fas fa-user-shield" style="color:#bdc3c7;"></i> Administrator
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<div class="sub-nav">
-    🏠 <span>></span> アプリ: <a href="tasklist.html" style="color: inherit; text-decoration: none;">入出荷タスクを確認する</a> <span>></span> レコード: 320
-</div>
-
-<div class="container">
-    <div class="page-header">
-        <div class="app-icon">🔄</div>
-        <div class="app-name">入出荷タスクを確認する</div>
+    <div class="sub-nav">
+        <a href="tasklist.html" style="text-decoration: none; color: inherit;">入出荷タスク管理</a> <span>></span> 入出荷タスク詳細
     </div>
 
-    <div class="top-action-bar">
-        <button class="btn-action">📦 出荷（販売）作業実行</button>
-    </div>
+    <div class="container">
+        
+        <div class="page-header-premium">
+            <h1 style="font-size: 28px; font-weight: 800; margin: 0;">入出荷タスク詳細</h1>
+            <div style="display: flex; align-items: center; gap: 10px; color: #666; font-size: 13px;">
+                <i class="fas fa-tag"></i> レコード: 320
+            </div>
+        </div>
 
-    <div class="section-card">
-        <div class="field-grid">
-            <div class="field-item">
-                <div class="field-label">タスクID</div>
-                <div class="field-value-box">527</div>
+        <div class="action-btns">
+            <button class="btn-confirm"><i class="fas fa-truck-loading" style="margin-right: 8px;"></i> 出荷（販売）作業実行</button>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fas fa-info-circle"></i> タスク基本情報
             </div>
-            <div class="field-item">
-                <div class="field-label">作業指示元ID</div>
-                <div class="field-value-box"><a href="#">320</a></div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">数量</div>
-                <div class="field-value-box">3</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">ステータス <span class="required-mark">*</span></div>
-                <div class="field-value-box">
-                    <span class="badge-status" style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;">完了</span>
+            <div class="field-grid">
+                <div class="field-item">
+                    <label class="field-label">タスクID</label>
+                    <div class="field-box">527</div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">作業指示元ID</label>
+                    <div class="field-box"><a href="#">320</a></div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">数量</label>
+                    <div class="field-box">3</div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">ステータス<span class="required-star">*</span></label>
+                    <div class="field-box">
+                        <span class="badge-type" style="background:#d4edda; color:#155724;">完了</span>
+                    </div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">タスク種別<span class="required-star">*</span></label>
+                    <div class="field-box">出荷（販売）</div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">SKU種別<span class="required-star">*</span></label>
+                    <div class="field-box">商品</div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">実行期限</label>
+                    <div class="field-box">2026-03-31</div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">倉庫<span class="required-star">*</span></label>
+                    <div class="field-box"><a href="#">岐阜倉庫</a></div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">担当者<span class="required-star">*</span></label>
+                    <div class="field-box"><i class="fas fa-user-circle" style="margin-right: 6px;"></i> Test staff</div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">備考</label>
+                    <div class="field-box">---</div>
                 </div>
             </div>
-            <div class="field-item">
-                <div class="field-label">タスク種別 <span class="required-mark">*</span></div>
-                <div class="field-value-box">出荷（販売）</div>
+        </div>
+
+        <!-- Product Table -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fas fa-boxes"></i> 商品明細
             </div>
-            <div class="field-item">
-                <div class="field-label">SKU種別 <span class="required-mark">*</span></div>
-                <div class="field-value-box">商品</div>
+            <table class="premium-table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%">商品SKU<span class="required-star">*</span></th>
+                        <th style="width: 45%">資材・商品名<span class="required-star">*</span></th>
+                        <th style="width: 15%; text-align: right;">数量<span class="required-star">*</span></th>
+                        <th style="width: 15%; text-align: center;">単位<span class="required-star">*</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--kintone-blue);"><a href="#" style="color: inherit;">abc</a></td>
+                        <td>Dr's Power Rice Silica PREMIUM</td>
+                        <td style="text-align: right; font-weight: bold;">3</td>
+                        <td style="text-align: center;">箱</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="display: flex; justify-content: space-between; margin-top: 25px;">
+                <button class="btn-blue" style="font-size: 13px;"><i class="fas fa-barcode" style="margin-right: 8px;"></i> 配送ラベル作成</button>
+                <button class="btn-success" style="font-size: 13px;"><i class="fas fa-map-location-dot" style="margin-right: 8px;"></i> 配送情報を設定</button>
             </div>
-            <div class="field-item">
-                <div class="field-label">実行期限</div>
-                <div class="field-value-box">2026-03-31</div>
+        </div>
+
+        <!-- Shipping Info collapsible style -->
+        <div class="section-card">
+            <div class="section-title">
+                <i class="fas fa-truck-ramp-box"></i> 梱包・出荷情報
             </div>
-            <div class="field-item">
-                <div class="field-label">倉庫 <span class="required-mark">*</span></div>
-                <div class="field-value-box"><a href="#">岐阜倉庫</a></div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">担当者 <span class="required-mark">*</span></div>
-                <div class="field-value-box">
-                    <i class="fas fa-user-circle"></i> Test staff
+            <div class="field-grid">
+                <div class="field-item">
+                    <label class="field-label">梱包サイズID参照</label>
+                    <div class="field-box"><a href="#">11</a></div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">配送業者</label>
+                    <div class="field-box">yamato</div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">サイズ種別</label>
+                    <div class="field-box">80</div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">パッケージ数量</label>
+                    <div class="field-box">10</div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">梱包重量（KG）</label>
+                    <div class="field-box">5</div>
+                </div>
+                <div class="field-item">
+                    <label class="field-label">送り状ステータス</label>
+                    <div class="field-box">---</div>
+                </div>
+                <div class="field-item" style="grid-column: span 2;">
+                    <label class="field-label">URL</label>
+                    <div class="field-box"><a href="#"><i class="fas fa-paperclip" style="margin-right: 6px;"></i> 送り状ラベル</a></div>
                 </div>
             </div>
-            <div class="field-item">
-                <div class="field-label">備考</div>
-                <div class="field-value-box"></div>
-            </div>
         </div>
+
+        <div style="margin-top: 40px;">
+            <button style="background:white; border:1px solid #ddd; color:#666; padding:12px 25px; border-radius:8px; font-weight:bold; cursor:pointer;"
+                onclick="location.href='tasklist.html'"><i class="fas fa-arrow-left" style="margin-right: 8px;"></i> タスク一覧に戻る</button>
+        </div>
+
     </div>
 
-    <div class="section-card">
-        <div class="section-title">
-            <i class="fas fa-list-ul" style="color: var(--kintone-blue);"></i> 商品明細
-        </div>
-        <table class="k-table">
-            <thead>
-                <tr>
-                    <th style="width: 20%;">商品SKU <span class="required-mark">*</span></th>
-                    <th style="width: 40%;">商品・資材SKU <span class="required-mark">*</span></th>
-                    <th style="width: 20%;">数量 <span class="required-mark">*</span></th>
-                    <th style="width: 20%;">単位 <span class="required-mark">*</span></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><a href="#">abc</a></td>
-                    <td>Dr's Power Rice Silica PREMIUM</td>
-                    <td>3</td>
-                    <td>箱</td>
-                </tr>
-            </tbody>
-        </table>
-        <div style="margin-top: 15px; display: flex; gap: 10px;">
-            <button class="btn-action btn-blue" style="font-size: 11px;">配送ラベル作成</button>
-            <div style="flex-grow: 1;"></div>
-            <button class="btn-action btn-teal" style="font-size: 11px;">配送情報を設定</button>
-        </div>
-    </div>
-
-    <div class="section-card" style="border-top: 1px solid #ddd;">
-        <div class="section-title">
-            <i class="fas fa-chevron-down" style="font-size: 10px; color: var(--kintone-blue);"></i>
-            <i class="fas fa-box-open" style="color: var(--kintone-blue); margin-left: 5px;"></i> 梱包・出荷情報
-        </div>
-        <div class="field-grid">
-            <div class="field-item">
-                <div class="field-label">梱包サイズID参照</div>
-                <div class="field-value-box"><a href="#">11</a></div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">配送業者</div>
-                <div class="field-value-box">yamato</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">サイズ種別</div>
-                <div class="field-value-box">80</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">パッケージ数量</div>
-                <div class="field-value-box">10</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">梱包重量（KG）</div>
-                <div class="field-value-box">5</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">送り状ステータス</div>
-                <div class="field-value-box"></div>
-            </div>
-            <div class="field-item" style="grid-column: span 2;">
-                <div class="field-label">URL</div>
-                <div class="field-value-box"><a href="#">送り状ラベル</a></div>
-            </div>
-        </div>
-    </div>
-
-    <div style="margin-top: 40px; margin-bottom: 40px;">
-        <button class="btn-action" style="background:#fff; border:1px solid #ddd; color:#666;" onclick="location.href='tasklist.html'">
-            <i class="fas fa-arrow-left"></i> タスク一覧へ戻る
-        </button>
-    </div>
-</div>
-
-<footer>
-    © 2026 Silica Link Portal. All rights reserved.
-</footer>
+    <footer>
+        © 2026 Silica Link Portal. All rights reserved.
+    </footer>
 
 </body>
 </html>
