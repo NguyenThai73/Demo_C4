@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>入金待ちを確認する | Kintone</title>
-    <link rel="stylesheet" href="style.css">
+    <title>入金待ちを確認する | Silica Link</title>
     <style>
         :root {
             --kintone-blue: #3498db;
             --kintone-header-bg: #fff;
             --kintone-body-bg: #f5f6f7;
             --kintone-border: #e3e7e8;
-            --kintone-bg-gray: #f7f9fa;
+            --kintone-status-blue: #0081cc;
+            --kintone-status-bg: #e5f3ff;
+            --kintone-rakuten-text: #bf0000;
+            --kintone-accent-yellow: #f1c40f;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,103 +25,197 @@
         }
 
         /* Top Header */
-        header { border-bottom: 2px solid var(--kintone-blue); position: sticky; top: 0; z-index: 1000; }
-        .kintone-header-top { background-color: #1f3750; color: white; height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
-        .kintone-header-sub { background-color: #444; color: white; height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+        header {
+            background-color: #fff;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 2px solid var(--kintone-blue);
+            position: sticky; top: 0; z-index: 1000;
+        }
 
-        .logo { font-weight: bold; font-size: 18px; display: flex; align-items: center; gap: 8px; }
-        .header-icons { display: flex; gap: 15px; color: #ccc; font-size: 18px; }
-        .user-profile { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-        .avatar { width: 32px; height: 32px; border-radius: 4px; background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png'); background-size: cover; border: 1px solid #fff; }
-
-        .search-input { padding: 4px 30px 4px 10px; border: none; border-radius: 2px; width: 250px; font-size: 12px; }
-
-        /* App Title Bar */
-        .app-title-bar { background-color: #fff; border-bottom: 1px solid #ddd; padding: 8px 16px; display: flex; align-items: center; gap: 10px; }
-        .app-icon { width: 32px; height: 32px; background-color: #f1c40f; color: white; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 20px; }
-        .app-name { font-size: 16px; font-weight: bold; }
-
-        .breadcrumb-bar { background-color: #fff; padding: 4px 16px; border-bottom: 1px solid #ddd; font-size: 11px; color: #3498db; }
-        .breadcrumb-bar span { color: #999; margin: 0 5px; }
-
-        /* Main Area */
-        .main-container { padding: 15px; }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .logo { font-weight: bold; color: var(--kintone-blue); font-size: 18px; display: flex; align-items: center; gap: 8px; }
         
-        /* Toolbar */
-        .control-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .view-selector { border: 1px solid #3498db; color: #3498db; background: white; padding: 6px 15px; border-radius: 2px; font-size: 13px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .icon-btn { border: 1px solid #ddd; background-color: #fff; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 2px; cursor: pointer; color: #666; }
-        .icon-plus { font-size: 24px; color: #999; }
+        .header-icons { display: flex; gap: 15px; color: #666; font-size: 18px; }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        .search-container { position: relative; }
+        .search-input {
+            padding: 6px 30px 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            width: 200px;
+            font-size: 12px;
+        }
+
+        .user-profile { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+        .avatar { width: 32px; height: 32px; border-radius: 50%; background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png'); background-size: cover; border: 1px solid #eee; }
+
+        /* Main Content */
+        .main-container { padding: 10px 20px; }
+
+        .breadcrumb { font-size: 11px; color: var(--kintone-blue); margin-bottom: 10px; }
+        .breadcrumb span { color: #999; margin: 0 5px; }
+
+        .app-title-section { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .app-icon {
+            width: 32px; height: 32px; background-color: var(--kintone-accent-yellow); border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;
+        }
+        .app-name { font-size: 18px; font-weight: bold; }
+
+        /* Control Bar */
+        .control-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .view-selector {
+            background-color: var(--kintone-blue);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .graph-btn {
+            background-color: var(--kintone-accent-yellow);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .icon-btn {
+            border: 1px solid #ccc; background-color: #f8f8f8; padding: 6px 10px; border-radius: 4px; cursor: pointer; color: #666;
+        }
 
         /* List Table View */
-        .table-card { background-color: white; border: 1px solid #ddd; border-top: 3px solid #f1c40f; border-radius: 2px; overflow: hidden; }
-        .k-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        .k-table th { background-color: #f7f9fa; border-bottom: 2px solid #ddd; border-right: 1px solid #eee; padding: 10px; text-align: left; color: #666; font-weight: bold; }
-        .k-table td { border-bottom: 1px solid #eee; border-right: 1px solid #f9f9f9; padding: 12px 10px; vertical-align: middle; }
-        .k-table tr:hover { background-color: #fffdeb; }
+        .list-card {
+            background-color: white;
+            border: 1px solid var(--kintone-border);
+            border-radius: 2px;
+            overflow: hidden;
+            border-top: 3px solid var(--kintone-accent-yellow);
+        }
 
-        /* Status Badges */
-        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; border: 2px solid transparent; }
-        .status-ready { border-color: #f39c12; color: #f39c12; }
-        .status-unpaid { border-color: #e74c3c; color: #e74c3c; }
+        .k-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .k-table th {
+            background-color: #f7f9fa;
+            border: 1px solid #e3e7e8;
+            padding: 8px;
+            text-align: left;
+            font-weight: bold;
+            color: #666;
+        }
+        .k-table td { border: 1px solid #e3e7e8; padding: 12px 8px; background-color: #fff; vertical-align: middle; }
+
+        .badge-waiting {
+            background-color: #fff3e0;
+            color: #ef6c00;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            border: 1px solid #ffe0b2;
+        }
+
+        .badge-unpaid {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            border: 1px solid #ffcdd2;
+        }
+
+        .action-cell { text-align: right; white-space: nowrap; }
+        .action-icon {
+            cursor: pointer; font-size: 14px; margin-left: 8px; color: #3498db;
+        }
+        .action-icon.delete { color: #e74c3c; }
 
         .link-text { color: var(--kintone-blue); text-decoration: none; font-weight: bold; }
         .link-text:hover { text-decoration: underline; }
 
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding-bottom: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+        .page-btn {
+            border: 1px solid #ccc; background-color: #fff; padding: 4px 10px; border-radius: 4px; cursor: pointer;
+        }
+        .page-btn:disabled { color: #ccc; cursor: default; }
+
+        /* Alignment Helpers */
         .text-right { text-align: right !important; }
         .text-center { text-align: center !important; }
+        .text-left { text-align: left !important; }
 
-        .action-btns { display: flex; gap: 10px; color: #3498db; font-size: 16px; justify-content: flex-end; }
-        .action-btns span { cursor: pointer; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="kintone-header-top">
+    <div class="header-left">
         <div class="logo">kintone</div>
-        <div class="user-profile">
-            <span style="font-size: 18px; margin-right: 10px;">✉</span>
-            <div class="avatar"></div>
-            <span>Administrator</span>
-            <span>▼</span>
+        <div class="header-icons">
+            <span>🏠</span> <span>🔔</span> <span>⭐</span>
         </div>
     </div>
-    <div class="kintone-header-sub">
-        <div class="header-icons">
-            <span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span>
-        </div>
-        <div style="position: relative; display: flex; align-items: center;">
+    <div class="header-right">
+        <div class="search-container">
             <input type="text" class="search-input" placeholder="アプリ内検索">
-            <span style="position: absolute; right: 8px; color: #999;">🔍</span>
+        </div>
+        <div class="user-profile">
+            <span>Administrator</span>
+            <div class="avatar"></div>
         </div>
     </div>
 </header>
 
-<div class="app-title-bar">
-    <div class="app-icon" style="background-color: #f1c40f;">💰</div>
-    <div class="app-name">入金待ちを確認する</div>
-</div>
-
-<div class="breadcrumb-bar">
-    🏠 <span>/</span> アプリ: 入金待ちを確認する
-</div>
-
 <div class="main-container">
-    <div class="control-bar">
-        <div class="view-selector" style="border-color: #f1c40f; color: #f1c40f;">
-            <span>💰</span> <strong>入金待ち一覧</strong> <span>▼</span>
-        </div>
-        <div class="icon-btn" style="background-color: #f1c40f; border-color: #f1c40f; color: white;">📈</div>
-        <div class="icon-btn">🔍</div>
-        <div class="icon-btn">📊</div>
-        <div style="flex-grow: 1;"></div>
-        <div class="icon-btn" style="background-color: #f5f5f5;"><span class="icon-plus">+</span></div>
-        <div class="icon-btn">⚙ <span>▼</span></div>
-        <div class="icon-btn">⋮</div>
+    <div class="breadcrumb">🏠 <span>/</span> アプリ: 入金待ちを確認する</div>
+
+    <div class="app-title-section">
+        <div class="app-icon" style="background-color: #f1c40f;">💰</div>
+        <div class="app-name">入金待ちを確認する</div>
     </div>
 
-    <div class="table-card">
+    <div class="control-bar">
+        <button class="view-selector" style="background-color: #f1c40f;">💰 入金待ち一覧 <span style="font-size: 10px;">▼</span></button>
+        <button class="graph-btn">📊 <span style="font-size: 10px;">▼</span></button>
+        <button class="icon-btn">🔍</button>
+        <button class="icon-btn">📈</button>
+        <div style="flex-grow: 1;"></div>
+        <button class="icon-btn" style="background-color: #fff; border: 1px solid #ccc; font-size: 18px; color: #999;">+</button>
+        <button class="icon-btn">⚙ <span style="font-size: 10px;">▼</span></button>
+        <button class="icon-btn">⋮</button>
+    </div>
+
+    <div class="list-card">
         <table class="k-table">
             <thead>
                 <tr>
@@ -133,7 +229,7 @@
                     <th class="text-center">PDF送付状況</th>
                     <th class="text-center">入金ステータス</th>
                     <th>関連注文</th>
-                    <th class="text-right">操作</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -145,14 +241,12 @@
                     <td></td>
                     <td>2026-03-31</td>
                     <td>---</td>
-                    <td class="text-center"><span class="badge status-ready">PDF送付発行</span></td>
-                    <td class="text-center"><span class="badge status-unpaid">入金待ち</span></td>
+                    <td class="text-center"><span class="badge-waiting">PDF送付発行</span></td>
+                    <td class="text-center"><span class="badge-unpaid">入金待ち</span></td>
                     <td><a href="#" class="link-text">343</a></td>
-                    <td>
-                        <div class="action-btns">
-                            <span>✎</span>
-                            <span style="color: #e74c3c;">✖</span>
-                        </div>
+                    <td class="action-cell">
+                        <span class="action-icon">✎</span>
+                        <span class="action-icon delete">✖</span>
                     </td>
                 </tr>
                 <tr>
@@ -163,14 +257,12 @@
                     <td></td>
                     <td>2026-03-31</td>
                     <td>---</td>
-                    <td class="text-center"><span class="badge status-ready">PDF送付発行</span></td>
-                    <td class="text-center"><span class="badge status-unpaid">入金待ち</span></td>
+                    <td class="text-center"><span class="badge-waiting">PDF送付発行</span></td>
+                    <td class="text-center"><span class="badge-unpaid">入金待ち</span></td>
                     <td><a href="#" class="link-text">338</a></td>
-                    <td>
-                        <div class="action-btns">
-                            <span>✎</span>
-                            <span style="color: #e74c3c;">✖</span>
-                        </div>
+                    <td class="action-cell">
+                        <span class="action-icon">✎</span>
+                        <span class="action-icon delete">✖</span>
                     </td>
                 </tr>
                 <tr>
@@ -181,29 +273,29 @@
                     <td>VA-8815</td>
                     <td>2026-03-28</td>
                     <td>---</td>
-                    <td class="text-center"><span class="badge status-ready">PDF送付発行</span></td>
-                    <td class="text-center"><span class="badge status-unpaid">入金待ち</span></td>
+                    <td class="text-center"><span class="badge-waiting">PDF送付発行</span></td>
+                    <td class="text-center"><span class="badge-unpaid">入金待ち</span></td>
                     <td><a href="#" class="link-text">317</a></td>
-                    <td>
-                        <div class="action-btns">
-                            <span>✎</span>
-                            <span style="color: #e74c3c;">✖</span>
-                        </div>
+                    <td class="action-cell">
+                        <span class="action-icon">✎</span>
+                        <span class="action-icon delete">✖</span>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div style="display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 12px; padding: 20px 0; color: #666;">
-        <button style="border: 1px solid #ddd; background: white; padding: 6px 15px; border-radius: 4px; cursor: pointer; color: #666;">⏮ 最初</button>
-        <button style="border: 1px solid #ddd; background: white; padding: 6px 15px; border-radius: 4px; cursor: pointer; color: #666;">◀ 前へ</button>
-        <div style="display: flex; align-items: center; gap: 4px; font-weight: bold;">
-            ページ <strong>1</strong> / 1
-            <span style="color: #999; font-weight: normal; margin-left: 5px;">(全 3 件)</span>
-        </div>
-        <button style="border: 1px solid #ddd; background: white; padding: 6px 15px; border-radius: 4px; cursor: pointer; color: #666;">次へ ▶</button>
-        <button style="border: 1px solid #ddd; background: white; padding: 6px 15px; border-radius: 4px; cursor: pointer; color: #666;">最後 ⏭</button>
+    <div class="pagination">
+        <button class="page-btn" disabled>⏮ 最初</button>
+        <button class="page-btn" disabled>◀ 前へ</button>
+        <span>ページ <strong>1 / 1</strong> (全 <strong>3</strong> 件)</span>
+        <button class="page-btn" disabled>次へ ▶</button>
+        <button class="page-btn" disabled>最後 ⏭</button>
+        <select style="margin-left: 10px; padding: 4px;">
+            <option>10件/ページ</option>
+            <option>20件/ページ</option>
+            <option>50件/ページ</option>
+        </select>
     </div>
 </div>
 
