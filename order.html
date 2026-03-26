@@ -28,108 +28,234 @@
             overflow: hidden;
         }
 
-        .top-bar {
-            padding: 8px 24px;
-            font-size: 13px;
-            color: #aaa;
-            flex-shrink: 0;
-        }
-
         .main-wrapper {
             flex: 1;
             display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding: 0;
+            flex-direction: column;
             overflow: hidden;
+        }
+
+        /* --- Context info bar --- */
+        .context-bar {
+            background: #2d3a2e;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 36px;
+            font-size: 13px;
+            border-radius: 12px 12px 0 0;
+            flex-shrink: 0;
+        }
+
+        .context-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .context-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .context-label {
+            color: rgba(255,255,255,0.6);
+            font-weight: 400;
+        }
+
+        .context-value {
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .context-divider {
+            width: 1px;
+            height: 16px;
+            background: rgba(255,255,255,0.25);
+        }
+
+        .context-date {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
         }
 
         .container {
             background: #fff;
             width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            padding: 28px 40px 32px;
+            flex: 1;
+            border-radius: 0 0 12px 12px;
+            padding: 16px 36px 20px;
             border: 2px solid #e0e0e0;
-            overflow-y: auto;
+            border-top: none;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* --- Header --- */
         .header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
+            align-items: center;
+            margin-bottom: 2px;
         }
 
         .page-title {
-            font-size: 26px;
+            font-size: 20px;
             font-weight: 800;
             color: #1a1a1a;
         }
 
-        .date-label {
-            font-size: 14px;
-            color: #666;
-            margin-top: 6px;
-        }
-
         .page-subtitle {
-            font-size: 14px;
+            font-size: 12px;
             color: #555;
-            margin-bottom: 24px;
+            margin-bottom: 14px;
         }
 
+        /* --- Section label --- */
         .section-label {
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 700;
             color: #1a1a1a;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
-        .guest-select {
-            width: 240px;
-            padding: 12px 14px;
+        /* --- Guest quick-select --- */
+        .guest-section {
+            margin-bottom: 50px;
+        }
+
+        .guest-row {
+            display: flex;
+            gap: 28px;
+            align-items: flex-end;
+        }
+
+        .guest-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .guest-group-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .guest-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .guest-btn {
+            width: 42px;
+            height: 42px;
             border: 1.5px solid #ccc;
             border-radius: 8px;
-            font-size: 15px;
-            color: #1a1a1a;
             background: #fff;
-            appearance: none;
-            outline: none;
+            font-size: 15px;
+            font-weight: 700;
+            color: #333;
             cursor: pointer;
-            margin-bottom: 32px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
+        .guest-btn:hover {
+            border-color: #333;
+            background: #f5f5f5;
+        }
+
+        .guest-btn.selected {
+            background: #2d3a2e;
+            color: #fff;
+            border-color: #2d3a2e;
+        }
+
+        .guest-btn-plus {
+            font-size: 12px;
+        }
+
+        .guest-custom {
+            display: none;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .guest-custom.visible {
+            display: flex;
+        }
+
+        .guest-custom input {
+            width: 52px;
+            padding: 6px 8px;
+            border: 1.5px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: center;
+            outline: none;
+        }
+
+        .guest-custom input:focus {
+            border-color: #2d3a2e;
+        }
+
+        .guest-custom span {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .guest-summary {
+            font-size: 12px;
+            color: #2d3a2e;
+            font-weight: 600;
+            padding: 6px 12px;
+            background: #f0f4f0;
+            border-radius: 6px;
+            align-self: flex-end;
+            margin-bottom: 4px;
+            white-space: nowrap;
+        }
+
+        /* --- Middle: Language + Order Mode side by side --- */
         .bottom-section {
             display: flex;
-            gap: 48px;
-            margin-bottom: 32px;
+            gap: 32px;
+            margin-bottom: 16px;
+            flex: 1;
+            min-height: 0;
         }
 
         .language-section {
             flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .order-mode-section {
             flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .lang-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
             margin-top: 4px;
         }
 
         .lang-btn {
-            padding: 12px 32px;
+            padding: 10px 28px;
             border: 1.5px solid #ccc;
             border-radius: 8px;
             background: #fff;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #333;
             cursor: pointer;
@@ -150,16 +276,16 @@
         .mode-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
             margin-top: 4px;
         }
 
         .mode-btn {
-            padding: 18px 24px;
+            padding: 14px 20px;
             border: 1.5px solid #ccc;
             border-radius: 8px;
             background: #fff;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: #333;
             cursor: pointer;
@@ -178,15 +304,16 @@
         }
 
         .mode-note {
-            font-size: 13px;
+            font-size: 11px;
             color: #777;
-            margin-top: 12px;
+            margin-top: 8px;
             text-align: center;
         }
 
+        /* --- Start button pinned at bottom --- */
         .start-btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: #2d3a2e;
             color: #fff;
             border: none;
@@ -195,6 +322,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
+            flex-shrink: 0;
         }
 
         .start-btn:hover {
@@ -205,26 +333,69 @@
 <body>
     <div class="ipad-frame">
     <div class="main-wrapper">
+        <div class="context-bar">
+            <div class="context-left">
+                <div class="context-item">
+                    <span class="context-label">卓番:</span>
+                    <span class="context-value" id="ctxTable">T-01, T-02</span>
+                </div>
+                <div class="context-divider"></div>
+                <div class="context-item">
+                    <span class="context-label">端末:</span>
+                    <span class="context-value" id="ctxTerminal">iPad-03</span>
+                </div>
+                <div class="context-divider"></div>
+                <div class="context-item">
+                    <span class="context-label">受付番号:</span>
+                    <span class="context-value" id="ctxReception">#0042</span>
+                </div>
+            </div>
+            <div class="context-date" id="ctxDate"></div>
+        </div>
         <div class="container">
             <div class="header">
                 <div class="page-title">テーブル起動 / Start Ordering</div>
-                <div class="date-label">20250911</div>
             </div>
-            <div class="page-subtitle">受付番号を入力・人数・言語・注文モードを選択</div>
+            <div class="page-subtitle">人数・言語・注文モードを選択してください</div>
 
-            <div class="section-label">ご来店人数 / Number of Guests</div>
-            <select class="guest-select">
-                <option value="1">1</option>
-                <option value="2" selected>2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-            </select>
+            <div class="guest-section">
+                <div class="section-label">ご来店人数 / Number of Guests</div>
+                <div class="guest-row">
+                    <div class="guest-group">
+                        <div class="guest-group-label">大人 / Adults</div>
+                        <div class="guest-btns" id="adultBtns">
+                            <button class="guest-btn" onclick="selectGuest('adult', 1, this)">1</button>
+                            <button class="guest-btn selected" onclick="selectGuest('adult', 2, this)">2</button>
+                            <button class="guest-btn" onclick="selectGuest('adult', 3, this)">3</button>
+                            <button class="guest-btn" onclick="selectGuest('adult', 4, this)">4</button>
+                            <button class="guest-btn" onclick="selectGuest('adult', '5+', this)"><span class="guest-btn-plus">5+</span></button>
+                        </div>
+                        <div class="guest-custom" id="adultCustom">
+                            <input type="number" id="adultCustomInput" min="5" value="5" onchange="updateSummary()" oninput="updateSummary()">
+                            <span>名</span>
+                        </div>
+                    </div>
+                    <div class="guest-group">
+                        <div class="guest-group-label">子供 / Children</div>
+                        <div class="guest-btns" id="childBtns">
+                            <button class="guest-btn selected" onclick="selectGuest('child', 0, this)">0</button>
+                            <button class="guest-btn" onclick="selectGuest('child', 1, this)">1</button>
+                            <button class="guest-btn" onclick="selectGuest('child', 2, this)">2</button>
+                            <button class="guest-btn" onclick="selectGuest('child', 3, this)">3</button>
+                            <button class="guest-btn" onclick="selectGuest('child', '4+', this)"><span class="guest-btn-plus">4+</span></button>
+                        </div>
+                        <div class="guest-custom" id="childCustom">
+                            <input type="number" id="childCustomInput" min="4" value="4" onchange="updateSummary()" oninput="updateSummary()">
+                            <span>名</span>
+                        </div>
+                    </div>
+                    <div class="guest-summary" id="guestSummary">合計: 大人 2名 / 子供 0名 → 2名様</div>
+                </div>
+            </div>
 
             <div class="bottom-section">
                 <div class="language-section">
-                    <div class="section-label">表示言語/ Language</div>
+                    <div class="section-label">表示言語 / Language</div>
                     <div class="lang-grid">
                         <button class="lang-btn selected" onclick="selectLang(this)">日本語</button>
                         <button class="lang-btn" onclick="selectLang(this)">English</button>
@@ -242,12 +413,63 @@
                 </div>
             </div>
 
-            <button class="start-btn" onclick="startOrder()">Start</button>
+            <button class="start-btn" onclick="startOrder()">この設定で注文開始</button>
         </div>
     </div>
     </div>
 
     <script>
+        let adultCount = 2;
+        let childCount = 0;
+        let adultIsCustom = false;
+        let childIsCustom = false;
+
+        function selectGuest(type, value, btn) {
+            const isCustom = (value === '5+' || value === '4+');
+            const containerId = type === 'adult' ? 'adultBtns' : 'childBtns';
+            const customId = type === 'adult' ? 'adultCustom' : 'childCustom';
+            const customInputId = type === 'adult' ? 'adultCustomInput' : 'childCustomInput';
+
+            document.querySelectorAll(`#${containerId} .guest-btn`).forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+
+            const customEl = document.getElementById(customId);
+            if (isCustom) {
+                customEl.classList.add('visible');
+                document.getElementById(customInputId).focus();
+                if (type === 'adult') {
+                    adultIsCustom = true;
+                    adultCount = parseInt(document.getElementById(customInputId).value) || 5;
+                } else {
+                    childIsCustom = true;
+                    childCount = parseInt(document.getElementById(customInputId).value) || 4;
+                }
+            } else {
+                customEl.classList.remove('visible');
+                if (type === 'adult') {
+                    adultIsCustom = false;
+                    adultCount = value;
+                } else {
+                    childIsCustom = false;
+                    childCount = value;
+                }
+            }
+
+            updateSummary();
+        }
+
+        function updateSummary() {
+            if (adultIsCustom) {
+                adultCount = parseInt(document.getElementById('adultCustomInput').value) || 0;
+            }
+            if (childIsCustom) {
+                childCount = parseInt(document.getElementById('childCustomInput').value) || 0;
+            }
+            const total = adultCount + childCount;
+            const summary = document.getElementById('guestSummary');
+            summary.textContent = `合計: 大人 ${adultCount}名 / 子供 ${childCount}名 → ${total}名様`;
+        }
+
         function selectLang(btn) {
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
@@ -260,12 +482,54 @@
 
         function startOrder() {
             const selectedMode = document.querySelector('.mode-btn.selected');
-            if (selectedMode && selectedMode.textContent.includes('AI')) {
+            const isAI = selectedMode && selectedMode.textContent.includes('AI');
+            const selectedLang = document.querySelector('.lang-btn.selected');
+
+            // Save session to localStorage
+            const session = {
+                tables: JSON.parse(localStorage.getItem('selectedTables') || '[]'),
+                adults: adultCount,
+                children: childCount,
+                totalGuests: adultCount + childCount,
+                language: selectedLang ? selectedLang.textContent : '日本語',
+                orderMode: isAI ? 'ai' : 'manual',
+                terminal: localStorage.getItem('terminalId') || 'iPad-03',
+                reception: localStorage.getItem('receptionNo') || '0042',
+                startedAt: new Date().toISOString()
+            };
+            localStorage.setItem('currentSession', JSON.stringify(session));
+
+            if (isAI) {
+                sessionStorage.setItem('showAiWelcome', 'yes');
                 window.location.href = 'menu_ai.html';
             } else {
                 window.location.href = 'menu.html';
             }
         }
+
+        // --- Context bar: read from localStorage ---
+        (function initContext() {
+            // Date
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('ctxDate').textContent = `${y}/${m}/${d} ${hh}:${mm}`;
+
+            // Tables from localStorage (saved by dashboard)
+            const tables = JSON.parse(localStorage.getItem('selectedTables') || '[]');
+            if (tables.length > 0) {
+                document.getElementById('ctxTable').textContent = tables.join(', ');
+            }
+
+            // Terminal / Reception from localStorage
+            const terminal = localStorage.getItem('terminalId') || 'iPad-03';
+            const reception = localStorage.getItem('receptionNo') || '0042';
+            document.getElementById('ctxTerminal').textContent = terminal;
+            document.getElementById('ctxReception').textContent = '#' + reception;
+        })();
     </script>
 </body>
 </html>

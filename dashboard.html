@@ -66,43 +66,91 @@
             display: block;
         }
 
-        .select-wrapper {
+        .input-wrapper {
             position: relative;
             margin-bottom: 16px;
         }
 
-        .select-wrapper select {
+        .input-wrapper input {
             width: 100%;
             padding: 14px 16px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
-            color: #999;
+            color: #333;
             background: #fff;
-            appearance: none;
             outline: none;
-            cursor: pointer;
         }
 
-        .select-wrapper select:focus {
+        .input-wrapper input::placeholder {
+            color: #999;
+        }
+
+        .input-wrapper input:focus {
             border-color: #2d3a2e;
         }
 
-        .select-arrow {
+        .search-icon {
             position: absolute;
-            right: 16px;
+            right: 14px;
             top: 50%;
             transform: translateY(-50%);
-            pointer-events: none;
-            font-size: 12px;
             color: #999;
+            font-size: 16px;
+            pointer-events: none;
         }
 
-        .table-grid {
+        /* 状態凡例 */
+        .table-legend {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .legend-swatch {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .legend-swatch.empty    { background: #fff; }
+        .legend-swatch.selected { background: #8B6914; border-color: #8B6914; }
+        .legend-swatch.occupied { background: #fce4e4; border-color: #fca5a5; }
+
+        /* Carousel wrapper */
+        .carousel-wrapper {
+            position: relative;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.3s ease;
+            cursor: grab;
+        }
+
+        .carousel-track.dragging {
+            transition: none;
+            cursor: grabbing;
+        }
+
+        .carousel-page {
+            min-width: 100%;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
-            margin-bottom: 24px;
+            padding: 2px;
         }
 
         .table-btn {
@@ -116,23 +164,85 @@
             cursor: pointer;
             transition: all 0.15s;
             text-align: center;
+            user-select: none;
         }
 
         .table-btn:hover {
-            border-color: #2d3a2e;
+            border-color: #8B6914;
             background: #f5f5f5;
         }
 
+        /* 選択中 — 茶色 */
         .table-btn.selected {
-            background: #1a1a1a;
+            background: #8B6914;
             color: #fff;
-            border-color: #1a1a1a;
+            border-color: #8B6914;
         }
 
-        .table-btn.active {
+        /* 利用中 — 赤 */
+        .table-btn.occupied {
             background: #fce4e4;
             color: #e53e3e;
             border-color: #fca5a5;
+        }
+
+        /* 利用中 + 選択中 — 赤ベース＋茶色ボーダー */
+        .table-btn.occupied.selected {
+            background: #e53e3e;
+            color: #fff;
+            border-color: #8B6914;
+            box-shadow: 0 0 0 3px #8B6914;
+        }
+
+        /* Pagination dots */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            min-height: 18px;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ddd;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .carousel-dot.active {
+            background: #8B6914;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* No results */
+        .no-results {
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            padding: 24px 0;
+            display: none;
+        }
+
+        /* 選択中テーブル表示バー */
+        .selection-bar {
+            background: #f7f3e8;
+            border: 1px solid #d4b858;
+            border-radius: 8px;
+            padding: 10px 16px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #6b5a1e;
+            display: none;
+        }
+
+        .selection-bar.visible {
+            display: block;
         }
 
         .start-btn {
@@ -216,34 +326,29 @@
         <div class="page-title">テーブルセッション開始</div>
         <div class="page-subtitle">テーブル番号を入力してください</div>
 
-        <label class="form-label">テーブル番号</label>
-        <div class="select-wrapper">
-            <select id="tableSelect" onchange="selectTable(this.value)">
-                <option value="">例:T-01</option>
-                <option value="T-01">T-01</option>
-                <option value="T-02">T-02</option>
-                <option value="T-03">T-03</option>
-                <option value="T-04">T-04</option>
-                <option value="T-05">T-05</option>
-                <option value="T-06">T-06</option>
-                <option value="T-07">T-07</option>
-                <option value="T-08">T-08</option>
-            </select>
-            <span class="select-arrow">&#9662;</span>
+        <label class="form-label">テーブル番号（複数選択可）</label>
+        <div class="input-wrapper">
+            <input type="text" id="tableInput" placeholder="テーブル検索　例: T-01">
+            <span class="search-icon">&#128269;</span>
         </div>
 
-        <div class="table-grid">
-            <button class="table-btn selected" onclick="clickTable(this, 'T-01')">T-01</button>
-            <button class="table-btn" onclick="clickTable(this, 'T-02')">T-02</button>
-            <button class="table-btn active" onclick="clickTable(this, 'T-03')">T-03</button>
-            <button class="table-btn" onclick="clickTable(this, 'T-04')">T-04</button>
-            <button class="table-btn" onclick="clickTable(this, 'T-05')">T-05</button>
-            <button class="table-btn active" onclick="clickTable(this, 'T-06')">T-06</button>
-            <button class="table-btn" onclick="clickTable(this, 'T-07')">T-07</button>
-            <button class="table-btn" onclick="clickTable(this, 'T-08')">T-08</button>
+        <div class="table-legend">
+            <div class="legend-item"><span class="legend-swatch empty"></span>空席</div>
+            <div class="legend-item"><span class="legend-swatch selected"></span>選択中</div>
+            <div class="legend-item"><span class="legend-swatch occupied"></span>利用中</div>
         </div>
 
-        <button class="start-btn" onclick="window.location.href='order.html'">Start</button>
+        <div class="carousel-wrapper" id="carouselWrapper">
+            <div class="carousel-track" id="carouselTrack"></div>
+        </div>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <div class="no-results" id="noResults">該当するテーブルが見つかりません</div>
+
+        <div id="selectionBar" class="selection-bar">
+            選択中: <span id="selectionText"></span>
+        </div>
+
+        <button class="start-btn">このテーブルで受付開始</button>
 
         <div class="active-section-title">現在のアクティブテーブル</div>
         <div class="active-table-list">
@@ -263,33 +368,200 @@
                 </div>
                 <span class="active-table-time">15:45 開始</span>
             </div>
+            <div class="active-table-item">
+                <div class="active-table-left">
+                    <span class="green-dot"></span>
+                    <span class="active-table-name">T-11</span>
+                    <span class="active-table-guests">6名様</span>
+                </div>
+                <span class="active-table-time">16:10 開始</span>
+            </div>
         </div>
     </div>
 
     <script>
-        const activeTables = ['T-03', 'T-06'];
+        // --- Data ---
+        const allTables = [
+            'T-01','T-02','T-03','T-04','T-05','T-06','T-07','T-08',
+            'T-09','T-10','T-11','T-12','T-13','T-14','T-15','T-16',
+            'T-17','T-18','T-19','T-20'
+        ];
+        const occupiedTables = ['T-03', 'T-06', 'T-11'];
+        const selectedTables = new Set();
+        const ITEMS_PER_PAGE = 8; // 4 columns x 2 rows
 
+        let currentPage = 0;
+        let filteredTables = [...allTables];
+
+        // --- Render ---
+        function renderCarousel() {
+            const track = document.getElementById('carouselTrack');
+            const dots = document.getElementById('carouselDots');
+            const noResults = document.getElementById('noResults');
+
+            const totalPages = Math.ceil(filteredTables.length / ITEMS_PER_PAGE);
+
+            if (filteredTables.length === 0) {
+                track.innerHTML = '';
+                dots.innerHTML = '';
+                noResults.style.display = 'block';
+                return;
+            }
+            noResults.style.display = 'none';
+
+            // Clamp current page
+            if (currentPage >= totalPages) currentPage = totalPages - 1;
+            if (currentPage < 0) currentPage = 0;
+
+            // Build pages
+            let pagesHTML = '';
+            for (let p = 0; p < totalPages; p++) {
+                const start = p * ITEMS_PER_PAGE;
+                const pageTables = filteredTables.slice(start, start + ITEMS_PER_PAGE);
+                let btns = '';
+                for (const t of pageTables) {
+                    const isOccupied = occupiedTables.includes(t);
+                    const isSelected = selectedTables.has(t);
+                    let cls = 'table-btn';
+                    if (isOccupied) cls += ' occupied';
+                    if (isSelected) cls += ' selected';
+                    btns += `<button class="${cls}" data-table="${t}" onclick="clickTable(this,'${t}')">${t}</button>`;
+                }
+                pagesHTML += `<div class="carousel-page">${btns}</div>`;
+            }
+            track.innerHTML = pagesHTML;
+            track.style.transform = `translateX(-${currentPage * 100}%)`;
+
+            // Build dots
+            let dotsHTML = '';
+            for (let p = 0; p < totalPages; p++) {
+                dotsHTML += `<button class="carousel-dot${p === currentPage ? ' active' : ''}" onclick="goToPage(${p})"></button>`;
+            }
+            dots.innerHTML = dotsHTML;
+        }
+
+        function goToPage(p) {
+            currentPage = p;
+            const track = document.getElementById('carouselTrack');
+            track.style.transform = `translateX(-${currentPage * 100}%)`;
+            updateDots();
+        }
+
+        function updateDots() {
+            document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentPage);
+            });
+        }
+
+        // --- Table click ---
         function clickTable(btn, tableId) {
-            if (activeTables.includes(tableId)) return;
-            document.querySelectorAll('.table-btn').forEach(b => {
-                if (!activeTables.includes(b.textContent)) {
-                    b.classList.remove('selected');
-                }
-            });
-            btn.classList.add('selected');
-            document.getElementById('tableSelect').value = tableId;
+            if (selectedTables.has(tableId)) {
+                selectedTables.delete(tableId);
+                btn.classList.remove('selected');
+            } else {
+                selectedTables.add(tableId);
+                btn.classList.add('selected');
+            }
+            updateSelectionBar();
         }
 
-        function selectTable(val) {
-            document.querySelectorAll('.table-btn').forEach(b => {
-                if (!activeTables.includes(b.textContent)) {
-                    b.classList.remove('selected');
-                }
-                if (b.textContent === val && !activeTables.includes(val)) {
-                    b.classList.add('selected');
-                }
-            });
+        // --- Selection bar ---
+        function updateSelectionBar() {
+            const bar = document.getElementById('selectionBar');
+            const text = document.getElementById('selectionText');
+            if (selectedTables.size === 0) {
+                bar.classList.remove('visible');
+                return;
+            }
+            const sorted = Array.from(selectedTables).sort();
+            text.textContent = sorted.join(', ');
+            bar.classList.add('visible');
         }
+
+        // --- Filter / Search ---
+        document.getElementById('tableInput').addEventListener('input', function () {
+            const q = this.value.trim().toUpperCase();
+            if (q === '') {
+                filteredTables = [...allTables];
+            } else {
+                filteredTables = allTables.filter(t => t.includes(q));
+            }
+            currentPage = 0;
+            renderCarousel();
+        });
+
+        // --- Swipe / Drag ---
+        (function initSwipe() {
+            const track = document.getElementById('carouselTrack');
+            let startX = 0, currentX = 0, isDragging = false;
+
+            function onStart(x) {
+                isDragging = true;
+                startX = x;
+                currentX = x;
+                track.classList.add('dragging');
+            }
+            function onMove(x) {
+                if (!isDragging) return;
+                currentX = x;
+                const diff = currentX - startX;
+                const base = -currentPage * 100;
+                const wrapper = document.getElementById('carouselWrapper');
+                const pct = (diff / wrapper.offsetWidth) * 100;
+                track.style.transform = `translateX(${base + pct}%)`;
+            }
+            function onEnd() {
+                if (!isDragging) return;
+                isDragging = false;
+                track.classList.remove('dragging');
+                const diff = currentX - startX;
+                const wrapper = document.getElementById('carouselWrapper');
+                const totalPages = Math.ceil(filteredTables.length / ITEMS_PER_PAGE);
+                if (diff < -50 && currentPage < totalPages - 1) {
+                    currentPage++;
+                } else if (diff > 50 && currentPage > 0) {
+                    currentPage--;
+                }
+                track.style.transform = `translateX(-${currentPage * 100}%)`;
+                updateDots();
+            }
+
+            // Mouse events
+            track.addEventListener('mousedown', e => { e.preventDefault(); onStart(e.clientX); });
+            window.addEventListener('mousemove', e => onMove(e.clientX));
+            window.addEventListener('mouseup', () => onEnd());
+
+            // Touch events
+            track.addEventListener('touchstart', e => onStart(e.touches[0].clientX), { passive: true });
+            track.addEventListener('touchmove', e => onMove(e.touches[0].clientX), { passive: true });
+            track.addEventListener('touchend', () => onEnd());
+        })();
+
+        // --- Start button ---
+        document.querySelector('.start-btn').addEventListener('click', function (e) {
+            e.preventDefault();
+            if (selectedTables.size === 0) {
+                alert('テーブルを選択してください。');
+                return;
+            }
+            const occupiedSelected = Array.from(selectedTables).filter(t => occupiedTables.includes(t));
+            if (occupiedSelected.length > 0) {
+                const msg = '以下のテーブルは現在利用中です:\n'
+                    + occupiedSelected.join(', ')
+                    + '\n\nテーブルを合席してもよろしいですか？';
+                if (!confirm(msg)) return;
+            }
+
+            // Save to localStorage
+            const sorted = Array.from(selectedTables).sort();
+            localStorage.setItem('selectedTables', JSON.stringify(sorted));
+            localStorage.setItem('occupiedInSelection', JSON.stringify(occupiedSelected));
+
+            window.location.href = 'order.html';
+        });
+
+        // --- Init ---
+        renderCarousel();
     </script>
 </body>
 </html>

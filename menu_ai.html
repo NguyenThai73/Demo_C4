@@ -149,7 +149,7 @@
         }
 
         .menu-card-body {
-            padding: 12px 14px 14px;
+            padding: 12px 14px 16px;
         }
 
         .menu-card-name {
@@ -157,9 +157,30 @@
             font-weight: 600;
             color: #1a1a1a;
             line-height: 1.4;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             min-height: 36px;
         }
+
+        .menu-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .menu-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 4px;
+            line-height: 1.5;
+        }
+
+        .menu-tag.reason  { background: #eff6ff; color: #2563eb; }
+        .menu-tag.taste   { background: #f0fdf4; color: #16a34a; }
+        .menu-tag.popular { background: #fef3c7; color: #b45309; }
+        .menu-tag.healthy { background: #fdf2f8; color: #db2777; }
 
         .menu-card-footer {
             display: flex;
@@ -588,10 +609,212 @@
             height: 28px;
             fill: currentColor;
         }
+
+        /* ===== AI Welcome Overlay ===== */
+        .welcome-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #1e2a3a 0%, #2d3a2e 100%);
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .welcome-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .welcome-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 32px 36px 28px;
+            width: 560px;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+
+        .welcome-ai-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(59,130,246,0.3);
+        }
+
+        .welcome-ai-icon svg {
+            width: 36px;
+            height: 36px;
+            fill: #fff;
+        }
+
+        .welcome-greeting {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+        }
+
+        .welcome-sub {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .welcome-question {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 14px;
+        }
+
+        .prompt-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .prompt-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 16px;
+            background: #f8f7f4;
+            border: 1.5px solid #e0dcd4;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: left;
+        }
+
+        .prompt-chip:hover {
+            border-color: #3b82f6;
+            background: #f0f7ff;
+        }
+
+        .prompt-chip.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            color: #1a5dc7;
+        }
+
+        .prompt-chip .chip-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .welcome-or {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 14px;
+        }
+
+        .welcome-free-input {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-free-input input {
+            flex: 1;
+            padding: 12px 14px;
+            border: 1.5px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            color: #333;
+        }
+
+        .welcome-free-input input::placeholder {
+            color: #aaa;
+        }
+
+        .welcome-free-input input:focus {
+            border-color: #3b82f6;
+        }
+
+        .welcome-free-input button {
+            padding: 12px 18px;
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .welcome-free-input button:hover {
+            background: #2563eb;
+        }
+
+        .welcome-skip {
+            font-size: 13px;
+            color: #999;
+            cursor: pointer;
+            border: none;
+            background: none;
+            text-decoration: underline;
+        }
+
+        .welcome-skip:hover {
+            color: #666;
+        }
     </style>
 </head>
 <body>
     <div class="ipad-frame" style="position:relative;">
+
+    <!-- AI Welcome Overlay -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-card">
+            <div class="welcome-ai-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+            </div>
+            <div class="welcome-greeting">いらっしゃいませ！</div>
+            <div class="welcome-sub">AIアシスタントがご注文をお手伝いします</div>
+
+            <div class="welcome-question">今日はどんな気分ですか？</div>
+            <div class="prompt-grid">
+                <button class="prompt-chip" onclick="selectPrompt(this, 'さっぱりしたものが食べたい')">
+                    <span class="chip-icon">🍃</span>さっぱりしたものが食べたい
+                </button>
+                <button class="prompt-chip" onclick="selectPrompt(this, 'がっつり食べたい気分です')">
+                    <span class="chip-icon">🥩</span>がっつり食べたい気分です
+                </button>
+                <button class="prompt-chip" onclick="selectPrompt(this, 'お酒に合うおつまみが欲しい')">
+                    <span class="chip-icon">🍺</span>お酒に合うおつまみが欲しい
+                </button>
+                <button class="prompt-chip" onclick="selectPrompt(this, '初めてなのでおすすめを教えて')">
+                    <span class="chip-icon">⭐</span>初めてなのでおすすめを教えて
+                </button>
+                <button class="prompt-chip" onclick="selectPrompt(this, '子供も楽しめるメニューは？')">
+                    <span class="chip-icon">👨‍👩‍👧</span>子供も楽しめるメニューは？
+                </button>
+                <button class="prompt-chip" onclick="selectPrompt(this, '辛いものが食べたいです')">
+                    <span class="chip-icon">🌶️</span>辛いものが食べたいです
+                </button>
+            </div>
+
+            <div class="welcome-or">― または自由に入力 ―</div>
+            <div class="welcome-free-input">
+                <input type="text" id="welcomeFreeInput" placeholder="例: 今日は記念日なので特別なものを…">
+                <button onclick="submitFreeInput()">送信</button>
+            </div>
+
+            <button class="welcome-skip" onclick="closeWelcome()">スキップしてメニューを見る →</button>
+        </div>
+    </div>
 
     <!-- Language Popup -->
     <div class="lang-overlay" id="langPopup" onclick="if(event.target===this)closeLang()">
@@ -703,10 +926,10 @@
     <div class="main-wrapper">
         <div class="container">
             <!-- Store Header -->
-            <div class="store-header">
+            <!-- <div class="store-header">
                 <span class="store-icon">🏮</span>
                 富士屋本店
-            </div>
+            </div> -->
 
             <!-- Category Tabs -->
             <div class="category-tabs">
@@ -744,7 +967,7 @@
                     <span class="nav-badge" id="cartBadge" style="display:none;">0</span>
                     カート
                 </button>
-                <button class="nav-item">
+                <button class="nav-item" onclick="window.location.href='chat_ai.html'">
                     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
                     会話履歴
                 </button>
@@ -771,52 +994,52 @@
 
         const menuData = {
             osusume: [
-                { name: '和牛ステーキ 特選', price: '¥2,800', img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80' },
-                { name: '海鮮丼 スペシャル', price: '¥1,200', img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&q=80' },
-                { name: '天ぷら盛り合わせ', price: '¥980', img: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400&q=80' },
-                { name: '鯛の塩焼き定食', price: '¥1,400', img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80' },
-                { name: 'すき焼き御膳', price: '¥2,200', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80' },
-                { name: '抹茶パフェ', price: '¥650', img: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80' },
+                { name: '和牛ステーキ 特選', price: '¥2,800', img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80', tags: [{text:'がっつり',type:'taste'},{text:'人気No.1',type:'popular'}] },
+                { name: '海鮮丼 スペシャル', price: '¥1,200', img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&q=80', tags: [{text:'あっさり',type:'taste'},{text:'揚げ物不使用',type:'healthy'}] },
+                { name: '天ぷら盛り合わせ', price: '¥980', img: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400&q=80', tags: [{text:'サクサク食感',type:'taste'},{text:'お酒に合う',type:'reason'}] },
+                { name: '鯛の塩焼き定食', price: '¥1,400', img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80', tags: [{text:'あっさり',type:'taste'},{text:'ヘルシー',type:'healthy'}] },
+                { name: 'すき焼き御膳', price: '¥2,200', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80', tags: [{text:'がっつり',type:'taste'},{text:'寒い日におすすめ',type:'reason'}] },
+                { name: '抹茶パフェ', price: '¥650', img: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80', tags: [{text:'食後にぴったり',type:'reason'},{text:'SNS映え',type:'popular'}] },
             ],
             zensai: [
-                { name: '枝豆', price: '¥380', img: 'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=400&q=80' },
-                { name: '冷奴 ネギ生姜のせ', price: '¥350', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80' },
-                { name: 'たこわさび', price: '¥450', img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80' },
-                { name: '出汁巻き玉子', price: '¥480', img: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=400&q=80' },
-                { name: '刺身三種盛り', price: '¥1,200', img: 'https://images.unsplash.com/photo-1535007813616-4f5e2d19b20c?w=400&q=80' },
-                { name: 'もずく酢', price: '¥320', img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
+                { name: '枝豆', price: '¥380', img: 'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=400&q=80', tags: [{text:'お酒に合う',type:'reason'},{text:'あっさり',type:'taste'}] },
+                { name: '冷奴 ネギ生姜のせ', price: '¥350', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80', tags: [{text:'暑い日におすすめ',type:'reason'},{text:'ヘルシー',type:'healthy'}] },
+                { name: 'たこわさび', price: '¥450', img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80', tags: [{text:'お酒に合う',type:'reason'},{text:'ピリ辛',type:'taste'}] },
+                { name: '出汁巻き玉子', price: '¥480', img: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=400&q=80', tags: [{text:'やさしい味',type:'taste'},{text:'お子様にも',type:'reason'}] },
+                { name: '刺身三種盛り', price: '¥1,200', img: 'https://images.unsplash.com/photo-1535007813616-4f5e2d19b20c?w=400&q=80', tags: [{text:'あっさり',type:'taste'},{text:'人気',type:'popular'}] },
+                { name: 'もずく酢', price: '¥320', img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80', tags: [{text:'さっぱり',type:'taste'},{text:'揚げ物不使用',type:'healthy'}] },
             ],
             yakimono: [
-                { name: '焼き鳥盛り合わせ (5本)', price: '¥780', img: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400&q=80' },
-                { name: 'サーモンの西京焼き', price: '¥980', img: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&q=80' },
-                { name: '牛タン塩焼き', price: '¥1,200', img: 'https://images.unsplash.com/photo-1558030006-450675393462?w=400&q=80' },
-                { name: 'ホタテのバター焼き', price: '¥880', img: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=400&q=80' },
-                { name: '豚バラ串焼き', price: '¥580', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80' },
-                { name: '鶏もも肉の照り焼き', price: '¥750', img: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400&q=80' },
+                { name: '焼き鳥盛り合わせ (5本)', price: '¥780', img: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400&q=80', tags: [{text:'お酒に合う',type:'reason'},{text:'シェアにぴったり',type:'reason'}] },
+                { name: 'サーモンの西京焼き', price: '¥980', img: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&q=80', tags: [{text:'香ばしい',type:'taste'},{text:'ヘルシー',type:'healthy'}] },
+                { name: '牛タン塩焼き', price: '¥1,200', img: 'https://images.unsplash.com/photo-1558030006-450675393462?w=400&q=80', tags: [{text:'がっつり',type:'taste'},{text:'人気',type:'popular'}] },
+                { name: 'ホタテのバター焼き', price: '¥880', img: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=400&q=80', tags: [{text:'濃厚',type:'taste'},{text:'お酒に合う',type:'reason'}] },
+                { name: '豚バラ串焼き', price: '¥580', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80', tags: [{text:'がっつり',type:'taste'},{text:'コスパ良し',type:'popular'}] },
+                { name: '鶏もも肉の照り焼き', price: '¥750', img: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400&q=80', tags: [{text:'甘辛',type:'taste'},{text:'お子様にも',type:'reason'}] },
             ],
             salad: [
-                { name: 'シーザーサラダ', price: '¥580', img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80' },
-                { name: '海藻サラダ', price: '¥480', img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80' },
-                { name: '大根サラダ 和風ドレッシング', price: '¥420', img: 'https://images.unsplash.com/photo-1607532941433-304659e8198a?w=400&q=80' },
-                { name: 'トマトとモッツァレラ', price: '¥650', img: 'https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=400&q=80' },
-                { name: 'アボカドサラダ', price: '¥550', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80' },
-                { name: '豆腐サラダ', price: '¥480', img: 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=400&q=80' },
+                { name: 'シーザーサラダ', price: '¥580', img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80', tags: [{text:'定番',type:'popular'},{text:'揚げ物不使用',type:'healthy'}] },
+                { name: '海藻サラダ', price: '¥480', img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80', tags: [{text:'ヘルシー',type:'healthy'},{text:'さっぱり',type:'taste'}] },
+                { name: '大根サラダ 和風ドレッシング', price: '¥420', img: 'https://images.unsplash.com/photo-1607532941433-304659e8198a?w=400&q=80', tags: [{text:'あっさり',type:'taste'},{text:'和風',type:'reason'}] },
+                { name: 'トマトとモッツァレラ', price: '¥650', img: 'https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=400&q=80', tags: [{text:'暑い日におすすめ',type:'reason'},{text:'さっぱり',type:'taste'}] },
+                { name: 'アボカドサラダ', price: '¥550', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80', tags: [{text:'クリーミー',type:'taste'},{text:'ヘルシー',type:'healthy'}] },
+                { name: '豆腐サラダ', price: '¥480', img: 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=400&q=80', tags: [{text:'あっさり',type:'taste'},{text:'低カロリー',type:'healthy'}] },
             ],
             drink: [
-                { name: '生ビール (中)', price: '¥550', img: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=400&q=80' },
-                { name: '日本酒 純米吟醸', price: '¥780', img: 'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=400&q=80' },
-                { name: 'ハイボール', price: '¥480', img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400&q=80' },
-                { name: '梅酒ソーダ', price: '¥520', img: 'https://images.unsplash.com/photo-1536935338788-846bb9981813?w=400&q=80' },
-                { name: '緑茶', price: '¥250', img: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=400&q=80' },
-                { name: 'ウーロン茶', price: '¥250', img: 'https://images.unsplash.com/photo-1558160074-4d93e8e073a1?w=400&q=80' },
+                { name: '生ビール (中)', price: '¥550', img: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=400&q=80', tags: [{text:'乾杯に',type:'reason'},{text:'定番',type:'popular'}] },
+                { name: '日本酒 純米吟醸', price: '¥780', img: 'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=400&q=80', tags: [{text:'和食に合う',type:'reason'},{text:'フルーティー',type:'taste'}] },
+                { name: 'ハイボール', price: '¥480', img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400&q=80', tags: [{text:'揚げ物に合う',type:'reason'},{text:'さっぱり',type:'taste'}] },
+                { name: '梅酒ソーダ', price: '¥520', img: 'https://images.unsplash.com/photo-1536935338788-846bb9981813?w=400&q=80', tags: [{text:'甘口で飲みやすい',type:'taste'},{text:'女性に人気',type:'popular'}] },
+                { name: '緑茶', price: '¥250', img: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=400&q=80', tags: [{text:'ノンアルコール',type:'healthy'},{text:'食事に合う',type:'reason'}] },
+                { name: 'ウーロン茶', price: '¥250', img: 'https://images.unsplash.com/photo-1558160074-4d93e8e073a1?w=400&q=80', tags: [{text:'ノンアルコール',type:'healthy'},{text:'さっぱり',type:'taste'}] },
             ],
             dessert: [
-                { name: '抹茶アイスクリーム', price: '¥450', img: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80' },
-                { name: 'わらび餅', price: '¥380', img: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80' },
-                { name: 'あんみつ', price: '¥520', img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80' },
-                { name: 'ゆずシャーベット', price: '¥400', img: 'https://images.unsplash.com/photo-1570197788417-0e82375c9be7?w=400&q=80' },
-                { name: '黒ごまプリン', price: '¥420', img: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=400&q=80' },
-                { name: 'フルーツ盛り合わせ', price: '¥600', img: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&q=80' },
+                { name: '抹茶アイスクリーム', price: '¥450', img: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80', tags: [{text:'食後にぴったり',type:'reason'},{text:'定番',type:'popular'}] },
+                { name: 'わらび餅', price: '¥380', img: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80', tags: [{text:'もちもち食感',type:'taste'},{text:'和スイーツ',type:'reason'}] },
+                { name: 'あんみつ', price: '¥520', img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80', tags: [{text:'やさしい甘さ',type:'taste'},{text:'ヘルシー',type:'healthy'}] },
+                { name: 'ゆずシャーベット', price: '¥400', img: 'https://images.unsplash.com/photo-1570197788417-0e82375c9be7?w=400&q=80', tags: [{text:'さっぱり',type:'taste'},{text:'暑い日におすすめ',type:'reason'}] },
+                { name: '黒ごまプリン', price: '¥420', img: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=400&q=80', tags: [{text:'濃厚',type:'taste'},{text:'SNS映え',type:'popular'}] },
+                { name: 'フルーツ盛り合わせ', price: '¥600', img: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&q=80', tags: [{text:'ヘルシー',type:'healthy'},{text:'シェアにぴったり',type:'reason'}] },
             ],
         };
 
@@ -827,11 +1050,16 @@
         function renderMenu(category) {
             const grid = document.getElementById('menuGrid');
             const items = menuData[category] || menuData.osusume;
-            grid.innerHTML = items.map(item => `
+            grid.innerHTML = items.map(item => {
+                const tagsHtml = (item.tags || []).map(t =>
+                    `<span class="menu-tag ${t.type}">${t.text}</span>`
+                ).join('');
+                return `
                 <div class="menu-card" onclick="window.location.href='menu_detail.html'">
                     <img class="menu-card-img" src="${item.img}" alt="${item.name}">
                     <div class="menu-card-body">
                         <div class="menu-card-name">${item.name}</div>
+                        ${tagsHtml ? `<div class="menu-card-tags">${tagsHtml}</div>` : ''}
                         <div class="menu-card-footer">
                             <span class="menu-card-price">${item.price}</span>
                             <button class="add-btn" onclick="event.stopPropagation();addToCart('${item.img}')">
@@ -840,8 +1068,8 @@
                             </button>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
 
         function switchCategory(category, btn) {
@@ -937,6 +1165,45 @@
             document.querySelectorAll('.ai-mode-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
         }
+
+        // ===== AI Welcome =====
+        function selectPrompt(chip, text) {
+            document.querySelectorAll('.prompt-chip').forEach(c => c.classList.remove('selected'));
+            chip.classList.add('selected');
+            // Save mood to localStorage and close
+            localStorage.setItem('aiMood', text);
+            setTimeout(() => closeWelcome(), 400);
+        }
+
+        function submitFreeInput() {
+            const val = document.getElementById('welcomeFreeInput').value.trim();
+            if (!val) return;
+            localStorage.setItem('aiMood', val);
+            closeWelcome();
+        }
+
+        // Enter key on free input
+        document.getElementById('welcomeFreeInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') submitFreeInput();
+        });
+
+        function closeWelcome() {
+            const overlay = document.getElementById('welcomeOverlay');
+            overlay.classList.add('hidden');
+            setTimeout(() => overlay.style.display = 'none', 500);
+        }
+
+        // Show welcome ONLY when navigating from order.html (first entry)
+        (function initWelcome() {
+            const showWelcome = sessionStorage.getItem('showAiWelcome');
+            if (showWelcome === 'yes') {
+                // First entry from order.html — show welcome, then clear flag
+                sessionStorage.removeItem('showAiWelcome');
+            } else {
+                // Returning from cart/detail/etc — skip welcome
+                document.getElementById('welcomeOverlay').style.display = 'none';
+            }
+        })();
     </script>
 </body>
 </html>

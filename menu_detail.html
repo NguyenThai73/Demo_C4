@@ -567,7 +567,7 @@
                     </div>
 
                     <button class="add-cart-btn" onclick="openModal()">カートに入れる</button>
-                    <button class="remove-cart-btn" onclick="window.location.href='menu.html'">カートから外す</button>
+                    <button class="remove-cart-btn" onclick="goToMenu()">カートから外す</button>
                 </div>
             </div>
 
@@ -582,7 +582,7 @@
                     <span class="nav-badge">1</span>
                     カート
                 </button>
-                <button class="nav-item">
+                <button class="nav-item" onclick="window.location.href='chat_ai.html'">
                     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
                     会話履歴
                 </button>
@@ -604,6 +604,11 @@
     </div>
 
     <script>
+        function goToMenu() {
+            const session = JSON.parse(localStorage.getItem('currentSession') || '{}');
+            window.location.href = session.orderMode === 'ai' ? 'menu_ai.html' : 'menu.html';
+        }
+
         let qty = 2;
 
         function switchImage(thumb, src) {

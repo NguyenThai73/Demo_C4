@@ -375,7 +375,7 @@
 
         <!-- Bottom Navigation -->
         <div class="bottom-nav">
-            <button class="nav-item" onclick="window.location.href='menu.html'">
+            <button class="nav-item" onclick="goToMenu()">
                 <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
                 メニュー
             </button>
@@ -384,7 +384,7 @@
                 <span class="nav-badge">4</span>
                 カート
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="window.location.href='chat_ai.html'">
                 <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
                 会話履歴
             </button>
@@ -404,6 +404,11 @@
     </div>
 
     <script>
+        function goToMenu() {
+            const session = JSON.parse(localStorage.getItem('currentSession') || '{}');
+            window.location.href = session.orderMode === 'ai' ? 'menu_ai.html' : 'menu.html';
+        }
+
         const prices = [600, 600];
         const qtys = [2, 2];
 
