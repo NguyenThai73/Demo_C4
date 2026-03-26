@@ -9,7 +9,7 @@
     <!-- Font Awesome 6.x CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Logic-specific visibility only */
+        /* Specific workflow logic overrides */
         #shipment-input-area, #return-input-area { display: none; margin-top: 15px; padding-top: 15px; border-top: 2px solid #eee; }
         #shipment-input-area { border-top-color: var(--k-blue); }
         #return-input-area { border-top-color: var(--k-danger); }
@@ -64,7 +64,7 @@
         <div class="summary-grid">
             <div class="summary-item">
                 <div class="summary-label">合計金額</div>
-                <div id="summary-total" class="summary-value" style="font-size: 20px;">¥0</div>
+                <div id="summary-total" class="summary-value" style="font-size: 20px;">¥153,000</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">入金状況</div>
@@ -76,11 +76,11 @@
             </div>
             <div class="summary-item">
                 <div class="summary-label">注文日</div>
-                <div class="summary-value">2026-03-23</div>
+                <div class="summary-value" style="color: #333;">2026-03-23</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">配送予定日</div>
-                <div class="summary-value">2026-03-25</div>
+                <div class="summary-value" style="color: #333;">2026-03-25</div>
             </div>
         </div>
     </div>
@@ -103,32 +103,10 @@
                 <div class="field-value">2026-03-23 10:45</div>
             </div>
         </div>
-        <div class="field-item" style="margin-top: 15px;">
-            <div class="field-label">注文メモ</div>
-            <div class="field-value" style="color: #666; font-style: italic;">特になし</div>
-        </div>
-    </div>
-
-    <div class="section-card">
-        <div class="section-title"><span><i class="fas fa-building"></i></span> 取引先情報</div>
-        <div class="field-grid">
-            <div class="field-item">
-                <div class="field-label">Partner ID</div>
-                <div class="field-value">PRT-0042</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">取引先名</div>
-                <div class="field-value">株式会社サンプル商事</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">担当者名 / 窓口</div>
-                <div class="field-value">佐藤 健太郎 様</div>
-            </div>
-        </div>
     </div>
 
     <div class="section-card" style="border: 1px solid var(--k-border-amber); background-color: var(--k-bg-amber);">
-        <div class="section-title" style="color: #856404;"><span><i class="fas fa-boxes-stacked"></i></span> 商品・出荷処理 (重要)</div>
+        <div class="section-title" style="color: #856404;"><span><i class="fas fa-boxes-stacked"></i></span> 商品・出荷処理</div>
         <table class="k-table">
             <thead>
                 <tr>
@@ -144,7 +122,7 @@
             <tbody id="product-tbody"></tbody>
         </table>
 
-        <div id="shipment-input-area" style="background: #fff; padding: 20px; border-radius: 8px;">
+        <div id="shipment-input-area" style="background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #ddd; margin-top: 20px;">
             <div style="font-weight: 800; margin-bottom: 20px; color: var(--k-blue); font-size: 15px;"><i class="fas fa-truck-ramp-box" style="margin-right: 10px;"></i> 納品を登録する</div>
             <table class="shipment-input-table">
                 <thead><tr><th style="width: 150px;">納品SKU</th><th>商品名</th><th style="width: 120px;">納品登録数</th><th>コメント</th></tr></thead>
@@ -155,25 +133,13 @@
                 <button class="btn-k-blue" onclick="submitShipment()">納品を确定する</button>
             </div>
         </div>
-
-        <div id="return-input-area" style="background: #fffcfc; padding: 20px; border-radius: 8px;">
-            <div style="font-weight: 800; margin-bottom: 20px; color: var(--k-danger); font-size: 15px;"><i class="fas fa-rotate-left" style="margin-right: 10px;"></i> 返品を登録する</div>
-            <table class="return-input-table">
-                <thead><tr><th style="width: 150px;">納品SKU</th><th>商品名</th><th style="width: 120px;">返品数</th><th>理由</th></tr></thead>
-                <tbody id="return-input-body"></tbody>
-            </table>
-            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
-                <button class="btn-k-secondary" onclick="hideReturnInput()">キャンセル</button>
-                <button class="btn-k-blue" style="background-color: var(--k-danger);" onclick="submitReturn()">返品を确定する</button>
-            </div>
-        </div>
     </div>
 
     <div class="section-card">
-        <div class="section-title"><span>📜</span> 出荷履歴 (直近)</div>
+        <div class="section-title"><span>📜</span> 出荷履歴</div>
         <div id="shipment-history-container">
             <div id="no-shipment-history" style="color:#999; font-style:italic; font-size:12px;">履歴はありません</div>
-            <table class="k-table" id="shipment-history-table" style="font-size: 11px; display: none;">
+            <table class="k-table" id="shipment-history-table" style="display: none;">
                 <thead><tr><th>タスクID</th><th>ステータス</th><th>出荷日</th><th>出荷サマリー</th><th>備考</th></tr></thead>
                 <tbody id="shipment-history-body"></tbody>
             </table>
@@ -217,7 +183,7 @@
         } else if (orderState.status === 'DELIVERY_READY' || (orderState.status === 'FINISHED' && totalDelivered < totalOrdered)) {
             guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--k-blue);"><i class="fas fa-truck-fast"></i></span><div><span class="next-action-title">次の対応: <span class="next-action-target">配送・納品登録</span></span><br><span class="next-action-description">配送準備が整いました。納品登録を行ってください。</span></div></div><div style="display: flex; gap: 12px;">${totalDelivered > 0 ? `<button class="btn-k-reject" style="color: var(--k-danger); border-color: var(--k-danger);" onclick="showReturnInput()">返品をする</button>` : ''}<button class="btn-k-blue" onclick="showShipmentInput()">納品を登録する</button></div>`;
         } else if (orderState.status === 'FINISHED') {
-            guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--k-success);"><i class="fas fa-check-double"></i></span><div><span class="next-action-title">状況: <span style="color: var(--k-success);">取引完了</span></span><br><span class="next-action-description">全てのプロセスが完了しました。</span></div></div><button class="btn-k-reject" style="color: var(--k-danger); border-color: var(--k-danger);" onclick="showReturnInput()">返品をする</button>`;
+            guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--k-success);"><i class="fas fa-check-double"></i></span><div><span class="next-action-title">状況: <span style="color: var(--k-success);">取引完了</span></span><br><span class="next-action-description">全てのプロセスが完了しました。</span></div></div>`;
         }
         nextActionArea.innerHTML = guideHtml;
         nextActionArea.style.borderLeftColor = (orderState.status === 'DELIVERY_READY' || (orderState.status === 'FINISHED' && totalDelivered < totalOrdered)) ? 'var(--k-blue)' : (orderState.status === 'FINISHED' ? 'var(--k-success)' : 'var(--k-warning)');
@@ -225,7 +191,7 @@
         productTbody.innerHTML = orderState.items.map(item => {
             const remaining = item.orderQty - item.deliveredQty;
             const progress = (item.deliveredQty / item.orderQty) * 100;
-            return `<tr><td>${item.name} (${item.id})</td><td style="text-align: right;">${item.orderQty}</td><td style="text-align: center;">個</td><td style="text-align: right;">${item.deliveredQty}</td><td style="text-align: right; background-color: ${remaining > 0 ? '#fffaf0' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--k-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td style="text-align: right; color: ${item.returnQty > 0 ? 'var(--k-danger)' : '#999'}">${item.returnQty}</td><td style="text-align: center;"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '完納' : (progress > 0 ? '分納中' : '未出荷')}</span></td></tr>`;
+            return `<tr><td>${item.name} (${item.id})</td><td style="text-align: right;">${item.orderQty}</td><td style="text-align: center;">個</td><td style="text-align: right;">${item.deliveredQty}</td><td style="text-align: right; background-color: ${remaining > 0 ? 'var(--k-bg-amber)' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--k-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td style="text-align: right; color: ${item.returnQty > 0 ? 'var(--k-danger)' : '#999'}">${item.returnQty}</td><td style="text-align: center;"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '完納' : (progress > 0 ? '分納中' : '未出荷')}</span></td></tr>`;
         }).join('');
     }
 
@@ -240,6 +206,7 @@
         area.style.display = 'block';
     }
     function hideShipmentInput() { document.getElementById('shipment-input-area').style.display = 'none'; }
+    
     function submitShipment() {
         orderState.items.forEach(i => {
             const el = document.getElementById(`shp-qty-${i.id}`);
@@ -253,32 +220,12 @@
         hideShipmentInput(); showToast('納品を登録しました。'); updateUI();
     }
 
-    function showReturnInput() {
-        const area = document.getElementById('return-input-area');
-        const tbody = document.getElementById('return-input-body');
-        tbody.innerHTML = orderState.items.filter(i => i.deliveredQty > 0).map(i => `<tr><td>${i.id}</td><td>${i.name}</td><td><input type="number" id="ret-qty-${i.id}" value="1" max="${i.deliveredQty}" min="1" style="width: 80px;"></td><td><input type="text" id="ret-reason-${i.id}" style="width: 100%;"></td></tr>`).join('');
-        area.style.display = 'block';
-    }
-    function hideReturnInput() { document.getElementById('return-input-area').style.display = 'none'; }
-    function submitReturn() {
-        orderState.items.forEach(i => {
-            const el = document.getElementById(`ret-qty-${i.id}`);
-            if (el) {
-                const q = parseInt(el.value);
-                i.deliveredQty -= q; i.returnQty += q;
-                addLog('RET', i.name, q, document.getElementById(`ret-reason-${i.id}`).value);
-            }
-        });
-        if (orderState.status === 'FINISHED') orderState.status = 'DELIVERY_READY';
-        hideReturnInput(); showToast('返品を登録しました。'); updateUI();
-    }
-
     function addLog(type, name, qty, note) {
         orderState.historyCount++;
-        document.getElementById(type === 'SHIP' ? 'no-shipment-history' : 'no-return-history').style.display = 'none';
-        document.getElementById(type === 'SHIP' ? 'shipment-history-table' : 'return-history-table').style.display = 'table';
-        const row = `<tr><td>#${type}-${100 + orderState.historyCount}</td><td><span class="badge-status ${type==='SHIP'?'status-ok':'status-alert'}">${type==='SHIP'?'完了':'返品'}</span></td><td>${new Date().toISOString().split('T')[0]}</td><td>${name} x ${qty}</td><td>${note || '-'}</td></tr>`;
-        document.getElementById(type === 'SHIP' ? 'shipment-history-body' : 'return-history-body').insertAdjacentHTML('afterbegin', row);
+        document.getElementById('no-shipment-history').style.display = 'none';
+        document.getElementById('shipment-history-table').style.display = 'table';
+        const row = `<tr><td>#${type}-${100 + orderState.historyCount}</td><td><span class="badge-status status-ok">完了</span></td><td>${new Date().toISOString().split('T')[0]}</td><td>${name} x ${qty}</td><td>${note || '-'}</td></tr>`;
+        document.getElementById('shipment-history-body').insertAdjacentHTML('afterbegin', row);
     }
 
     function showToast(m) {
