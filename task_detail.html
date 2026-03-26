@@ -81,7 +81,7 @@
             font-weight: bold;
         }
         .badge-type-shipping { background: #e8f4fd; color: #3498db; }
-        .badge-status-waiting { background: #fef5e7; color: #f39c12; }
+        .badge-status-waiting { background: #fef5e7; color: #e65100; }
         .badge-status-ongoing { background: #e5f3ff; color: #0081cc; }
         .badge-status-completed { background: #d4edda; color: #155724; }
 
@@ -143,7 +143,8 @@
         .field-item { margin-bottom: 15px; }
         .field-label { display: block; font-size: 13px; font-weight: bold; color: #555; margin-bottom: 8px; }
         .field-input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; outline: none; }
-        .field-input:focus { border-color: var(--kintone-blue); }
+        .field-input[disabled] { background: #f8f9fa; color: #666; }
+        .field-box { background: #f8f9fa; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
         .field-readonly { background: #f8f9fa; color: #666; border-color: #eee; }
 
         /* Buttons */
@@ -176,9 +177,19 @@
             background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;
         }
         .modal-box { background: white; padding: 30px; border-radius: 12px; max-width: 400px; text-align: center; }
+
+        /* Toast */
+        #toast {
+            display: none; position: fixed; top: 20px; right: 20px; background: #333; color: white;
+            padding: 12px 25px; border-radius: 8px; font-weight: bold; z-index: 3000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); animation: slideIn 0.3s;
+        }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
     </style>
 </head>
 <body>
+
+    <div id="toast">作業を開始しました。</div>
 
     <header class="portal-header">
         <div class="portal-logo">Silica Link Operational Portal</div>
@@ -215,12 +226,12 @@
                 <div class="task-meta-top">
                     <span class="badge badge-type-shipping">出荷（販売）</span>
                     <div class="task-id">TASK-527</div>
-                    <span id="header-status-badge" class="badge badge-status-ongoing">作業中</span>
+                    <span id="header-status-badge" class="badge badge-status-waiting">未着手</span>
                 </div>
                 <div class="summary-grid">
                     <div class="summary-item">
-                        <label>作業指示元ID</label>
-                        <span><a href="#">PO-0012</a> (注文: <a href="order_detail_agency.html">320</a>)</span>
+                        <label>作業指示元</label>
+                        <span>注文ID: 0012</span>
                     </div>
                     <div class="summary-item">
                         <label>倉庫</label>
@@ -242,11 +253,11 @@
             </div>
 
             <div class="next-action-box">
-                <div class="next-action-title">NEXT ACTION - ステップを完了してください</div>
-                <div class="progress-steps">
-                    <div class="p-step done"><i class="fas fa-check-circle"></i> 1) ピッキング</div>
-                    <div class="p-step done"><i class="fas fa-check-circle"></i> 2) 梱包</div>
-                    <div id="step-label" class="p-step active"><i class="fas fa-circle-dot"></i> 3) ラベル作成</div>
+                <div class="next-action-title">NEXT ACTION - タスクを開始してください</div>
+                <div class="progress-steps text-sm">
+                    <div id="step-picking" class="p-step active"><i class="fas fa-circle-dot"></i> 1) ピッキング</div>
+                    <div id="step-packing" class="p-step"><i class="fas fa-circle"></i> 2) 梱包</div>
+                    <div id="step-label" class="p-step"><i class="fas fa-circle"></i> 3) ラベル作成</div>
                     <div id="step-confirm" class="p-step"><i class="fas fa-circle"></i> 4) 出荷確定</div>
                 </div>
             </div>
@@ -276,12 +287,11 @@
             <div class="total-row">合計点数: 3</div>
         </div>
 
-        <!-- C. Section 2: 梱包・出荷情報 -->
-        <div id="shipping-section" class="section-card">
+        <!-- C. Section 2: 梱包・出荷情報 (HIDDEN initially) -->
+        <div id="shipping-section" class="section-card" style="display: none;">
             <div class="section-title"><i class="fas fa-truck-ramp-box" style="color: var(--kintone-blue);"></i> 梱包・出荷情報</div>
             
-            <!-- Mode 1: Chưa tạo label -->
-            <div id="mode-input" style="display: block;">
+            <div id="mode-input">
                 <div class="field-grid">
                     <div class="field-item">
                         <label class="field-label">配送業者</label>
@@ -314,65 +324,44 @@
                 </div>
             </div>
 
-            <!-- Mode 2: Đã có label (Initially hidden) -->
             <div id="mode-result" style="display: none;">
                 <div class="field-grid">
                     <div class="field-item">
                         <label class="field-label">配送業者</label>
-                        <div class="field-box field-readonly">ヤマト運輸</div>
+                        <div class="field-box">ヤマト運輸</div>
                     </div>
                     <div class="field-item">
                         <label class="field-label">追跡番号 (Tracking)</label>
-                        <div class="field-box field-readonly" style="font-weight: bold; color: #333;">1234-5678-9012</div>
+                        <div class="field-box" style="font-weight: bold;">1234-5678-9012</div>
                     </div>
                     <div class="field-item">
                         <label class="field-label">サイズ / 重量 / 料金</label>
-                        <div class="field-box field-readonly">サイズ80 / 5.2kg / ¥1,200</div>
+                        <div class="field-box">サイズ80 / 5.2kg / ¥1,200</div>
                     </div>
                     <div class="field-item">
                         <label class="field-label">送り状ラベル</label>
-                        <div class="field-box field-readonly"><a href="#"><i class="fas fa-file-pdf"></i> 送り状ラベルを開く</a></div>
+                        <div class="field-box"><a href="#"><i class="fas fa-file-pdf"></i> 送り状ラベルを開く</a></div>
                     </div>
-                </div>
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button class="btn btn-secondary"><i class="fas fa-rotate"></i> ラベル再作成</button>
-                    <button class="btn btn-secondary">配送情報を変更</button>
                 </div>
             </div>
         </div>
 
-        <!-- D. Section 3: Confirmation / Completion -->
-        <div id="completion-section" class="section-card">
-            <div class="section-title"><i class="fas fa-flag-checkered" style="color: var(--kintone-blue);"></i> タスクの完了</div>
-            <p id="completion-desc" style="font-size: 14px; color: #666; margin-bottom: 25px;">現在の作業進捗を確認し、出荷を確定してください。</p>
+        <!-- D. Section 3: Action Area -->
+        <div id="action-section" class="section-card">
+            <div class="section-title"><i class="fas fa-play-circle" style="color: var(--kintone-blue);"></i> タスクの実行</div>
+            <p id="action-desc" style="font-size: 14px; color: #666; margin-bottom: 25px;">内容を確認し、問題なければ作業を開始してください。</p>
             <div class="completion-footer">
-                <button class="btn btn-danger" onclick="confirmCancel()"><i class="fas fa-ban"></i> 出庫キャンセル</button>
-                <button id="main-action-btn" class="btn btn-success" style="padding: 12px 40px; font-size: 16px;" onclick="confirmShipping()">
+                <button id="cancel-btn" class="btn btn-secondary" onclick="confirmCancel()">キャンセル</button>
+                <button id="main-action-btn" class="btn btn-primary" style="padding: 12px 40px; font-size: 16px;" onclick="startTask()">
+                    <i class="fas fa-bolt"></i> 作業開始
+                </button>
+                <button id="finalize-btn" class="btn btn-success" style="padding: 12px 40px; font-size: 16px; display: none;" onclick="confirmShipping()">
                     <i class="fas fa-truck-fast"></i> 出荷確定
                 </button>
             </div>
         </div>
 
-        <!-- E. Section 4: Log / History (Collapsed by default) -->
-        <details class="section-card" style="padding: 15px 25px;">
-            <summary class="section-title" style="margin-bottom: 0; cursor: pointer; border-bottom: none;">
-                <i class="fas fa-history"></i> Log / History (更新履歴)
-            </summary>
-            <div style="margin-top: 20px; font-size: 12px; color: #888; border-top: 1px solid #eee; padding-top: 15px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                    <span>2026-03-26 22:30</span>
-                    <span>更新者: Test staff</span>
-                    <span style="color: var(--kintone-success);">作業開始</span>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                    <span>2026-03-26 10:00</span>
-                    <span>更新者: System</span>
-                    <span>タスク作成</span>
-                </div>
-            </div>
-        </details>
-
-        <div style="margin-top: 20px;">
+        <div style="margin-top: 20px; padding-bottom: 40px;">
             <button class="btn btn-secondary" onclick="location.href='tasklist.html'"><i class="fas fa-arrow-left"></i> タスク一覧へ戻る</button>
         </div>
 
@@ -385,21 +374,26 @@
     <script>
         let currentWorkflowAction = '';
 
+        function startTask() {
+            openModal(
+                'START', 
+                '作業を開始しますか？', 
+                'ステータスを「作業中」に更新し、出庫フローを開始します。', 
+                '<i class="fas fa-play-circle"></i>',
+                'START'
+            );
+        }
+
         function createLabel() {
             document.getElementById('mode-input').style.display = 'none';
             document.getElementById('mode-result').style.display = 'block';
+            
             document.getElementById('step-label').classList.remove('active');
             document.getElementById('step-label').classList.add('done');
             document.getElementById('step-label').innerHTML = '<i class="fas fa-check-circle"></i> 3) ラベル作成';
+            
             document.getElementById('step-confirm').classList.add('active');
             document.getElementById('step-confirm').innerHTML = '<i class="fas fa-circle-dot"></i> 4) 出荷確定';
-            
-            // Scroll to next step
-            document.getElementById('completion-section').scrollIntoView({ behavior: 'smooth' });
-            document.getElementById('completion-section').style.boxShadow = '0 0 15px rgba(52, 152, 219, 0.3)';
-            setTimeout(() => {
-                document.getElementById('completion-section').style.boxShadow = '0 2px 4px rgba(0,0,0,0.02)';
-            }, 2000);
         }
 
         function openModal(type, title, desc, iconHtml, action) {
@@ -418,7 +412,7 @@
             openModal(
                 'SHIPPING', 
                 '出荷を確定しますか？', 
-                '出荷を確定します。この操作は取り消せません。関連する在庫情報が更新されます。', 
+                '出荷を確定します。この操作は取り消せません。', 
                 '<i class="fas fa-truck-fast"></i>',
                 'FINALIZE'
             );
@@ -427,8 +421,8 @@
         function confirmCancel() {
             openModal(
                 'CANCEL', 
-                '出庫をキャンセルしますか？', 
-                'この出庫をキャンセルします。関連する在庫は元に戻ります。よろしいですか？', 
+                '取消しますか？', 
+                'このタスクの実行を停止します。よろしいですか？', 
                 '<i class="fas fa-ban" style="color: var(--kintone-danger);"></i>',
                 'CANCEL'
             );
@@ -436,20 +430,42 @@
 
         function executeWorkflow() {
             closeModal();
-            if (currentWorkflowAction === 'FINALIZE') {
-                // Change UI to completed
+            if (currentWorkflowAction === 'START') {
+                // UI: Update Header
+                document.getElementById('header-status-badge').innerText = '作業中';
+                document.getElementById('header-status-badge').className = 'badge badge-status-ongoing';
+                
+                // UI: Update Progress
+                document.getElementById('step-picking').classList.remove('active');
+                document.getElementById('step-picking').classList.add('done');
+                document.getElementById('step-picking').innerHTML = '<i class="fas fa-check-circle"></i> 1) ピッキング';
+                
+                document.getElementById('step-packing').classList.add('active');
+                document.getElementById('step-packing').innerHTML = '<i class="fas fa-circle-dot"></i> 2) 梱包';
+                
+                // UI: Show Sections
+                document.getElementById('shipping-section').style.display = 'block';
+                document.getElementById('action-desc').innerText = 'すべての工程を完了し、出荷を確定してください。';
+                
+                // UI: Toggle Buttons
+                document.getElementById('main-action-btn').style.display = 'none';
+                document.getElementById('finalize-btn').style.display = 'inline-flex';
+                
+                // Toast
+                const toast = document.getElementById('toast');
+                toast.style.display = 'block';
+                setTimeout(() => { toast.style.display = 'none'; }, 3000);
+
+            } else if (currentWorkflowAction === 'FINALIZE') {
                 document.getElementById('header-status-badge').innerText = '完了';
                 document.getElementById('header-status-badge').className = 'badge badge-status-completed';
-                document.getElementById('completion-desc').innerHTML = '<span style="color: var(--kintone-success); font-weight: bold;"><i class="fas fa-circle-check"></i> このタスクは完了済みです（編集不可）</span>';
-                document.getElementById('main-action-btn').style.display = 'none';
-                document.getElementById('completion-section').style.background = '#f1f8f1';
-                document.querySelectorAll('input, select').forEach(el => el.disabled = true);
+                document.getElementById('finalize-btn').style.display = 'none';
+                document.getElementById('action-desc').innerHTML = '<span style="color:var(--kintone-success); font-weight:bold;">このタスクは完了済みです。</span>';
                 
                 document.getElementById('step-confirm').classList.remove('active');
                 document.getElementById('step-confirm').classList.add('done');
                 document.getElementById('step-confirm').innerHTML = '<i class="fas fa-check-circle"></i> 4) 出荷確定';
             } else if (currentWorkflowAction === 'CANCEL') {
-                alert('タスクをキャンセルしました。');
                 location.href = 'tasklist.html';
             }
         }
