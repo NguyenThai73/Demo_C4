@@ -255,6 +255,10 @@
     
     function startWorkflow() {
         closeModal();
+        location.href = 'task_scan_barcode.html';
+    }
+
+    function setInProgressUI() {
         document.getElementById('main-status').innerHTML = '<i class="fas fa-sync fa-spin"></i> 作業中';
         document.getElementById('main-status').style.color = 'var(--kintone-blue)';
         
@@ -263,15 +267,16 @@
                 <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-box-open"></i></span>
                 <div>
                     次の対応: <span style="color: var(--kintone-blue);">梱包・ラベル作成</span><br>
-                    <span style="font-weight: normal; font-size: 12px; color: #666;">荷詰めを行い、配送ラベルを発行してください。</span>
+                    <span style="font-weight: normal; font-size: 12px; color: #666;">ピッキング済みです。荷詰めを行い、配送ラベルを発行してください。</span>
                 </div>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn-reject" style="background-color: #f8f9fa;" onclick="location.href='task_scan_barcode.html'">再スキャン</button>
             </div>
         `;
         
         const shippingArea = document.getElementById('shipping-input-area');
         shippingArea.style.display = 'block';
-        showToast('出庫作業を開始しました。');
-        setTimeout(() => { shippingArea.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
     }
 
     function rejectTask() {
@@ -289,6 +294,13 @@
     function showToast(m) {
         const f = document.getElementById('flash-message'); f.innerText = `🎉 ${m}`; f.style.display = 'block';
         setTimeout(() => f.style.display = 'none', 3000);
+    }
+
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('status') === 'in-progress') {
+            setInProgressUI();
+        }
     }
 </script>
 </body>
