@@ -192,7 +192,7 @@
                         <div class="secondary-info" style="color: var(--kintone-danger);">未出荷</div>
                     </td>
                     <td class="col-num" style="color: #999;">0</td>
-                    <td class="col-mid"><span class="badge-status">出荷中</span></td>
+                    <td class="col-mid"><span class="badge-status status-active">出荷中</span></td>
                     <td class="col-mid">
                         <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                             <button class="btn-primary-action" onclick="toggleShipmentInput()" style="padding: 6px 15px; min-width: 60px;">出荷</button>
@@ -323,7 +323,7 @@
         const now = new Date().toISOString().split('T')[0];
         const newRow = `<tr>
             <td><a href="task_detail.html" class="field-value-link">#SHO-881</a></td>
-            <td><span class="badge-status status-warn" style="font-size: 10px;">配送準備中</span></td>
+            <td><span class="badge-status status-warn">配送準備中</span></td>
             <td>Main Store Address</td>
             <td>米ぬかの恵み 300mL x 100</td>
         </tr>`;

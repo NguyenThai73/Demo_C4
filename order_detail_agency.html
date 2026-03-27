@@ -397,7 +397,7 @@
             const bodyId = type === 'SHIP' ? 'shipment-history-body' : 'return-history-body';
             document.getElementById(emptyId).style.display = 'none';
             document.getElementById(tableId).style.display = 'table';
-            const row = `<tr><td>#${type}-${100 + orderState.historyCount}</td><td><span class="badge-status ${type === 'SHIP' ? 'status-ok' : 'status-alert'}">${type === 'SHIP' ? '完了' : '返品'}</span></td><td>${new Date().toISOString().split('T')[0]}</td><td>${name} x ${qty}</td><td>${note || '-'}</td></tr>`;
+            const row = `<tr><td>#${type}-${100 + orderState.historyCount}</td><td><span class="badge-status ${type === 'SHIP' ? 'status-ok' : 'status-return'}">${type === 'SHIP' ? '完了' : '返品'}</span></td><td>${new Date().toISOString().split('T')[0]}</td><td>${name} x ${qty}</td><td>${note || '-'}</td></tr>`;
             document.getElementById(bodyId).insertAdjacentHTML('afterbegin', row);
         }
 
