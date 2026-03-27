@@ -139,7 +139,7 @@
                 </div>
             </div>
 
-            <!-- Movement Info (Specific to Sample/Transfer) -->
+            <!-- Movement Info (Specific to Sample/Transfer/Adjust) -->
             <div id="movement-info-section">
                 <div style="font-weight: 800; font-size: 13px; color: #333; margin-top: 20px; margin-bottom: 10px; border-top: 1px solid #eee; padding-top: 15px;">移動情報</div>
                 <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
@@ -151,7 +151,7 @@
                             <button class="btn-secondary btn-mini" onclick="document.getElementById('source-shelf').value=''">クリア</button>
                         </div>
                     </div>
-                    <!-- New Target Shelf for Transfer only -->
+                    <!-- Target Shelf for Transfer only -->
                     <div class="field-item" id="dest-shelf-field">
                         <div class="field-label" style="font-size: 11px; color: #888;">移動先棚 <span style="color: var(--kintone-danger);">*</span></div>
                         <div style="display: flex; gap: 4px;">
@@ -228,8 +228,8 @@
             taskFormContent.style.display = 'block';
             saveBtn.style.display = 'block';
             
-            // Movement Info Logic: Sample & Transfer
-            if (val === 'sample' || val === 'transfer') {
+            // Movement Info Logic: Sample, Transfer, or Adjust
+            if (val === 'sample' || val === 'transfer' || val === 'adjust') {
                 movementSection.style.display = 'block';
                 // Show Target Shelf only for Transfer
                 destShelfField.style.display = (val === 'transfer') ? 'block' : 'none';
