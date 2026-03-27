@@ -314,75 +314,53 @@
     </div>
 </div>
 
-<!-- Preview Modal -->
-<div class="modal-overlay" id="preview-modal" style="display: none; align-items: flex-start; padding: 30px; overflow-y: auto;">
-    <div style="background: white; border-radius: 12px; width: 100%; max-width: 620px; margin: auto; padding: 36px 40px; font-size: 13px; position: relative;">
-        <button onclick="closePreview()" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: #999;">✕</button>
+<!-- Email Modal -->
+<div class="modal-overlay" id="email-modal" style="display: none; align-items: flex-start; padding: 30px; overflow-y: auto;">
+    <div style="background: white; border-radius: 12px; width: 100%; max-width: 560px; margin: auto; padding: 30px 32px;">
+        <div style="font-size: 17px; font-weight: 800; margin-bottom: 6px; color: #333; display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-envelope" style="color: var(--kintone-blue);"></i>代理店にメールを送信しますか？
+        </div>
+        <p style="font-size: 13px; color: #666; margin-bottom: 20px;">請求書の発行が完了しました。以下の内容でメールを送信できます。</p>
 
-        <!-- Invoice Header -->
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px;">
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
             <div>
-                <div style="font-size: 26px; font-weight: 900; color: #6a1b9a; margin-bottom: 6px; letter-spacing: -0.5px;">請求書</div>
-                <div style="color: #888; margin-bottom: 2px;">Invoice No: <strong>INV-DRAFT-0311</strong></div>
-                <div style="color: #888; margin-bottom: 2px;">請求日: 2026-03-27</div>
-                <div style="color: #e53935; font-weight: 700;">支払期日: 2026-04-01</div>
+                <div style="font-size: 11px; color: #888; margin-bottom: 4px; font-weight: 600;">宛先</div>
+                <div style="background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 4px; padding: 8px 12px; font-size: 13px;">test_agency@yopmail.com</div>
             </div>
-            <div style="text-align: right;">
-                <div style="font-weight: 900; font-size: 15px; color: #333; margin-bottom: 4px;">株式会社 Silica Link</div>
-                <div style="color: #666; font-size: 12px;">東京都港区1-1-1</div>
-                <div style="color: #666; font-size: 12px;">TEL: 03-0000-0000</div>
-                <div style="color: #666; font-size: 12px;">billing@silicalink.co.jp</div>
+            <div>
+                <div style="font-size: 11px; color: #888; margin-bottom: 4px; font-weight: 600;">件名</div>
+                <div style="background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 4px; padding: 8px 12px; font-size: 13px;">【請求書】INV-2026-0311 のご案内</div>
             </div>
-        </div>
+            <div>
+                <div style="font-size: 11px; color: #888; margin-bottom: 4px; font-weight: 600;">本文</div>
+                <textarea id="email-body" style="width: 100%; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px; font-size: 13px; line-height: 1.7; resize: vertical; min-height: 200px; box-sizing: border-box; font-family: inherit; color: #333;">株式会社サンプル商事
+佐藤 健太郎 様
 
-        <!-- Bill To -->
-        <div style="background: #f3e5f5; border-left: 3px solid #ab47bc; border-radius: 0 6px 6px 0; padding: 12px 16px; margin-bottom: 24px;">
-            <div style="font-size: 10px; color: #888; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px;">請求先</div>
-            <div style="font-weight: 800; font-size: 14px;">test_agency@yopmail.com</div>
-            <div style="color: #666; font-size: 12px; margin-top: 2px;">関連注文: <strong>339</strong></div>
-        </div>
+いつもお世話になっております。
+株式会社 Silica Link の請求担当です。
 
-        <!-- Items Table -->
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 12px;">
-            <thead>
-                <tr style="background: #f3e5f5;">
-                    <th style="padding: 9px 12px; text-align: left; border: 1px solid #e1bee7; color: #6a1b9a;">商品・サービス</th>
-                    <th style="padding: 9px 12px; text-align: right; border: 1px solid #e1bee7; color: #6a1b9a; width: 100px;">金額</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="padding: 10px 12px; border: 1px solid #e8e8e8;">Agency手数料 / 注文 #339</td>
-                    <td style="padding: 10px 12px; border: 1px solid #e8e8e8; text-align: right; font-weight: 700;">¥20,025</td>
-                </tr>
-            </tbody>
-        </table>
+下記の通り、請求書を発行いたしましたのでご確認ください。
 
-        <!-- Totals -->
-        <div style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
-            <div style="width: 220px; font-size: 13px;">
-                <div style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #eee; color: #666;">
-                    <span>小計</span><span>¥20,025</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #eee; color: #666;">
-                    <span>消費税 (0%)</span><span>¥0</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 10px 0; font-weight: 900; font-size: 16px; color: #6a1b9a;">
-                    <span>合計</span><span>¥20,025</span>
-                </div>
+━━━━━━━━━━━━━━━━━━━━━━
+■ 請求書番号 : INV-2026-0311
+■ 請求金額   : ¥20,025（税込）
+■ 支払期日   : 2026-04-01
+■ 関連注文   : #339
+━━━━━━━━━━━━━━━━━━━━━━
+
+ご不明な点がございましたらお気軽にご連絡ください。
+引き続きよろしくお願いいたします。
+
+株式会社 Silica Link
+billing@silicalink.co.jp
+TEL: 03-0000-0000</textarea>
             </div>
         </div>
 
-        <!-- Bank Info -->
-        <div style="border-top: 1px dashed #e1bee7; padding-top: 16px; font-size: 11px; color: #999; line-height: 1.8;">
-            振込先: ○○銀行 渋谷支店 普通 1234567　カ）シリカリンク<br>
-            ※振込手数料はご負担をお願いいたします。
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; margin-top: 20px; gap: 10px;">
-            <button class="btn-invoice-secondary" onclick="closePreview()">閉じる</button>
-            <button class="btn-invoice-primary" style="background: #6a1b9a;" onclick="closePreview(); issuePDF();">
-                <i class="fas fa-file-pdf"></i>このまま発行する
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button class="btn-invoice-secondary" onclick="skipEmail()">スキップ</button>
+            <button class="btn-invoice-primary" onclick="confirmSendEmail()">
+                <i class="fas fa-paper-plane"></i>送信する
             </button>
         </div>
     </div>
@@ -416,10 +394,46 @@
     let pdfIssued = false;
 
     function openPreview() {
-        document.getElementById('preview-modal').style.display = 'flex';
-    }
-    function closePreview() {
-        document.getElementById('preview-modal').style.display = 'none';
+        const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>請求書 INV-DRAFT-0311</title>
+        <style>
+            body { font-family: -apple-system, 'Hiragino Sans', Meiryo, sans-serif; padding: 50px 60px; max-width: 740px; margin: 0 auto; font-size: 13px; color: #333; }
+            h1 { font-size: 28px; font-weight: 900; color: #6a1b9a; margin: 0 0 6px; }
+            .meta { color: #888; font-size: 12px; margin-bottom: 3px; }
+            .due { color: #e53935; font-weight: 700; font-size: 12px; }
+            .header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
+            .company { text-align: right; font-size: 12px; color: #666; line-height: 1.7; }
+            .company strong { font-size: 14px; color: #333; display: block; margin-bottom: 4px; }
+            .bill-to { background: #f3e5f5; border-left: 4px solid #ab47bc; padding: 12px 16px; margin-bottom: 28px; border-radius: 0 6px 6px 0; }
+            .bill-to .label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+            .bill-to strong { font-size: 14px; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+            th { background: #f3e5f5; color: #6a1b9a; padding: 9px 12px; border: 1px solid #e1bee7; font-size: 11px; }
+            th:last-child, td:last-child { text-align: right; }
+            td { padding: 10px 12px; border: 1px solid #e8e8e8; }
+            .totals { display: flex; justify-content: flex-end; }
+            .totals-box { width: 220px; font-size: 13px; }
+            .totals-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #eee; color: #666; }
+            .totals-row.grand { border-bottom: none; font-weight: 900; font-size: 16px; color: #6a1b9a; padding-top: 10px; }
+            .bank { border-top: 1px dashed #e1bee7; margin-top: 24px; padding-top: 14px; font-size: 11px; color: #999; line-height: 1.8; }
+            @media print { body { padding: 30px 40px; } }
+        </style></head><body>
+        <div class="header-row">
+            <div><h1>請求書</h1><div class="meta">Invoice No: <strong>INV-DRAFT-0311</strong></div><div class="meta">請求日: 2026-03-27</div><div class="due">支払期日: 2026-04-01</div></div>
+            <div class="company"><strong>株式会社 Silica Link</strong>東京都港区1-1-1<br>TEL: 03-0000-0000<br>billing@silicalink.co.jp</div>
+        </div>
+        <div class="bill-to"><div class="label">請求先</div><strong>test_agency@yopmail.com</strong><div style="color:#666;font-size:12px;margin-top:3px;">関連注文: <strong>#339</strong></div></div>
+        <table><thead><tr><th style="text-align:left;">商品・サービス</th><th>金額</th></tr></thead>
+        <tbody><tr><td>Agency手数料 / 注文 #339</td><td style="text-align:right;font-weight:700;">¥20,025</td></tr></tbody></table>
+        <div class="totals"><div class="totals-box">
+            <div class="totals-row"><span>小計</span><span>¥20,025</span></div>
+            <div class="totals-row"><span>消費税 (0%)</span><span>¥0</span></div>
+            <div class="totals-row grand"><span>合計</span><span>¥20,025</span></div>
+        </div></div>
+        <div class="bank">振込先: ○○銀行 渋谷支店 普通 1234567　カ）シリカリンク<br>※振込手数料はご負担をお願いいたします。</div>
+        </body></html>`;
+        const w = window.open('', '_blank');
+        w.document.write(html);
+        w.document.close();
     }
 
     function issuePDF() {
@@ -462,28 +476,12 @@
         issueBtn.style.opacity = '0.5';
         issueBtn.style.cursor = 'not-allowed';
 
-        // Update 次の対応 area to issued state
-        const naa = document.getElementById('next-action-area');
-        naa.className = 'next-action-card accent-success';
-        naa.innerHTML = `
-            <div class="next-action-content">
-                <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-circle-check"></i></span>
-                <div>
-                    状況: <span style="color: var(--kintone-success); font-weight: 800;">請求書PDFを発行済み</span><br>
-                    <span style="font-weight: normal; font-size: 12px; color: #666;">発行日時: ${dateStr}　PDFをダウンロードするか、メールで送付してください。</span>
-                </div>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-invoice-secondary" onclick="downloadPDF()" style="font-size: 13px; padding: 9px 18px;">
-                    <i class="fas fa-download"></i> PDFをダウンロード
-                </button>
-                <button onclick="sendEmail()" style="padding: 9px 18px; background: var(--kintone-blue); color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 7px;">
-                    <i class="fas fa-envelope"></i>メール送信
-                </button>
-            </div>
-        `;
-
         showToast('請求書PDFを発行しました。');
+
+        // Show email confirmation modal
+        setTimeout(() => {
+            document.getElementById('email-modal').style.display = 'flex';
+        }, 600);
     }
 
     function downloadPDF() {
@@ -493,13 +491,39 @@
         setTimeout(() => showToast('ダウンロードが完了しました。'), 1200);
     }
 
-    function sendEmail() {
-        if (!pdfIssued) return;
+    function confirmSendEmail() {
+        document.getElementById('email-modal').style.display = 'none';
         const sent = new Date().toISOString().replace('T', ' ').slice(0, 16);
         document.getElementById('send-date-val').textContent = sent;
         document.getElementById('send-date-val').classList.remove('muted');
-        showToast('請求書をメール送信しました。');
+        updateNextActionAfterIssue(sent, true);
+        showToast('代理店にメールを送信しました。');
     }
+
+    function skipEmail() {
+        document.getElementById('email-modal').style.display = 'none';
+        const dateStr = document.getElementById('issue-date-val').textContent;
+        updateNextActionAfterIssue(dateStr, false);
+    }
+
+    function updateNextActionAfterIssue(dateStr, emailSent) {
+        const naa = document.getElementById('next-action-area');
+        naa.className = 'next-action-card accent-success';
+        naa.innerHTML = `
+            <div class="next-action-content">
+                <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-circle-check"></i></span>
+                <div>
+                    状況: <span style="color: var(--kintone-success); font-weight: 800;">請求書PDF発行済み${emailSent ? ' · メール送信済み' : ''}</span><br>
+                    <span style="font-weight: normal; font-size: 12px; color: #666;">発行日時: ${dateStr}${emailSent ? '　代理店へのメール送信が完了しました。' : '　必要に応じてPDFをダウンロードしてください。'}</span>
+                </div>
+            </div>
+            <button class="btn-invoice-secondary" onclick="downloadPDF()" style="font-size: 13px; padding: 9px 18px; flex-shrink: 0;">
+                <i class="fas fa-download"></i> PDFをダウンロード
+            </button>
+        `;
+    }
+
+    function sendEmail() { /* legacy – now handled by email modal */ }
 
     function showToast(msg) {
         const f = document.getElementById('flash-message');
