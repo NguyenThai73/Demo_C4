@@ -62,15 +62,15 @@
             </div>
             <div class="summary-item">
                 <div class="summary-label">作業指示元</div>
-                <div class="summary-value" style="font-size: 18px; color: var(--kintone-blue);">注文ID: 0012</div>
+                <div id="summary-work-source" class="summary-value" style="font-size: 18px; color: var(--kintone-blue);">注文ID: 0012</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">実行期限</div>
-                <div class="summary-value" style="font-size: 15px;">2026-03-31</div>
+                <div class="summary-value" id="summary-due-date" style="font-size: 15px;">2026-03-31</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">倉庫</div>
-                <div class="summary-value" style="font-size: 15px;">岐阜倉庫</div>
+                <div class="summary-value" id="summary-warehouse" style="font-size: 15px;">岐阜倉庫</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">担当者</div>
@@ -106,7 +106,7 @@
             </div>
             <div class="field-item">
                 <div class="field-label" style="font-size: 11px; color: #888;">作業指示元ID</div>
-                <div class="field-value" style="font-size: 14px; font-weight: bold;"><a href="#" style="color: var(--kintone-blue);">PO-0012 / 320</a></div>
+                <div id="overview-work-source" class="field-value" style="font-size: 14px; font-weight: bold;"><a href="#" style="color: var(--kintone-blue);">PO-0012 / 320</a></div>
             </div>
             <div class="field-item">
                 <div class="field-label" style="font-size: 11px; color: #888;">SKU種別</div>
@@ -162,59 +162,49 @@
     function updateBadge(type) {
         const badge = document.getElementById('type-badge');
         const t = TYPE_LABELS[type] || TYPE_LABELS['receive'];
-        badge.textContent = t.label;
-        badge.style.backgroundColor = t.bg;
-        badge.style.color = t.color;
-        badge.style.borderColor = t.border;
+        badge.textContent = t.label; badge.style.backgroundColor = t.bg; badge.style.color = t.color; badge.style.borderColor = t.border;
     }
 
     function setFinishedUI(type) {
         updateBadge(type);
         const statusEl = document.getElementById('main-status');
-        statusEl.innerHTML = '完了';
-        statusEl.style.color = 'var(--kintone-success)';
-
+        statusEl.innerHTML = '完了'; statusEl.style.color = 'var(--kintone-success)';
         document.getElementById('product-card-section').style.borderColor = '#d4edda';
         document.getElementById('product-card-section').style.backgroundColor = '#f8fff9';
         document.getElementById('shipped-qty').textContent = '3';
         document.getElementById('pending-qty').textContent = '0';
         document.getElementById('pending-qty').style.color = '#666';
         document.getElementById('item-status-col').innerHTML = '<span class="badge-status status-ok">完納</span>';
-
         const nextActionArea = document.getElementById('next-action-area');
         nextActionArea.className = 'next-action-card accent-success';
         nextActionArea.innerHTML = `
-            <div class="next-action-content">
-                <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>
-                <div>
-                    状況: <span style="color: var(--kintone-success); font-weight: 800;">完了</span><br>
-                    <span style="font-weight: normal; font-size: 12px; color: #666;">作業は正常に完了しました。</span>
-                </div>
+            <div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>
+                <div>状況: <span style="color: var(--kintone-success); font-weight: 800;">完了</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">作業は正常に完了しました。</span></div>
             </div>
-            <button class="btn-secondary" onclick="location.href='tasklist.html'" style="padding: 10px 40px; border: 1px solid #ddd;">
-                一覧に戻る
-            </button>
-        `;
+            <button class="btn-secondary" onclick="location.href='tasklist.html'" style="padding: 10px 40px; border: 1px solid #ddd;">一覧に戻る</button>`;
     }
 
     function setNewTaskUI(type) {
         updateBadge(type);
+        
+        // CLEAR WORK SOURCE for manual task creation case
+        document.getElementById('summary-work-source').textContent = '—';
+        document.getElementById('overview-work-source').textContent = '—';
+        document.getElementById('overview-work-source').style.color = '#999';
+
         const nextActionArea = document.getElementById('next-action-area');
         const guideText = document.getElementById('guide-text');
         const actionButtons = document.getElementById('action-buttons');
 
         if (type === 'adjust') {
-            // Adjust task is finished immediately after save
             setFinishedUI(type);
         } else {
-            // Other tasks require barcode scanning
             guideText.textContent = '内容を確認し、問題なければバーコードをスキャンして作業を進めてください。';
             actionButtons.innerHTML = `
                 <button class="btn-secondary" onclick="location.href='tasklist.html'">一覧に戻る</button>
                 <button class="btn-blue" onclick="location.href='task_scan_barcode.html'" style="padding: 10px 30px;">
                     <i class="fas fa-barcode" style="margin-right: 8px;"></i>バーコードスキャンを開始
-                </button>
-            `;
+                </button>`;
         }
     }
 
@@ -225,15 +215,9 @@
 
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
-        const status = params.get('status');
-        const type = params.get('type') || 'receive';
-
-        if (status === 'finished') {
-            setFinishedUI(type);
-        } else if (status === 'new') {
-            setNewTaskUI(type);
-            showToast('タスクを正常に作成しました！');
-        }
+        const status = params.get('status'); const type = params.get('type') || 'receive';
+        if (status === 'finished') setFinishedUI(type);
+        else if (status === 'new') { setNewTaskUI(type); showToast('タスクを正常に作成しました！'); }
     };
 </script>
 </body>
