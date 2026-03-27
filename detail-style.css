@@ -1,0 +1,559 @@
+/*
+ * detail-style.css
+ * ─────────────────────────────────────────────────────────────
+ * Shared stylesheet for ALL Detail screens:
+ *   - task_detail.html
+ *   - order_detail_agency.html
+ *   - order_detail_shopify.html
+ *
+ * Load AFTER style.css:
+ *   <link rel="stylesheet" href="style.css">
+ *   <link rel="stylesheet" href="detail-style.css">
+ * ─────────────────────────────────────────────────────────────
+ */
+
+/* ============================================================
+   1. DESIGN TOKENS  (CSS Custom Properties)
+   ============================================================ */
+
+:root {
+    /* ── Brand / Semantic Colors ───────────────────────────── */
+    --color-primary:           #3498db;
+    --color-primary-dark:      #2176ae;
+    --color-success:           #2ecc71;
+    --color-warning:           #f39c12;
+    --color-danger:            #e74c3c;
+    --color-neutral:           #95a5a6;
+
+    /* ── Surface / Background Colors ───────────────────────── */
+    --color-bg-page:           #f4f7f9;
+    --color-bg-surface:        #ffffff;
+    --color-bg-table-head:     #f8f9fa;
+    --color-bg-field:          #f8f9fa;
+    --color-bg-op-section:     #fffaf0;   /* operational section tint */
+    --color-bg-modal-overlay:  rgba(0, 0, 0, 0.5);
+
+    /* ── Border Colors ──────────────────────────────────────── */
+    --color-border:            #dddddd;
+    --color-border-light:      #eeeeee;
+    --color-border-op:         #ffedcc;   /* operational / warning border */
+
+    /* ── Text Colors ────────────────────────────────────────── */
+    --text-primary:            #333333;
+    --text-secondary:          #666666;
+    --text-muted:              #888888;
+    --text-placeholder:        #999999;
+    --text-warning-dark:       #856404;
+
+    /* ── Type-Badge Colors ──────────────────────────────────── */
+    --badge-agency-bg:         #f3e5f5;
+    --badge-agency-text:       #7b1fa2;
+    --badge-agency-border:     #e1bee7;
+    --badge-shopify-bg:        #e8f5e9;
+    --badge-shopify-text:      #2e7d32;
+    --badge-task-bg:           #e8f4fd;
+    --badge-task-text:         #3498db;
+    --badge-task-border:       #d1e9fb;
+
+    /* ── Status-Badge Colors ────────────────────────────────── */
+    --status-ok-bg:            #e8f5e9;
+    --status-ok-text:          #2e7d32;
+    --status-warn-bg:          #fff3e0;
+    --status-warn-text:        #e65100;
+    --status-neutral-bg:       #f5f5f5;
+    --status-neutral-text:     #9e9e9e;
+
+    /* ── Font Sizes ─────────────────────────────────────────── */
+    --text-size-xs:            11px;   /* labels, captions          */
+    --text-size-sm:            12px;   /* table cells, small badges  */
+    --text-size-base:          14px;   /* body / button text         */
+    --text-size-md:            15px;   /* section titles             */
+    --text-size-lg:            18px;   /* secondary summary values   */
+    --text-size-xl:            20px;   /* primary summary values     */
+    --text-size-2xl:           24px;   /* record IDs / page titles   */
+
+    /* ── Font Weights ───────────────────────────────────────── */
+    --font-normal:             400;
+    --font-medium:             500;
+    --font-bold:               700;
+    --font-extrabold:          800;
+
+    /* ── Spacing Scale ──────────────────────────────────────── */
+    --space-xs:                4px;
+    --space-sm:                8px;
+    --space-md:                12px;
+    --space-lg:                15px;
+    --space-xl:                20px;
+    --space-2xl:               25px;
+    --space-3xl:               30px;
+
+    /* ── Border Radii ───────────────────────────────────────── */
+    --radius-sm:               4px;
+    --radius-md:               8px;
+    --radius-lg:               12px;
+    --radius-badge:            12px;
+
+    /* ── Shadows ────────────────────────────────────────────── */
+    --shadow-card:             0 4px 6px rgba(0, 0, 0, 0.02);
+    --shadow-modal:            0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+
+/* ============================================================
+   2. SUMMARY HEADER  (top identity block of each detail page)
+   ============================================================ */
+
+.summary-header {
+    background: var(--color-bg-surface);
+    border: none;
+    box-shadow: none;
+    padding: var(--space-2xl);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-3xl);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-lg);
+    width: 100%;
+}
+
+.summary-grid {
+    width: 100%;
+    border-top: 1px solid var(--color-border-light);
+    padding-top: var(--space-xl);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-xl);
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.summary-label {
+    font-size: var(--text-size-xs);
+    color: var(--text-muted);
+    font-weight: var(--font-medium);
+    margin-bottom: var(--space-xs);
+}
+
+/* Primary KPI value (large) */
+.summary-primary-value {
+    font-size: var(--text-size-xl);
+    font-weight: var(--font-extrabold);
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+/* Secondary value */
+.summary-value {
+    font-size: var(--text-size-base);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+}
+
+
+/* ============================================================
+   3. NEXT-ACTION CARD
+   ============================================================ */
+
+.next-action-card {
+    background: var(--color-bg-surface);
+    border: none;
+    border-left: 5px solid var(--color-primary);
+    padding: var(--space-2xl);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-3xl);
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xl);
+}
+
+/* Modifier: warning accent (task_detail) */
+.next-action-card.accent-warning {
+    border-left-color: var(--color-warning);
+}
+
+.next-action-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    font-size: var(--text-size-base);
+    font-weight: var(--font-bold);
+}
+
+
+/* ============================================================
+   4. SECTION CARDS
+   ============================================================ */
+
+.section-card {
+    background: var(--color-bg-surface);
+    padding: var(--space-2xl);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-3xl);
+    box-shadow: var(--shadow-card);
+    border: none;
+}
+
+.section-title {
+    font-weight: var(--font-extrabold);
+    font-size: var(--text-size-md);
+    border-bottom: none;
+    margin-bottom: var(--space-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+/* Info variant (blue title) */
+.section-card.section-info .section-title {
+    color: var(--color-primary);
+}
+
+/* Operational variant (warm border + tinted bg) */
+.section-card.section-op {
+    border: 1px solid var(--color-border-op);
+    background-color: var(--color-bg-op-section);
+}
+.section-card.section-op .section-title {
+    color: var(--text-warning-dark);
+}
+
+/* History variant (muted title) */
+.section-card.section-hist .section-title {
+    color: var(--text-secondary);
+}
+
+
+/* ============================================================
+   5. FIELD GRID
+   ============================================================ */
+
+.field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+}
+
+.field-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.field-label {
+    font-size: var(--text-size-xs);
+    color: var(--text-muted);
+    font-weight: var(--font-medium);
+    margin-bottom: var(--space-xs);
+}
+
+.field-value {
+    font-size: var(--text-size-base);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+}
+
+/* Input/select box inside field items */
+.field-box {
+    background: var(--color-bg-field);
+    border: 1px solid var(--color-border);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   6. TABLES
+   ============================================================ */
+
+/* Product name cell — unified across all detail screens
+   Use td.col-product-name to override .k-table td font-size */
+td.col-product-name {
+    font-size: var(--text-size-base);   /* 14px — overrides k-table td's 12px */
+    font-weight: var(--font-bold);
+    color: var(--color-primary);
+}
+
+.k-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-size-sm);
+}
+
+.k-table th {
+    background-color: var(--color-bg-table-head);
+    border: 1px solid var(--color-border);
+    padding: var(--space-sm) var(--space-md);
+    text-align: left;
+    color: var(--text-secondary);
+    font-weight: var(--font-bold);
+}
+
+.k-table td {
+    border: 1px solid var(--color-border);
+    padding: var(--space-md);
+    background: var(--color-bg-surface);
+    font-size: var(--text-size-sm);
+    vertical-align: middle;
+}
+
+/* ── Inline input tables (shipment / return forms) ─────────── */
+
+.shipment-input-table,
+.return-input-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-size-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.shipment-input-table th,
+.return-input-table th {
+    background-color: var(--color-bg-table-head);
+    border: 1px solid var(--color-border);
+    padding: var(--space-sm);
+    text-align: left;
+}
+
+.shipment-input-table td,
+.return-input-table td {
+    border: 1px solid var(--color-border);
+    padding: var(--space-sm);
+}
+
+.shipment-input-table input,
+.return-input-table input {
+    width: 100%;
+    padding: 6px var(--space-md);
+    border: 1px solid #ccc;
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+}
+
+/* Footer row for shipment/return forms */
+.shipment-footer-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+}
+
+
+/* ============================================================
+   7. BADGES
+   ============================================================ */
+
+/* ── Type badge (record type label) ─────────────────────────── */
+.badge-type {
+    font-size: var(--text-size-sm);
+    font-weight: var(--font-extrabold);
+    padding: var(--space-xs) var(--space-md);
+    border-radius: 0;
+    border: 1px solid currentColor;
+    display: inline-block;
+}
+
+.badge-type.badge-agency {
+    background-color: var(--badge-agency-bg);
+    color: var(--badge-agency-text);
+    border-color: var(--badge-agency-border);
+}
+
+.badge-type.badge-shopify {
+    background-color: var(--badge-shopify-bg);
+    color: var(--badge-shopify-text);
+    border-radius: var(--radius-badge);
+}
+
+.badge-type.badge-task {
+    background-color: var(--badge-task-bg);
+    color: var(--badge-task-text);
+    border-color: var(--badge-task-border);
+}
+
+/* ── Status badge (record status pill) ──────────────────────── */
+.badge-status {
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-badge);
+    font-size: var(--text-size-xs);
+    font-weight: var(--font-extrabold);
+    display: inline-block;
+}
+
+.status-ok {
+    background-color: var(--status-ok-bg);
+    color: var(--status-ok-text);
+}
+
+.status-warn {
+    background-color: var(--status-warn-bg);
+    color: var(--status-warn-text);
+}
+
+.status-neutral {
+    background-color: var(--status-neutral-bg);
+    color: var(--status-neutral-text);
+}
+
+
+/* ============================================================
+   8. BUTTONS
+   ============================================================ */
+
+/* Primary blue button */
+.btn-blue {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: var(--space-sm) var(--space-3xl);
+    border-radius: var(--radius-md);
+    font-size: var(--text-size-base);
+    font-weight: var(--font-bold);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-blue:hover { background: var(--color-primary-dark); }
+
+/* Secondary / outline button */
+.btn-secondary {
+    background: var(--color-bg-surface);
+    color: var(--text-secondary);
+    border: 1px solid #ccc;
+    padding: var(--space-sm) var(--space-xl);
+    border-radius: var(--radius-md);
+    font-size: var(--text-size-base);
+    font-weight: var(--font-bold);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-secondary:hover { background: #f5f5f5; }
+
+/* Reject / decline button — dùng cho các action 却下・拒否 trên tất cả màn detail */
+.btn-reject {
+    background: var(--color-bg-surface);
+    color: var(--text-secondary);
+    border: 1px solid #ccc;
+    padding: var(--space-sm) var(--space-2xl);   /* 8px 25px — khớp task_detail */
+    border-radius: var(--radius-md);              /* 8px */
+    font-size: var(--text-size-base);             /* 14px */
+    font-weight: var(--font-bold);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+.btn-reject:hover { background-color: #f5f5f5; border-color: #bbb; }
+
+/* Inline action button (in table cells) */
+.btn-primary-action {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 6px var(--space-lg);
+    border-radius: var(--radius-badge);
+    border: none;
+    font-size: var(--text-size-sm);
+    font-weight: var(--font-bold);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-primary-action:hover { background-color: var(--color-primary-dark); }
+
+/* Submit ship / return (blue) */
+.btn-submit-ship {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 6px var(--space-xl);
+    border-radius: var(--radius-badge);
+    cursor: pointer;
+    font-weight: var(--font-bold);
+    font-size: var(--text-size-sm);
+    transition: opacity 0.2s;
+}
+.btn-submit-ship:hover { opacity: 0.9; }
+
+/* Cancel ship (outline) */
+.btn-cancel-ship {
+    background-color: var(--color-bg-surface);
+    border: 1px solid #ccc;
+    padding: 6px var(--space-lg);
+    border-radius: var(--radius-badge);
+    cursor: pointer;
+    font-size: var(--text-size-sm);
+    transition: background 0.2s;
+}
+.btn-cancel-ship:hover { background-color: #f5f5f5; }
+
+
+/* ============================================================
+   9. MODAL
+   ============================================================ */
+
+#confirm-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--color-bg-modal-overlay);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-box {
+    background: var(--color-bg-surface);
+    padding: var(--space-3xl);
+    border-radius: var(--radius-lg);
+    max-width: 420px;
+    text-align: center;
+    box-shadow: var(--shadow-modal);
+}
+
+
+/* ============================================================
+   10. COLLAPSIBLE INPUT AREAS (shipment / return panels)
+   ============================================================ */
+
+#shipment-input-area,
+#return-input-area {
+    display: none;
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 2px solid var(--color-border-light);
+}
+
+#shipment-input-area { border-top-color: var(--color-primary); }
+#return-input-area   { border-top-color: var(--color-danger); }
+
+
+/* ============================================================
+   11. FLASH / TOAST MESSAGE
+   ============================================================ */
+
+#flash-message {
+    display: none;
+    border-radius: var(--radius-lg);
+    z-index: 2000;
+}
+
+
+/* ============================================================
+   12. EMPTY STATE
+   ============================================================ */
+
+.empty-history-state {
+    padding: var(--space-lg);
+    color: var(--text-placeholder);
+    font-size: var(--text-size-xs);
+    text-align: center;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: #fafafa;
+}
