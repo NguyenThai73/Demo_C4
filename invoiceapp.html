@@ -357,7 +357,7 @@
 </div>
 
 <!-- Confirmation Modal (Before Issue) -->
-<div class="modal-overlay" id="confirm-modal">
+<div class="modal-overlay" id="confirm-modal" style="display:none;">
     <div class="modal-card">
         <div class="modal-icon" style="color: #e67e22;">
             <i class="fas fa-file-invoice"></i>
@@ -627,8 +627,6 @@
     function issuePDF() {
         closeConfirmPop();
         pdfIssued = true;
-        const total = document.getElementById('items-total').textContent;
-        document.getElementById('preview-amount').textContent = total;
 
         // Show 入金情報 section (only relevant after invoice is issued)
         document.getElementById('payment-section').style.display = 'block';
