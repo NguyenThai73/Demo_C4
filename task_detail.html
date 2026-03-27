@@ -218,7 +218,18 @@
 
     window.onload = function() {
         const params = new URLSearchParams(window.location.search);
-        const status = params.get('status'); const type = params.get('type') || 'receive';
+        const status = params.get('status'); 
+        const type = params.get('type') || 'receive';
+        
+        // Ensure UI matches task type badge/colors
+        updateBadge(type);
+        
+        // Update the main scan button in HTML directly for non-status-specific loads
+        const mainScanBtn = document.getElementById('main-scan-btn');
+        if (mainScanBtn) {
+            mainScanBtn.setAttribute('onclick', `location.href='task_scan_barcode.html?type=${type}'`);
+        }
+
         if (status === 'finished') setFinishedUI(type);
         else if (status === 'new') { setNewTaskUI(type); showToast('タスクを正常に作成しました！'); }
     };
