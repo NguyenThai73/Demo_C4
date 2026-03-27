@@ -324,10 +324,24 @@
         const badge = document.getElementById('label-status-badge');
         badge.textContent = '作成済み';
         badge.className = 'badge-status status-ok';
-        // Swap buttons: hide ラベル作成, show 出荷確定
+        // Hide ラベル作成 button in form
         document.getElementById('btn-create-label').style.display = 'none';
-        document.getElementById('btn-confirm-ship').style.display = 'inline-flex';
-        showToast('ラベルを作成しました。出荷確定ボタンで確定してください。');
+        document.getElementById('btn-confirm-ship').style.display = 'none';
+
+        // Update next-action card → packing & confirm state
+        document.getElementById('next-action-area').innerHTML = `
+            <div class="next-action-content">
+                <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-box-archive"></i></span>
+                <div>
+                    次の対応: <span style="color: var(--kintone-success);">パッキングして出荷確定</span><br>
+                    <span style="font-weight: normal; font-size: 12px; color: #666;">ラベルの貼付・梱包が完了したら、出荷を確定してください。</span>
+                </div>
+            </div>
+            <button class="btn-blue" onclick="openShipModal()" style="background: var(--kintone-success);">
+                <i class="fas fa-truck-fast" style="margin-right: 8px;"></i>出荷確定
+            </button>
+        `;
+        showToast('ラベルを作成しました。パッキング後に出荷確定してください。');
     }
 
     function openShipModal()  { document.getElementById('ship-modal').style.display = 'flex'; }
