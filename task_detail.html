@@ -283,8 +283,8 @@
         // Update Summary Status
         document.getElementById('main-status').innerHTML = '作業中';
         document.getElementById('main-status').style.color = 'var(--kintone-blue)';
-        
-        // Update Next Action Card
+
+        // Update Next Action Card — show ラベル作成 button, no 再スキャン
         document.getElementById('next-action-area').innerHTML = `
             <div class="next-action-content">
                 <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-box-open"></i></span>
@@ -293,14 +293,18 @@
                     <span style="font-weight: normal; font-size: 12px; color: #666;">ピッキング済みです。荷詰めを行い、配送ラベルを発行してください。</span>
                 </div>
             </div>
-            <div style="display: flex; gap: 12px;">
-                <button class="btn-reject" style="background-color: #f8f9fa;" onclick="location.href='task_scan_barcode.html'">再スキャン</button>
-            </div>
+            <button class="btn-blue" onclick="showLabelForm()">
+                <i class="fas fa-print" style="margin-right: 8px;"></i>ラベルを作成する
+            </button>
         `;
-        
-        // Show Input Area
-        const shippingArea = document.getElementById('shipping-input-area');
-        shippingArea.style.display = 'block';
+
+        // Keep shipping form hidden — revealed only when user clicks ラベルを作成する
+    }
+
+    function showLabelForm() {
+        const area = document.getElementById('shipping-input-area');
+        area.style.display = 'block';
+        area.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function rejectTask() {
