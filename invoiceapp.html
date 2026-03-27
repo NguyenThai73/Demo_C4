@@ -107,14 +107,18 @@
             min-width: 60px;
         }
 
-        /* Invoice table inputs — white bg override only; border/radius/padding from detail-style.css .field-box */
+        /* Invoice table inputs — exact match to task_create.html .field-box override */
         #invoice-items-body input.field-box {
-            background-color: #fff !important;  /* detail-style defaults to #f8f9fa, force white */
+            background-color: #fff !important;
+            border: 1px solid #e3e7e8;
             width: 100%;
             font-size: var(--text-size-sm);
             box-sizing: border-box;
         }
-        #invoice-items-body td { padding: 4px 6px; vertical-align: middle; }
+        /* Table header colour matches section-op warm tone */
+        .section-op .k-table th { color: #856404; }
+        #invoice-items-body td { padding: 6px 8px; vertical-align: middle; }
+        #invoice-items-body th { padding: 8px 12px; }
         .item-sub-cell { font-weight: 700; transition: color 0.2s; white-space: nowrap; }
         .quick-add-chip {
             padding: 4px 13px; font-size: 11px; font-weight: 700; border-radius: 100px;
@@ -327,8 +331,8 @@
         </table>
     </div>
 
-    <!-- 入金情報・ステータス更新 -->
-    <div class="section-card section-info">
+    <!-- 入金情報・ステータス更新 (PDF発行後のみ表示) -->
+    <div class="section-card section-info" id="payment-section" style="display:none;">
         <div class="section-title">
             <i class="fas fa-coins"></i>入金情報・ステータス更新
         </div>
@@ -625,6 +629,9 @@
         pdfIssued = true;
         const total = document.getElementById('items-total').textContent;
         document.getElementById('preview-amount').textContent = total;
+
+        // Show 入金情報 section (only relevant after invoice is issued)
+        document.getElementById('payment-section').style.display = 'block';
 
         // Update summary status
         document.getElementById('summary-pdf').textContent = '発行済';
