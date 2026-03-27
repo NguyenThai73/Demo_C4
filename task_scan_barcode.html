@@ -66,12 +66,8 @@
             display: flex; align-items: center; justify-content: center;
             font-size: 13px; font-weight: 800;
         }
-        .step-card.done .step-num {
-            background: var(--green); color: white;
-        }
-        .step-card.done .step-num::before {
-            content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900;
-        }
+        .step-card.done .step-num { background: var(--green); color: white; }
+        .step-card.done .step-num::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; }
         .step-card.done .step-num .num-text { display: none; }
 
         .step-body { margin-top: 14px; }
@@ -84,11 +80,7 @@
             padding: 10px 14px; background: white;
         }
         .scan-field i    { color: #bbb; font-size: 15px; flex-shrink: 0; }
-        .scan-field input {
-            border: none; outline: none; width: 100%;
-            font-size: 14px; font-weight: 700; color: var(--dark);
-            background: transparent;
-        }
+        .scan-field input { border: none; outline: none; width: 100%; font-size: 14px; font-weight: 700; color: var(--dark); background: transparent; }
         .scan-field input::placeholder { font-weight: 400; color: #bbb; }
         .cam-btn {
             width: 48px; height: 48px; border-radius: 8px; flex-shrink: 0;
@@ -98,91 +90,38 @@
         }
         .cam-btn:active { opacity: .75; }
 
-        /* ── Qty Picker (Step 4) ── */
-        .qty-row {
-            display: flex; align-items: center; justify-content: center;
-            gap: 24px; margin: 18px 0 14px;
-        }
-        .qty-btn-circle {
-            width: 48px; height: 48px; border-radius: 50%; border: none;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 22px; font-weight: bold; cursor: pointer;
-        }
+        /* ── Qty Picker ── */
+        .qty-row { display: flex; align-items: center; justify-content: center; gap: 24px; margin: 18px 0 14px; }
+        .qty-btn-circle { width: 48px; height: 48px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; cursor: pointer; }
         .btn-minus { background: #eee; color: var(--muted); }
         .btn-plus  { background: var(--blue); color: white; }
-
         .qty-box {
-            border: 2px solid var(--blue); border-radius: 8px;
-            width: 100px; height: 56px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 30px; font-weight: 800; color: var(--dark); background: white;
+            border: 2px solid var(--blue); border-radius: 8px; width: 100px; height: 56px;
+            display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800; color: var(--dark); background: white;
         }
-
-        .quick-btns {
-            display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
-        }
+        .quick-btns { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
         .quick-btn {
-            padding: 5px 12px; border: 1.5px solid var(--border);
-            border-radius: 20px; background: white; font-size: 13px;
-            font-weight: 700; color: var(--muted); cursor: pointer;
-            transition: background .15s, color .15s;
-        }
-        .quick-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
-
-        /* ── Scan History ── */
-        .history-wrap { margin-top: 24px; }
-        .history-title { font-size: 13px; font-weight: 800; color: var(--label); margin-bottom: 10px; }
-        .scan-row {
-            background: white; border-left: 4px solid var(--green);
-            padding: 10px 14px; border-radius: 8px;
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 12px; margin-bottom: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,.03);
+            padding: 5px 12px; border: 1.5px solid var(--border); border-radius: 20px; background: white; font-size: 13px; font-weight: 700; color: var(--muted); cursor: pointer;
         }
 
         /* ── Footer ── */
-        .footer-action {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            padding: 14px 20px; background: white;
-            border-top: 1px solid #eee; box-shadow: 0 -4px 10px rgba(0,0,0,.04);
-        }
+        .footer-action { position: fixed; bottom: 0; left: 0; width: 100%; padding: 14px 20px; background: white; border-top: 1px solid #eee; box-shadow: 0 -4px 10px rgba(0,0,0,.04); }
         .btn-confirm-next {
-            width: 100%; padding: 15px; border: none; border-radius: 10px;
-            font-size: 16px; font-weight: 800;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            cursor: not-allowed; background: #ccc; color: white; transition: background .2s;
+            width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: not-allowed; background: #ccc; color: white;
         }
         .btn-confirm-next.ready { background: var(--blue); cursor: pointer; }
-        
         .btn-picking-done {
-            width: 100%; padding: 15px; border: none; border-radius: 10px;
-            font-size: 16px; font-weight: 800;
-            display: none; align-items: center; justify-content: center; gap: 10px;
-            cursor: pointer; background: var(--green); color: white;
+            width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: 800; display: none; align-items: center; justify-content: center; gap: 10px; cursor: pointer; background: var(--green); color: white;
         }
 
         /* ── Modal Overlay ── */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-            display: none; align-items: center; justify-content: center; z-index: 1000;
-            padding: 20px;
-        }
-        .modal-card {
-            background: white; border-radius: 12px; width: 100%; max-width: 400px;
-            text-align: center; padding: 30px 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-        .modal-icon {
-            width: 60px; height: 60px; border-radius: 50%; background: #e8f5e9;
-            color: var(--green); display: flex; align-items: center; justify-content: center;
-            font-size: 30px; margin: 0 auto 20px;
-        }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .modal-card { background: white; border-radius: 12px; width: 100%; max-width: 400px; text-align: center; padding: 30px 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        .modal-icon { width: 60px; height: 60px; border-radius: 50%; background: #e8f5e9; color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 20px; }
         .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
         .modal-body { font-size: 14px; color: #666; margin-bottom: 25px; line-height: 1.6; }
         .modal-footer { display: flex; gap: 10px; }
-        .btn-modal {
-            flex: 1; padding: 12px; border: none; border-radius: 8px;
-            font-size: 15px; font-weight: 800; cursor: pointer;
-        }
+        .btn-modal { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 15px; font-weight: 800; cursor: pointer; }
         .btn-modal-cancel { background: #eee; color: #333; }
         .btn-modal-submit { background: var(--green); color: white; }
     </style>
@@ -195,8 +134,6 @@
 </div>
 
 <div class="scan-container">
-
-    <!-- Product Card -->
     <div class="product-card">
         <div class="sku-code">CER-BASE-01</div>
         <div class="prod-name">セラミック基板用素材 PREMIUM</div>
@@ -204,199 +141,93 @@
     </div>
 
     <div id="picking-steps">
-        <!-- ── Step 1: 棚番号をスキャン ── -->
         <div class="step-card active" id="step1">
-            <div class="step-header">
-                <div class="step-num"><span class="num-text">1</span></div>
-                <span>ステップ1: 棚番号をスキャン</span>
-            </div>
-            <div class="step-body">
-                <div class="input-row">
-                    <div class="scan-field">
-                        <i class="fas fa-location-dot"></i>
-                        <input type="text" id="shelf-input" placeholder="棚コード"
-                            onchange="checkStep1()">
-                    </div>
-                    <button class="cam-btn" onclick="simulateScan('shelf-input', 'A-03-2')">
-                        <i class="fas fa-camera"></i>
-                    </button>
-                </div>
-            </div>
+            <div class="step-header"><div class="step-num"><span class="num-text">1</span></div><span>ステップ1: 棚番号をスキャン</span></div>
+            <div class="step-body"><div class="input-row"><div class="scan-field"><i class="fas fa-location-dot"></i><input type="text" id="shelf-input" placeholder="棚コード" onchange="checkStep1()"></div><button class="cam-btn" onclick="simulateScan('shelf-input', 'A-03-2')"><i class="fas fa-camera"></i></button></div></div>
         </div>
-
-        <!-- ── Step 2: 商品・資材SKUをスキャン ── -->
         <div class="step-card" id="step2">
-            <div class="step-header">
-                <div class="step-num"><span class="num-text">2</span></div>
-                <span>ステップ2: 商品・資材SKUをスキャン</span>
-            </div>
-            <div class="step-body">
-                <div class="input-row">
-                    <div class="scan-field">
-                        <i class="fas fa-cube"></i>
-                        <input type="text" id="sku-input" placeholder="商品コード"
-                            onchange="checkStep2()">
-                    </div>
-                    <button class="cam-btn" onclick="simulateScan('sku-input', 'CER-BASE-01')">
-                        <i class="fas fa-camera"></i>
-                    </button>
-                </div>
-            </div>
+            <div class="step-header"><div class="step-num"><span class="num-text">2</span></div><span>ステップ2: 商品・資材SKUをスキャン</span></div>
+            <div class="step-body"><div class="input-row"><div class="scan-field"><i class="fas fa-cube"></i><input type="text" id="sku-input" placeholder="商品コード" onchange="checkStep2()"></div><button class="cam-btn" onclick="simulateScan('sku-input', 'CER-BASE-01')"><i class="fas fa-camera"></i></button></div></div>
         </div>
-
-        <!-- ── Step 3: ロット番号を入力 ── -->
         <div class="step-card" id="step3">
-            <div class="step-header">
-                <div class="step-num"><span class="num-text">3</span></div>
-                <span>ステップ3: ロット番号を入力</span>
-            </div>
-            <div class="step-body">
-                <div class="input-row">
-                    <div class="scan-field">
-                        <i class="fas fa-hashtag"></i>
-                        <input type="text" id="lot-input" placeholder="LOT番号"
-                            onchange="checkStep3()">
-                    </div>
-                    <button class="cam-btn" onclick="simulateScan('lot-input', 'LOT-2026-001')">
-                        <i class="fas fa-camera"></i>
-                    </button>
-                </div>
-            </div>
+            <div class="step-header"><div class="step-num"><span class="num-text">3</span></div><span>ステップ3: ロット番号を入力</span></div>
+            <div class="step-body"><div class="input-row"><div class="scan-field"><i class="fas fa-hashtag"></i><input type="text" id="lot-input" placeholder="LOT番号" onchange="checkStep3()"></div><button class="cam-btn" onclick="simulateScan('lot-input', 'LOT-2026-001')"><i class="fas fa-camera"></i></button></div></div>
         </div>
-
-        <!-- ── Step 4: 数量入力 ── -->
-        <div class="step-card done" id="step4">
-            <div class="step-header">
-                <div class="step-num"><span class="num-text">4</span></div>
-                <span>ステップ4: ピッキング数量入力</span>
-            </div>
+        <div class="step-card" id="step4">
+            <div class="step-header"><div class="step-num"><span class="num-text">4</span></div><span id="step4-label">ステップ4: ピッキング数量入力</span></div>
             <div class="step-body">
-                <div class="qty-row">
-                    <button class="qty-btn-circle btn-minus" onclick="changeQty(-1)">−</button>
-                    <div class="qty-box" id="qty-display">0</div>
-                    <button class="qty-btn-circle btn-plus" onclick="changeQty(1)">＋</button>
-                </div>
-                <div class="quick-btns">
-                    <button class="quick-btn" onclick="addQty(1)">+1</button>
-                    <button class="quick-btn" onclick="addQty(5)">+5</button>
-                    <button class="quick-btn" onclick="addQty(10)">+10</button>
-                </div>
+                <div class="qty-row"><button class="qty-btn-circle btn-minus" onclick="changeQty(-1)">−</button><div class="qty-box" id="qty-display">0</div><button class="qty-btn-circle btn-plus" onclick="changeQty(1)">＋</button></div>
+                <div class="quick-btns"><button class="quick-btn" onclick="addQty(1)">+1</button><button class="quick-btn" onclick="addQty(5)">+5</button><button class="quick-btn" onclick="addQty(10)">+10</button></div>
             </div>
         </div>
     </div>
 
-    <!-- Scan History -->
-    <div class="history-wrap">
-        <div class="history-title">今回の作業履歴</div>
-        <div id="scan-history">
-            <div style="color:#999; font-style:italic; font-size:12px; text-align:center; padding:10px;">
-                履歴はありません
-            </div>
-        </div>
-    </div>
-
+    <div class="history-wrap"><div class="history-title">今回の作業履歴</div><div id="scan-history"><div style="color:#999; font-style:italic; font-size:12px; text-align:center; padding:10px;">履歴はありません</div></div></div>
 </div>
 
-<!-- Footer -->
 <div class="footer-action">
-    <button class="btn-confirm-next" id="confirm-btn" onclick="confirmAndNext()">
-        <i class="fas fa-circle-check"></i>
-        <span>確認してスキャン継続</span>
-    </button>
-    <button class="btn-picking-done" id="done-btn" onclick="openConfirmModal()">
-        <i class="fas fa-flag-checkered"></i>
-        <span>ピッキング完了</span>
-    </button>
+    <button class="btn-confirm-next" id="confirm-btn" onclick="confirmAndNext()"><i class="fas fa-circle-check"></i><span>確認してスキャン継続</span></button>
+    <button class="btn-picking-done" id="done-btn" onclick="openConfirmModal()"><i class="fas fa-flag-checkered"></i><span id="finish-btn-text">ピッキング完了</span></button>
 </div>
 
-<!-- Custom Confirmation Modal -->
 <div class="modal-overlay" id="confirm-modal">
     <div class="modal-card">
         <div class="modal-icon"><i class="fas fa-check"></i></div>
-        <div class="modal-title">ピッキングを完了しますか？</div>
-        <div class="modal-body">
-            スキャンした全てのデータ（計 <span id="modal-total-qty">0</span> 箱）を保存し、タスク詳細画面に戻ります。
-        </div>
-        <div class="modal-footer">
-            <button class="btn-modal btn-modal-cancel" onclick="closeConfirmModal()">戻る</button>
-            <button class="btn-modal btn-modal-submit" onclick="finishPicking()">確定する</button>
-        </div>
+        <div id="modal-title" class="modal-title">ピッキングを完了しますか？</div>
+        <div id="modal-body" class="modal-body">スキャンした全てのデータを保存し、終了します。</div>
+        <div class="modal-footer"><button class="btn-modal btn-modal-cancel" onclick="closeConfirmModal()">戻る</button><button class="btn-modal btn-modal-submit" onclick="finishPicking()">確定する</button></div>
     </div>
 </div>
 
 <script>
-    let currentQty = 0;
-    let totalPicked = 0;
+    let currentQty = 0; let totalPicked = 0;
+    const params = new URLSearchParams(window.location.search);
+    const taskType = params.get('type') || 'receive';
     const target = parseInt(document.getElementById('req-qty-val').textContent);
     
     document.getElementById('header-target').textContent = target;
 
-    function changeQty(delta) {
-        currentQty = Math.max(0, currentQty + delta);
-        refreshQtyDisplay();
+    // Correct terminology for 'receive' (Incoming)
+    if (taskType === 'receive') {
+        document.getElementById('step4-label').textContent = 'ステップ4: 入荷数量入力';
+        document.getElementById('finish-btn-text').textContent = '入荷完了';
+        document.getElementById('modal-title').textContent = '入荷作業を完了しますか？';
+        document.getElementById('modal-body').innerHTML = `スキャンした全てのデータ（計 <span id="modal-total-qty">0</span> 箱）を保存し、入荷を確定します。`;
     }
-    function addQty(n) {
-        currentQty += n;
-        refreshQtyDisplay();
-    }
+
+    function changeQty(delta) { currentQty = Math.max(0, currentQty + delta); refreshQtyDisplay(); }
+    function addQty(n) { currentQty += n; refreshQtyDisplay(); }
     function refreshQtyDisplay() {
         document.getElementById('qty-display').textContent = currentQty;
         const btn = document.getElementById('confirm-btn');
-        if (currentQty > 0) btn.classList.add('ready');
-        else btn.classList.remove('ready');
+        if (currentQty > 0) btn.classList.add('ready'); else btn.classList.remove('ready');
     }
 
     function checkStep1() { if (document.getElementById('shelf-input').value.trim()) document.getElementById('step1').classList.add('done'); }
     function checkStep2() { if (document.getElementById('sku-input').value.trim()) document.getElementById('step2').classList.add('done'); }
     function checkStep3() { if (document.getElementById('lot-input').value.trim()) document.getElementById('step3').classList.add('done'); }
-
-    function simulateScan(inputId, value) {
-        const el = document.getElementById(inputId);
-        el.value = value;
-        el.dispatchEvent(new Event('change'));
-    }
+    function simulateScan(inputId, value) { const el = document.getElementById(inputId); el.value = value; el.dispatchEvent(new Event('change')); }
 
     function confirmAndNext() {
         if (currentQty <= 0) return;
         totalPicked += currentQty;
-        
         const shelf = document.getElementById('shelf-input').value || '—';
         const sku   = document.getElementById('sku-input').value  || '—';
         const lot   = document.getElementById('lot-input').value  || '—';
 
-        // Add history row
         const histEl = document.getElementById('scan-history');
         if (histEl.querySelector('div[style]')) histEl.innerHTML = '';
-        histEl.insertAdjacentHTML('afterbegin', `
-            <div class="scan-row">
-                <div>
-                    <span style="font-weight:800;">棚: ${shelf} / SKU: ${sku}</span><br>
-                    <span style="color:#666;">LOT: ${lot}</span>
-                </div>
-                <div style="font-size:16px; font-weight:800; color:var(--blue);">+ ${currentQty}</div>
-            </div>`);
-
+        histEl.insertAdjacentHTML('afterbegin', `<div class="scan-row"><div><span style="font-weight:800;">棚: ${shelf} / SKU: ${sku}</span><br><span style="color:#666;">LOT: ${lot}</span></div><div style="font-size:16px; font-weight:800; color:var(--blue);">+ ${currentQty}</div></div>`);
         document.getElementById('header-progress').textContent = totalPicked;
 
-        // Reset inputs (KEEP THEM VISIBLE but empty for next entry if needed)
-        // EXCEPT if target met, we don't clear so user sees final input
         if (totalPicked < target) {
-            document.getElementById('shelf-input').value = '';
-            document.getElementById('sku-input').value   = '';
-            document.getElementById('lot-input').value   = '';
+            document.getElementById('shelf-input').value = ''; document.getElementById('sku-input').value   = ''; document.getElementById('lot-input').value   = '';
             ['step1','step2','step3'].forEach(id => document.getElementById(id).classList.remove('done'));
-            currentQty = 0;
-            refreshQtyDisplay();
-        }
-
-        if (totalPicked >= target) {
-            document.getElementById('confirm-btn').style.display = 'none';
-            document.getElementById('done-btn').style.display = 'flex';
-            document.getElementById('picking-steps').style.opacity = '0.7';
-            document.getElementById('picking-steps').style.pointerEvents = 'none';
-            document.getElementById('step1').classList.add('done');
-            document.getElementById('step2').classList.add('done');
-            document.getElementById('step3').classList.add('done');
+            currentQty = 0; refreshQtyDisplay();
+        } else {
+            document.getElementById('confirm-btn').style.display = 'none'; document.getElementById('done-btn').style.display = 'flex';
+            document.getElementById('picking-steps').style.opacity = '0.7'; document.getElementById('picking-steps').style.pointerEvents = 'none';
+            ['step1','step2','step3'].forEach(id => document.getElementById(id).classList.add('done'));
         }
     }
 
@@ -405,11 +236,7 @@
         document.getElementById('confirm-modal').style.display = 'flex';
     }
     function closeConfirmModal() { document.getElementById('confirm-modal').style.display = 'none'; }
-
-    function finishPicking() {
-        location.href = 'task_detail.html?status=finished';
-    }
+    function finishPicking() { location.href = 'task_detail.html?status=finished&type=' + taskType; }
 </script>
-
 </body>
 </html>
