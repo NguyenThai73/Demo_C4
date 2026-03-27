@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配送ラベル発行 | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .print-layout {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .status-stepper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 0 40px;
+            position: relative;
+        }
+        .status-stepper::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 60px;
+            right: 60px;
+            height: 2px;
+            background: #eee;
+            z-index: 1;
+        }
+        .step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            background: var(--kintone-bg);
+            padding: 0 10px;
+        }
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: bold;
+            color: #999;
+        }
+        .step.done .step-circle {
+            background: var(--kintone-success);
+            border-color: var(--kintone-success);
+            color: white;
+        }
+        .step.active .step-circle {
+            background: var(--kintone-blue);
+            border-color: var(--kintone-blue);
+            color: white;
+        }
+        .step-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #888;
+        }
+        .step.active .step-label { color: var(--kintone-blue); }
+
+        .packing-card {
+            background: #fff;
+            border-left: 5px solid var(--kintone-blue);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 20px;
+        }
+        .label-preview-box {
+            width: 200px;
+            height: 280px;
+            background: #fdfdfd;
+            border: 1px dashed #ccc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+        .label-info-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            font-size: 13px;
+        }
+        .info-item .label { color: #888; font-size: 11px; margin-bottom: 4px; }
+        .info-item .val { font-weight: bold; }
+
+        .btn-print-large {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 18px;
+            background: var(--kintone-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #2077b0;
+            transition: all 0.1s;
+        }
+        .btn-print-large:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #2077b0;
+        }
+        .btn-print-sub {
+            flex: 1;
+            padding: 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<header class="header-full">
+    <div class="kintone-header-top">
+        <div class="header-content-inner">
+            <div class="header-logo">kintone</div>
+            <div class="header-user">
+                <span>✉</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User" class="user-avatar" style="width: 32px; height: 32px;">
+                    <span>Administrator</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="main-container print-layout">
+    <div class="breadcrumb" style="margin: 20px 0;">
+        🏠 <span>/</span> <a href="tasklist.html" style="color:#3498db">タスク一覧</a> <span>/</span> <a href="task_detail.html?type=sample&status=finished" style="color:#3498db">TASK-527</a> <span>/</span> 配送ラベル発行
+    </div>
+
+    <!-- Stepper -->
+    <div class="status-stepper">
+        <div class="step done">
+            <div class="step-circle"><i class="fas fa-check"></i></div>
+            <div class="step-label">ピッキング</div>
+        </div>
+        <div class="step active">
+            <div class="step-circle">2</div>
+            <div class="step-label">梱包・ラベル発行</div>
+        </div>
+        <div class="step">
+            <div class="step-circle">3</div>
+            <div class="step-label">出荷完了</div>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-title">
+            <span><i class="fas fa-print"></i></span> 配送ラベル発行
+        </div>
+
+        <div class="packing-card">
+            <div class="label-preview-box">
+                <i class="fas fa-file-invoice" style="font-size: 50px; margin-bottom: 15px; color: #eee;"></i>
+                <span>LABEL PREVIEW</span>
+            </div>
+            
+            <div class="label-info-grid">
+                <div class="info-item">
+                    <div class="label">配送業者</div>
+                    <div class="val" style="color:var(--kintone-blue)">ヤマト運輸 (宅急便)</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">梱包サイズ</div>
+                    <div class="val">60サイズ (常温)</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">お届け先</div>
+                    <div class="val">東京都中央区銀座 5-1-1<br>シリカ商事株式会社 営業部</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">伝票番号 (Auto Generate)</div>
+                    <div class="val" style="font-family: monospace; font-size: 16px;">1234-5678-9012</div>
+                </div>
+                <div class="info-item" style="grid-column: span 2;">
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 10px 0;">
+                </div>
+                <div class="info-item">
+                    <div class="label">品名</div>
+                    <div class="val">セラミック基板用素材プレミアム x3</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">出荷指示元</div>
+                    <div class="val">PO-0012</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            <button class="btn-print-large" onclick="simulatePrint('配送ラベル')">
+                <i class="fas fa-print"></i> 配送ラベルを印刷する
+            </button>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-print-sub" onclick="simulatePrint('納品書')">
+                    <i class="fas fa-file-lines"></i> 納品書を印刷
+                </button>
+                <button class="btn-print-sub" onclick="simulatePrint('荷札')">
+                    <i class="fas fa-tag"></i> 荷札を印刷
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: center; background: white; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+        <div style="font-size: 13px; color: #666;">
+            <i class="fas fa-circle-info" style="margin-right: 8px;"></i> 全てのラベル印刷が完了したら、作業を完了させてください。
+        </div>
+        <button class="btn-blue" onclick="location.href='tasklist.html'" style="padding: 12px 40px; font-weight: bold;">
+            作業を完了して一覧へ <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+        </button>
+    </div>
+
+</main>
+
+<script>
+    function simulatePrint(name) {
+        const btn = event.currentTarget;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${name}を生成中...`;
+        btn.disabled = true;
+        
+        setTimeout(() => {
+            alert(name + 'が正常に印刷用キューに送信されました。');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            btn.style.backgroundColor = '#2ecc71';
+            btn.style.boxShadow = '0 4px 0 #27ae60';
+        }, 1500);
+    }
+</script>
+
+</body>
+</html>

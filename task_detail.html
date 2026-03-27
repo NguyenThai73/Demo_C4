@@ -176,12 +176,28 @@
         document.getElementById('item-status-col').innerHTML = '<span class="badge-status status-ok">完納</span>';
         
         const nextActionArea = document.getElementById('next-action-area');
-        nextActionArea.className = 'next-action-card accent-success';
-        nextActionArea.innerHTML = `
-            <div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>
-                <div>状況: <span style="color: var(--kintone-success); font-weight: 800;">完了</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">作業は正常に完了しました。</span></div>
-            </div>
-            <button class="btn-secondary" onclick="location.href='tasklist.html'" style="padding: 10px 40px; border: 1px solid #ddd;">一覧に戻る</button>`;
+        
+        if (type === 'sample') {
+            // Shipment flow: Next is Printing label
+            nextActionArea.className = 'next-action-card accent-primary';
+            nextActionArea.innerHTML = `
+                <div class="next-action-content">
+                    <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-print"></i></span>
+                    <div>
+                        次の対応: <span style="color: var(--kintone-blue); font-weight: 800;">配送ラベル発行</span><br>
+                        <span style="font-weight: normal; font-size: 12px; color: #666;">ピッキングが完了しました。梱包を行い、配送ラベルを発行してください。</span>
+                    </div>
+                </div>
+                <button class="btn-blue" onclick="location.href='task_print_label.html?type=${type}'" style="padding: 10px 40px;">ラベルを発行する</button>
+            `;
+        } else {
+            nextActionArea.className = 'next-action-card accent-success';
+            nextActionArea.innerHTML = `
+                <div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>
+                    <div>状況: <span style="color: var(--kintone-success); font-weight: 800;">完了</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">作業は正常に完了しました。</span></div>
+                </div>
+                <button class="btn-secondary" onclick="location.href='tasklist.html'" style="padding: 10px 40px; border: 1px solid #ddd;">一覧に戻る</button>`;
+        }
     }
 
     function setNewTaskUI(type) {
