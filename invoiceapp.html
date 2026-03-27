@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .field-box-readonly {
-            background: #f8f9fa;
+            background: #fff;
             border: 1px solid var(--color-border-table);
             border-radius: 4px;
             padding: 8px 12px;
@@ -107,20 +107,20 @@
             min-width: 60px;
         }
 
-        /* Inline-editable invoice row inputs */
+        /* Inline-editable invoice row inputs — match .field-box from task_create.html */
         .item-input {
-            border: 1px solid transparent;
+            border: 1px solid #e3e7e8;
             border-radius: 3px;
-            padding: 3px 6px;
+            padding: 5px 8px;
             font-size: 13px;
-            background: transparent;
-            transition: border-color 0.15s, background 0.15s;
+            background: #fff;
+            transition: border-color 0.15s, box-shadow 0.15s;
             font-family: inherit;
             color: var(--text-primary, #333);
             box-sizing: border-box;
         }
-        .item-input:hover  { border-color: #ddd; background: white; }
-        .item-input:focus  { border-color: #856404; background: white; outline: none; box-shadow: 0 0 0 2px rgba(133,100,4,0.12); }
+        .item-input:hover  { border-color: #b0b8c1; }
+        .item-input:focus  { border-color: var(--color-primary); outline: none; box-shadow: 0 0 0 2px rgba(52,152,219,0.12); }
         .item-input.wide   { width: 100%; }
         .item-input.num    { text-align: right; width: 80px; }
         .item-input.mid    { text-align: center; width: 64px; }
@@ -216,10 +216,7 @@
     <!-- Summary Header -->
     <div class="summary-header">
         <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div class="badge-type badge-agency">請求書</div>
-                <div style="font-size: var(--text-size-2xl); font-weight: var(--font-bold);">レコード #<span id="summary-record-no">76</span></div>
-            </div>
+            <div class="badge-type badge-agency">請求書</div>
             <a href="order_detail_agency_paid.html" class="back-link">
                 <i class="fas fa-arrow-left"></i> 注文詳細に戻る
             </a>
@@ -313,11 +310,17 @@
 
     <!-- 請求明細 -->
     <div class="section-card section-op">
-        <div class="section-title between">
-            <span><i class="fas fa-list"></i>請求明細</span>
-            <span style="font-size: var(--text-size-xs); font-weight: var(--font-normal); color: var(--text-muted);"><i class="fas fa-pencil" style="margin-right: 4px;"></i>行を直接編集できます</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg);">
+            <div class="section-title" style="margin-bottom: 0;">
+                <i class="fas fa-list"></i>請求明細
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="btn-secondary" onclick="addRow()" style="font-size: 12px; padding: 6px 14px;"><i class="fas fa-plus" style="margin-right: 6px;"></i>行を追加</button>
+                <button class="quick-add-chip" onclick="addPreset('shipping')"><i class="fas fa-truck" style="margin-right: 4px;"></i>配送料</button>
+                <button class="quick-add-chip" onclick="addPreset('fee')"><i class="fas fa-file-invoice" style="margin-right: 4px;"></i>手数料</button>
+                <button class="quick-add-chip discount" onclick="addPreset('discount')"><i class="fas fa-tag" style="margin-right: 4px;"></i>割引</button>
+            </div>
         </div>
-        <p style="font-size: 11px; color: #999; margin-bottom: 14px;">数量・単価をクリックして直接編集できます。行の追加・削除も可能です。</p>
         <table class="k-table">
             <thead>
                 <tr>
@@ -339,18 +342,6 @@
                 </tr>
             </tfoot>
         </table>
-
-        <!-- Quick-add bar -->
-        <div style="margin-top: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <button onclick="addRow()" style="padding: 5px 16px; background: #856404; color: white; border: none; border-radius: 4px; font-weight: 800; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                <i class="fas fa-plus"></i> 行を追加
-            </button>
-            <span style="font-size: 11px; color: #bbb; margin: 0 2px;">|</span>
-            <span style="font-size: 11px; color: #999;">よく使う:</span>
-            <button class="quick-add-chip" onclick="addPreset('shipping')"><i class="fas fa-truck" style="margin-right: 5px;"></i>配送料</button>
-            <button class="quick-add-chip" onclick="addPreset('fee')"><i class="fas fa-file-invoice" style="margin-right: 5px;"></i>手数料</button>
-            <button class="quick-add-chip discount" onclick="addPreset('discount')"><i class="fas fa-tag" style="margin-right: 5px;"></i>割引</button>
-        </div>
     </div>
 
     <!-- 入金情報・ステータス更新 -->
