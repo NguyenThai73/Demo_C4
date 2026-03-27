@@ -15,8 +15,12 @@
         #movement-info-section { display: none; margin-top: 25px; }
         #dest-shelf-field { display: none; }
         #shipping-carrier-field { display: none; }
-        .btn-mini { font-size: 10px; padding: 2px 8px; white-space: nowrap; height: 24px; }
+        .btn-mini { font-size: 10px; padding: 2px 8px; white-space: nowrap; height: 24px; vertical-align: middle; }
         
+        /* Input White Background Enforcement */
+        .field-box, select.field-box, input.field-box { background-color: #fff !important; border: 1px solid #e3e7e8; }
+        .field-box[readonly] { background-color: #fff !important; cursor: default; }
+
         /* Action buttons at top */
         .top-action-bar { padding: 15px 0; display: flex; gap: 10px; border-bottom: 1px solid #e3e7e8; margin-bottom: 20px; }
         .btn-k-cancel { background: white; border: 1px solid #e3e7e8; padding: 8px 20px; border-radius: 4px; font-weight: bold; color: #333; cursor: pointer; }
@@ -28,19 +32,19 @@
         .modal-header-k { background: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; }
         .modal-title-k { display: flex; align-items: center; gap: 12px; font-weight: bold; font-size: 15px; }
         .modal-close-btn { background: #f0f0f0; border: none; border-radius: 4px; width: 28px; height: 28px; cursor: pointer; color: #666; font-size: 14px; }
-        
         .modal-toolbar-k { background: #f4f6f9; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
         .filter-btn-k { background: white; border: 1px solid #ddd; padding: 8px 12px; border-radius: 4px; color: #999; cursor: pointer; }
         .modal-body-k { background: #f4f6f9; padding: 0 20px 20px; overflow-y: auto; max-height: 400px; }
-        
         .lookup-table { width: 100%; background: white; border-collapse: collapse; border: 1px solid #ddd; }
         .lookup-table th { padding: 12px; background: #fff; border: 1px solid #eee; text-align: left; font-size: 12px; color: #333; }
         .lookup-table td { padding: 10px 12px; border: 1px solid #eee; font-size: 13px; }
         .lookup-table tr:hover { background-color: #f0f7ff; }
         .btn-select-k { background: #f5f5f5; border: 1px solid #ddd; padding: 4px 12px; border-radius: 4px; font-size: 12px; color: #3498db; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .btn-select-k:hover { background: #e8f4fd; border-color: #3498db; }
-        
         .modal-footer-k { background: white; padding: 15px 20px; border-top: 1px solid #eee; display: flex; gap: 10px; }
+
+        /* Table header size standardization */
+        .k-table thead th { font-size: 12px; font-weight: bold; border-top: 1px solid #e3e7e8; }
     </style>
 </head>
 <body>
@@ -51,11 +55,7 @@
         <div class="header-logo"><span class="k-icon">k</span> kintone</div>
         <div class="header-user">
             <span>✉</span>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
-                <span>Administrator</span>
-                <span style="font-size: 10px;">▼</span>
-            </div>
+            <div style="display: flex; align-items: center; gap: 8px;"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User"><span>Administrator</span><span style="font-size: 10px;">▼</span></div>
         </div>
     </div>
 </div>
@@ -68,12 +68,7 @@
 </div>
 
 <div class="kintone-app-title-bar">
-    <div class="header-content-inner" style="padding: 12px 10px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <div class="app-icon" style="background-color: #3498db; color: white; padding: 5px; border-radius: 4px; font-size: 14px;">🔄</div>
-            <div class="app-title" style="font-weight: bold; font-size: 14px;">入出荷タスク — 新規作成</div>
-        </div>
-    </div>
+    <div class="header-content-inner" style="padding: 12px 10px;"><div style="display: flex; align-items: center; gap: 10px;"><div class="app-icon" style="background-color: #3498db; color: white; padding: 5px; border-radius: 4px; font-size: 14px;">🔄</div><div class="app-title" style="font-weight: bold; font-size: 14px;">入出荷タスク — 新規作成</div></div></div>
 </div>
 
 <div class="main-container" style="padding: 20px 10px;">
@@ -96,117 +91,38 @@
             <div style="font-size: 24px; font-weight: bold; color: #bbb;">TASK-NEW</div>
         </div>
         <div class="summary-grid" style="margin-top: 16px;">
-            <div class="summary-item">
-                <div class="summary-label">ステータス</div>
-                <div class="summary-primary-value" style="color: #9e9e9e; font-size: 18px;">作成中</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">作成日</div>
-                <div class="summary-value" id="today-date" style="font-size: 15px;">—</div>
-            </div>
+            <div class="summary-item"><div class="summary-label">ステータス</div><div class="summary-primary-value" style="color: #9e9e9e; font-size: 18px;">作成中</div></div>
+            <div class="summary-item"><div class="summary-label">作成日</div><div class="summary-value" id="today-date" style="font-size: 15px;">—</div></div>
         </div>
     </div>
 
     <!-- Next Action Area -->
     <div id="next-action-area" class="next-action-card accent-blue" style="display: none; margin-top: 15px;">
-        <div class="next-action-content">
-            <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-lightbulb"></i></span>
-            <div>
-                次の対応: <span style="color: var(--kintone-blue);">ガイドライン</span><br>
-                <span id="guideline-message" style="font-weight: normal; font-size: 12px; color: #666;">—</span>
-            </div>
-        </div>
+        <div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-lightbulb"></i></span><div>次の対応: <span style="color: var(--kintone-blue);">ガイドライン</span><br><span id="guideline-message" style="font-weight: normal; font-size: 12px; color: #666;">—</span></div></div>
     </div>
 
     <!-- A. Task Type Selection -->
     <div class="section-card" style="margin-top: 25px;">
-        <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
-            <span><i class="fas fa-list-check" style="margin-right: 12px;"></i></span> タスク種別選択
-        </div>
-        <div class="field-grid" style="grid-template-columns: 1fr;">
-            <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">タスク種別 <span style="color: var(--kintone-danger);">*</span></div>
-                <select id="task-type" class="field-box" style="width: 300px;" onchange="handleTypeChange()">
-                    <option value="">-- 選択してください --</option>
-                    <option value="receive">入荷</option>
-                    <option value="sample">サンプル出荷</option>
-                    <option value="transfer">棚移動</option>
-                    <option value="adjust">在庫調整</option>
-                </select>
-            </div>
-        </div>
+        <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;"><span><i class="fas fa-list-check" style="margin-right: 12px;"></i></span> タスク種別選択</div>
+        <div class="field-grid" style="grid-template-columns: 1fr;"><div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">タスク種別 <span style="color: var(--kintone-danger);">*</span></div><select id="task-type" class="field-box" style="width: 300px;" onchange="handleTypeChange()"><option value="">-- 選択してください --</option><option value="receive">入荷</option><option value="sample">サンプル出荷</option><option value="transfer">棚移動</option><option value="adjust">在庫調整</option></select></div></div>
     </div>
 
-    <!-- Main Form Fields -->
     <div id="task-form-content">
-        <!-- B. Basic Info Section -->
         <div class="section-card">
-            <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
-                <span><i class="fas fa-info-circle" style="margin-right: 12px;"></i></span> 基本情報
-            </div>
+            <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;"><span><i class="fas fa-info-circle" style="margin-right: 12px;"></i></span> 基本情報</div>
             <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 11px; color: #888;">SKU種別 <span style="color: var(--kintone-danger);">*</span></div>
-                    <select id="sku-type" class="field-box" style="width: 100%;">
-                        <option>商品</option>
-                        <option>資材</option>
-                    </select>
-                </div>
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 11px; color: #888;">実行期限</div>
-                    <input type="date" id="due-date" class="field-box" style="width: 100%;" value="2026-03-27">
-                </div>
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 11px; color: #888;">倉庫 <span style="color: var(--kintone-danger);">*</span></div>
-                    <div style="display: flex; gap: 4px;">
-                        <input type="text" id="warehouse-display" class="field-box" readonly style="flex: 1; background-color: #f9f9f9;" value="岐阜倉庫">
-                        <button class="btn-secondary btn-mini" onclick="openWarehouseLookup()">取得</button>
-                        <button class="btn-secondary btn-mini" onclick="clearWarehouse()">クリア</button>
-                    </div>
-                </div>
-
-                <div class="field-item" id="shipping-carrier-field">
-                    <div class="field-label" style="font-size: 11px; color: #888;">配送業者 <span style="color: var(--kintone-danger);">*</span></div>
-                    <select id="carrier" class="field-box" style="width: 100%;">
-                        <option value="">-- 選択してください --</option>
-                        <option value="yamato">ヤマト運輸</option>
-                        <option value="sagawa">佐川急便</option>
-                    </select>
-                </div>
-
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 11px; color: #888;">担当者 <span style="color: var(--kintone-danger);">*</span></div>
-                    <select id="assignee" class="field-box" style="width: 100%;">
-                        <option>Administrator</option>
-                        <option>Staff A</option>
-                        <option>Staff B</option>
-                    </select>
-                </div>
-                <div class="field-item" style="grid-column: span 2;">
-                    <div class="field-label" style="font-size: 11px; color: #888;">備考</div>
-                    <input type="text" id="memo" class="field-box" style="width: 100%;" placeholder="備考を入力してください">
-                </div>
+                <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">SKU種別 <span style="color: var(--kintone-danger);">*</span></div><select id="sku-type" class="field-box" style="width: 100%;"><option>商品</option><option>資材</option></select></div>
+                <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">実行期限</div><input type="date" id="due-date" class="field-box" style="width: 100%;" value="2026-03-27"></div>
+                <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">倉庫 <span style="color: var(--kintone-danger);">*</span></div><div style="display: flex; gap: 4px;"><input type="text" id="warehouse-display" class="field-box" readonly style="flex: 1;" value="岐阜倉庫"><button class="btn-secondary btn-mini" onclick="openLookup('warehouse')">取得</button><button class="btn-secondary btn-mini" onclick="clearField('warehouse-display')">クリア</button></div></div>
+                <div class="field-item" id="shipping-carrier-field"><div class="field-label" style="font-size: 11px; color: #888;">配送業者 <span style="color: var(--kintone-danger);">*</span></div><select id="carrier" class="field-box" style="width: 100%;"><option value="">-- 選択してください --</option><option value="yamato">ヤマト運輸</option><option value="sagawa">佐川急便</option></select></div>
+                <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">担当者 <span style="color: var(--kintone-danger);">*</span></div><div style="display: flex; gap: 4px;"><input type="text" id="assignee-display" class="field-box" readonly style="flex: 1;" value="Administrator"><button class="btn-secondary btn-mini" onclick="openLookup('assignee')">取得</button><button class="btn-secondary btn-mini" onclick="clearField('assignee-display')">クリア</button></div></div>
+                <div class="field-item" style="grid-column: span 2;"><div class="field-label" style="font-size: 11px; color: #888;">備考</div><input type="text" id="memo" class="field-box" style="width: 100%;" placeholder="備考を入力してください"></div>
             </div>
-
             <div id="movement-info-section">
-                <div style="font-weight: 800; font-size: 13px; color: #333; margin-top: 20px; margin-bottom: 10px; border-top: 1px solid #eee; padding-ptop: 15px;">移動情報</div>
+                <div style="font-weight: 800; font-size: 13px; color: #333; margin-top: 20px; margin-bottom: 10px; border-top: 1px solid #eee; padding-top: 15px;">移動情報</div>
                 <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
-                    <div class="field-item">
-                        <div class="field-label" style="font-size: 11px; color: #888;">移動元棚 <span style="color: var(--kintone-danger);">*</span></div>
-                        <div style="display: flex; gap: 4px;">
-                            <input type="text" id="source-shelf" class="field-box" style="flex: 1;" placeholder="棚番を入力">
-                            <button class="btn-secondary btn-mini" onclick="alert('取得')">取得</button>
-                            <button class="btn-secondary btn-mini" onclick="document.getElementById('source-shelf').value=''">クリア</button>
-                        </div>
-                    </div>
-                    <div class="field-item" id="dest-shelf-field">
-                        <div class="field-label" style="font-size: 11px; color: #888;">移動先棚 <span style="color: var(--kintone-danger);">*</span></div>
-                        <div style="display: flex; gap: 4px;">
-                            <input type="text" id="dest-shelf" class="field-box" style="flex: 1;" placeholder="棚番を入力">
-                            <button class="btn-secondary btn-mini" onclick="alert('取得')">取得</button>
-                            <button class="btn-secondary btn-mini" onclick="document.getElementById('dest-shelf').value=''">クリア</button>
-                        </div>
-                    </div>
+                    <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">移動元棚 <span style="color: var(--kintone-danger);">*</span></div><div style="display: flex; gap: 4px;"><input type="text" id="source-shelf" class="field-box" style="flex: 1;" placeholder="棚番を入力"><button class="btn-secondary btn-mini" onclick="alert('取得')">取得</button><button class="btn-secondary btn-mini" onclick="clearField('source-shelf')">クリア</button></div></div>
+                    <div class="field-item" id="dest-shelf-field"><div class="field-label" style="font-size: 11px; color: #888;">移動先棚 <span style="color: var(--kintone-danger);">*</span></div><div style="display: flex; gap: 4px;"><input type="text" id="dest-shelf" class="field-box" style="flex: 1;" placeholder="棚番を入力"><button class="btn-secondary btn-mini" onclick="alert('取得')">取得</button><button class="btn-secondary btn-mini" onclick="clearField('dest-shelf')">クリア</button></div></div>
                 </div>
             </div>
         </div>
@@ -214,56 +130,30 @@
         <!-- C. Product Details Section -->
         <div class="section-card" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; margin-bottom: 0;">
-                    <span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span>商品明細
-                </div>
-                <button class="btn-secondary" onclick="addProductRow()" style="font-size: 12px; padding: 6px 14px;">
-                    <i class="fas fa-plus" style="margin-right: 6px;"></i>行を追加
-                </button>
+                <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; margin-bottom: 0;"><span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span>商品明細</div>
+                <button class="btn-secondary" onclick="addProductRow()" style="font-size: 12px; padding: 6px 14px;"><i class="fas fa-plus" style="margin-right: 6px;"></i>行を追加</button>
             </div>
             <table class="k-table">
-                <thead>
-                    <tr>
-                        <th style="width: 150px;">商品SKU <span style="color: var(--kintone-danger);">*</span></th>
-                        <th>商品・資材SKU (表示名) <span style="color: var(--kintone-danger);">*</span></th>
-                        <th class="col-num" style="width: 100px;">数量 <span style="color: var(--kintone-danger);">*</span></th>
-                        <th class="col-mid" style="width: 80px;">単位 <span style="color: var(--kintone-danger);">*</span></th>
-                        <th class="col-mid" style="width: 60px;">操作</th>
-                    </tr>
-                </thead>
-                <tbody id="product-tbody">
-                    <!-- rows -->
-                </tbody>
+                <thead><tr><th style="width: 250px;">商品SKU <span style="color: var(--kintone-danger);">*</span></th><th>商品・資材SKU (表示名) <span style="color: var(--kintone-danger);">*</span></th><th class="col-num" style="width: 100px;">数量 <span style="color: var(--kintone-danger);">*</span></th><th class="col-mid" style="width: 80px;">単位 <span style="color: var(--kintone-danger);">*</span></th><th class="col-mid" style="width: 60px;">操作</th></tr></thead>
+                <tbody id="product-tbody"></tbody>
             </table>
         </div>
     </div>
 </div>
 
-<!-- Kintone Warehouse Lookup Modal -->
-<div id="warehouse-lookup-modal" class="modal-overlay-k" onclick="if(event.target==this) closeWarehouseLookup()">
+<!-- Modals -->
+<div id="lookup-modal" class="modal-overlay-k" onclick="if(event.target==this) closeLookup()">
     <div class="modal-card-k">
         <div class="modal-header-k">
             <div class="modal-title-k">
-                <div style="width:32px; height:32px; background:#e1f5fe; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#03a9f4;">
-                    <i class="fas fa-warehouse"></i>
-                </div>
-                <div>
-                    <div style="font-size:14px; color:#333;">倉庫管理</div>
-                    <div style="font-size:10px; color:#999; font-weight:normal;">担当者・閲覧者を追加できます</div>
-                </div>
+                <div id="modal-icon-container" style="width:32px; height:32px; background:#e1f5fe; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#03a9f4;"><i class="fas fa-search"></i></div>
+                <div><div id="modal-title-text" style="font-size:14px; color:#333;">検索</div><div style="font-size:10px; color:#999; font-weight:normal;">対象を選択してください</div></div>
             </div>
-            <button class="modal-close-btn" onclick="closeWarehouseLookup()">×</button>
+            <button class="modal-close-btn" onclick="closeLookup()">×</button>
         </div>
-        <div class="modal-toolbar-k"><button class="filter-btn-k"><i class="fas fa-filter"></i></button><div style="font-size: 12px; color: #333;">全 2 件</div></div>
-        <div class="modal-body-k">
-            <table class="lookup-table"><thead><tr><th style="width: 100px;"></th><th>倉庫名</th></tr></thead>
-                <tbody>
-                    <tr><td style="text-align:center;"><button class="btn-select-k" onclick="selectWarehouse('岐阜倉庫')">選択</button></td><td>岐阜倉庫</td></tr>
-                    <tr><td style="text-align:center;"><button class="btn-select-k" onclick="selectWarehouse('東京倉庫')">選択</button></td><td>東京倉庫</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="modal-footer-k"><button class="btn-k-cancel" style="padding: 8px 15px;" onclick="closeWarehouseLookup()">キャンセル</button></div>
+        <div class="modal-toolbar-k"><button class="filter-btn-k"><i class="fas fa-filter"></i></button><div id="modal-item-count" style="font-size: 12px; color: #333;">全 0 件</div></div>
+        <div class="modal-body-k"><table class="lookup-table" id="lookup-table-el"><thead><tr id="lookup-headers"></tr></thead><tbody id="lookup-tbody"></tbody></table></div>
+        <div class="modal-footer-k"><button class="btn-k-cancel" style="padding: 8px 15px;" onclick="closeLookup()">キャンセル</button></div>
     </div>
 </div>
 
@@ -277,52 +167,77 @@
         'adjust':    { label: '在庫調整', bg: '#f3e5f5', color: '#7b1fa2', border: '#e1bee7', guide: '実在庫と差異のある商品と正しい棚・数量を入力してください。' },
     };
 
-    let rowCount = 0;
+    let rowCount = 0; let activeRowId = null;
 
     function handleTypeChange() {
-        const val = document.getElementById('task-type').value;
-        const taskFormContent = document.getElementById('task-form-content');
-        const nextActionArea = document.getElementById('next-action-area');
-        const guidelineMessage = document.getElementById('guideline-message');
-        const saveBtn = document.getElementById('save-btn-top');
+        const val = document.getElementById('task-type').value; const form = document.getElementById('task-form-content');
+        const next = document.getElementById('next-action-area'); const btn = document.getElementById('save-btn-top');
         const badge = document.getElementById('task-type-badge');
-
         if (val) {
-            taskFormContent.style.display = 'block';
-            nextActionArea.style.display = 'block';
-            saveBtn.style.display = 'block';
-            guidelineMessage.textContent = TYPE_LABELS[val].guide;
+            form.style.display = 'block'; next.style.display = 'block'; btn.style.display = 'block';
+            document.getElementById('guideline-message').textContent = TYPE_LABELS[val].guide;
             document.getElementById('shipping-carrier-field').style.display = (val === 'sample') ? 'block' : 'none';
             document.getElementById('movement-info-section').style.display = (val === 'sample' || val === 'transfer' || val === 'adjust') ? 'block' : 'none';
             document.getElementById('dest-shelf-field').style.display = (val === 'transfer') ? 'block' : 'none';
-            const t = TYPE_LABELS[val];
-            badge.textContent = t.label; badge.style.backgroundColor = t.bg; badge.style.color = t.color; badge.style.borderColor = t.border;
+            const t = TYPE_LABELS[val]; badge.textContent = t.label; badge.style.backgroundColor = t.bg; badge.style.color = t.color; badge.style.borderColor = t.border;
             if (rowCount === 0) addProductRow('CER-BASE-01', 'セラミック基板用素材 PREMIUM', 1);
         } else {
-            taskFormContent.style.display = 'none'; nextActionArea.style.display = 'none'; saveBtn.style.display = 'none';
+            form.style.display = 'none'; next.style.display = 'none'; btn.style.display = 'none';
             badge.textContent = '未選択'; badge.style.backgroundColor = '#f5f5f5'; badge.style.color = '#9e9e9e'; badge.style.borderColor = '#e0e0e0';
         }
     }
 
     function addProductRow(sku = '', name = '', qty = '') {
         rowCount++; const id = rowCount;
-        const row = `<tr id="row-${id}"><td><input type="text" class="field-box" value="${sku}" style="width: 100%;"></td><td><input type="text" class="field-box" value="${name}" style="width: 100%;"></td><td class="col-num"><input type="number" class="field-box" value="${qty}" style="width: 100%; text-align: right;"></td><td class="col-mid"><select class="field-box" style="width: 100%;"><option>箱</option><option>個</option><option>袋</option></select></td><td class="col-mid"><button onclick="removeRow(${id})" style="background: none; border: none; color: #c62828; cursor: pointer;"><i class="fas fa-trash-can"></i></button></td></tr>`;
+        const row = `<tr id="row-${id}">
+            <td><div style="display:flex; gap:4px;"><input type="text" id="sku-id-${id}" class="field-box" value="${sku}" readonly style="flex:1;"><button class="btn-secondary btn-mini" onclick="openLookup('product', ${id})">取得</button><button class="btn-secondary btn-mini" onclick="clearField('sku-id-${id}')">クリア</button></div></td>
+            <td><input type="text" id="sku-name-${id}" class="field-box" value="${name}" style="width: 100%;"></td>
+            <td class="col-num"><input type="number" class="field-box" value="${qty}" style="width: 100%; text-align: right;"></td>
+            <td class="col-mid"><select class="field-box" style="width: 100%;"><option>箱</option><option>個</option><option>袋</option></select></td>
+            <td class="col-mid"><button onclick="removeRow(${id})" style="background: none; border: none; color: #c62828; cursor: pointer;"><i class="fas fa-trash-can"></i></button></td>
+        </tr>`;
         document.getElementById('product-tbody').insertAdjacentHTML('beforeend', row);
     }
     function removeRow(id) { document.getElementById(`row-${id}`).remove(); }
-    function openWarehouseLookup() { document.getElementById('warehouse-lookup-modal').style.display = 'flex'; }
-    function closeWarehouseLookup() { document.getElementById('warehouse-lookup-modal').style.display = 'none'; }
-    function selectWarehouse(name) { document.getElementById('warehouse-display').value = name; closeWarehouseLookup(); }
-    function clearWarehouse() { document.getElementById('warehouse-display').value = ''; }
+    function clearField(id) { document.getElementById(id).value = ''; }
+
+    const MOCK_DATA = {
+        warehouse: { title: '倉庫管理', icon: 'fa-warehouse', headers: ['倉庫名'], items: [['岐阜倉庫'], ['東京倉庫']] },
+        assignee: { title: '担当者管理', icon: 'fa-user-gear', headers: ['担当者名', '所属'], items: [['Administrator', 'システム管理者'], ['Staff A', '物流部'], ['Staff B', '物流部']] },
+        product: { title: '商品・資材管理', icon: 'fa-cube', headers: ['商品SKU', '商品名'], items: [['CER-BASE-01', 'セラミック基板用素材 PREMIUM'], ['PACK-BOX-S', '梱包用段ボール (S)'], ['LABEL-ADH-01', '粘着剤付きラベル']] }
+    };
+
+    function openLookup(type, rowId = null) {
+        activeRowId = rowId; const data = MOCK_DATA[type];
+        document.getElementById('modal-title-text').textContent = data.title;
+        document.getElementById('modal-icon-container').innerHTML = `<i class="fas ${data.icon}"></i>`;
+        document.getElementById('modal-item-count').textContent = `全 ${data.items.length} 件`;
+        const hRow = document.getElementById('lookup-headers'); hRow.innerHTML = '<th style="width:80px;"></th>';
+        data.headers.forEach(h => hRow.insertAdjacentHTML('beforeend', `<th>${h}</th>`));
+        const tbody = document.getElementById('lookup-tbody'); tbody.innerHTML = '';
+        data.items.forEach(item => {
+            let cells = `<td style="text-align:center;"><button class="btn-select-k" onclick="selectItem('${type}', ${JSON.stringify(item)})">選択</button></td>`;
+            item.forEach(val => cells += `<td>${val}</td>`);
+            tbody.insertAdjacentHTML('beforeend', `<tr>${cells}</tr>`);
+        });
+        document.getElementById('lookup-modal').style.display = 'flex';
+    }
+    function closeLookup() { document.getElementById('lookup-modal').style.display = 'none'; }
+    function selectItem(type, values) {
+        if (type === 'warehouse') document.getElementById('warehouse-display').value = values[0];
+        else if (type === 'assignee') document.getElementById('assignee-display').value = values[0];
+        else if (type === 'product') {
+            document.getElementById(`sku-id-${activeRowId}`).value = values[0];
+            document.getElementById(`sku-name-${activeRowId}`).value = values[1];
+        }
+        closeLookup();
+    }
 
     function saveTask() {
         const type = document.getElementById('task-type').value;
         document.getElementById('flash-message').style.display = 'block';
-        setTimeout(() => { 
-            location.href = `task_detail.html?status=new&type=${type}`; 
-        }, 1200);
+        setTimeout(() => { location.href = `task_detail.html?status=new&type=${type}`; }, 1200);
     }
-
     window.onload = function() { document.getElementById('today-date').textContent = new Date().toISOString().split('T')[0]; };
 </script>
 </body>
