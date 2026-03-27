@@ -44,13 +44,13 @@
     
     <div class="kintone-action-toolbar" style="margin-bottom: 20px;"><div class="action-icon-btn">︿</div><div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div><div class="action-icon-btn">+</div><div class="action-icon-btn">📄</div><div class="action-icon-btn">⚙ <span>▼</span></div><div class="action-icon-btn">⋯</div></div>
 
-    <div id="flash-message" class="sticky-flash">🎉 ピッキング作業を完了しました！</div>
+    <div id="flash-message" class="sticky-flash">🎉 タスクを保存しました。</div>
 
     <!-- Summary Header Card -->
     <div class="summary-header">
         <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
             <div style="display: flex; align-items: center; gap: 15px;">
-                <div class="badge-type" style="background-color: #e8f4fd; color: #3498db; border-color: #d1e9fb;">出荷（販売）</div>
+                <div id="type-badge" class="badge-type" style="background-color: #e8f4fd; color: #3498db; border-color: #d1e9fb;">出荷（販売）</div>
                 <div style="font-size: 24px; font-weight: bold;">TASK-527</div>
             </div>
         </div>
@@ -81,17 +81,16 @@
 
     <!-- Next Action Area -->
     <div id="next-action-area" class="next-action-card accent-warning">
-        <!-- Default State -->
         <div class="next-action-content">
             <span style="font-size: 30px; color: var(--kintone-warning);"><i class="fas fa-truck-loading"></i></span>
             <div>
                 次の対応: <span style="color: var(--kintone-warning);">ピッキング作業</span><br>
-                <span style="font-weight: normal; font-size: 12px; color: #666;">内容を確認し、問題なければ出庫作業を開始してください。</span>
+                <span id="guide-text" style="font-weight: normal; font-size: 12px; color: #666;">内容を確認し、問題なければ作業を開始してください。</span>
             </div>
         </div>
-        <div style="display: flex; gap: 12px;">
-            <button class="btn-reject" onclick="rejectTask()">出荷を却下する</button>
-            <button class="btn-blue" onclick="openStartModal()">出庫作業を開始</button>
+        <div id="action-buttons" style="display: flex; gap: 12px;">
+            <button class="btn-reject" onclick="location.href='tasklist.html'">却下する</button>
+            <button class="btn-blue" onclick="location.href='task_scan_barcode.html'">バーコードスキャンを開始</button>
         </div>
     </div>
 
@@ -125,11 +124,10 @@
             <thead>
                 <tr>
                     <th style="min-width: 200px;">商品名</th>
-                    <th class="col-num" style="width: 100px;">注文数量</th>
+                    <th class="col-num" style="width: 100px;">数量</th>
                     <th class="col-mid" style="width: 60px;">単位</th>
-                    <th class="col-num" style="width: 100px;">出荷済</th>
-                    <th class="col-num" style="width: 100px;">未出荷</th>
-                    <th class="col-num" style="width: 100px;">返品</th>
+                    <th class="col-num" style="width: 100px;">完了数</th>
+                    <th class="col-num" style="width: 100px;">未完了</th>
                     <th class="col-mid" style="width: 120px;">ステータス</th>
                 </tr>
             </thead>
@@ -140,24 +138,10 @@
                     <td class="col-mid">箱</td>
                     <td class="col-num" id="shipped-qty">0</td>
                     <td class="col-num" id="pending-qty" style="color: var(--kintone-danger); font-weight: bold;">3</td>
-                    <td class="col-num" style="color: #999;">0</td>
-                    <td class="col-mid" id="item-status-col"><span class="badge-status status-neutral">未出荷</span></td>
+                    <td class="col-mid" id="item-status-col"><span class="badge-status status-neutral">未完了</span></td>
                 </tr>
             </tbody>
         </table>
-    </div>
-
-    <!-- C. Shipping Info -->
-    <div id="shipping-input-area" class="section-card" style="display: none; border-top: 3px solid var(--kintone-blue);">
-        <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
-            <span><i class="fas fa-truck-ramp-box" style="margin-right: 12px;"></i></span> 梱包・出荷情報
-        </div>
-        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
-            <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">配送業者</div><div class="field-value" style="font-weight: 700;">ヤマト運輸</div></div>
-            <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">サイズ種別</div><div class="field-value" style="font-weight: 700;">80</div></div>
-            <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">パッケージ数量</div><div class="field-value" style="font-weight: 700; text-align:right;">10</div></div>
-            <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">送り状ステータス</div><div class="field-value"><span class="badge-status status-ok">完了</span></div></div>
-        </div>
     </div>
 
     <div style="margin: 30px 0; display: flex; gap: 15px;">
@@ -165,53 +149,73 @@
     </div>
 </div>
 
-<!-- Modal Start -->
-<div id="confirm-modal">
-    <div class="modal-box">
-        <div style="font-size: 40px; color: var(--kintone-blue); margin-bottom: 15px;"><i class="fas fa-play-circle"></i></div>
-        <h3 style="margin-bottom: 10px; font-size: 18px; font-weight: bold;">出庫作業を開始しますか？</h3>
-        <p style="font-size: 14px; color: #666; margin-bottom: 25px;">ステータスを作業中に更新します。</p>
-        <div style="display: flex; gap: 12px; justify-content: center;"><button class="btn-secondary" onclick="closeModal()">キャンセル</button><button class="btn-blue" onclick="startWorkflow()">開始する</button></div>
-    </div>
-</div>
-
 <footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Portal</footer>
 
 <script>
-    function openStartModal() { document.getElementById('confirm-modal').style.display = 'flex'; }
-    function closeModal() { document.getElementById('confirm-modal').style.display = 'none'; }
-    function startWorkflow() { closeModal(); location.href = 'task_scan_barcode.html'; }
+    const TYPE_LABELS = {
+        'receive':   { label: '入荷', bg: '#e8f5e9', color: '#2e7d32', border: '#c8e6c9' },
+        'sample':    { label: 'サンプル出荷', bg: '#fff3e0', color: '#e65100', border: '#ffe0b2' },
+        'transfer':  { label: '棚移動', bg: '#e3f2fd', color: '#1565c0', border: '#bbdefb' },
+        'adjust':    { label: '在庫調整', bg: '#f3e5f5', color: '#7b1fa2', border: '#e1bee7' },
+    };
 
-    function setFinishedUI() {
-        // Status Badge
+    function updateBadge(type) {
+        const badge = document.getElementById('type-badge');
+        const t = TYPE_LABELS[type] || TYPE_LABELS['receive'];
+        badge.textContent = t.label;
+        badge.style.backgroundColor = t.bg;
+        badge.style.color = t.color;
+        badge.style.borderColor = t.border;
+    }
+
+    function setFinishedUI(type) {
+        updateBadge(type);
         const statusEl = document.getElementById('main-status');
         statusEl.innerHTML = '完了';
         statusEl.style.color = 'var(--kintone-success)';
 
-        // Table update
         document.getElementById('product-card-section').style.borderColor = '#d4edda';
         document.getElementById('product-card-section').style.backgroundColor = '#f8fff9';
         document.getElementById('shipped-qty').textContent = '3';
         document.getElementById('pending-qty').textContent = '0';
+        document.getElementById('pending-qty').style.color = '#666';
         document.getElementById('item-status-col').innerHTML = '<span class="badge-status status-ok">完納</span>';
 
-        // Update Next Action Area - Button color changed to GREY (btn-secondary)
         const nextActionArea = document.getElementById('next-action-area');
         nextActionArea.className = 'next-action-card accent-success';
         nextActionArea.innerHTML = `
             <div class="next-action-content">
                 <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>
                 <div>
-                    状況: <span style="color: var(--kintone-success); font-weight: 800;">出荷完了</span><br>
-                    <span style="font-weight: normal; font-size: 12px; color: #666;">タスクは正常に終了しました。</span>
+                    状況: <span style="color: var(--kintone-success); font-weight: 800;">完了</span><br>
+                    <span style="font-weight: normal; font-size: 12px; color: #666;">作業は正常に完了しました。</span>
                 </div>
             </div>
             <button class="btn-secondary" onclick="location.href='tasklist.html'" style="padding: 10px 40px; border: 1px solid #ddd;">
                 一覧に戻る
             </button>
         `;
-        document.getElementById('shipping-input-area').style.display = 'block';
-        showToast('ピッキング作業を完了しました！');
+    }
+
+    function setNewTaskUI(type) {
+        updateBadge(type);
+        const nextActionArea = document.getElementById('next-action-area');
+        const guideText = document.getElementById('guide-text');
+        const actionButtons = document.getElementById('action-buttons');
+
+        if (type === 'adjust') {
+            // Adjust task is finished immediately after save
+            setFinishedUI(type);
+        } else {
+            // Other tasks require barcode scanning
+            guideText.textContent = '内容を確認し、問題なければバーコードをスキャンして作業を進めてください。';
+            actionButtons.innerHTML = `
+                <button class="btn-secondary" onclick="location.href='tasklist.html'">一覧に戻る</button>
+                <button class="btn-blue" onclick="location.href='task_scan_barcode.html'" style="padding: 10px 30px;">
+                    <i class="fas fa-barcode" style="margin-right: 8px;"></i>バーコードスキャンを開始
+                </button>
+            `;
+        }
     }
 
     function showToast(m) {
@@ -220,7 +224,16 @@
     }
 
     window.onload = function() {
-        if (new URLSearchParams(window.location.search).get('status') === 'finished') setFinishedUI();
+        const params = new URLSearchParams(window.location.search);
+        const status = params.get('status');
+        const type = params.get('type') || 'receive';
+
+        if (status === 'finished') {
+            setFinishedUI(type);
+        } else if (status === 'new') {
+            setNewTaskUI(type);
+            showToast('タスクを正常に作成しました！');
+        }
     };
 </script>
 </body>
