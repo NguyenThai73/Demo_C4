@@ -15,6 +15,11 @@
         #movement-info-section { display: none; margin-top: 25px; }
         #dest-shelf-field { display: none; }
         .btn-mini { font-size: 10px; padding: 2px 8px; white-space: nowrap; height: 24px; }
+        
+        /* Action buttons at top */
+        .top-action-bar { padding: 15px 0; display: flex; gap: 10px; border-bottom: 1px solid #e3e7e8; margin-bottom: 20px; }
+        .btn-k-cancel { background: white; border: 1px solid #e3e7e8; padding: 8px 20px; border-radius: 4px; font-weight: bold; color: #333; cursor: pointer; }
+        .btn-k-save { background: #3498db; border: none; padding: 8px 30px; border-radius: 4px; font-weight: bold; color: white; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -51,8 +56,14 @@
 </div>
 
 <div class="main-container" style="padding: 20px 10px;">
-    <div class="breadcrumb" style="font-size: 12px; color: #3498db; margin-bottom: 20px;">
+    <div class="breadcrumb" style="font-size: 12px; color: #3498db; margin-bottom: 10px;">
         🏠 <span>/</span> <a href="tasklist.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a> <span>/</span> 新規作成
+    </div>
+
+    <!-- Action Buttons moved to TOP -->
+    <div class="top-action-bar">
+        <button class="btn-k-cancel" onclick="location.href='tasklist.html'">キャンセル</button>
+        <button class="btn-k-save" id="save-btn-top" style="display: none;" onclick="saveTask()">保存</button>
     </div>
 
     <div id="flash-message" class="sticky-flash">🎉 タスクを作成しました。</div>
@@ -190,18 +201,6 @@
             </table>
         </div>
     </div>
-
-    <!-- Action Buttons -->
-    <div style="margin: 30px 0; display: flex; gap: 12px; justify-content: space-between;">
-        <button class="btn-secondary" onclick="location.href='tasklist.html'">
-            <i class="fas fa-arrow-left" style="margin-right: 8px;"></i> キャンセル
-        </button>
-        <div style="display: flex; gap: 12px;">
-            <button class="btn-blue" id="save-btn" style="display: none;" onclick="saveTask()">
-                <i class="fas fa-save" style="margin-right: 8px;"></i> 保存する
-            </button>
-        </div>
-    </div>
 </div>
 
 <footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Portal. All rights reserved.</footer>
@@ -221,7 +220,7 @@
         const taskFormContent = document.getElementById('task-form-content');
         const movementSection = document.getElementById('movement-info-section');
         const destShelfField = document.getElementById('dest-shelf-field');
-        const saveBtn = document.getElementById('save-btn');
+        const saveBtn = document.getElementById('save-btn-top');
         const badge = document.getElementById('task-type-badge');
 
         if (val) {
