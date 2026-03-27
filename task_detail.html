@@ -81,7 +81,7 @@
 
     <!-- Next Action Area -->
     <div id="next-action-area" class="next-action-card accent-warning">
-        <!-- Rendered by JS based on status -->
+        <!-- Default State -->
         <div class="next-action-content">
             <span style="font-size: 30px; color: var(--kintone-warning);"><i class="fas fa-truck-loading"></i></span>
             <div>
@@ -147,37 +147,16 @@
         </table>
     </div>
 
-    <!-- C. Shipping Info (Summary only after finish) -->
+    <!-- C. Shipping Info -->
     <div id="shipping-input-area" class="section-card" style="display: none; border-top: 3px solid var(--kintone-blue);">
         <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
             <span><i class="fas fa-truck-ramp-box" style="margin-right: 12px;"></i></span> 梱包・出荷情報
         </div>
-
         <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
-            <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">梱包サイズID参照</div>
-                <div class="field-value" style="font-weight: 700;">__11__</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">配送業者</div>
-                <div class="field-value" style="font-weight: 700;">ヤマト運輸</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">サイズ種別</div>
-                <div class="field-value" style="font-weight: 700;">80</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">パッケージ数量</div>
-                <div class="field-value" style="font-weight: 700;">10</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">梱包重量 (kg)</div>
-                <div class="field-value" style="font-weight: 700;">5.0 kg</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">送り状ステータス</div>
-                <div class="field-value"><span class="badge-status status-ok">完了</span></div>
-            </div>
+            <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">配送業者</div><div class="field-value" style="font-weight: 700;">ヤマト運輸</div></div>
+            <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">サイズ種別</div><div class="field-value" style="font-weight: 700;">80</div></div>
+            <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">パッケージ数量</div><div class="field-value" style="font-weight: 700; text-align:right;">10</div></div>
+            <div class="field-item"><div class="field-label" style="font-size: 11px; color: #888;">送り状ステータス</div><div class="field-value"><span class="badge-status status-ok">完了</span></div></div>
         </div>
     </div>
 
@@ -186,20 +165,17 @@
     </div>
 </div>
 
-<!-- Confirm Modal (Start) -->
+<!-- Modal Start -->
 <div id="confirm-modal">
     <div class="modal-box">
         <div style="font-size: 40px; color: var(--kintone-blue); margin-bottom: 15px;"><i class="fas fa-play-circle"></i></div>
         <h3 style="margin-bottom: 10px; font-size: 18px; font-weight: bold;">出庫作業を開始しますか？</h3>
-        <p style="font-size: 14px; color: #666; margin-bottom: 25px;">ステータスを「作業中」に更新し、梱包処理を開始します。</p>
-        <div style="display: flex; gap: 12px; justify-content: center;">
-            <button class="btn-secondary" onclick="closeModal()">キャンセル</button>
-            <button class="btn-blue" onclick="startWorkflow()">開始する</button>
-        </div>
+        <p style="font-size: 14px; color: #666; margin-bottom: 25px;">ステータスを作業中に更新します。</p>
+        <div style="display: flex; gap: 12px; justify-content: center;"><button class="btn-secondary" onclick="closeModal()">キャンセル</button><button class="btn-blue" onclick="startWorkflow()">開始する</button></div>
     </div>
 </div>
 
-<footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Portal. All rights reserved.</footer>
+<footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Portal</footer>
 
 <script>
     function openStartModal() { document.getElementById('confirm-modal').style.display = 'flex'; }
@@ -207,20 +183,19 @@
     function startWorkflow() { closeModal(); location.href = 'task_scan_barcode.html'; }
 
     function setFinishedUI() {
-        // 1. Update Badge & Status
+        // Status Badge
         const statusEl = document.getElementById('main-status');
         statusEl.innerHTML = '完了';
         statusEl.style.color = 'var(--kintone-success)';
 
-        // 2. Update Table
+        // Table update
         document.getElementById('product-card-section').style.borderColor = '#d4edda';
         document.getElementById('product-card-section').style.backgroundColor = '#f8fff9';
         document.getElementById('shipped-qty').textContent = '3';
         document.getElementById('pending-qty').textContent = '0';
-        document.getElementById('pending-qty').style.color = '#666';
         document.getElementById('item-status-col').innerHTML = '<span class="badge-status status-ok">完納</span>';
 
-        // 3. Update Next Action Card -> "一覧に戻る"
+        // Update Next Action Area - Button color changed to GREY (btn-secondary)
         const nextActionArea = document.getElementById('next-action-area');
         nextActionArea.className = 'next-action-card accent-success';
         nextActionArea.innerHTML = `
@@ -228,15 +203,13 @@
                 <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>
                 <div>
                     状況: <span style="color: var(--kintone-success); font-weight: 800;">出荷完了</span><br>
-                    <span style="font-weight: normal; font-size: 12px; color: #666;">ピッキングおよび梱包作業が正常に完了しました。</span>
+                    <span style="font-weight: normal; font-size: 12px; color: #666;">タスクは正常に終了しました。</span>
                 </div>
             </div>
-            <button class="btn-blue" onclick="location.href='tasklist.html'" style="padding: 10px 40px;">
+            <button class="btn-secondary" onclick="location.href='tasklist.html'" style="padding: 10px 40px; border: 1px solid #ddd;">
                 一覧に戻る
             </button>
         `;
-
-        // 4. Show summary info
         document.getElementById('shipping-input-area').style.display = 'block';
         showToast('ピッキング作業を完了しました！');
     }
@@ -247,11 +220,8 @@
     }
 
     window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('status') === 'finished') {
-            setFinishedUI();
-        }
-    }
+        if (new URLSearchParams(window.location.search).get('status') === 'finished') setFinishedUI();
+    };
 </script>
 </body>
 </html>
