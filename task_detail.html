@@ -90,7 +90,7 @@
         </div>
         <div id="action-buttons" style="display: flex; gap: 12px;">
             <button class="btn-reject" onclick="location.href='tasklist.html'">却下する</button>
-            <button class="btn-blue" onclick="location.href='task_scan_barcode.html'">バーコードスキャンを開始</button>
+            <button class="btn-blue" id="main-scan-btn" onclick="const t = new URLSearchParams(window.location.search).get('type')||'receive'; location.href='task_scan_barcode.html?type=' + t">バーコードスキャンを開始</button>
         </div>
     </div>
 
@@ -154,7 +154,7 @@
 <script>
     const TYPE_LABELS = {
         'receive':   { label: '入荷', bg: '#e8f5e9', color: '#2e7d32', border: '#c8e6c9', icon: 'fa-box-open', action: '入荷作業' },
-        'sample':    { label: 'サンプル出荷', bg: '#fff3e0', color: '#e65100', border: '#ffe0b2', icon: 'fa-truck-loading', action: 'ピッキング作業' },
+        'sample':    { label: '出荷（販売）', bg: '#fff3e0', color: '#e65100', border: '#ffe0b2', icon: 'fa-truck-loading', action: 'ピッキング作業' },
         'transfer':  { label: '棚移動', bg: '#e3f2fd', color: '#1565c0', border: '#bbdefb', icon: 'fa-right-left', action: 'ピッキング作業' },
         'adjust':    { label: '在庫調整', bg: '#f3e5f5', color: '#7b1fa2', border: '#e1bee7', icon: 'fa-sliders', action: '完了' },
     };
