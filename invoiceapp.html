@@ -6,6 +6,7 @@
     <title>請求書を確認する | Silica Link</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="detail-style.css">
+    <link rel="stylesheet" href="modal-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .field-box-readonly {
@@ -143,15 +144,18 @@
         .quick-add-chip.custom { border-color: #b0bec5; color: #546e7a; }
         .quick-add-chip.custom:hover { background: #f5f5f5; border-color: #546e7a; }
 
-        /* Modal Layout */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 10000;
-        }
-        .modal-card {
-            background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
-            width: 90%; max-width: 500px; padding: 30px; position: relative;
-        }
+        /* ── Invoice page layout overrides ──────────────────────── */
+        /* Override default 5-col summary grid → 4-col for invoice  */
+        .summary-grid            { grid-template-columns: repeat(4, 1fr); }
+        /* Override default 3-col field-grid → 2-col for invoice    */
+        .field-grid              { grid-template-columns: repeat(2, 1fr); gap: 16px 30px; }
+        /* Amount colour (purple) */
+        #summary-amount          { color: #6a1b9a; }
+        /* Secondary summary values: smaller than primary KPI */
+        #summary-payment,
+        #summary-pdf             { font-size: var(--text-size-lg); font-weight: var(--font-bold); color: var(--text-muted); }
+        /* Section title that splits left/right content */
+        .section-title.between   { justify-content: space-between; }
     </style>
 </head>
 <body>
@@ -210,33 +214,33 @@
     <div id="flash-message" class="sticky-flash" style="display:none;"></div>
 
     <!-- Summary Header -->
-    <div class="summary-header" style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 25px; border-radius: 12px; margin-bottom: 30px;">
+    <div class="summary-header">
         <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
             <div style="display: flex; align-items: center; gap: 15px;">
-                <div style="font-size: 12px; background: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; font-weight: 800; padding: 4px 12px; border-radius: 4px;">請求書</div>
-                <div style="font-size: 24px; font-weight: bold;">レコード #<span id="summary-record-no">76</span></div>
+                <div class="badge-type badge-agency">請求書</div>
+                <div style="font-size: var(--text-size-2xl); font-weight: var(--font-bold);">レコード #<span id="summary-record-no">76</span></div>
             </div>
-            <a href="order_detail_agency.html" class="back-link">
+            <a href="order_detail_agency_paid.html" class="back-link">
                 <i class="fas fa-arrow-left"></i> 注文詳細に戻る
             </a>
         </div>
 
-        <div class="summary-grid" style="width: 100%; border-top: 1px solid #eee; padding-top: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+        <div class="summary-grid">
             <div class="summary-item">
-                <div class="summary-label" style="font-size: 11px; color: #888; margin-bottom: 4px;">請求金額</div>
-                <div id="summary-amount" class="summary-primary-value" style="font-size: 20px; font-weight: 800; color: #6a1b9a;">¥20,025</div>
+                <div class="summary-label">請求金額</div>
+                <div id="summary-amount" class="summary-primary-value">¥20,025</div>
             </div>
             <div class="summary-item">
-                <div class="summary-label" style="font-size: 11px; color: #888; margin-bottom: 4px;">入金ステータス</div>
-                <div id="summary-payment" class="summary-primary-value" style="font-size: 16px; font-weight: 700; color: #999;">未入金</div>
+                <div class="summary-label">入金ステータス</div>
+                <div id="summary-payment" class="summary-primary-value">未入金</div>
             </div>
             <div class="summary-item">
-                <div class="summary-label" style="font-size: 11px; color: #888; margin-bottom: 4px;">PDF送付状況</div>
-                <div id="summary-pdf" class="summary-primary-value" style="font-size: 16px; font-weight: 700; color: #999;">未発行</div>
+                <div class="summary-label">PDF送付状況</div>
+                <div id="summary-pdf" class="summary-primary-value">未発行</div>
             </div>
             <div class="summary-item">
-                <div class="summary-label" style="font-size: 11px; color: #888; margin-bottom: 4px;">支払期日</div>
-                <div class="summary-value" style="font-weight: bold;">2026-04-01</div>
+                <div class="summary-label">支払期日</div>
+                <div class="summary-value">2026-04-01</div>
             </div>
         </div>
     </div>
@@ -262,10 +266,10 @@
 
     <!-- 請求基本情報 -->
     <div class="section-card section-info">
-        <div class="section-title" style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
-            <i class="fas fa-file-invoice" style="margin-right: 12px;"></i>請求基本情報
+        <div class="section-title">
+            <i class="fas fa-file-invoice"></i>請求基本情報
         </div>
-        <div class="field-grid" style="grid-template-columns: repeat(2, 1fr); gap: 16px 30px;">
+        <div class="field-grid">
             <div class="field-item">
                 <div class="field-label">レコード番号</div>
                 <div class="field-box-readonly">76</div>
@@ -308,10 +312,10 @@
     </div>
 
     <!-- 請求明細 -->
-    <div class="section-card section-op" style="border: 1px solid #ffedcc; background: #fffaf0;">
-        <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
-            <span><i class="fas fa-list" style="margin-right: 12px;"></i>請求明細</span>
-            <span style="font-size: 11px; font-weight: 400; color: #aaa;"><i class="fas fa-pencil" style="margin-right: 4px;"></i>行を直接編集できます</span>
+    <div class="section-card section-op">
+        <div class="section-title between">
+            <span><i class="fas fa-list"></i>請求明細</span>
+            <span style="font-size: var(--text-size-xs); font-weight: var(--font-normal); color: var(--text-muted);"><i class="fas fa-pencil" style="margin-right: 4px;"></i>行を直接編集できます</span>
         </div>
         <p style="font-size: 11px; color: #999; margin-bottom: 14px;">数量・単価をクリックして直接編集できます。行の追加・削除も可能です。</p>
         <table class="k-table">
@@ -351,10 +355,10 @@
 
     <!-- 入金情報・ステータス更新 -->
     <div class="section-card section-info">
-        <div class="section-title" style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
-            <i class="fas fa-coins" style="margin-right: 12px;"></i>入金情報・ステータス更新
+        <div class="section-title">
+            <i class="fas fa-coins"></i>入金情報・ステータス更新
         </div>
-        <div class="field-grid" style="grid-template-columns: repeat(2, 1fr); gap: 16px 30px;">
+        <div class="field-grid">
             <div class="field-item">
                 <div class="field-label">入金ステータス</div>
                 <div class="field-box-readonly">
@@ -375,22 +379,18 @@
 </div>
 
 <!-- Confirmation Modal (Before Issue) -->
-<div class="modal-overlay" id="confirm-modal" style="display: none;">
-    <div class="modal-card" style="text-align: center; max-width: 480px; padding: 45px 35px; border-radius: 24px;">
-        <div style="font-size: 80px; color: #e67e22; margin-bottom: 25px; line-height: 1;">
+<div class="modal-overlay" id="confirm-modal">
+    <div class="modal-card">
+        <div class="modal-icon" style="color: #e67e22;">
             <i class="fas fa-file-invoice"></i>
         </div>
-        <h2 style="font-size: 24px; font-weight: 900; margin-bottom: 16px; color: #333;">請求書を発行しますか？</h2>
-        <p style="font-size: 15px; color: #666; margin-bottom: 35px; line-height: 1.6; font-weight: 500;">
+        <div class="modal-title">請求書を発行しますか？</div>
+        <div class="modal-description">
             請求書を発行し、取引先側へ入金依頼を通知します。
-        </p>
-        <div style="display: flex; gap: 15px; justify-content: center;">
-            <button class="btn-invoice-secondary" onclick="closeConfirmPop()" style="padding: 14px 40px; border-radius: 12px; font-size: 16px; min-width: 140px;">
-                キャンセル
-            </button>
-            <button class="btn-invoice-primary btn-blue" onclick="issuePDF()" style="padding: 14px 40px; border-radius: 12px; font-size: 16px; min-width: 140px;">
-                実行する
-            </button>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-secondary" onclick="closeConfirmPop()">キャンセル</button>
+            <button class="modal-btn modal-btn-orange" onclick="issuePDF()">実行する</button>
         </div>
     </div>
 </div>
@@ -426,18 +426,15 @@
                     <span style="color: #999;">宛先:</span> <strong>test_agency@yopmail.com</strong><br>
                     <span style="color: #999;">件名:</span> <strong>【Silica Link】請求書送付のご案内 (No: INV-76)</strong>
                 </div>
-                <div>
-                    test_agency@yopmail.com 様<br><br>
-                    いつも大変お世話になっております。<br>
-                    株式会社 Silica Link でございます。<br><br>
-                    下記内容にて請求書を発行いたしましたので、ご査収ください。<br><br>
-                    ■請求内容<br>
-                    ・請求番号: INV-76<br>
-                    ・請求金額: <span style="font-weight: bold; color: #6a1b9a;" id="preview-amount">¥20,025</span><br>
-                    ・支払期日: 2026-04-01<br><br>
-                    ※本メールに請求書PDFを添付しております。<br>
-                    ご確認のほど、何卒よろしくお願い申し上げます。
-                </div>
+                <textarea id="email-body-editor" style="width: 100%; height: 200px; border: 1px solid #ddd; border-radius: 8px; padding: 12px; font-size: 13px; font-family: inherit; line-height: 1.6; color: #444; resize: vertical; box-sizing: border-box;">test_agency@yopmail.com 様
+
+いつも大変お世話になっております。
+株式会社 Silica Link でございます。
+
+下記内容にて請求書を発行いたしましたので、ご査収ください。
+
+※本メールに請求書PDFを添付しております。
+ご確認のほど、何卒よろしくお願い申し上げます。</textarea>
             </div>
             <div style="margin-top: 20px; display: flex; gap: 10px;">
                 <button class="btn-invoice-secondary" onclick="hideEmailPreview()" style="flex: 1;">キャンセル</button>
@@ -791,9 +788,30 @@
         setTimeout(() => f.style.display = 'none', 3000);
     }
 
+    function updateBackLink() {
+        const params = new URLSearchParams(window.location.search);
+        const draft = params.get('draft');
+        const backLink = document.querySelector('.back-link');
+        
+        if (backLink && draft === 'INV-DRAFT-0311') {
+            backLink.href = 'order_detail_agency_paid.html';
+            
+            // Also update the breadcrumb and related order link for consistency
+            const breadcrumbLink = document.querySelector('.breadcrumb a');
+            if (breadcrumbLink) breadcrumbLink.href = 'order_detail_agency_paid.html';
+            
+            const relatedOrderLink = document.querySelector('.field-item a[href="order_detail_agency.html"]');
+            if (relatedOrderLink) {
+                relatedOrderLink.href = 'order_detail_agency_paid.html';
+                relatedOrderLink.textContent = '311'; // Assuming INV-DRAFT-0311 corresponds to Order #311
+            }
+        }
+    }
+
     // Read draft ID from URL if any
     window.onload = function() {
         renderInvoiceItems();
+        updateBackLink();
         const params = new URLSearchParams(window.location.search);
         const draft = params.get('draft');
         if (draft) {
