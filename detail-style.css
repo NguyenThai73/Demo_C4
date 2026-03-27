@@ -376,9 +376,9 @@ td.col-product-name {
 .col-num   { text-align: right;  font-variant-numeric: tabular-nums; }
 .col-mid   { text-align: center; }
 
-/* th.col-* needed to override .k-table th { text-align: left } (equal specificity → source order wins) */
-th.col-num { text-align: right; }
-th.col-mid { text-align: center; }
+/* .k-table th.col-* — specificity 0-2-1 beats .k-table th 0-1-1, guarantees alignment override */
+.k-table th.col-num { text-align: right; }
+.k-table th.col-mid { text-align: center; }
 
 /* Footer row for shipment/return forms */
 .shipment-footer-btns {
