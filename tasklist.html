@@ -607,7 +607,12 @@
                 const rows = document.querySelectorAll('.task-table tbody tr');
                 rows.forEach(row => {
                     const taskType = row.cells[1].textContent.trim();
-                    if (taskType !== '出荷 (販売)') {
+                    const statusText = row.cells[2].textContent.trim();
+                    
+                    // Show only "出荷 (販売)" that are NOT "完了"
+                    if (taskType === '出荷 (販売)' && statusText !== '完了') {
+                        row.style.display = '';
+                    } else {
                         row.style.display = 'none';
                     }
                 });
