@@ -92,6 +92,43 @@
             color: var(--text-muted);
             min-width: 60px;
         }
+
+        /* Inline-editable invoice row inputs */
+        .item-input {
+            border: 1px solid transparent;
+            border-radius: 3px;
+            padding: 3px 6px;
+            font-size: 13px;
+            background: transparent;
+            transition: border-color 0.15s, background 0.15s;
+            font-family: inherit;
+            color: var(--text-primary, #333);
+            box-sizing: border-box;
+        }
+        .item-input:hover  { border-color: #ddd; background: white; }
+        .item-input:focus  { border-color: #856404; background: white; outline: none; box-shadow: 0 0 0 2px rgba(133,100,4,0.12); }
+        .item-input.wide   { width: 100%; }
+        .item-input.num    { text-align: right; width: 80px; }
+        .item-input.mid    { text-align: center; width: 64px; }
+        .item-input.unit   { text-align: center; width: 44px; }
+        .item-del-btn {
+            width: 26px; height: 26px; background: none; border: none; cursor: pointer;
+            color: #ccc; font-size: 15px; border-radius: 4px; line-height: 1;
+            display: flex; align-items: center; justify-content: center;
+            transition: color 0.15s, background 0.15s;
+        }
+        .item-del-btn:hover { color: #e53935; background: #ffeaea; }
+        .item-sub-cell { font-weight: 700; transition: color 0.2s; white-space: nowrap; }
+        .quick-add-chip {
+            padding: 4px 13px; font-size: 11px; font-weight: 700; border-radius: 100px;
+            cursor: pointer; border: 1px solid #e0c97a; background: white; color: #856404;
+            transition: all 0.15s;
+        }
+        .quick-add-chip:hover { background: #fff8e1; border-color: #856404; }
+        .quick-add-chip.discount { border-color: #ef9a9a; color: #c62828; }
+        .quick-add-chip.discount:hover { background: #fff5f5; border-color: #c62828; }
+        .quick-add-chip.custom { border-color: #b0bec5; color: #546e7a; }
+        .quick-add-chip.custom:hover { background: #f5f5f5; border-color: #546e7a; }
     </style>
 </head>
 <body>
@@ -249,28 +286,44 @@
 
     <!-- 請求明細 -->
     <div class="section-card section-op" style="border: 1px solid #ffedcc; background: #fffaf0;">
-        <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
-            <i class="fas fa-list" style="margin-right: 12px;"></i>請求明細
+        <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
+            <span><i class="fas fa-list" style="margin-right: 12px;"></i>請求明細</span>
+            <span style="font-size: 11px; font-weight: 400; color: #aaa;"><i class="fas fa-pencil" style="margin-right: 4px;"></i>行を直接編集できます</span>
         </div>
+        <p style="font-size: 11px; color: #999; margin-bottom: 14px;">数量・単価をクリックして直接編集できます。行の追加・削除も可能です。</p>
         <table class="k-table">
             <thead>
                 <tr>
-                    <th style="min-width: 200px;">商品・サービス</th>
-                    <th class="col-mid" style="width: 80px;">SKU</th>
-                    <th class="col-num" style="width: 80px;">数量</th>
-                    <th class="col-mid" style="width: 60px;">単位</th>
-                    <th class="col-num" style="width: 110px;">単価</th>
-                    <th class="col-num" style="width: 120px;">小計</th>
+                    <th style="min-width: 180px;">商品・サービス</th>
+                    <th class="col-mid" style="width: 90px;">SKU</th>
+                    <th class="col-num" style="width: 72px;">数量</th>
+                    <th class="col-mid" style="width: 52px;">単位</th>
+                    <th class="col-num" style="width: 106px;">単価</th>
+                    <th class="col-num" style="width: 116px;">小計</th>
+                    <th style="width: 30px;"></th>
                 </tr>
             </thead>
             <tbody id="invoice-items-body"></tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5" style="text-align: right; font-weight: 700; padding: 10px 12px; color: #666; border-top: 2px solid #e0e0e0;">合計</td>
-                    <td class="col-num" style="font-weight: 900; font-size: 15px; color: #6a1b9a; border-top: 2px solid #e0e0e0;" id="items-total">¥0</td>
+                    <td colspan="5" style="text-align: right; font-weight: 700; padding: 10px 12px; color: #666; border-top: 2px solid #e0c97a;">合計</td>
+                    <td class="col-num" style="font-weight: 900; font-size: 15px; color: #6a1b9a; border-top: 2px solid #e0c97a;" id="items-total">¥0</td>
+                    <td style="border-top: 2px solid #e0c97a;"></td>
                 </tr>
             </tfoot>
         </table>
+
+        <!-- Quick-add bar -->
+        <div style="margin-top: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <button onclick="addRow()" style="padding: 5px 16px; background: #856404; color: white; border: none; border-radius: 4px; font-weight: 800; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                <i class="fas fa-plus"></i> 行を追加
+            </button>
+            <span style="font-size: 11px; color: #bbb; margin: 0 2px;">|</span>
+            <span style="font-size: 11px; color: #999;">よく使う:</span>
+            <button class="quick-add-chip" onclick="addPreset('shipping')"><i class="fas fa-truck" style="margin-right: 5px;"></i>配送料</button>
+            <button class="quick-add-chip" onclick="addPreset('fee')"><i class="fas fa-file-invoice" style="margin-right: 5px;"></i>手数料</button>
+            <button class="quick-add-chip discount" onclick="addPreset('discount')"><i class="fas fa-tag" style="margin-right: 5px;"></i>割引</button>
+        </div>
     </div>
 
     <!-- 入金情報・ステータス更新 -->
@@ -360,25 +413,111 @@ TEL: 03-0000-0000</textarea>
 
     let pdfIssued = false;
 
+    /* ---- Invoice item editing ---- */
+
     function renderInvoiceItems() {
+        document.getElementById('invoice-items-body').innerHTML = '';
+        INVOICE_ITEMS.forEach(item => addRow(item.name, item.sku, item.qty, item.unit, item.unitPrice));
+    }
+
+    function addRow(name='', sku='', qty=1, unit='式', price=0) {
         const tbody = document.getElementById('invoice-items-body');
+        const tr = document.createElement('tr');
+
+        // Build cells
+        tr.innerHTML = `
+            <td><input class="item-input wide item-name" value="${escHtml(name)}" placeholder="商品・サービス名"></td>
+            <td class="col-mid"><input class="item-input mid item-sku" value="${escHtml(sku)}" placeholder="SKU" style="font-size:11px; color:#888;"></td>
+            <td class="col-num"><input class="item-input num item-qty" type="number" value="${qty}" min="-9999" step="1"></td>
+            <td class="col-mid"><input class="item-input unit item-unit" value="${escHtml(unit)}" placeholder="式"></td>
+            <td class="col-num"><input class="item-input num item-price" type="number" value="${price}" step="1"></td>
+            <td class="col-num item-sub-cell"></td>
+            <td style="text-align:center; padding: 4px;">
+                <button class="item-del-btn" title="削除" onclick="this.closest('tr').remove(); updateTotal();">×</button>
+            </td>
+        `;
+
+        // Live update subtotal on qty/price change
+        const qtyInput   = tr.querySelector('.item-qty');
+        const priceInput = tr.querySelector('.item-price');
+        const recalc = () => { refreshRowSub(tr); updateTotal(); };
+        qtyInput.addEventListener('input', recalc);
+        priceInput.addEventListener('input', recalc);
+
+        tbody.appendChild(tr);
+        refreshRowSub(tr);
+        updateTotal();
+
+        return tr;
+    }
+
+    function addPreset(type) {
+        let tr;
+        if (type === 'shipping') tr = addRow('配送手数料', 'SHIP-FEE', 1, '式', 0);
+        else if (type === 'fee')  tr = addRow('手数料',     'FEE-01',   1, '式', 0);
+        else if (type === 'discount') tr = addRow('割引',   'DISC-01',  1, '式', 0);
+        // Focus the price field so the user can type right away
+        if (tr) {
+            tr.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            tr.querySelector('.item-price').focus();
+            tr.querySelector('.item-price').select();
+        }
+    }
+
+    function refreshRowSub(tr) {
+        const qty   = parseFloat(tr.querySelector('.item-qty').value)   || 0;
+        const price = parseFloat(tr.querySelector('.item-price').value) || 0;
+        const sub   = qty * price;
+        const cell  = tr.querySelector('.item-sub-cell');
+        cell.textContent   = `¥${sub.toLocaleString()}`;
+        cell.style.color   = sub < 0 ? '#e53935' : (sub === 0 ? '#aaa' : '#333');
+    }
+
+    function updateTotal() {
         let total = 0;
-        tbody.innerHTML = INVOICE_ITEMS.map(item => {
-            const sub = item.qty * item.unitPrice;
-            total += sub;
-            return `<tr>
-                <td>${item.name}</td>
-                <td class="col-mid" style="font-size: 11px; color: #888;">${item.sku}</td>
-                <td class="col-num" style="font-weight: 700;">${item.qty.toLocaleString()}</td>
-                <td class="col-mid">${item.unit}</td>
-                <td class="col-num">¥${item.unitPrice.toLocaleString()}</td>
-                <td class="col-num" style="font-weight: 700;">¥${sub.toLocaleString()}</td>
-            </tr>`;
-        }).join('');
-        document.getElementById('items-total').textContent = `¥${total.toLocaleString()}`;
+        document.querySelectorAll('#invoice-items-body tr').forEach(tr => {
+            const qty   = parseFloat(tr.querySelector('.item-qty')  ?.value) || 0;
+            const price = parseFloat(tr.querySelector('.item-price')?.value) || 0;
+            total += qty * price;
+        });
+        const fmt = `¥${total.toLocaleString()}`;
+        document.getElementById('items-total').textContent = fmt;
+        document.getElementById('summary-amount').textContent = fmt;
+    }
+
+    function escHtml(s) {
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    /* Read current items from DOM (used by openPreview) */
+    function getItemsFromDOM() {
+        const items = [];
+        document.querySelectorAll('#invoice-items-body tr').forEach(tr => {
+            const name  = tr.querySelector('.item-name') ?.value || '';
+            const sku   = tr.querySelector('.item-sku')  ?.value || '';
+            const qty   = parseFloat(tr.querySelector('.item-qty')  ?.value) || 0;
+            const unit  = tr.querySelector('.item-unit') ?.value || '';
+            const price = parseFloat(tr.querySelector('.item-price')?.value) || 0;
+            items.push({ name, sku, qty, unit, unitPrice: price });
+        });
+        return items;
     }
 
     function openPreview() {
+        const items = getItemsFromDOM();
+        const subtotal = items.reduce((a, i) => a + i.qty * i.unitPrice, 0);
+        const rowsHtml = items.map(i => {
+            const s = i.qty * i.unitPrice;
+            const color = s < 0 ? 'color:#e53935;' : '';
+            return `<tr>
+                <td>${i.name}${i.sku ? ` <span style="color:#aaa;font-size:11px;">(${i.sku})</span>` : ''}</td>
+                <td style="text-align:center;">${i.qty.toLocaleString()}</td>
+                <td style="text-align:center;">${i.unit}</td>
+                <td style="text-align:right;">¥${i.unitPrice.toLocaleString()}</td>
+                <td style="text-align:right;font-weight:700;${color}">¥${s.toLocaleString()}</td>
+            </tr>`;
+        }).join('');
+
         const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>請求書 INV-DRAFT-0311</title>
         <style>
             body { font-family: -apple-system, 'Hiragino Sans', Meiryo, sans-serif; padding: 50px 60px; max-width: 740px; margin: 0 auto; font-size: 13px; color: #333; }
@@ -408,11 +547,11 @@ TEL: 03-0000-0000</textarea>
         </div>
         <div class="bill-to"><div class="label">請求先</div><strong>test_agency@yopmail.com</strong><div style="color:#666;font-size:12px;margin-top:3px;">関連注文: <strong>#339</strong></div></div>
         <table><thead><tr><th style="text-align:left;">商品・サービス</th><th style="text-align:center;width:60px;">数量</th><th style="text-align:center;width:50px;">単位</th><th style="text-align:right;width:90px;">単価</th><th style="text-align:right;width:100px;">小計</th></tr></thead>
-        <tbody>${INVOICE_ITEMS.map(i => { const s = i.qty * i.unitPrice; return `<tr><td>${i.name} (${i.sku})</td><td style="text-align:center;">${i.qty}</td><td style="text-align:center;">${i.unit}</td><td style="text-align:right;">¥${i.unitPrice.toLocaleString()}</td><td style="text-align:right;font-weight:700;">¥${s.toLocaleString()}</td></tr>`; }).join('')}</tbody></table>
+        <tbody>${rowsHtml}</tbody></table>
         <div class="totals"><div class="totals-box">
-            <div class="totals-row"><span>小計</span><span>¥${INVOICE_ITEMS.reduce((a,i)=>a+i.qty*i.unitPrice,0).toLocaleString()}</span></div>
+            <div class="totals-row"><span>小計</span><span>¥${subtotal.toLocaleString()}</span></div>
             <div class="totals-row"><span>消費税 (0%)</span><span>¥0</span></div>
-            <div class="totals-row grand"><span>合計</span><span>¥${INVOICE_ITEMS.reduce((a,i)=>a+i.qty*i.unitPrice,0).toLocaleString()}</span></div>
+            <div class="totals-row grand"><span>合計</span><span>¥${subtotal.toLocaleString()}</span></div>
         </div></div>
         <div class="bank">振込先: ○○銀行 渋谷支店 普通 1234567　カ）シリカリンク<br>※振込手数料はご負担をお願いいたします。</div>
         </body></html>`;
