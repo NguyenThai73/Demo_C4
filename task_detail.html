@@ -121,11 +121,26 @@
             <span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span>
             商品明細</div>
         <table class="k-table">
-            <thead><tr><th style="min-width: 200px;">商品名</th><th class="col-num" style="width: 100px;">数量</th><th class="col-mid" style="width: 60px;">単位</th><th class="col-num" style="width: 100px;">完了数</th><th class="col-num" style="width: 100px;">未完了</th><th class="col-mid" style="width: 120px;">ステータス</th></tr></thead>
+            <thead>
+                <tr>
+                    <th style="min-width: 150px;">商品SKU</th>
+                    <th style="min-width: 250px;">表示名</th>
+                    <th class="col-num" style="width: 100px;">数量</th>
+                    <th class="col-mid" style="width: 60px;">単位</th>
+                    <th class="col-num" style="width: 100px;">完了数</th>
+                    <th class="col-num" style="width: 100px;">未完了</th>
+                    <th class="col-mid" style="width: 120px;">ステータス</th>
+                </tr>
+            </thead>
             <tbody>
                 <tr>
-                    <td class="col-product-name">セラミック基板用素材 PREMIUM (CER-BASE-01)</td>
-                    <td class="col-num" style="font-weight: bold;">3</td><td class="col-mid">箱</td><td class="col-num" id="shipped-qty">0</td><td class="col-num" id="pending-qty" style="color: var(--kintone-danger); font-weight: bold;">3</td><td class="col-mid" id="item-status-col"><span class="badge-status status-neutral">未完了</span></td>
+                    <td style="font-weight: bold; color: var(--kintone-blue);">CER-BASE-01</td>
+                    <td class="col-product-name">セラミック基板用素材 PREMIUM</td>
+                    <td class="col-num" style="font-weight: bold;">3</td>
+                    <td class="col-mid">箱</td>
+                    <td class="col-num" id="shipped-qty">0</td>
+                    <td class="col-num" id="pending-qty" style="color: var(--kintone-danger); font-weight: bold;">3</td>
+                    <td class="col-mid" id="item-status-col"><span class="badge-status status-neutral">未完了</span></td>
                 </tr>
             </tbody>
         </table>
