@@ -245,7 +245,7 @@
             <div class="filter-left">
                 <div class="btn-filter-plus">
                     <span style="font-size: 18px;">📋</span>
-                    <strong>すべてのタスク</strong>
+                    <strong id="current-filter-label">すべてのタスク</strong>
                     <span style="font-size: 10px;">▼</span>
                 </div>
                 <div class="btn-icon-sq btn-blue-sq">⚙</div>
@@ -593,6 +593,27 @@
 
     </main>
 
+    <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const filter = params.get('filter');
+            
+            if (filter === 'shipment') {
+                // Update label
+                const label = document.getElementById('current-filter-label');
+                if (label) label.textContent = '出荷 (販売)';
+                
+                // Filter table rows
+                const rows = document.querySelectorAll('.task-table tbody tr');
+                rows.forEach(row => {
+                    const taskType = row.cells[1].textContent.trim();
+                    if (taskType !== '出荷 (販売)') {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+        };
+    </script>
 </body>
 
 </html>
