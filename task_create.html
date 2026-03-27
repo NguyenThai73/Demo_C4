@@ -21,6 +21,26 @@
         .top-action-bar { padding: 15px 0; display: flex; gap: 10px; border-bottom: 1px solid #e3e7e8; margin-bottom: 20px; }
         .btn-k-cancel { background: white; border: 1px solid #e3e7e8; padding: 8px 20px; border-radius: 4px; font-weight: bold; color: #333; cursor: pointer; }
         .btn-k-save { background: #3498db; border: none; padding: 8px 30px; border-radius: 4px; font-weight: bold; color: white; cursor: pointer; }
+
+        /* Kintone Lookup Modal Style */
+        .modal-overlay-k { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+        .modal-card-k { background: #f4f6f9; border-radius: 8px; width: 100%; max-width: 1000px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; }
+        .modal-header-k { background: white; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; }
+        .modal-title-k { display: flex; align-items: center; gap: 12px; font-weight: bold; font-size: 15px; }
+        .modal-close-btn { background: #f0f0f0; border: none; border-radius: 4px; width: 28px; height: 28px; cursor: pointer; color: #666; font-size: 14px; }
+        
+        .modal-toolbar-k { background: #f4f6f9; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .filter-btn-k { background: white; border: 1px solid #ddd; padding: 8px 12px; border-radius: 4px; color: #999; cursor: pointer; }
+        .modal-body-k { background: #f4f6f9; padding: 0 20px 20px; overflow-y: auto; max-height: 400px; }
+        
+        .lookup-table { width: 100%; background: white; border-collapse: collapse; border: 1px solid #ddd; }
+        .lookup-table th { padding: 12px; background: #fff; border: 1px solid #eee; text-align: left; font-size: 12px; color: #333; }
+        .lookup-table td { padding: 10px 12px; border: 1px solid #eee; font-size: 13px; }
+        .lookup-table tr:hover { background-color: #f0f7ff; }
+        .btn-select-k { background: #f5f5f5; border: 1px solid #ddd; padding: 4px 12px; border-radius: 4px; font-size: 12px; color: #3498db; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-select-k:hover { background: #e8f4fd; border-color: #3498db; }
+        
+        .modal-footer-k { background: white; padding: 15px 20px; border-top: 1px solid #eee; display: flex; gap: 10px; }
     </style>
 </head>
 <body>
@@ -87,7 +107,7 @@
         </div>
     </div>
 
-    <!-- Next Action Area (Standardized) -->
+    <!-- Next Action Area -->
     <div id="next-action-area" class="next-action-card accent-blue" style="display: none; margin-top: 15px;">
         <div class="next-action-content">
             <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-lightbulb"></i></span>
@@ -139,13 +159,9 @@
                 <div class="field-item">
                     <div class="field-label" style="font-size: 11px; color: #888;">倉庫 <span style="color: var(--kintone-danger);">*</span></div>
                     <div style="display: flex; gap: 4px;">
-                        <select id="warehouse" class="field-box" style="flex: 1;">
-                            <option value="">-- 選択 --</option>
-                            <option selected>岐阜倉庫</option>
-                            <option>東京倉庫</option>
-                        </select>
-                        <button class="btn-secondary btn-mini" onclick="alert('取得')">取得</button>
-                        <button class="btn-secondary btn-mini" onclick="document.getElementById('warehouse').value=''">クリア</button>
+                        <input type="text" id="warehouse-display" class="field-box" readonly style="flex: 1; background-color: #f9f9f9;" value="岐阜倉庫">
+                        <button class="btn-secondary btn-mini" onclick="openWarehouseLookup()">取得</button>
+                        <button class="btn-secondary btn-mini" onclick="clearWarehouse()">クリア</button>
                     </div>
                 </div>
 
@@ -195,7 +211,7 @@
             </div>
         </div>
 
-        <!-- C. Product Details Section (Fully standardized) -->
+        <!-- C. Product Details Section -->
         <div class="section-card" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; margin-bottom: 0;">
@@ -223,11 +239,63 @@
     </div>
 </div>
 
+<!-- Kintone Warehouse Lookup Modal -->
+<div id="warehouse-lookup-modal" class="modal-overlay-k" onclick="if(event.target==this) closeWarehouseLookup()">
+    <div class="modal-card-k">
+        <div class="modal-header-k">
+            <div class="modal-title-k">
+                <div style="width:32px; height:32px; background:#e1f5fe; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#03a9f4;">
+                    <i class="fas fa-warehouse"></i>
+                </div>
+                <div>
+                    <div style="font-size:14px; color:#333;">倉庫管理</div>
+                    <div style="font-size:10px; color:#999; font-weight:normal;">担当者・閲覧者を追加できます</div>
+                </div>
+            </div>
+            <button class="modal-close-btn" onclick="closeWarehouseLookup()">×</button>
+        </div>
+        
+        <div class="modal-toolbar-k">
+            <button class="filter-btn-k"><i class="fas fa-filter"></i></button>
+            <div style="font-size: 12px; color: #333;">全 2 件</div>
+        </div>
+
+        <div class="modal-body-k">
+            <table class="lookup-table">
+                <thead>
+                    <tr>
+                        <th style="width: 100px;"></th>
+                        <th>倉庫名</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center;">
+                            <button class="btn-select-k" onclick="selectWarehouse('岐阜倉庫')">選択</button>
+                        </td>
+                        <td>岐阜倉庫</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;">
+                            <button class="btn-select-k" onclick="selectWarehouse('東京倉庫')">選択</button>
+                        </td>
+                        <td>東京倉庫</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal-footer-k">
+            <button class="btn-k-cancel" style="padding: 8px 15px;" onclick="closeWarehouseLookup()">キャンセル</button>
+        </div>
+    </div>
+</div>
+
 <footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Portal</footer>
 
 <script>
     const TYPE_LABELS = {
-        'receive':   { label: '入荷',bg: '#e8f5e9', color: '#2e7d32', border: '#c8e6c9', guide: '商品情報を入力・保存し、モバイル端末でバーコードをスキャンして入庫を完了させてください。' },
+        'receive':   { label: '入荷', bg: '#e8f5e9', color: '#2e7d32', border: '#c8e6c9', guide: '商品情報を入力・保存し、モバイル端末でバーコードをスキャンして入庫を完了させてください。' },
         'sample':    { label: 'サンプル出荷', bg: '#fff3e0', color: '#e65100', border: '#ffe0b2', guide: '配送業者を選択し、移動元棚と数量を指定してください。' },
         'transfer':  { label: '棚移動', bg: '#e3f2fd', color: '#1565c0', border: '#bbdefb', guide: '移動元と移動先の棚の両方を詳しく指定してください。' },
         'adjust':    { label: '在庫調整', bg: '#f3e5f5', color: '#7b1fa2', border: '#e1bee7', guide: '実在庫と差異のある商品と正しい棚・数量を入力してください。' },
@@ -262,21 +330,17 @@
 
     function addProductRow(sku = '', name = '', qty = '') {
         rowCount++; const id = rowCount;
-        const row = `
-        <tr id="row-${id}">
-            <td><input type="text" class="field-box" value="${sku}" style="width: 100%;"></td>
-            <td><input type="text" class="field-box" value="${name}" style="width: 100%;"></td>
-            <td class="col-num"><input type="number" class="field-box" value="${qty}" style="width: 100%; text-align: right;"></td>
-            <td class="col-mid">
-                <select class="field-box" style="width: 100%;"><option>箱</option><option>個</option><option>袋</option></select>
-            </td>
-            <td class="col-mid">
-                <button onclick="removeRow(${id})" style="background: none; border: none; color: #c62828; cursor: pointer;"><i class="fas fa-trash-can"></i></button>
-            </td>
-        </tr>`;
+        const row = `<tr id="row-${id}"><td><input type="text" class="field-box" value="${sku}" style="width: 100%;"></td><td><input type="text" class="field-box" value="${name}" style="width: 100%;"></td><td class="col-num"><input type="number" class="field-box" value="${qty}" style="width: 100%; text-align: right;"></td><td class="col-mid"><select class="field-box" style="width: 100%;"><option>箱</option><option>個</option><option>袋</option></select></td><td class="col-mid"><button onclick="removeRow(${id})" style="background: none; border: none; color: #c62828; cursor: pointer;"><i class="fas fa-trash-can"></i></button></td></tr>`;
         document.getElementById('product-tbody').insertAdjacentHTML('beforeend', row);
     }
     function removeRow(id) { document.getElementById(`row-${id}`).remove(); }
+    
+    // Modal Functions
+    function openWarehouseLookup() { document.getElementById('warehouse-lookup-modal').style.display = 'flex'; }
+    function closeWarehouseLookup() { document.getElementById('warehouse-lookup-modal').style.display = 'none'; }
+    function selectWarehouse(name) { document.getElementById('warehouse-display').value = name; closeWarehouseLookup(); }
+    function clearWarehouse() { document.getElementById('warehouse-display').value = ''; }
+
     function saveTask() { document.getElementById('flash-message').style.display = 'block'; setTimeout(() => { location.href = 'tasklist.html'; }, 1500); }
     window.onload = function() { document.getElementById('today-date').textContent = new Date().toISOString().split('T')[0]; };
 </script>
