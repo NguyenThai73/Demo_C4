@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タスク新規作成 | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- Kintone Header Bar -->
+<div class="kintone-header-top">
+    <div class="header-content-inner">
+        <div class="header-logo"><span class="k-icon">k</span> kintone</div>
+        <div class="header-user">
+            <span>✉</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                <span>Administrator</span>
+                <span style="font-size: 10px;">▼</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kintone-header-sub">
+    <div class="header-content-inner">
+        <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+        <div class="header-sub-right"><span>⚙</span> <span>❓</span><div class="search-container"><input type="text" class="search-input" placeholder="アプリ内検索"><span class="search-icon">🔍</span></div></div>
+    </div>
+</div>
+
+<div class="kintone-app-title-bar">
+    <div class="header-content-inner" style="padding: 12px 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="app-icon" style="background-color: #3498db; color: white; padding: 5px; border-radius: 4px; font-size: 14px;">🔄</div>
+            <div class="app-title" style="font-weight: bold; font-size: 14px;">入出荷タスク — 新規作成</div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container" style="padding: 20px 10px;">
+    <div class="breadcrumb" style="font-size: 12px; color: #3498db; margin-bottom: 20px;">
+        🏠 <span>/</span> <a href="tasklist.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a> <span>/</span> 新規作成
+    </div>
+
+    <div id="flash-message" class="sticky-flash">🎉 タスクを作成しました。</div>
+
+    <!-- Summary Header Card -->
+    <div class="summary-header">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="badge-type" style="background-color: #e8f4fd; color: #3498db; border-color: #d1e9fb;" id="task-type-badge">出荷（販売）</div>
+            <div style="font-size: 24px; font-weight: bold; color: #bbb;">TASK-NEW</div>
+        </div>
+        <div class="summary-grid" style="margin-top: 16px;">
+            <div class="summary-item">
+                <div class="summary-label">ステータス</div>
+                <div class="summary-primary-value" style="color: #9e9e9e; font-size: 18px;">未着手</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">作成日</div>
+                <div class="summary-value" id="today-date" style="font-size: 15px;">—</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- A. Basic Info -->
+    <div class="section-card">
+        <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
+            <span><i class="fas fa-info-circle" style="margin-right: 12px;"></i></span> 基本情報
+        </div>
+        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="field-item">
+                <div class="field-label" style="font-size: 11px; color: #888;">タスク種別 <span style="color: var(--kintone-danger);">*</span></div>
+                <select id="task-type" class="field-box" style="width: 100%;" onchange="updateTypeBadge()">
+                    <option value="ship-sale">出荷（販売）</option>
+                    <option value="ship-transfer">出荷（移送）</option>
+                    <option value="receive">入荷</option>
+                    <option value="return">返品処理</option>
+                </select>
+            </div>
+            <div class="field-item">
+                <div class="field-label" style="font-size: 11px; color: #888;">作業指示元ID</div>
+                <input type="text" id="source-id" class="field-box" style="width: 100%;" placeholder="例: PO-0012">
+            </div>
+            <div class="field-item">
+                <div class="field-label" style="font-size: 11px; color: #888;">SKU種別</div>
+                <select id="sku-type" class="field-box" style="width: 100%;">
+                    <option>商品</option>
+                    <option>原材料</option>
+                    <option>副資材</option>
+                </select>
+            </div>
+            <div class="field-item">
+                <div class="field-label" style="font-size: 11px; color: #888;">実行期限 <span style="color: var(--kintone-danger);">*</span></div>
+                <input type="date" id="due-date" class="field-box" style="width: 100%;">
+            </div>
+            <div class="field-item">
+                <div class="field-label" style="font-size: 11px; color: #888;">倉庫 <span style="color: var(--kintone-danger);">*</span></div>
+                <select id="warehouse" class="field-box" style="width: 100%;">
+                    <option>岐阜倉庫</option>
+                    <option>大阪倉庫</option>
+                    <option>東京倉庫</option>
+                </select>
+            </div>
+            <div class="field-item">
+                <div class="field-label" style="font-size: 11px; color: #888;">担当者</div>
+                <select id="assignee" class="field-box" style="width: 100%;">
+                    <option>Test staff</option>
+                    <option>倉庫スタッフA</option>
+                    <option>倉庫スタッフB</option>
+                    <option>管理者</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- B. Product Details -->
+    <div class="section-card" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; margin-bottom: 0;">
+                <span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span>商品明細
+            </div>
+            <button class="btn-secondary" onclick="addProductRow()" style="font-size: 12px; padding: 6px 14px;">
+                <i class="fas fa-plus" style="margin-right: 6px;"></i>商品を追加
+            </button>
+        </div>
+        <table class="k-table">
+            <thead>
+                <tr>
+                    <th style="min-width: 200px;">商品名</th>
+                    <th class="col-num" style="width: 100px;">数量 <span style="color: var(--kintone-danger);">*</span></th>
+                    <th class="col-mid" style="width: 80px;">単位</th>
+                    <th class="col-mid" style="width: 60px;">削除</th>
+                </tr>
+            </thead>
+            <tbody id="product-tbody">
+                <!-- initial row injected by JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- C. Memo -->
+    <div class="section-card">
+        <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
+            <span><i class="fas fa-note-sticky" style="margin-right: 12px;"></i></span> 備考・メモ
+        </div>
+        <textarea id="memo" class="field-box" rows="4"
+            style="width: 100%; resize: vertical; font-family: inherit; font-size: 13px; line-height: 1.6;"
+            placeholder="作業上の注意点や特記事項を入力してください。"></textarea>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="margin: 30px 0; display: flex; gap: 12px; justify-content: space-between;">
+        <button class="btn-secondary" onclick="location.href='tasklist.html'">
+            <i class="fas fa-arrow-left" style="margin-right: 8px;"></i> キャンセル
+        </button>
+        <div style="display: flex; gap: 12px;">
+            <button class="btn-reject" onclick="resetForm()">
+                <i class="fas fa-rotate-left" style="margin-right: 6px;"></i> リセット
+            </button>
+            <button class="btn-blue" onclick="saveTask()">
+                <i class="fas fa-save" style="margin-right: 8px;"></i> タスクを保存する
+            </button>
+        </div>
+    </div>
+</div>
+
+<footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Portal. All rights reserved.</footer>
+
+<script>
+    const TYPE_LABELS = {
+        'ship-sale':     { label: '出荷（販売）',  bg: '#e8f4fd', color: '#3498db', border: '#d1e9fb' },
+        'ship-transfer': { label: '出荷（移送）',  bg: '#e8f0fe', color: '#4a5cf7', border: '#c5d0fc' },
+        'receive':       { label: '入荷',          bg: '#e8f5e9', color: '#2e7d32', border: '#c8e6c9' },
+        'return':        { label: '返品処理',       bg: '#fce4ec', color: '#c62828', border: '#f8bbd0' },
+    };
+
+    let rowCount = 0;
+
+    function addProductRow(name = '', qty = '', unit = '個') {
+        rowCount++;
+        const id = rowCount;
+        const units = ['個', '箱', 'ケース', 'kg', 'L', '枚'];
+        const unitOptions = units.map(u => `<option${u === unit ? ' selected' : ''}>${u}</option>`).join('');
+        const row = `
+        <tr id="row-${id}">
+            <td>
+                <input type="text" class="field-box" value="${name}"
+                    style="width: 100%; font-size: 13px;"
+                    placeholder="商品名または SKU を入力">
+            </td>
+            <td class="col-num">
+                <input type="number" class="field-box col-num" value="${qty}" min="1"
+                    style="width: 80px; text-align: right;">
+            </td>
+            <td class="col-mid">
+                <select class="field-box" style="width: 70px; text-align: center;">${unitOptions}</select>
+            </td>
+            <td class="col-mid">
+                <button onclick="removeRow(${id})"
+                    style="background: none; border: none; color: #c62828; cursor: pointer; font-size: 16px;"
+                    title="この行を削除">
+                    <i class="fas fa-trash-can"></i>
+                </button>
+            </td>
+        </tr>`;
+        document.getElementById('product-tbody').insertAdjacentHTML('beforeend', row);
+    }
+
+    function removeRow(id) {
+        const row = document.getElementById(`row-${id}`);
+        if (row) row.remove();
+    }
+
+    function updateTypeBadge() {
+        const val = document.getElementById('task-type').value;
+        const t = TYPE_LABELS[val];
+        const badge = document.getElementById('task-type-badge');
+        badge.textContent = t.label;
+        badge.style.backgroundColor = t.bg;
+        badge.style.color = t.color;
+        badge.style.borderColor = t.border;
+    }
+
+    function resetForm() {
+        if (!confirm('入力内容をリセットしますか？')) return;
+        document.getElementById('task-type').value = 'ship-sale';
+        document.getElementById('source-id').value = '';
+        document.getElementById('due-date').value = '';
+        document.getElementById('memo').value = '';
+        document.getElementById('product-tbody').innerHTML = '';
+        rowCount = 0;
+        updateTypeBadge();
+        addProductRow();
+    }
+
+    function validate() {
+        const dueDate = document.getElementById('due-date').value;
+        if (!dueDate) { alert('実行期限を入力してください。'); return false; }
+        const rows = document.querySelectorAll('#product-tbody tr');
+        if (rows.length === 0) { alert('商品を1件以上追加してください。'); return false; }
+        let valid = true;
+        rows.forEach(row => {
+            const qty = row.querySelector('input[type=number]');
+            if (!qty || !qty.value || parseInt(qty.value) < 1) {
+                alert('数量を正しく入力してください。'); valid = false;
+            }
+        });
+        return valid;
+    }
+
+    function saveTask() {
+        if (!validate()) return;
+        const flash = document.getElementById('flash-message');
+        flash.style.display = 'block';
+        setTimeout(() => { location.href = 'tasklist.html'; }, 1500);
+    }
+
+    // Init
+    window.onload = function() {
+        // Set today's date in header
+        document.getElementById('today-date').textContent = new Date().toISOString().split('T')[0];
+        // Set default due date = today + 3 days
+        const d = new Date(); d.setDate(d.getDate() + 3);
+        document.getElementById('due-date').value = d.toISOString().split('T')[0];
+        // Add first product row
+        addProductRow();
+    };
+</script>
+</body>
+</html>

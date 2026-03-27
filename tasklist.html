@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,331 +8,591 @@
     <link rel="stylesheet" href="style.css">
     <style>
         /* Task List Specific Layouts */
-        .main-wrapper { padding: 10px 20px; }
-        .toolbar { display: flex; justify-content: space-between; margin-bottom: 15px; }
-        .filter-left, .filter-right { display: flex; gap: 5px; }
-        
-        .btn-filter-plus { background-color: white; border: 1px solid #ddd; padding: 6px 12px; border-radius: 2px; display: flex; align-items: center; gap: 5px; cursor: pointer; color: var(--kintone-blue); font-size: 13px; }
-        .btn-icon-sq { width: 36px; height: 36px; border: 1px solid #ddd; background: white; display: flex; align-items: center; justify-content: center; border-radius: 2px; cursor: pointer; color: #666; }
-        .btn-blue-sq { background-color: var(--kintone-blue); color: white; border: 1px solid var(--kintone-blue); }
-        .btn-action-add { background-color: #f5f5f5; border: 1px solid #ddd; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #999; cursor: pointer; border-radius: 2px; }
+        .main-wrapper {
+            padding: 10px 20px;
+        }
 
-        .table-container { background: white; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; margin-bottom: 20px; }
-        .task-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        .task-table th { background-color: #f7f9fa; border-bottom: 2px solid #ddd; border-right: 1px solid #eee; padding: 10px; text-align: left; color: #666; font-weight: bold; }
-        .task-table td { border-bottom: 1px solid #eee; border-right: 1px solid #f9f9f9; padding: 12px 10px; vertical-align: middle; }
-        .task-table tr:hover { background-color: #f7f9fa; }
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
 
-        .link-text { color: var(--kintone-blue); text-decoration: none; }
-        .link-text:hover { text-decoration: underline; }
+        .filter-left,
+        .filter-right {
+            display: flex;
+            gap: 5px;
+        }
 
-        .status-exec { border: 2px solid var(--kintone-blue); color: var(--kintone-blue); }
-        .status-done { border: 2px solid var(--kintone-success); color: var(--kintone-success); }
-        .status-wait { border: 2px solid #95a5a6; color: #95a5a6; }
+        .btn-filter-plus {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 6px 12px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            color: var(--kintone-blue);
+            font-size: 13px;
+        }
 
-        .user-cell { display: flex; align-items: center; gap: 8px; }
-        .cell-avatar { width: 22px; height: 22px; border-radius: 3px; background: #eee; }
-        .action-btns { display: flex; gap: 10px; font-size: 16px; color: var(--kintone-blue); cursor: pointer; }
+        .btn-icon-sq {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #ddd;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2px;
+            cursor: pointer;
+            color: #666;
+        }
 
-        .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 12px; padding: 20px 0; }
-        .pg-btn { border: 1px solid #ddd; background: white; padding: 6px 15px; border-radius: 4px; cursor: pointer; color: #666; font-weight: 500; }
-        .pg-btn:hover { background: #f0f0f0; }
-        .pg-current { display: flex; align-items: center; gap: 4px; font-weight: bold; }
-        .pg-select { border: 1px solid #ddd; padding: 4px 10px; border-radius: 4px; }
+        .btn-blue-sq {
+            background-color: var(--kintone-blue);
+            color: white;
+            border: 1px solid var(--kintone-blue);
+        }
+
+        .btn-action-add {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #999;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .table-container {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .task-table th {
+            background-color: #f7f9fa;
+            border-bottom: 2px solid #ddd;
+            border-right: 1px solid #eee;
+            padding: 10px;
+            text-align: left;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .task-table td {
+            border-bottom: 1px solid #eee;
+            border-right: 1px solid #f9f9f9;
+            padding: 12px 10px;
+            vertical-align: middle;
+        }
+
+        .task-table tr:hover {
+            background-color: #f7f9fa;
+        }
+
+        .link-text {
+            color: var(--kintone-blue);
+            text-decoration: none;
+        }
+
+        .link-text:hover {
+            text-decoration: underline;
+        }
+
+        .status-exec {
+            border: 2px solid var(--kintone-blue);
+            color: var(--kintone-blue);
+        }
+
+        .status-done {
+            border: 2px solid var(--kintone-success);
+            color: var(--kintone-success);
+        }
+
+        .status-wait {
+            border: 2px solid #95a5a6;
+            color: #95a5a6;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cell-avatar {
+            width: 22px;
+            height: 22px;
+            border-radius: 3px;
+            background: #eee;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 10px;
+            font-size: 16px;
+            color: var(--kintone-blue);
+            cursor: pointer;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            padding: 20px 0;
+        }
+
+        .pg-btn {
+            border: 1px solid #ddd;
+            background: white;
+            padding: 6px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .pg-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .pg-current {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: bold;
+        }
+
+        .pg-select {
+            border: 1px solid #ddd;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
     </style>
 </head>
+
 <body>
 
-<header class="header-full">
-    <!-- Top Bar -->
-    <div class="kintone-header-top">
-        <div class="header-content-inner">
-            <div class="header-logo">kintone</div>
-            <div class="header-user">
-                <span>✉</span>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User" class="user-avatar" style="width: 32px; height: 32px;">
-                    <span>Administrator</span>
-                    <span style="font-size: 10px;">▼</span>
+    <header class="header-full">
+        <!-- Top Bar -->
+        <div class="kintone-header-top">
+            <div class="header-content-inner">
+                <div class="header-logo">kintone</div>
+                <div class="header-user">
+                    <span>✉</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                            alt="User" class="user-avatar" style="width: 32px; height: 32px;">
+                        <span>Administrator</span>
+                        <span style="font-size: 10px;">▼</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Sub Bar -->
-    <div class="kintone-header-sub">
-        <div class="header-content-inner">
-            <div class="header-sub-left">
-                <span>☰</span>
-                <span>🏠</span>
-                <span>🔔</span>
-                <span>⭐</span>
-            </div>
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="アプリ内検索" style="width: 250px;">
-                <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #999;">🔍</span>
-            </div>
-        </div>
-    </div>
 
-    <!-- App Bar -->
-    <div class="kintone-app-title-bar">
-        <div class="header-content-inner">
-            <div style="display: flex; align-items: center;">
-                <div class="app-icon">📋</div>
-                <div class="app-name" style="margin-left: 10px;">出荷タスク管理 (販売・サンプル・製造)</div>
+        <!-- Sub Bar -->
+        <div class="kintone-header-sub">
+            <div class="header-content-inner">
+                <div class="header-sub-left">
+                    <span>☰</span>
+                    <span>🏠</span>
+                    <span>🔔</span>
+                    <span>⭐</span>
+                </div>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="アプリ内検索" style="width: 250px;">
+                    <span
+                        style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #999;">🔍</span>
+                </div>
             </div>
         </div>
-    </div>
-</header>
 
-<main class="main-wrapper">
-    <div class="breadcrumb">
-        🏠 <span>/</span> アプリ: 出荷タスク管理
-    </div>
-
-    <!-- Toolbar -->
-    <div class="toolbar">
-        <div class="filter-left">
-            <div class="btn-filter-plus">
-                <span style="font-size: 18px;">📋</span>
-                <strong>出荷に関するタスク</strong>
-                <span style="font-size: 10px;">▼</span>
+        <!-- App Bar -->
+        <div class="kintone-app-title-bar">
+            <div class="header-content-inner">
+                <div style="display: flex; align-items: center;">
+                    <div class="app-icon">📋</div>
+                    <div class="app-name" style="margin-left: 10px;">入出荷タスクを確認する</div>
+                </div>
             </div>
-            <div class="btn-icon-sq btn-blue-sq">⚙</div>
-            <div class="btn-icon-sq">🔗</div>
-            <div class="btn-icon-sq">📊</div>
         </div>
-        
-        <div class="filter-right">
-            <div class="btn-action-add">+</div>
-            <div class="btn-icon-sq">⚙</div>
-            <div class="btn-icon-sq">⋯</div>
+    </header>
+
+    <main class="main-wrapper">
+        <div class="breadcrumb">
+            🏠 <span>/</span> アプリ: 入出荷タスクを確認する
         </div>
-    </div>
 
-    <!-- Data Table -->
-    <div class="table-container">
-        <table class="task-table">
-            <thead>
-                <tr>
-                    <th style="width: 80px;">タスクID</th>
-                    <th>タスク種別</th>
-                    <th>ステータス</th>
-                    <th>数量</th>
-                    <th>SKU種別</th>
-                    <th>作業指示元ID</th>
-                    <th>実行期限</th>
-                    <th>倉庫</th>
-                    <th>担当者</th>
-                    <th>更新日時</th>
-                    <th>更新者</th>
-                    <th style="width: 80px;">操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Row 1 -->
-                <tr>
-                    <td><a href="task_detail.html" class="link-text">502</a></td>
-                    <td>サンプル出荷</td>
-                    <td><span class="badge-status status-exec">実行中</span></td>
-                    <td>2</td>
-                    <td>サンプル品</td>
-                    <td><a href="task_detail.html" class="link-text">321</a></td>
-                    <td>2026-03-26</td>
-                    <td><a href="task_detail.html" class="link-text">岐阜倉庫</a></td>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" class="cell-avatar">
-                            Test staff
-                        </div>
-                    </td>
-                    <td>2026-03-26 14:15</td>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="cell-avatar">
-                            Administrator
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <span>✎</span>
-                            <span class="icon-trash">✔️</span>
-                        </div>
-                    </td>
-                </tr>
-                <!-- Row 2 -->
-                <tr>
-                    <td><a href="task_detail.html" class="link-text">505</a></td>
-                    <td>出荷 (製造)</td>
-                    <td><span class="badge-status status-wait">待機中</span></td>
-                    <td>100</td>
-                    <td>原材料</td>
-                    <td><a href="task_detail.html" class="link-text">MFG-001</a></td>
-                    <td>2026-03-26</td>
-                    <td><a href="task_detail.html" class="link-text">岐阜倉庫</a></td>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" class="cell-avatar">
-                            Test staff
-                        </div>
-                    </td>
-                    <td>2026-03-26 16:30</td>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="cell-avatar">
-                            Administrator
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <span>✎</span>
-                            <span class="icon-trash">✔️</span>
-                        </div>
-                    </td>
-                </tr>
-                <!-- Row 3 -->
-                <tr>
-                    <td><a href="task_detail.html" class="link-text">499</a></td>
-                    <td>出荷 (販売)</td>
-                    <td><span class="badge-status status-done">完了</span></td>
-                    <td>15</td>
-                    <td>商品</td>
-                    <td><a href="task_detail.html" class="link-text">317</a></td>
-                    <td>2026-03-26</td>
-                    <td><a href="task_detail.html" class="link-text">岐阜倉庫</a></td>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" class="cell-avatar">
-                            Test staff
-                        </div>
-                    </td>
-                    <td>2026-03-23 18:55</td>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="cell-avatar">
-                            Administrator
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <span>✎</span>
-                            <span class="icon-trash">✔️</span>
-                        </div>
-                    </td>
-                </tr>
-                <!-- Row 4 -->
-                <tr>
-                    <td><a href="task_detail.html" class="link-text">497</a></td>
-                    <td>出荷 (販売)</td>
-                    <td><span class="badge-status status-done">完了</span></td>
-                    <td>15</td>
-                    <td>商品</td>
-                    <td><a href="task_detail.html" class="link-text">316</a></td>
-                    <td>2026-03-26</td>
-                    <td><a href="task_detail.html" class="link-text">岐阜倉庫</a></td>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" class="cell-avatar">
-                            Test staff
-                        </div>
-                    </td>
-                    <td>2026-03-23 18:48</td>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="cell-avatar">
-                            Administrator
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <span>✎</span>
-                            <span class="icon-trash">✔️</span>
-                        </div>
-                    </td>
-                </tr>
-                <!-- Row 5 -->
-                <tr>
-                    <td><a href="task_detail.html" class="link-text" >491</a></td>
-                    <td>出荷 (販売)</td>
-                    <td><span class="badge-status status-done">完了</span></td>
-                    <td>12</td>
-                    <td>商品</td>
-                    <td><a href="task_detail.html" class="link-text">315</a></td>
-                    <td>2026-03-26</td>
-                    <td><a href="task_detail.html" class="link-text">岐阜倉庫</a></td>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" class="cell-avatar">
-                            Test staff
-                        </div>
-                    </td>
-                    <td>2026-03-23 18:18</td>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="cell-avatar">
-                            Administrator
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <span>✎</span>
-                            <span class="icon-trash">✔️</span>
-                        </div>
-                    </td>
-                </tr>
-                <!-- Row 6 -->
-                <tr>
-                    <td><a href="task_detail.html" class="link-text">488</a></td>
-                    <td>サンプル出荷</td>
-                    <td><span class="badge-status status-wait">待機中</span></td>
-                    <td>1</td>
-                    <td>サンプル品</td>
-                    <td><a href="task_detail.html" class="link-text">310</a></td>
-                    <td>2026-03-26</td>
-                    <td><a href="task_detail.html" class="link-text">岐阜倉庫</a></td>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" class="cell-avatar">
-                            Test staff
-                        </div>
-                    </td>
-                    <td>2026-03-22 10:10</td>
-                    <td>
-                        <div class="user-cell">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" class="cell-avatar">
-                            Administrator
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-btns">
-                            <span>✎</span>
-                            <span class="icon-trash">✔️</span>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <div class="filter-left">
+                <div class="btn-filter-plus">
+                    <span style="font-size: 18px;">📋</span>
+                    <strong>すべてのタスク</strong>
+                    <span style="font-size: 10px;">▼</span>
+                </div>
+                <div class="btn-icon-sq btn-blue-sq">⚙</div>
+                <div class="btn-icon-sq">🔗</div>
+                <div class="btn-icon-sq">📊</div>
+            </div>
 
-    <!-- Pagination -->
-    <div class="pagination">
-        <button class="pg-btn" disabled>⏮ 最初</button>
-        <button class="pg-btn" disabled>◀ 前へ</button>
-        <div class="pg-current">
-            ページ <strong>1</strong> / 1
-            <span style="color: #666; font-weight: normal; margin-left: 5px;">(全 6 件)</span>
+            <div class="filter-right">
+                <div class="btn-action-add" onclick="location.href='task_create.html'" style="cursor: pointer;">+</div>
+                <div class="btn-icon-sq">⚙</div>
+                <div class="btn-icon-sq">⋯</div>
+            </div>
         </div>
-        <button class="pg-btn" disabled>次へ ▶</button>
-        <button class="pg-btn" disabled>最後 ⏭</button>
-        <select class="pg-select">
-            <option>10件/ページ</option>
-            <option>20件/ページ</option>
-            <option>50件/ページ</option>
-        </select>
-    </div>
 
-</main>
+        <!-- Data Table -->
+        <div class="table-container">
+            <table class="task-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">タスクID</th>
+                        <th>タスク種別</th>
+                        <th>ステータス</th>
+                        <th>数量</th>
+                        <th>SKU種別</th>
+                        <th>作業指示元ID</th>
+                        <th>実行期限</th>
+                        <th>倉庫</th>
+                        <th>担当者</th>
+                        <th>更新日時</th>
+                        <th>更新者</th>
+                        <th style="width: 80px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Row 1 -->
+                    <tr>
+                        <td><a href="task_detail.html" class="link-text">500</a></td>
+                        <td>返品入庫</td>
+                        <td><span class="badge-status status-exec">実行中</span></td>
+                        <td>15</td>
+                        <td>商品</td>
+                        <td><a href="task_detail.html" class="link-text">317</a></td>
+                        <td>2026-03-30</td>
+                        <td><a href="task_detail.html" class="link-text">岐阜倉庫</a></td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+                                    class="cell-avatar">
+                                Test staff
+                            </div>
+                        </td>
+                        <td>2026-03-23 18:58</td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                                    class="cell-avatar">
+                                Administrator
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <span>✎</span>
+                                <span class="icon-trash">✔️</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 2 -->
+                    <tr>
+                        <td><a href="task_detail.html" class="link-text">499</a></td>
+                        <td>出荷 (販売)</td>
+                        <td><span class="badge-status status-done">完了</span></td>
+                        <td>15</td>
+                        <td>商品</td>
+                        <td><a href="task_detail.html" class="link-text">317</a></td>
+                        <td>2026-03-30</td>
+                        <td><a href="task_detail.html" class="link-text">岐阜倉庫</a></td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+                                    class="cell-avatar">
+                                Test staff
+                            </div>
+                        </td>
+                        <td>2026-03-23 18:55</td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                                    class="cell-avatar">
+                                Administrator
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <span>✎</span>
+                                <span class="icon-trash">✔️</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 3 -->
+                    <tr>
+                        <td><a href="task_detail.html" class="link-text">498</a></td>
+                        <td>入荷 (購買)</td>
+                        <td><span class="badge-status status-wait">待機中</span></td>
+                        <td>15</td>
+                        <td>資材</td>
+                        <td><a href="task_detail.html" class="link-text">155</a></td>
+                        <td>2026-03-30</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>2026-03-23 18:46</td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                                    class="cell-avatar">
+                                Administrator
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <span>✎</span>
+                                <span class="icon-trash">✔️</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 4 -->
+                    <tr>
+                        <td><a href="task_detail.html" class="link-text">497</a></td>
+                        <td>出荷 (販売)</td>
+                        <td><span class="badge-status status-done">完了</span></td>
+                        <td>15</td>
+                        <td>商品</td>
+                        <td><a href="task_detail.html" class="link-text">316</a></td>
+                        <td>2026-03-30</td>
+                        <td><a href="task_detail.html" class="link-text">岐阜倉庫</a></td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+                                    class="cell-avatar">
+                                Test staff
+                            </div>
+                        </td>
+                        <td>2026-03-23 18:48</td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                                    class="cell-avatar">
+                                Administrator
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <span>✎</span>
+                                <span class="icon-trash">✔️</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 5 -->
+                    <tr>
+                        <td><a href="#" class="link-text">496</a></td>
+                        <td>入荷 (購買)</td>
+                        <td><span class="badge-status status-wait">待機中</span></td>
+                        <td>15</td>
+                        <td>資材</td>
+                        <td><a href="#" class="link-text">155</a></td>
+                        <td>2026-03-30</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>2026-03-23 18:45</td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                                    class="cell-avatar">
+                                Administrator
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <span>✎</span>
+                                <span class="icon-trash">✔️</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 6 -->
+                    <tr>
+                        <td><a href="#" class="link-text">495</a></td>
+                        <td>入荷 (購買)</td>
+                        <td><span class="badge-status status-wait">待機中</span></td>
+                        <td>15</td>
+                        <td>資材</td>
+                        <td><a href="#" class="link-text">155</a></td>
+                        <td>2026-03-30</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>2026-03-23 18:44</td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                                    class="cell-avatar">
+                                Administrator
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <span>✎</span>
+                                <span class="icon-trash">✔️</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 7 -->
+                    <tr>
+                        <td><a href="#" class="link-text">494</a></td>
+                        <td>入荷 (購買)</td>
+                        <td><span class="badge-status status-wait">待機中</span></td>
+                        <td>15</td>
+                        <td>資材</td>
+                        <td><a href="#" class="link-text">155</a></td>
+                        <td>2026-03-30</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>2026-03-23 18:41</td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                                    class="cell-avatar">
+                                Administrator
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <span>✎</span>
+                                <span class="icon-trash">✔️</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 8 -->
+                    <tr>
+                        <td><a href="#" class="link-text">493</a></td>
+                        <td>返品入庫</td>
+                        <td><span class="badge-status status-done">完了</span></td>
+                        <td>10</td>
+                        <td>商品</td>
+                        <td><a href="#" class="link-text">315</a></td>
+                        <td>2026-03-30</td>
+                        <td><a href="#" class="link-text">岐阜倉庫</a></td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+                                    class="cell-avatar">
+                                Test staff
+                            </div>
+                        </td>
+                        <td>2026-03-23 18:40</td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                                    class="cell-avatar">
+                                Administrator
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <span>✎</span>
+                                <span class="icon-trash">✔️</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 9 -->
+                    <tr>
+                        <td><a href="#" class="link-text">492</a></td>
+                        <td>入荷 (購買)</td>
+                        <td><span class="badge-status status-wait">待機中</span></td>
+                        <td>15</td>
+                        <td>資材</td>
+                        <td><a href="#" class="link-text">155</a></td>
+                        <td>2026-03-30</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>2026-03-23 18:33</td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                                    class="cell-avatar">
+                                Administrator
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <span>✎</span>
+                                <span class="icon-trash">✔️</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 10 -->
+                    <tr>
+                        <td><a href="#" class="link-text">491</a></td>
+                        <td>出荷 (販売)</td>
+                        <td><span class="badge-status status-done">完了</span></td>
+                        <td>12</td>
+                        <td>商品</td>
+                        <td><a href="#" class="link-text">315</a></td>
+                        <td>2026-03-30</td>
+                        <td><a href="#" class="link-text">岐阜倉庫</a></td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+                                    class="cell-avatar">
+                                Test staff
+                            </div>
+                        </td>
+                        <td>2026-03-23 18:18</td>
+                        <td>
+                            <div class="user-cell">
+                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                                    class="cell-avatar">
+                                Administrator
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <span>✎</span>
+                                <span class="icon-trash">✔️</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="pg-btn">⏮ 最初</button>
+            <button class="pg-btn">◀ 前へ</button>
+            <div class="pg-current">
+                ページ <strong>1</strong> / 10
+                <span style="color: #666; font-weight: normal; margin-left: 5px;">(全 100 件)</span>
+            </div>
+            <button class="pg-btn">次へ ▶</button>
+            <button class="pg-btn">最後 ⏭</button>
+            <select class="pg-select">
+                <option>10件/ページ</option>
+                <option>20件/ページ</option>
+                <option>50件/ページ</option>
+            </select>
+        </div>
+
+    </main>
 
 </body>
+
 </html>
