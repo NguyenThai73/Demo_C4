@@ -354,27 +354,79 @@
     }
 
     function setDeliveryUI() {
+        // Capture packing values before converting form
+        const carrier    = document.getElementById('carrier').options[document.getElementById('carrier').selectedIndex].text;
+        const sizeType   = document.getElementById('size-type').value;
+        const pkgQty     = document.getElementById('pkg-qty').value;
+        const pkgWeight  = document.getElementById('pkg-weight').value;
+        const sizeRef    = document.getElementById('pkg-size-ref').textContent;
+        const trackingUrl = document.getElementById('label-url').value;
+        const filename   = document.getElementById('label-filename').textContent;
+
         // Status → 配送中
         const statusEl = document.getElementById('main-status');
         statusEl.innerHTML = '配送中';
         statusEl.style.color = '#6a1b9a';
 
-        // Hide shipping form
-        document.getElementById('shipping-input-area').style.display = 'none';
+        // Convert shipping form → read-only packing summary
+        const area = document.getElementById('shipping-input-area');
+        area.style.borderTop = '3px solid #6a1b9a';
+        area.innerHTML = `
+            <div class="section-title" style="color:#6a1b9a; font-size:15px; font-weight:800; margin-bottom:16px;">
+                <i class="fas fa-box-archive" style="margin-right:12px;"></i>梱包・出荷情報（確定済み）
+            </div>
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item">
+                    <div class="field-label" style="font-size:11px; color:#888;">梱包サイズID参照</div>
+                    <div class="field-value" style="font-weight:700;">${sizeRef}</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label" style="font-size:11px; color:#888;">配送業者</div>
+                    <div class="field-value" style="font-weight:700;">${carrier}</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label" style="font-size:11px; color:#888;">サイズ種別</div>
+                    <div class="field-value" style="font-weight:700;">${sizeType}</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label" style="font-size:11px; color:#888;">パッケージ数量</div>
+                    <div class="field-value" style="font-weight:700; text-align:right;">${pkgQty}</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label" style="font-size:11px; color:#888;">梱包重量 (kg)</div>
+                    <div class="field-value" style="font-weight:700; text-align:right;">${pkgWeight} kg</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label" style="font-size:11px; color:#888;">送り状ステータス</div>
+                    <div class="field-value"><span class="badge-status status-ok">作成済み</span></div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label" style="font-size:11px; color:#888;">URL</div>
+                    <div class="field-value">${trackingUrl
+                        ? `<a href="${trackingUrl}" target="_blank" style="color:var(--kintone-blue);">${trackingUrl}</a>`
+                        : '<span style="color:#bbb;">—</span>'}</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label" style="font-size:11px; color:#888;">送り状ラベル</div>
+                    <div class="field-value" style="color:#666;">
+                        <i class="fas fa-paperclip" style="margin-right:6px; color:#bbb;"></i>${filename}
+                    </div>
+                </div>
+            </div>`;
 
-        // Update next-action card
-        const trackingUrl = document.getElementById('label-url').value;
+        // Update next-action card → 配送中 state
         const trackingLink = trackingUrl
             ? `<a href="${trackingUrl}" target="_blank" class="btn-secondary"
-                style="padding: 10px 20px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                style="padding:10px 20px; font-size:13px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
                 <i class="fas fa-arrow-up-right-from-square"></i> 追跡URLを開く
                </a>`
             : '';
-        document.getElementById('next-action-area').className = 'next-action-card';
-        document.getElementById('next-action-area').style.borderLeft = '4px solid #6a1b9a';
-        document.getElementById('next-action-area').innerHTML = `
+        const card = document.getElementById('next-action-area');
+        card.className = 'next-action-card';
+        card.style.borderLeft = '4px solid #6a1b9a';
+        card.innerHTML = `
             <div class="next-action-content">
-                <span style="font-size: 30px;">🚚</span>
+                <span style="font-size:30px;">🚚</span>
                 <div>
                     状況: <span style="color:#6a1b9a; font-weight:800;">配送中</span><br>
                     <span style="font-weight:normal; font-size:12px; color:#666;">
@@ -384,8 +436,7 @@
             </div>
             <div style="display:flex; gap:12px; align-items:center;">
                 ${trackingLink}
-                <button class="btn-secondary" onclick="location.href='tasklist.html'"
-                    style="padding: 10px 20px;">
+                <button class="btn-secondary" onclick="location.href='tasklist.html'" style="padding:10px 20px;">
                     <i class="fas fa-arrow-left" style="margin-right:6px;"></i>一覧へ戻る
                 </button>
             </div>`;
