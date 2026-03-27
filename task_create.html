@@ -20,6 +20,11 @@
         .top-action-bar { padding: 15px 0; display: flex; gap: 10px; border-bottom: 1px solid #e3e7e8; margin-bottom: 20px; }
         .btn-k-cancel { background: white; border: 1px solid #e3e7e8; padding: 8px 20px; border-radius: 4px; font-weight: bold; color: #333; cursor: pointer; }
         .btn-k-save { background: #3498db; border: none; padding: 8px 30px; border-radius: 4px; font-weight: bold; color: white; cursor: pointer; }
+
+        /* Next Action Guideline Style */
+        .guideline-card { background-color: #f0f7ff; border: 1px solid #cce4ff; padding: 15px 20px; border-radius: 4px; margin-bottom: 25px; display: flex; align-items: flex-start; gap: 12px; }
+        .guideline-title { color: #004085; font-weight: bold; font-size: 13px; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+        .guideline-text { color: #004085; font-size: 12px; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -60,13 +65,24 @@
         🏠 <span>/</span> <a href="tasklist.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a> <span>/</span> 新規作成
     </div>
 
-    <!-- Action Buttons moved to TOP -->
+    <!-- Action Buttons at TOP -->
     <div class="top-action-bar">
         <button class="btn-k-cancel" onclick="location.href='tasklist.html'">キャンセル</button>
         <button class="btn-k-save" id="save-btn-top" style="display: none;" onclick="saveTask()">保存</button>
     </div>
 
     <div id="flash-message" class="sticky-flash">🎉 タスクを作成しました。</div>
+
+    <!-- NEW: Next Action Guideline Section -->
+    <div id="next-action-guideline" style="display: none;">
+        <div class="guideline-card">
+            <div style="font-size: 20px; color: #004085;"><i class="fas fa-lightbulb"></i></div>
+            <div>
+                <div class="guideline-title">次の対応</div>
+                <div id="guideline-message" class="guideline-text">—</div>
+            </div>
+        </div>
+    </div>
 
     <!-- Summary Header Card -->
     <div class="summary-header">
@@ -207,10 +223,10 @@
 
 <script>
     const TYPE_LABELS = {
-        'receive':   { label: '入荷',   bg: '#e8f5e9', color: '#2e7d32', border: '#c8e6c9' },
-        'sample':    { label: 'サンプル出荷', bg: '#fff3e0', color: '#e65100', border: '#ffe0b2' },
-        'transfer':  { label: '棚移動', bg: '#e3f2fd', color: '#1565c0', border: '#bbdefb' },
-        'adjust':    { label: '在庫調整', bg: '#f3e5f5', color: '#7b1fa2', border: '#e1bee7' },
+        'receive':   { label: '入荷',   bg: '#e8f5e9', color: '#2e7d32', border: '#c8e6c9', guide: '商品詳細情報を入力し、保存後にモバイル端末でバーコードをスキャンして入庫を完了させてください。' },
+        'sample':    { label: 'サンプル出荷', bg: '#fff3e0', color: '#e65100', border: '#ffe0b2', guide: '移動元棚を指定し、出荷する商品のSKUと数量を入力してください。作業指示に従いピックアップを行ってください。' },
+        'transfer':  { label: '棚移動', bg: '#e3f2fd', color: '#1565c0', border: '#bbdefb', guide: '移動元の棚と移動先の棚の両方を指定してください。在庫の正確な移動記録を作成します。' },
+        'adjust':    { label: '在庫調整', bg: '#f3e5f5', color: '#7b1fa2', border: '#e1bee7', guide: '実在庫とシステム在庫に差異がある場合に、現在の正しい棚番号と数量を入力して調整を行ってください。' },
     };
 
     let rowCount = 0;
@@ -220,12 +236,18 @@
         const taskFormContent = document.getElementById('task-form-content');
         const movementSection = document.getElementById('movement-info-section');
         const destShelfField = document.getElementById('dest-shelf-field');
+        const nextActionGuideline = document.getElementById('next-action-guideline');
+        const guidelineMessage = document.getElementById('guideline-message');
         const saveBtn = document.getElementById('save-btn-top');
         const badge = document.getElementById('task-type-badge');
 
         if (val) {
             taskFormContent.style.display = 'block';
+            nextActionGuideline.style.display = 'block';
             saveBtn.style.display = 'block';
+            
+            // Set Dynamic Guideline Message
+            guidelineMessage.textContent = TYPE_LABELS[val].guide;
             
             // Movement Info Logic: Sample, Transfer, or Adjust
             if (val === 'sample' || val === 'transfer' || val === 'adjust') {
@@ -245,6 +267,7 @@
             if (rowCount === 0) addProductRow('CER-BASE-01', 'セラミック基板用素材 PREMIUM', 1);
         } else {
             taskFormContent.style.display = 'none';
+            nextActionGuideline.style.display = 'none';
             saveBtn.style.display = 'none';
             badge.textContent = '未選択';
             badge.style.backgroundColor = '#f5f5f5';
