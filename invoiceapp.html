@@ -296,48 +296,6 @@
         </div>
     </div>
 
-    <!-- 請求書PDF（発行） -->
-    <div class="section-card section-op" style="border: 1px solid #d1c4e9; background: #faf4ff;">
-        <div class="section-title" style="color: #6a1b9a; font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
-            <i class="fas fa-file-pdf" style="margin-right: 12px;"></i>請求書PDF（発行）
-        </div>
-        <div class="field-grid" style="grid-template-columns: repeat(2, 1fr); gap: 16px 30px; margin-bottom: 20px;">
-            <div class="field-item">
-                <div class="field-label">PDF送付状況</div>
-                <div class="field-box-readonly" id="pdf-status-field">
-                    <span id="pdf-status-val">未発行</span>
-                </div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">発行状況</div>
-                <div class="field-box-readonly" style="background: transparent; border: none; padding-left: 0;">
-                    <span id="issued-chip" class="badge-status status-warn" style="font-size: 11px;">未発行</span>
-                </div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">発行日時</div>
-                <div class="field-box-readonly muted" id="issue-date-val">―</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">送信日時</div>
-                <div class="field-box-readonly muted" id="send-date-val">―</div>
-            </div>
-        </div>
-
-        <div style="border-top: 1px dashed #d1c4e9; padding-top: 20px;">
-            <div class="action-btn-row">
-                <button class="btn-invoice-primary" id="btn-issue-pdf" onclick="issuePDF()">
-                    <i class="fas fa-file-pdf"></i>請求書PDFを発行
-                </button>
-                <button class="btn-invoice-secondary" id="btn-download" onclick="downloadPDF()" disabled style="opacity: 0.4; cursor: not-allowed;">
-                    <i class="fas fa-download"></i>PDFをダウンロード
-                </button>
-                <button class="btn-invoice-secondary" id="btn-email" onclick="sendEmail()" disabled style="opacity: 0.4; cursor: not-allowed;">
-                    <i class="fas fa-envelope"></i>請求書をメール送信
-                </button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- Email Modal -->
@@ -392,29 +350,6 @@ TEL: 03-0000-0000</textarea>
     </div>
 </div>
 
-<!-- Confirm Modal -->
-<div class="modal-overlay" id="issue-modal" style="display: none;">
-    <div class="modal-card" style="text-align: left; max-width: 420px; padding: 30px;">
-        <div style="font-size: 18px; font-weight: 800; margin-bottom: 10px; color: #6a1b9a;">
-            <i class="fas fa-file-pdf" style="margin-right: 8px;"></i>請求書PDFを発行しますか？
-        </div>
-        <p style="font-size: 13px; color: #666; margin-bottom: 24px; line-height: 1.7;">
-            以下の内容で請求書PDFを発行します。<br>
-            発行後は内容の変更ができません。
-        </p>
-        <div style="background: #f3e5f5; border-radius: 6px; padding: 14px 16px; font-size: 13px; margin-bottom: 24px; line-height: 1.8;">
-            <div><span style="color: #888; min-width: 80px; display: inline-block;">請求先</span><strong>test_agency@yopmail.com</strong></div>
-            <div><span style="color: #888; min-width: 80px; display: inline-block;">請求金額</span><strong style="color: #6a1b9a;">¥20,025</strong></div>
-            <div><span style="color: #888; min-width: 80px; display: inline-block;">支払期日</span><strong>2026-04-01</strong></div>
-        </div>
-        <div style="display: flex; gap: 10px; justify-content: flex-end;">
-            <button class="btn-invoice-secondary" onclick="closeModal()">キャンセル</button>
-            <button class="btn-invoice-primary" style="background: #6a1b9a;" onclick="confirmIssue()">
-                <i class="fas fa-check"></i>発行する
-            </button>
-        </div>
-    </div>
-</div>
 
 <script>
     const INVOICE_ITEMS = [
@@ -487,44 +422,26 @@ TEL: 03-0000-0000</textarea>
     }
 
     function issuePDF() {
-        document.getElementById('issue-modal').style.display = 'flex';
-    }
-
-    function closeModal() {
-        document.getElementById('issue-modal').style.display = 'none';
+        confirmIssue();
     }
 
     function confirmIssue() {
-        closeModal();
         pdfIssued = true;
 
         const now = new Date();
         const dateStr = now.toISOString().replace('T', ' ').slice(0, 16);
 
-        // Update fields
-        document.getElementById('pdf-status-val').textContent = '発行済';
-        document.getElementById('issued-chip').textContent = '発行済';
-        document.getElementById('issued-chip').className = 'badge-status status-ok';
-        document.getElementById('issue-date-val').textContent = dateStr;
-        document.getElementById('issue-date-val').classList.remove('muted');
+        // Update summary header
         document.getElementById('summary-pdf').textContent = '発行済';
         document.getElementById('summary-pdf').style.color = 'var(--kintone-success)';
 
-        // Enable download / email buttons
-        const dlBtn = document.getElementById('btn-download');
-        const emBtn = document.getElementById('btn-email');
-        dlBtn.removeAttribute('disabled');
-        dlBtn.style.opacity = '1';
-        dlBtn.style.cursor = 'pointer';
-        emBtn.removeAttribute('disabled');
-        emBtn.style.opacity = '1';
-        emBtn.style.cursor = 'pointer';
-
-        // Disable issue button in section
-        const issueBtn = document.getElementById('btn-issue-pdf');
-        issueBtn.disabled = true;
-        issueBtn.style.opacity = '0.5';
-        issueBtn.style.cursor = 'not-allowed';
+        // Disable issue button in 次の対応
+        const issueBtn = document.getElementById('next-action-issue-btn');
+        if (issueBtn) {
+            issueBtn.disabled = true;
+            issueBtn.style.opacity = '0.5';
+            issueBtn.style.cursor = 'not-allowed';
+        }
 
         showToast('請求書PDFを発行しました。');
 
@@ -544,15 +461,13 @@ TEL: 03-0000-0000</textarea>
     function confirmSendEmail() {
         document.getElementById('email-modal').style.display = 'none';
         const sent = new Date().toISOString().replace('T', ' ').slice(0, 16);
-        document.getElementById('send-date-val').textContent = sent;
-        document.getElementById('send-date-val').classList.remove('muted');
         updateNextActionAfterIssue(sent, true);
         showToast('代理店にメールを送信しました。');
     }
 
     function skipEmail() {
         document.getElementById('email-modal').style.display = 'none';
-        const dateStr = document.getElementById('issue-date-val').textContent;
+        const dateStr = new Date().toISOString().replace('T', ' ').slice(0, 16);
         updateNextActionAfterIssue(dateStr, false);
     }
 
