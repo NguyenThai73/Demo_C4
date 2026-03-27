@@ -320,7 +320,7 @@
             isConfirmed: false,
             isPaid: false,
             items: [
-                { id: 'RC50-V01', name: 'Rice Silica 50mL', orderQty: 500, deliveredQty: 0, returnQty: 0, price: 153000 }
+                { id: 'RC50-V01', name: 'Rice Silica 50mL', orderQty: 500, deliveredQty: 0, returnQty: 0, price: 153000, recordId: 42 }
             ],
             historyCount: 0
         };
@@ -361,7 +361,8 @@
             productTbody.innerHTML = orderState.items.map(item => {
                 const remaining = item.orderQty - item.deliveredQty;
                 const progress = (item.deliveredQty / item.orderQty) * 100;
-                return `<tr><td class="col-product-name">${item.name} (${item.id})</td><td class="col-num">${item.orderQty}</td><td class="col-mid">個</td><td class="col-num">${item.deliveredQty}</td><td class="col-num" style="background-color: ${remaining > 0 ? '#fffaf0' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--kintone-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td class="col-num" style="color: ${item.returnQty > 0 ? 'var(--kintone-danger)' : '#999'}">${item.returnQty}</td><td class="col-mid"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '完納' : (progress > 0 ? '分納中' : '未出荷')}</span></td></tr>`;
+                const recUrl = `https://credit-group.cybozu.com/k/34/show#record=${item.recordId}&tab=none`;
+                return `<tr><td class="col-product-name"><a href="${recUrl}" target="_blank" style="color: var(--kintone-blue); text-decoration: none; font-weight: bold;">${item.name} (${item.id})</a></td><td class="col-num">${item.orderQty}</td><td class="col-mid">個</td><td class="col-num">${item.deliveredQty}</td><td class="col-num" style="background-color: ${remaining > 0 ? '#fffaf0' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--kintone-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td class="col-num" style="color: ${item.returnQty > 0 ? 'var(--kintone-danger)' : '#999'}">${item.returnQty}</td><td class="col-mid"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '完納' : (progress > 0 ? '分納中' : '未出荷')}</span></td></tr>`;
             }).join('');
         }
 
