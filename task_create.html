@@ -5,105 +5,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>タスク新規作成 | Silica Link</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="detail-style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Specific workflow logic overrides */
-        #task-form-content { display: none; margin-top: 20px; }
-        .badge-type { font-weight: 800; font-size: 12px; padding: 4px 12px; border: 1px solid; border-radius: 4px; }
-        .section-card { margin-bottom: 25px; }
-        #movement-info-section { display: none; margin-top: 25px; }
-        #dest-shelf-field { display: none; }
-        .btn-mini { font-size: 10px; padding: 2px 8px; white-space: nowrap; height: 24px; }
-
-        /* Kintone Standard Tool Bar Alignment */
-        .kintone-action-toolbar { 
-            background: white; border-bottom: 1px solid #e3e7e8; 
-            padding: 10px 20px; display: flex; gap: 10px; 
-            position: sticky; top: 0; z-index: 500;
+        :root {
+            --k-blue: #3498db;
+            --k-bg: #f4f7f9;
+            --k-header-navy: #2c3e50;
         }
-        .btn-k-save { background-color: #3498db; color: white; border: none; padding: 10px 35px; border-radius: 4px; font-weight: bold; cursor: pointer; }
-        .btn-k-cancel { background-color: white; color: #333; border: 1px solid #e3e7e8; padding: 10px 25px; border-radius: 4px; font-weight: bold; cursor: pointer; }
-        .btn-k-save:hover { background-color: #2980b9; }
-        .btn-k-cancel:hover { background-color: #f8f8f8; }
+        body { margin: 0; padding: 0; background-color: var(--k-bg); font-family: sans-serif; }
+
+        /* Kintone Headers */
+        .kintone-header-navy { background-color: var(--k-header-navy); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .kintone-header-grey { background-color: #444; color: white; padding: 8px 20px; display: flex; align-items: center; gap: 20px; font-size: 18px; }
+        .kintone-app-bar { background-color: white; border-bottom: 1px solid #e3e7e8; padding: 15px 20px; display: flex; align-items: center; gap: 10px; }
+        .kintone-breadcrumb-bar { background-color: white; border-bottom: 1px solid #e3e7e8; padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; }
+
+        /* Action Bar */
+        .action-bar { padding: 20px; display: flex; gap: 12px; }
+        .btn-k-cancel { background: white; border: 1px solid #e3e7e8; border-radius: 4px; padding: 10px 25px; font-weight: bold; cursor: pointer; color: #333; }
+        .btn-k-save { background: var(--k-blue); border: none; border-radius: 4px; padding: 10px 40px; font-weight: bold; cursor: pointer; color: white; }
+
+        /* Form Area */
+        .main-content { padding: 0 20px 40px 20px; }
+        .form-card { background: white; border-radius: 4px; padding: 30px; border: 1px solid #e3e7e8; }
+        
+        .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .field-label { font-size: 13px; font-weight: bold; margin-bottom: 8px; }
+        .field-label span { color: #e74c3c; margin-left: 4px; }
+        .field-input { border: 1px solid #e3e7e8; padding: 10px; border-radius: 2px; font-size: 14px; width: 100%; box-sizing: border-box; background: #fff; }
+        .field-input:disabled { background: #f5f5f5; color: #999; }
+        .field-select { height: 40px; }
+
+        /* Sections */
+        .section-title { font-weight: bold; font-size: 14px; margin-top: 30px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        
+        .k-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 15px; }
+        .k-table th { background: #f8f9fa; border: 1px solid #e3e7e8; padding: 10px; text-align: left; color: #666; }
+        .k-table td { border: 1px solid #e3e7e8; padding: 10px; background: white; }
+        
+        #incoming-fields { display: none; margin-top: 30px; }
+        #movement-info-section { display: none; margin-top: 30px; }
+        #dest-shelf-field { display: none; }
     </style>
 </head>
-<body style="background-color: #f4f7f9;">
+<body>
 
-<!-- Kintone Header Bar -->
-<div class="kintone-header-top">
-    <div class="header-content-inner">
-        <div class="header-logo"><span class="k-icon">k</span> kintone</div>
-        <div class="header-user">
-            <span>✉</span>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
-                <span>Administrator</span>
-                <span style="font-size: 10px;">▼</span>
-            </div>
+<!-- Kintone Header Bar (Navy) -->
+<div class="kintone-header-navy">
+    <div style="font-size: 20px; font-weight: bold;">kintone</div>
+    <div style="display: flex; gap: 20px; align-items: center;">
+        <i class="fas fa-envelope"></i>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" width="24" style="border-radius: 50%;">
+            <span>Administrator</span>
+            <i class="fas fa-caret-down"></i>
         </div>
     </div>
 </div>
 
-<div class="kintone-header-sub">
-    <div class="header-content-inner">
-        <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
-        <div class="header-sub-right"><span>⚙</span> <span>❓</span><div class="search-container"><input type="text" class="search-input" placeholder="アプリ内検索"><span class="search-icon">🔍</span></div></div>
+<!-- Kintone Header Bar (Dark Grey) -->
+<div class="kintone-header-grey">
+    <i class="fas fa-bars"></i>
+    <i class="fas fa-home"></i>
+    <i class="fas fa-bell"></i>
+    <i class="fas fa-star"></i>
+    <div style="flex: 1;"></div>
+    <i class="fas fa-cog"></i>
+    <i class="fas fa-question-circle"></i>
+    <div style="background: white; border-radius: 2px; padding: 4px 10px; width: 300px; color: #999; display: flex; justify-content: space-between;">
+        <span>アプリ内検索</span> <i class="fas fa-search"></i>
     </div>
 </div>
 
-<div class="kintone-app-title-bar">
-    <div class="header-content-inner" style="padding: 12px 10px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <div class="app-icon" style="background-color: #3498db; color: white; padding: 5px; border-radius: 4px; font-size: 14px;">🔄</div>
-            <div class="app-title" style="font-weight: bold; font-size: 15px;">入出荷タスクを確認する</div>
-        </div>
+<!-- App Title Bar -->
+<div class="kintone-app-bar">
+    <div style="background: #2ecc71; color: white; width: 32px; height: 32px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+        <i class="fas fa-check-double"></i>
+    </div>
+    <div style="font-weight: bold; font-size: 18px;">入出荷タスクを確認する</div>
+</div>
+
+<!-- Breadcrumb Bar -->
+<div class="kintone-breadcrumb-bar">
+    <div style="font-size: 12px; color: #3498db; display: flex; align-items: center; gap: 8px;">
+        <i class="fas fa-home" style="color: #666;"></i>
+        <span style="color: #ddd;">|</span>
+        <a href="tasklist.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスクを確認する</a>
+    </div>
+    <div style="color: #bbb; display: flex; gap: 15px;">
+        <i class="fas fa-thumbtack"></i>
+        <i class="fas fa-info-circle"></i>
     </div>
 </div>
 
-<!-- Kintone Breadcrumb Bar -->
-<div style="background: #fff; border-bottom: 1px solid #e3e7e8; padding: 10px 20px;">
-    <div class="breadcrumb" style="font-size: 11px; color: #888;">
-        🏠 <span>/</span> <a href="tasklist.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスクを確認する</a> <span>/</span> 新規作成
-    </div>
-</div>
-
-<!-- Action Tool Bar (Standard Kintone Style) -->
-<div class="kintone-action-toolbar">
+<!-- TOP Action Buttons -->
+<div class="action-bar">
     <button class="btn-k-cancel" onclick="location.href='tasklist.html'">キャンセル</button>
-    <button class="btn-k-save" id="save-btn-top" onclick="saveTask()">保存</button>
+    <button class="btn-k-save" onclick="saveTask()">保存</button>
 </div>
 
-<div class="main-container" style="padding: 20px 10px;">
-    <div id="flash-message" class="sticky-flash">🎉 タスクを作成しました。</div>
-
-    <!-- Summary Header Card -->
-    <div class="summary-header">
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <div class="badge-type" style="background-color: #f5f5f5; color: #9e9e9e; border-color: #e0e0e0;" id="task-type-badge">未選択</div>
-            <div style="font-size: 24px; font-weight: bold; color: #bbb;">TASK-NEW</div>
-        </div>
-        <div class="summary-grid" style="margin-top: 16px;">
-            <div class="summary-item">
-                <div class="summary-label">ステータス</div>
-                <div class="summary-primary-value" style="color: #9e9e9e; font-size: 18px;">作成中</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">作成日</div>
-                <div class="summary-value" id="today-date" style="font-size: 15px;">—</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- A. Task Type Selection -->
-    <div class="section-card">
-        <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
-            <span><i class="fas fa-list-check" style="margin-right: 12px;"></i></span> タスク種別選択
-        </div>
-        <div class="field-grid" style="grid-template-columns: 1fr;">
+<div class="main-content">
+    <div class="form-card">
+        <div class="field-grid">
+            <!-- Basic Fields per Screenshot -->
             <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">タスク種別 <span style="color: var(--kintone-danger);">*</span></div>
-                <select id="task-type" class="field-box" style="width: 300px;" onchange="handleTypeChange()">
+                <div class="field-label">タスクID <span>*</span></div>
+                <input type="text" class="field-input" value="(自動入力)" disabled>
+            </div>
+            <div class="field-item">
+                <div class="field-label">数量</div>
+                <input type="text" class="field-input" value="0" style="text-align: right;">
+            </div>
+            
+            <div class="field-item">
+                <div class="field-label">ステータス <span>*</span></div>
+                <select class="field-input field-select" disabled>
+                    <option>待機中</option>
+                </select>
+            </div>
+            <div class="field-item">
+                <div class="field-label">タスク種別 <span>*</span></div>
+                <select id="task-type" class="field-input field-select" onchange="handleTypeChange()">
                     <option value="">-- 選択してください --</option>
                     <option value="receive">入荷</option>
                     <option value="sample">サンプル出荷</option>
@@ -111,192 +133,115 @@
                     <option value="adjust">在庫調整</option>
                 </select>
             </div>
-        </div>
-    </div>
-
-    <!-- Main Form Fields -->
-    <div id="task-form-content">
-        <!-- B. Basic Info Section -->
-        <div class="section-card">
-            <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
-                <span><i class="fas fa-info-circle" style="margin-right: 12px;"></i></span> 基本情報
+            
+            <div class="field-item">
+                <div class="field-label">SKU種別 <span>*</span></div>
+                <select id="sku-type" class="field-input field-select">
+                    <option value="">-- 選択 --</option>
+                    <option>商品</option>
+                    <option>資材</option>
+                </select>
             </div>
-            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 11px; color: #888;">SKU種別 <span style="color: var(--kintone-danger);">*</span></div>
-                    <select id="sku-type" class="field-box" style="width: 100%;">
-                        <option>商品</option>
-                        <option>資材</option>
+            <div class="field-item">
+                <div class="field-label">実行期限</div>
+                <input type="date" id="due-date" class="field-input" value="2026-03-27">
+            </div>
+
+            <div class="field-item">
+                <div class="field-label">倉庫 <span>*</span></div>
+                <div style="display: flex; gap: 8px;">
+                    <select id="warehouse" class="field-input field-select">
+                        <option value="">岐阜倉庫</option>
+                        <option>東京倉庫</option>
                     </select>
-                </div>
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 11px; color: #888;">実行期限</div>
-                    <input type="date" id="due-date" class="field-box" style="width: 100%;" value="2026-03-27">
-                </div>
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 11px; color: #888;">倉庫 <span style="color: var(--kintone-danger);">*</span></div>
-                    <div style="display: flex; gap: 4px;">
-                        <select id="warehouse" class="field-box" style="flex: 1;">
-                            <option value="">-- 選択 --</option>
-                            <option selected>岐阜倉庫</option>
-                            <option>東京倉庫</option>
-                        </select>
-                        <button class="btn-secondary btn-mini" onclick="alert('取得')">取得</button>
-                        <button class="btn-secondary btn-mini" onclick="document.getElementById('warehouse').value=''">クリア</button>
-                    </div>
-                </div>
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 11px; color: #888;">担当者 <span style="color: var(--kintone-danger);">*</span></div>
-                    <select id="assignee" class="field-box" style="width: 100%;">
-                        <option>Administrator</option>
-                        <option>Staff A</option>
-                        <option>Staff B</option>
-                    </select>
-                </div>
-                <div class="field-item" style="grid-column: span 2;">
-                    <div class="field-label" style="font-size: 11px; color: #888;">備考</div>
-                    <input type="text" id="memo" class="field-box" style="width: 100%;" placeholder="備考を入力してください">
+                    <button class="btn-k-cancel" style="padding: 0 15px; font-size: 11px; white-space: nowrap;">取得</button>
+                    <button class="btn-k-cancel" style="padding: 0 15px; font-size: 11px;">クリア</button>
                 </div>
             </div>
+            <div class="field-item">
+                <div class="field-label">担当者 <span>*</span></div>
+                <select id="assignee" class="field-input field-select">
+                    <option>Administrator</option>
+                </select>
+            </div>
+        </div>
 
-            <!-- Movement Info (Specific to Sample/Transfer/Adjust) -->
-            <div id="movement-info-section">
-                <div style="font-weight: 800; font-size: 13px; color: #333; margin-top: 20px; margin-bottom: 10px; border-top: 1px solid #eee; padding-top: 15px;">移動情報</div>
-                <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
-                    <div class="field-item">
-                        <div class="field-label" style="font-size: 11px; color: #888;">移動元棚 <span style="color: var(--kintone-danger);">*</span></div>
-                        <div style="display: flex; gap: 4px;">
-                            <input type="text" id="source-shelf" class="field-box" style="flex: 1;" placeholder="棚番を入力">
-                            <button class="btn-secondary btn-mini" onclick="alert('取得')">取得</button>
-                            <button class="btn-secondary btn-mini" onclick="document.getElementById('source-shelf').value=''">クリア</button>
-                        </div>
+        <div id="movement-info-section">
+            <div class="section-title">移動情報</div>
+            <div class="field-grid">
+                <div class="field-item">
+                    <div class="field-label">移動元棚 <span>*</span></div>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="source-shelf" class="field-input" placeholder="棚番">
+                        <button class="btn-k-cancel" style="padding: 0 15px; font-size: 11px;">取得</button>
+                        <button class="btn-k-cancel" style="padding: 0 15px; font-size: 11px;">クリア</button>
                     </div>
-                    <!-- Target Shelf for Transfer only -->
-                    <div class="field-item" id="dest-shelf-field">
-                        <div class="field-label" style="font-size: 11px; color: #888;">移動先棚 <span style="color: var(--kintone-danger);">*</span></div>
-                        <div style="display: flex; gap: 4px;">
-                            <input type="text" id="dest-shelf" class="field-box" style="flex: 1;" placeholder="棚番を入力">
-                            <button class="btn-secondary btn-mini" onclick="alert('取得')">取得</button>
-                            <button class="btn-secondary btn-mini" onclick="document.getElementById('dest-shelf').value=''">クリア</button>
-                        </div>
+                </div>
+                <div class="field-item" id="dest-shelf-field">
+                    <div class="field-label">移動先棚 <span>*</span></div>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="dest-shelf" class="field-input" placeholder="棚番">
+                        <button class="btn-k-cancel" style="padding: 0 15px; font-size: 11px;">取得</button>
+                        <button class="btn-k-cancel" style="padding: 0 15px; font-size: 11px;">クリア</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- C. Product Details Section -->
-        <div class="section-card" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; margin-bottom: 0;">
-                    <span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span>商品明細
-                </div>
-                <button class="btn-secondary" onclick="addProductRow()" style="font-size: 12px; padding: 6px 14px;">
-                    <i class="fas fa-plus" style="margin-right: 6px;"></i>行を追加
-                </button>
-            </div>
-            <table class="k-table">
-                <thead>
-                    <tr>
-                        <th style="width: 150px;">商品SKU <span style="color: var(--kintone-danger);">*</span></th>
-                        <th>商品・資材SKU (表示名) <span style="color: var(--kintone-danger);">*</span></th>
-                        <th style="width: 100px; text-align: right;">数量 <span style="color: var(--kintone-danger);">*</span></th>
-                        <th style="width: 80px; text-align: center;">単位 <span style="color: var(--kintone-danger);">*</span></th>
-                        <th style="width: 60px; text-align: center;">操作</th>
-                    </tr>
-                </thead>
-                <tbody id="product-tbody">
-                    <!-- rows -->
-                </tbody>
-            </table>
-        </div>
+        <div class="section-title">商品明細</div>
+        <table class="k-table">
+            <thead>
+                <tr>
+                    <th style="width: 150px;">商品SKU <span>*</span></th>
+                    <th>商品・資材SKU (表示名) <span>*</span></th>
+                    <th style="width: 100px; text-align: right;">数量 <span>*</span></th>
+                    <th style="width: 80px; text-align: center;">単位 <span>*</span></th>
+                    <th style="width: 60px; text-align: center;">操作</th>
+                </tr>
+            </thead>
+            <tbody id="product-tbody"></tbody>
+        </table>
+        <button class="btn-k-cancel" style="margin-top: 15px; width: 100%; border-style: dashed;" onclick="addProductRow()">+ 行を追加</button>
+
+        <div class="section-title">備考</div>
+        <textarea id="memo" class="field-input" rows="4" style="height: auto;" placeholder="備考を入力"></textarea>
     </div>
 </div>
 
-<footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Portal. All rights reserved.</footer>
-
 <script>
-    const TYPE_LABELS = {
-        'receive':   { label: '入荷',   bg: '#e8f5e9', color: '#2e7d32', border: '#c8e6c9' },
-        'sample':    { label: 'サンプル出荷', bg: '#fff3e0', color: '#e65100', border: '#ffe0b2' },
-        'transfer':  { label: '棚移動', bg: '#e3f2fd', color: '#1565c0', border: '#bbdefb' },
-        'adjust':    { label: '在庫調整', bg: '#f3e5f5', color: '#7b1fa2', border: '#e1bee7' },
-    };
-
     let rowCount = 0;
-
     function handleTypeChange() {
         const val = document.getElementById('task-type').value;
-        const taskFormContent = document.getElementById('task-form-content');
-        const movementSection = document.getElementById('movement-info-section');
-        const destShelfField = document.getElementById('dest-shelf-field');
-        const badge = document.getElementById('task-type-badge');
-
-        if (val) {
-            taskFormContent.style.display = 'block';
-            
-            // Movement Info Logic: Sample, Transfer, or Adjust
-            if (val === 'sample' || val === 'transfer' || val === 'adjust') {
-                movementSection.style.display = 'block';
-                // Show Target Shelf only for Transfer
-                destShelfField.style.display = (val === 'transfer') ? 'block' : 'none';
-            } else {
-                movementSection.style.display = 'none';
-            }
-
-            const t = TYPE_LABELS[val];
-            badge.textContent = t.label;
-            badge.style.backgroundColor = t.bg;
-            badge.style.color = t.color;
-            badge.style.borderColor = t.border;
-            
-            if (rowCount === 0) addProductRow('CER-BASE-01', 'セラミック基板用素材 PREMIUM', 1);
+        const moveSec = document.getElementById('movement-info-section');
+        const destField = document.getElementById('dest-shelf-field');
+        
+        if (val === 'sample' || val === 'transfer' || val === 'adjust') {
+            moveSec.style.display = 'block';
+            destField.style.display = (val === 'transfer') ? 'block' : 'none';
         } else {
-            taskFormContent.style.display = 'none';
-            badge.textContent = '未選択';
-            badge.style.backgroundColor = '#f5f5f5';
-            badge.style.color = '#9e9e9e';
-            badge.style.borderColor = '#e0e0e0';
+            moveSec.style.display = 'none';
         }
+        if (rowCount === 0) addProductRow('CER-BASE-01', 'セラミック基板用素材 PREMIUM', 1);
     }
 
     function addProductRow(sku = '', name = '', qty = '') {
         rowCount++;
         const id = rowCount;
-        const row = `
-        <tr id="row-${id}">
-            <td><input type="text" class="field-box" value="${sku}" style="width: 100%; font-size: 13px;"></td>
-            <td><input type="text" class="field-box" value="${name}" style="width: 100%; font-size: 13px;"></td>
-            <td><input type="number" class="field-box" value="${qty}" style="width: 100%; text-align: right;"></td>
-            <td>
-                <select class="field-box" style="width: 100%; text-align: center;">
-                    <option>箱</option><option>個</option><option>袋</option>
-                </select>
-            </td>
-            <td style="text-align: center;">
-                <button onclick="removeRow(${id})" style="background: none; border: none; color: #c62828; cursor: pointer;">
-                    <i class="fas fa-trash-can"></i>
-                </button>
-            </td>
+        const row = `<tr id="row-${id}">
+            <td><input type="text" class="field-input" value="${sku}"></td>
+            <td><input type="text" class="field-input" value="${name}"></td>
+            <td><input type="number" class="field-input" value="${qty}" style="text-align: right;"></td>
+            <td><select class="field-input field-select"><option>箱</option><option>個</option></select></td>
+            <td style="text-align: center;"><button onclick="document.getElementById('row-${id}').remove()" style="color: #e74c3c; border: none; background: none; cursor: pointer;"><i class="fas fa-trash"></i></button></td>
         </tr>`;
         document.getElementById('product-tbody').insertAdjacentHTML('beforeend', row);
     }
 
-    function removeRow(id) {
-        document.getElementById(`row-${id}`).remove();
-    }
-
     function saveTask() {
-        showToast();
-        setTimeout(() => { location.href = 'tasklist.html'; }, 1500);
+        alert('タスクを保存しました。');
+        location.href = 'tasklist.html';
     }
-
-    function showToast() {
-        const f = document.getElementById('flash-message'); f.style.display = 'block';
-    }
-
-    window.onload = function() {
-        document.getElementById('today-date').textContent = new Date().toISOString().split('T')[0];
-    };
 </script>
+
 </body>
 </html>
