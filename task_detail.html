@@ -169,12 +169,12 @@
         updateBadge(type);
         const statusEl = document.getElementById('main-status');
         statusEl.innerHTML = '完了'; statusEl.style.color = 'var(--kintone-success)';
-        document.getElementById('product-card-section').style.borderColor = '#d4edda';
-        document.getElementById('product-card-section').style.backgroundColor = '#f8fff9';
+        
         document.getElementById('shipped-qty').textContent = '3';
         document.getElementById('pending-qty').textContent = '0';
         document.getElementById('pending-qty').style.color = '#666';
         document.getElementById('item-status-col').innerHTML = '<span class="badge-status status-ok">完納</span>';
+        
         const nextActionArea = document.getElementById('next-action-area');
         nextActionArea.className = 'next-action-card accent-success';
         nextActionArea.innerHTML = `
