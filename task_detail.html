@@ -224,8 +224,12 @@
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
-            <button class="btn-blue" onclick="createLabel()">
-                <i class="fas fa-print" style="margin-right: 8px;"></i>ラベル作成・出荷確定
+            <button class="btn-blue" id="btn-create-label" onclick="createLabel()">
+                <i class="fas fa-print" style="margin-right: 8px;"></i>ラベル作成
+            </button>
+            <button class="btn-blue" id="btn-confirm-ship" onclick="openShipModal()"
+                style="display:none; background: var(--kintone-success);">
+                <i class="fas fa-truck-fast" style="margin-right: 8px;"></i>出荷確定
             </button>
         </div>
     </div>
@@ -244,6 +248,22 @@
         <div style="display: flex; gap: 12px; justify-content: center;">
             <button class="btn-secondary" onclick="closeModal()">キャンセル</button>
             <button class="btn-blue" onclick="startWorkflow()">開始する</button>
+        </div>
+    </div>
+</div>
+
+<!-- Ship Confirm Modal -->
+<div id="ship-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1000; align-items:center; justify-content:center;">
+    <div class="modal-box">
+        <div style="font-size: 44px; margin-bottom: 12px;">🚚</div>
+        <h3 style="margin-bottom: 8px; font-size: 18px; font-weight: bold;">出荷を確定しますか？</h3>
+        <p style="font-size: 13px; color: #666; margin-bottom: 6px;">ヤマト運輸が集荷し、配送が開始されます。</p>
+        <p style="font-size: 13px; color: #666; margin-bottom: 24px;">ステータスは <strong style="color:#6a1b9a;">配送中</strong> に更新されます。</p>
+        <div style="display: flex; gap: 12px; justify-content: center;">
+            <button class="btn-secondary" onclick="closeShipModal()">キャンセル</button>
+            <button class="btn-blue" onclick="confirmShipment()" style="background:#6a1b9a;">
+                <i class="fas fa-truck-fast" style="margin-right: 8px;"></i>出荷を確定する
+            </button>
         </div>
     </div>
 </div>
@@ -300,8 +320,57 @@
         const badge = document.getElementById('label-status-badge');
         badge.textContent = '作成済み';
         badge.className = 'badge-status status-ok';
-        showToast('ラベルを作成しました。出荷を確定します。');
-        setTimeout(() => { location.href = 'tasklist.html'; }, 1800);
+        // Swap buttons: hide ラベル作成, show 出荷確定
+        document.getElementById('btn-create-label').style.display = 'none';
+        document.getElementById('btn-confirm-ship').style.display = 'inline-flex';
+        showToast('ラベルを作成しました。出荷確定ボタンで確定してください。');
+    }
+
+    function openShipModal()  { document.getElementById('ship-modal').style.display = 'flex'; }
+    function closeShipModal() { document.getElementById('ship-modal').style.display = 'none'; }
+
+    function confirmShipment() {
+        closeShipModal();
+        setDeliveryUI();
+        showToast('出荷を確定しました。ヤマト運輸が配送中です。');
+    }
+
+    function setDeliveryUI() {
+        // Status → 配送中
+        const statusEl = document.getElementById('main-status');
+        statusEl.innerHTML = '配送中';
+        statusEl.style.color = '#6a1b9a';
+
+        // Hide shipping form
+        document.getElementById('shipping-input-area').style.display = 'none';
+
+        // Update next-action card
+        const trackingUrl = document.getElementById('label-url').value;
+        const trackingLink = trackingUrl
+            ? `<a href="${trackingUrl}" target="_blank" class="btn-secondary"
+                style="padding: 10px 20px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="fas fa-arrow-up-right-from-square"></i> 追跡URLを開く
+               </a>`
+            : '';
+        document.getElementById('next-action-area').className = 'next-action-card';
+        document.getElementById('next-action-area').style.borderLeft = '4px solid #6a1b9a';
+        document.getElementById('next-action-area').innerHTML = `
+            <div class="next-action-content">
+                <span style="font-size: 30px;">🚚</span>
+                <div>
+                    状況: <span style="color:#6a1b9a; font-weight:800;">配送中</span><br>
+                    <span style="font-weight:normal; font-size:12px; color:#666;">
+                        ヤマト運輸が集荷済みです。お客様への配送が進行中です。
+                    </span>
+                </div>
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+                ${trackingLink}
+                <button class="btn-secondary" onclick="location.href='tasklist.html'"
+                    style="padding: 10px 20px;">
+                    <i class="fas fa-arrow-left" style="margin-right:6px;"></i>一覧へ戻る
+                </button>
+            </div>`;
     }
 
     function showToast(m) {
