@@ -13,6 +13,7 @@
         .badge-type { font-weight: 800; font-size: 12px; padding: 4px 12px; border: 1px solid; border-radius: 4px; }
         .section-card { margin-bottom: 25px; }
         #movement-info-section { display: none; margin-top: 25px; }
+        #dest-shelf-field { display: none; }
         .btn-mini { font-size: 10px; padding: 2px 8px; white-space: nowrap; height: 24px; }
     </style>
 </head>
@@ -150,6 +151,15 @@
                             <button class="btn-secondary btn-mini" onclick="document.getElementById('source-shelf').value=''">クリア</button>
                         </div>
                     </div>
+                    <!-- New Target Shelf for Transfer only -->
+                    <div class="field-item" id="dest-shelf-field">
+                        <div class="field-label" style="font-size: 11px; color: #888;">移動先棚 <span style="color: var(--kintone-danger);">*</span></div>
+                        <div style="display: flex; gap: 4px;">
+                            <input type="text" id="dest-shelf" class="field-box" style="flex: 1;" placeholder="棚番を入力">
+                            <button class="btn-secondary btn-mini" onclick="alert('取得')">取得</button>
+                            <button class="btn-secondary btn-mini" onclick="document.getElementById('dest-shelf').value=''">クリア</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -210,6 +220,7 @@
         const val = document.getElementById('task-type').value;
         const taskFormContent = document.getElementById('task-form-content');
         const movementSection = document.getElementById('movement-info-section');
+        const destShelfField = document.getElementById('dest-shelf-field');
         const saveBtn = document.getElementById('save-btn');
         const badge = document.getElementById('task-type-badge');
 
@@ -217,9 +228,11 @@
             taskFormContent.style.display = 'block';
             saveBtn.style.display = 'block';
             
-            // Movement Info Logic: Sample & Transfer only
+            // Movement Info Logic: Sample & Transfer
             if (val === 'sample' || val === 'transfer') {
                 movementSection.style.display = 'block';
+                // Show Target Shelf only for Transfer
+                destShelfField.style.display = (val === 'transfer') ? 'block' : 'none';
             } else {
                 movementSection.style.display = 'none';
             }
