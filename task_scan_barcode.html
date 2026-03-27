@@ -160,6 +160,31 @@
             display: none; align-items: center; justify-content: center; gap: 10px;
             cursor: pointer; background: var(--green); color: white;
         }
+
+        /* ── Modal Overlay ── */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            display: none; align-items: center; justify-content: center; z-index: 1000;
+            padding: 20px;
+        }
+        .modal-card {
+            background: white; border-radius: 12px; width: 100%; max-width: 400px;
+            text-align: center; padding: 30px 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .modal-icon {
+            width: 60px; height: 60px; border-radius: 50%; background: #e8f5e9;
+            color: var(--green); display: flex; align-items: center; justify-content: center;
+            font-size: 30px; margin: 0 auto 20px;
+        }
+        .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
+        .modal-body { font-size: 14px; color: #666; margin-bottom: 25px; line-height: 1.6; }
+        .modal-footer { display: flex; gap: 10px; }
+        .btn-modal {
+            flex: 1; padding: 12px; border: none; border-radius: 8px;
+            font-size: 15px; font-weight: 800; cursor: pointer;
+        }
+        .btn-modal-cancel { background: #eee; color: #333; }
+        .btn-modal-submit { background: var(--green); color: white; }
     </style>
 </head>
 <body>
@@ -278,10 +303,25 @@
         <i class="fas fa-circle-check"></i>
         <span>確認してスキャン継続</span>
     </button>
-    <button class="btn-picking-done" id="done-btn" onclick="finishPicking()">
+    <button class="btn-picking-done" id="done-btn" onclick="openConfirmModal()">
         <i class="fas fa-flag-checkered"></i>
         <span>ピッキング完了</span>
     </button>
+</div>
+
+<!-- Custom Confirmation Modal -->
+<div class="modal-overlay" id="confirm-modal">
+    <div class="modal-card">
+        <div class="modal-icon"><i class="fas fa-check"></i></div>
+        <div class="modal-title">ピッキングを完了しますか？</div>
+        <div class="modal-body">
+            スキャンした全てのデータ（計 <span id="modal-total-qty">0</span> 箱）を保存し、タスク詳細画面に戻ります。
+        </div>
+        <div class="modal-footer">
+            <button class="btn-modal btn-modal-cancel" onclick="closeConfirmModal()">戻る</button>
+            <button class="btn-modal btn-modal-submit" onclick="finishPicking()">確定する</button>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -291,7 +331,6 @@
     
     document.getElementById('header-target').textContent = target;
 
-    // ── Qty controls ──
     function changeQty(delta) {
         currentQty = Math.max(0, currentQty + delta);
         refreshQtyDisplay();
@@ -303,26 +342,13 @@
     function refreshQtyDisplay() {
         document.getElementById('qty-display').textContent = currentQty;
         const btn = document.getElementById('confirm-btn');
-        if (currentQty > 0) {
-            btn.classList.add('ready');
-        } else {
-            btn.classList.remove('ready');
-        }
+        if (currentQty > 0) btn.classList.add('ready');
+        else btn.classList.remove('ready');
     }
 
-    // ── Step completion checks ──
-    function checkStep1() {
-        const val = document.getElementById('shelf-input').value.trim();
-        if (val) document.getElementById('step1').classList.add('done');
-    }
-    function checkStep2() {
-        const val = document.getElementById('sku-input').value.trim();
-        if (val) document.getElementById('step2').classList.add('done');
-    }
-    function checkStep3() {
-        const val = document.getElementById('lot-input').value.trim();
-        if (val) document.getElementById('step3').classList.add('done');
-    }
+    function checkStep1() { if (document.getElementById('shelf-input').value.trim()) document.getElementById('step1').classList.add('done'); }
+    function checkStep2() { if (document.getElementById('sku-input').value.trim()) document.getElementById('step2').classList.add('done'); }
+    function checkStep3() { if (document.getElementById('lot-input').value.trim()) document.getElementById('step3').classList.add('done'); }
 
     function simulateScan(inputId, value) {
         const el = document.getElementById(inputId);
@@ -330,10 +356,8 @@
         el.dispatchEvent(new Event('change'));
     }
 
-    // ── Confirm & record scan ──
     function confirmAndNext() {
         if (currentQty <= 0) return;
-
         totalPicked += currentQty;
         
         const shelf = document.getElementById('shelf-input').value || '—';
@@ -352,30 +376,38 @@
                 <div style="font-size:16px; font-weight:800; color:var(--blue);">+ ${currentQty}</div>
             </div>`);
 
-        // Update header progress
         document.getElementById('header-progress').textContent = totalPicked;
 
-        // Reset inputs
-        document.getElementById('shelf-input').value = '';
-        document.getElementById('sku-input').value   = '';
-        document.getElementById('lot-input').value   = '';
-        ['step1','step2','step3'].forEach(id => document.getElementById(id).classList.remove('done'));
-        currentQty = 0;
-        refreshQtyDisplay();
+        // Reset inputs (KEEP THEM VISIBLE but empty for next entry if needed)
+        // EXCEPT if target met, we don't clear so user sees final input
+        if (totalPicked < target) {
+            document.getElementById('shelf-input').value = '';
+            document.getElementById('sku-input').value   = '';
+            document.getElementById('lot-input').value   = '';
+            ['step1','step2','step3'].forEach(id => document.getElementById(id).classList.remove('done'));
+            currentQty = 0;
+            refreshQtyDisplay();
+        }
 
-        // Check completion
         if (totalPicked >= target) {
             document.getElementById('confirm-btn').style.display = 'none';
             document.getElementById('done-btn').style.display = 'flex';
-            document.getElementById('picking-steps').style.opacity = '0.5';
+            document.getElementById('picking-steps').style.opacity = '0.7';
             document.getElementById('picking-steps').style.pointerEvents = 'none';
+            document.getElementById('step1').classList.add('done');
+            document.getElementById('step2').classList.add('done');
+            document.getElementById('step3').classList.add('done');
         }
     }
 
+    function openConfirmModal() {
+        document.getElementById('modal-total-qty').textContent = totalPicked;
+        document.getElementById('confirm-modal').style.display = 'flex';
+    }
+    function closeConfirmModal() { document.getElementById('confirm-modal').style.display = 'none'; }
+
     function finishPicking() {
-        if (confirm('ピッキングを完了して詳細画面に戻りますか？')) {
-            location.href = 'task_detail.html?status=finished';
-        }
+        location.href = 'task_detail.html?status=finished';
     }
 </script>
 
