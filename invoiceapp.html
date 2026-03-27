@@ -115,8 +115,14 @@
             font-size: var(--text-size-sm);
             box-sizing: border-box;
         }
-        /* Table header colour matches section-op warm tone */
-        .section-op .k-table th { color: #856404; }
+        /* Table header — warm tint + golden text, matching task_create.html section-op style */
+        .section-op .k-table th {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #e8d68a;
+            font-size: 12px;
+            font-weight: bold;
+        }
         #invoice-items-body td { padding: 6px 8px; vertical-align: middle; }
         #invoice-items-body th { padding: 8px 12px; }
         .item-sub-cell { font-weight: 700; transition: color 0.2s; white-space: nowrap; }
@@ -297,9 +303,9 @@
 
     <!-- 請求明細 -->
     <div class="section-card section-op">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
             <div class="section-title" style="margin-bottom: 0;">
-                <i class="fas fa-list"></i>請求明細
+                <span><i class="fas fa-list" style="margin-right: 10px;"></i></span>請求明細
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
                 <button class="btn-secondary" onclick="addRow()" style="font-size: 12px; padding: 6px 14px;"><i class="fas fa-plus" style="margin-right: 6px;"></i>行を追加</button>
@@ -311,13 +317,13 @@
         <table class="k-table">
             <thead>
                 <tr>
-                    <th class="col-mid" style="width: 110px; color: var(--kintone-blue);">商品SKU</th>
-                    <th style="min-width: 160px;">商品名</th>
-                    <th class="col-num" style="width: 72px;">数量</th>
-                    <th class="col-mid" style="width: 52px;">単位</th>
+                    <th class="col-mid" style="width: 110px;">商品SKU <span style="color: var(--kintone-danger);">*</span></th>
+                    <th style="min-width: 160px;">商品名 <span style="color: var(--kintone-danger);">*</span></th>
+                    <th class="col-num" style="width: 72px;">数量 <span style="color: var(--kintone-danger);">*</span></th>
+                    <th class="col-mid" style="width: 52px;">単位 <span style="color: var(--kintone-danger);">*</span></th>
                     <th class="col-num" style="width: 106px;">単価</th>
                     <th class="col-num" style="width: 116px;">小計</th>
-                    <th style="width: 30px;"></th>
+                    <th style="width: 30px;">操作</th>
                 </tr>
             </thead>
             <tbody id="invoice-items-body"></tbody>
@@ -628,8 +634,8 @@
         closeConfirmPop();
         pdfIssued = true;
 
-        // Show 入金情報 section (only relevant after invoice is issued)
-        document.getElementById('payment-section').style.display = 'block';
+        // Show 入金情報 section (REMOVE THIS LINE BASED ON USER REQUEST)
+        // document.getElementById('payment-section').style.display = 'block';
 
         // Update summary status
         document.getElementById('summary-pdf').textContent = '発行済';
@@ -717,6 +723,9 @@
         const customDate = document.getElementById('input-payment-date').value || new Date().toISOString().split('T')[0];
         const remarks = document.getElementById('input-payment-remarks').value;
         closePaymentModal();
+        
+        // Show 入金情報 section now that it's confirmed
+        document.getElementById('payment-section').style.display = 'block';
         
         // Update Summary Header
         document.getElementById('summary-payment').textContent = '入金済み';
