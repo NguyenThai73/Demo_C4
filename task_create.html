@@ -21,11 +21,6 @@
         .top-action-bar { padding: 15px 0; display: flex; gap: 10px; border-bottom: 1px solid #e3e7e8; margin-bottom: 20px; }
         .btn-k-cancel { background: white; border: 1px solid #e3e7e8; padding: 8px 20px; border-radius: 4px; font-weight: bold; color: #333; cursor: pointer; }
         .btn-k-save { background: #3498db; border: none; padding: 8px 30px; border-radius: 4px; font-weight: bold; color: white; cursor: pointer; }
-
-        /* Next Action Guideline Style */
-        .guideline-card { background-color: #f0f7ff; border: 1px solid #cce4ff; padding: 15px 20px; border-radius: 4px; margin-bottom: 25px; display: flex; align-items: flex-start; gap: 12px; }
-        .guideline-title { color: #004085; font-weight: bold; font-size: 13px; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
-        .guideline-text { color: #004085; font-size: 12px; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -74,17 +69,6 @@
 
     <div id="flash-message" class="sticky-flash">🎉 タスクを作成しました。</div>
 
-    <!-- NEW: Next Action Guideline Section -->
-    <div id="next-action-guideline" style="display: none;">
-        <div class="guideline-card">
-            <div style="font-size: 20px; color: #004085;"><i class="fas fa-lightbulb"></i></div>
-            <div>
-                <div class="guideline-title">次の対応</div>
-                <div id="guideline-message" class="guideline-text">—</div>
-            </div>
-        </div>
-    </div>
-
     <!-- Summary Header Card -->
     <div class="summary-header">
         <div style="display: flex; align-items: center; gap: 15px;">
@@ -103,8 +87,19 @@
         </div>
     </div>
 
+    <!-- NEW: Next Action (Standardized UI) - Moved immediately under Summary -->
+    <div id="next-action-area" class="next-action-card accent-blue" style="display: none; margin-top: 15px;">
+        <div class="next-action-content">
+            <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-lightbulb"></i></span>
+            <div>
+                次の対応: <span style="color: var(--kintone-blue);">ガイドライン</span><br>
+                <span id="guideline-message" style="font-weight: normal; font-size: 12px; color: #666;">—</span>
+            </div>
+        </div>
+    </div>
+
     <!-- A. Task Type Selection -->
-    <div class="section-card">
+    <div class="section-card" style="margin-top: 25px;">
         <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
             <span><i class="fas fa-list-check" style="margin-right: 12px;"></i></span> タスク種別選択
         </div>
@@ -235,10 +230,10 @@
 
 <script>
     const TYPE_LABELS = {
-        'receive':   { label: '入荷',   bg: '#e8f5e9', color: '#2e7d32', border: '#c8e6c9', guide: '商品詳細情報を入力し、保存後にモバイル端末でバーコードをスキャンして入庫を完了させてください。' },
-        'sample':    { label: 'サンプル出荷', bg: '#fff3e0', color: '#e65100', border: '#ffe0b2', guide: '配送業者（ヤマトまたは佐川）を選択、移動元棚を指定し、出荷する商品のSKUと数量を入力してください。' },
-        'transfer':  { label: '棚移動', bg: '#e3f2fd', color: '#1565c0', border: '#bbdefb', guide: '移動元の棚と移動先の棚の両方を指定してください。在庫の正確な移動記録を作成します。' },
-        'adjust':    { label: '在庫調整', bg: '#f3e5f5', color: '#7b1fa2', border: '#e1bee7', guide: '実在庫とシステム在庫に差異がある場合に、現在の正しい棚番号と数量を入力して調整を行ってください。' },
+        'receive':   { label: '入荷',   bg: '#e8f5e9', color: '#2e7d32', border: '#c8e6c9', guide: '商品情報を入力・保存し、モバイル端末でバーコードをスキャンして入庫を完了させてください。' },
+        'sample':    { label: 'サンプル出荷', bg: '#fff3e0', color: '#e65100', border: '#ffe0b2', guide: '配送業者を選択し、移動元棚と数量を指定してください。' },
+        'transfer':  { label: '棚移動', bg: '#e3f2fd', color: '#1565c0', border: '#bbdefb', guide: '移動元と移動先の棚の両方を詳しく指定してください。' },
+        'adjust':    { label: '在庫調整', bg: '#f3e5f5', color: '#7b1fa2', border: '#e1bee7', guide: '現在の正しい棚番号と数量を入力して、在庫データの修正を行ってください。' },
     };
 
     let rowCount = 0;
@@ -249,14 +244,14 @@
         const movementSection = document.getElementById('movement-info-section');
         const destShelfField = document.getElementById('dest-shelf-field');
         const carrierField = document.getElementById('shipping-carrier-field');
-        const nextActionGuideline = document.getElementById('next-action-guideline');
+        const nextActionArea = document.getElementById('next-action-area');
         const guidelineMessage = document.getElementById('guideline-message');
         const saveBtn = document.getElementById('save-btn-top');
         const badge = document.getElementById('task-type-badge');
 
         if (val) {
             taskFormContent.style.display = 'block';
-            nextActionGuideline.style.display = 'block';
+            nextActionArea.style.display = 'block';
             saveBtn.style.display = 'block';
             
             // Set Dynamic Guideline Message
@@ -268,7 +263,6 @@
             // Movement Info Logic: Sample, Transfer, or Adjust
             if (val === 'sample' || val === 'transfer' || val === 'adjust') {
                 movementSection.style.display = 'block';
-                // Show Target Shelf only for Transfer
                 destShelfField.style.display = (val === 'transfer') ? 'block' : 'none';
             } else {
                 movementSection.style.display = 'none';
@@ -283,7 +277,7 @@
             if (rowCount === 0) addProductRow('CER-BASE-01', 'セラミック基板用素材 PREMIUM', 1);
         } else {
             taskFormContent.style.display = 'none';
-            nextActionGuideline.style.display = 'none';
+            nextActionArea.style.display = 'none';
             saveBtn.style.display = 'none';
             badge.textContent = '未選択';
             badge.style.backgroundColor = '#f5f5f5';
@@ -314,22 +308,10 @@
         document.getElementById('product-tbody').insertAdjacentHTML('beforeend', row);
     }
 
-    function removeRow(id) {
-        document.getElementById(`row-${id}`).remove();
-    }
-
-    function saveTask() {
-        showToast();
-        setTimeout(() => { location.href = 'tasklist.html'; }, 1500);
-    }
-
-    function showToast() {
-        const f = document.getElementById('flash-message'); f.style.display = 'block';
-    }
-
-    window.onload = function() {
-        document.getElementById('today-date').textContent = new Date().toISOString().split('T')[0];
-    };
+    function removeRow(id) { document.getElementById(`row-${id}`).remove(); }
+    function saveTask() { showToast(); setTimeout(() => { location.href = 'tasklist.html'; }, 1500); }
+    function showToast() { document.getElementById('flash-message').style.display = 'block'; }
+    window.onload = function() { document.getElementById('today-date').textContent = new Date().toISOString().split('T')[0]; };
 </script>
 </body>
 </html>
