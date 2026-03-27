@@ -294,8 +294,8 @@
         <table class="k-table">
             <thead>
                 <tr>
-                    <th style="min-width: 180px;">商品・サービス</th>
-                    <th class="col-mid" style="width: 90px;">SKU</th>
+                    <th class="col-mid" style="width: 110px; color: var(--kintone-blue);">商品SKU</th>
+                    <th style="min-width: 160px;">商品名</th>
                     <th class="col-num" style="width: 72px;">数量</th>
                     <th class="col-mid" style="width: 52px;">単位</th>
                     <th class="col-num" style="width: 106px;">単価</th>
@@ -419,8 +419,8 @@ TEL: 03-0000-0000</textarea>
 
         // Build cells
         tr.innerHTML = `
-            <td><input class="item-input wide item-name" value="${escHtml(name)}" placeholder="商品・サービス名"></td>
-            <td class="col-mid"><input class="item-input mid item-sku" value="${escHtml(sku)}" placeholder="SKU" style="font-size:11px; color:#888;"></td>
+            <td class="col-mid"><input class="item-input mid item-sku" value="${escHtml(sku)}" placeholder="SKU" style="font-weight:700; color:var(--kintone-blue);"></td>
+            <td><input class="item-input wide item-name" value="${escHtml(name)}" placeholder="商品名"></td>
             <td class="col-num"><input class="item-input num item-qty" type="number" value="${qty}" min="-9999" step="1"></td>
             <td class="col-mid"><input class="item-input unit item-unit" value="${escHtml(unit)}" placeholder="式"></td>
             <td class="col-num"><input class="item-input num item-price" type="number" value="${price}" step="1"></td>
