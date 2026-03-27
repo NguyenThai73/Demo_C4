@@ -15,9 +15,20 @@
         #movement-info-section { display: none; margin-top: 25px; }
         #dest-shelf-field { display: none; }
         .btn-mini { font-size: 10px; padding: 2px 8px; white-space: nowrap; height: 24px; }
+
+        /* Kintone Standard Tool Bar Alignment */
+        .kintone-action-toolbar { 
+            background: white; border-bottom: 1px solid #e3e7e8; 
+            padding: 10px 20px; display: flex; gap: 10px; 
+            position: sticky; top: 0; z-index: 500;
+        }
+        .btn-k-save { background-color: #3498db; color: white; border: none; padding: 10px 35px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn-k-cancel { background-color: white; color: #333; border: 1px solid #e3e7e8; padding: 10px 25px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .btn-k-save:hover { background-color: #2980b9; }
+        .btn-k-cancel:hover { background-color: #f8f8f8; }
     </style>
 </head>
-<body>
+<body style="background-color: #f4f7f9;">
 
 <!-- Kintone Header Bar -->
 <div class="kintone-header-top">
@@ -45,16 +56,25 @@
     <div class="header-content-inner" style="padding: 12px 10px;">
         <div style="display: flex; align-items: center; gap: 10px;">
             <div class="app-icon" style="background-color: #3498db; color: white; padding: 5px; border-radius: 4px; font-size: 14px;">🔄</div>
-            <div class="app-title" style="font-weight: bold; font-size: 14px;">入出荷タスク — 新規作成</div>
+            <div class="app-title" style="font-weight: bold; font-size: 15px;">入出荷タスクを確認する</div>
         </div>
     </div>
 </div>
 
-<div class="main-container" style="padding: 20px 10px;">
-    <div class="breadcrumb" style="font-size: 12px; color: #3498db; margin-bottom: 20px;">
-        🏠 <span>/</span> <a href="tasklist.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a> <span>/</span> 新規作成
+<!-- Kintone Breadcrumb Bar -->
+<div style="background: #fff; border-bottom: 1px solid #e3e7e8; padding: 10px 20px;">
+    <div class="breadcrumb" style="font-size: 11px; color: #888;">
+        🏠 <span>/</span> <a href="tasklist.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスクを確認する</a> <span>/</span> 新規作成
     </div>
+</div>
 
+<!-- Action Tool Bar (Standard Kintone Style) -->
+<div class="kintone-action-toolbar">
+    <button class="btn-k-cancel" onclick="location.href='tasklist.html'">キャンセル</button>
+    <button class="btn-k-save" id="save-btn-top" onclick="saveTask()">保存</button>
+</div>
+
+<div class="main-container" style="padding: 20px 10px;">
     <div id="flash-message" class="sticky-flash">🎉 タスクを作成しました。</div>
 
     <!-- Summary Header Card -->
@@ -190,18 +210,6 @@
             </table>
         </div>
     </div>
-
-    <!-- Action Buttons -->
-    <div style="margin: 30px 0; display: flex; gap: 12px; justify-content: space-between;">
-        <button class="btn-secondary" onclick="location.href='tasklist.html'">
-            <i class="fas fa-arrow-left" style="margin-right: 8px;"></i> キャンセル
-        </button>
-        <div style="display: flex; gap: 12px;">
-            <button class="btn-blue" id="save-btn" style="display: none;" onclick="saveTask()">
-                <i class="fas fa-save" style="margin-right: 8px;"></i> 保存する
-            </button>
-        </div>
-    </div>
 </div>
 
 <footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Portal. All rights reserved.</footer>
@@ -221,12 +229,10 @@
         const taskFormContent = document.getElementById('task-form-content');
         const movementSection = document.getElementById('movement-info-section');
         const destShelfField = document.getElementById('dest-shelf-field');
-        const saveBtn = document.getElementById('save-btn');
         const badge = document.getElementById('task-type-badge');
 
         if (val) {
             taskFormContent.style.display = 'block';
-            saveBtn.style.display = 'block';
             
             // Movement Info Logic: Sample, Transfer, or Adjust
             if (val === 'sample' || val === 'transfer' || val === 'adjust') {
@@ -246,7 +252,6 @@
             if (rowCount === 0) addProductRow('CER-BASE-01', 'セラミック基板用素材 PREMIUM', 1);
         } else {
             taskFormContent.style.display = 'none';
-            saveBtn.style.display = 'none';
             badge.textContent = '未選択';
             badge.style.backgroundColor = '#f5f5f5';
             badge.style.color = '#9e9e9e';
