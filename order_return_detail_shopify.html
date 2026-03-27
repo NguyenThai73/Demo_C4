@@ -120,12 +120,12 @@
                 <tr>
                     <td style="font-weight: bold; color: var(--kintone-blue);">KM300-V01</td>
                     <td class="col-product-name">米ぬかの恵み 300mL</td>
+                    <td class="col-num" id="shipped-qty-cell">100</td>
                     <td class="col-num">100</td>
-                    <td class="col-num">100</td>
-                    <td class="col-num" style="color: var(--kintone-danger); font-weight: bold;">50</td>
-                    <td class="col-mid"><span class="badge-status" style="background-color: #fff5ed; color: #b7410e; border: 1px solid #ffd8bf;">一部返品完了</span></td>
+                    <td class="col-num" id="returned-qty-cell" style="color: var(--kintone-danger); font-weight: bold;">50</td>
+                    <td class="col-mid" id="product-status-cell"><span class="badge-status" style="background-color: #fff5ed; color: #b7410e; border: 1px solid #ffd8bf;">一部返品完了</span></td>
                     <td class="col-mid">
-                        <button class="btn-action" onclick="toggleReturnInput()" 
+                        <button id="return-btn" class="btn-action" onclick="toggleReturnInput()"
                             style="padding: 10px 15px; min-width: 80px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; border: none; background: var(--kintone-danger); color: white;">
                             返品
                         </button>
@@ -239,19 +239,29 @@
     }
 
     let returnIdCounter = 992;
+    let totalReturnedQty = 50; // 既存の返品済数量
 
     function submitReturn() {
-        const qty = document.getElementById('return-qty-input').value;
+        const qty = parseInt(document.getElementById('return-qty-input').value);
         const note = document.getElementById('return-note-input').value.trim() || '追加返品登録';
+        const shippedQty = parseInt(document.getElementById('shipped-qty-cell').textContent);
 
-        if (!qty || parseInt(qty) <= 0) {
+        if (!qty || qty <= 0) {
             showToast('返品数を入力してください。', 'error');
+            return;
+        }
+        if (totalReturnedQty + qty > shippedQty) {
+            showToast(`返品数が出荷済数量を超えています（残り ${shippedQty - totalReturnedQty} 点まで）`, 'error');
             return;
         }
 
         document.getElementById('return-input-area').style.display = 'none';
 
-        // Add new row to 返品履歴 with status 待機中
+        // 累計返品数を更新
+        totalReturnedQty += qty;
+        document.getElementById('returned-qty-cell').textContent = totalReturnedQty;
+
+        // 返品履歴に行を追加（ステータス: 待機中）
         const body = document.querySelector('#return-history-table tbody');
         const now = new Date().toISOString().split('T')[0];
         const taskId = returnIdCounter++;
@@ -281,7 +291,15 @@
         document.getElementById('return-qty-input').value = 1;
         document.getElementById('return-note-input').value = '';
 
-        showToast('返品タスクを登録しました（ステータス: 待機中）');
+        // 返品数 == 出荷済数量 になった場合、返品ボタンを非表示にしてステータスを更新
+        if (totalReturnedQty >= shippedQty) {
+            document.getElementById('return-btn').style.display = 'none';
+            document.getElementById('product-status-cell').innerHTML =
+                '<span class="badge-status" style="background-color:#fde8e8; color:#c0392b; border:1px solid #e74c3c;">全量返品完了</span>';
+            showToast('全量の返品が完了しました。');
+        } else {
+            showToast('返品タスクを登録しました（ステータス: 待機中）');
+        }
     }
 
     function showToast(message, type = 'success') {
