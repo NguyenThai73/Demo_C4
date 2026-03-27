@@ -395,7 +395,7 @@
             if (orderState.status === 'CONFIRM_WAIT') {
                 guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-warning);"><i class="fas fa-file-signature"></i></span><div>次の対応: <span style="color: var(--kintone-warning);">注文の確認</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">内容を確認し、受諾または却下を選択してください。</span></div></div><div style="display: flex; gap: 12px;"><button class="btn-reject" onclick="rejectOrder()">却下する</button><button class="btn-submit-ship" style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;" onclick="confirmOrder()">注文を確定する</button></div>`;
             } else if (orderState.status === 'INVOICE_WAIT') {
-                guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: #ab47bc;"><i class="fas fa-file-invoice"></i></span><div>次の対応: <span style="color: #ab47bc; font-weight: 800;">請求書を発行する</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">注文を確定しました。請求書を発行し、取引先へ送付してください。</span></div></div><button onclick="issueInvoice()" style="padding: 10px 30px; background: #6a1b9a; color: white; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 14px;"><i class="fas fa-file-invoice" style="margin-right: 8px;"></i>請求書を発行する</button>`;
+                guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: #ab47bc;"><i class="fas fa-file-invoice"></i></span><div>次の対応: <span style="color: #ab47bc; font-weight: 800;">請求書を発行する</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">注文を確定しました。請求書を発行し、取引先へ送付してください。</span></div></div><div style="display: flex; gap: 12px;"><button class="btn-secondary" onclick="rollbackToConfirm()"><i class="fas fa-rotate-left" style="margin-right: 6px;"></i>確認待ちに戻る</button><button onclick="issueInvoice()" style="padding: 10px 30px; background: #6a1b9a; color: white; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 14px;"><i class="fas fa-file-invoice" style="margin-right: 8px;"></i>請求書を発行する</button></div>`;
             } else if (orderState.status === 'PAYMENT_WAIT') {
                 guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-warning);"><i class="fas fa-coins"></i></span><div>次の対応: <span style="color: var(--kintone-warning);">入金確認</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">請求書を送付しました。顧客の入金が完了したら、ボタンを押して進めてください。</span></div></div><button class="btn-submit-ship" style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;" onclick="verifyPayment()">入金完了を確認する</button>`;
             } else if (orderState.status === 'DELIVERY_READY' || (orderState.status === 'FINISHED' && totalDelivered < totalOrdered)) {
@@ -416,6 +416,7 @@
         }
 
         function confirmOrder() { orderState.isConfirmed = true; orderState.status = 'INVOICE_WAIT'; showToast('注文を確定しました。請求書を発行してください。'); updateUI(); }
+        function rollbackToConfirm() { orderState.isConfirmed = false; orderState.status = 'CONFIRM_WAIT'; document.getElementById('invoice-section').style.display = 'none'; showToast('確認待ちに戻しました。'); updateUI(); }
 
         function issueInvoice() {
             const subtotal = orderState.totalAmount;
