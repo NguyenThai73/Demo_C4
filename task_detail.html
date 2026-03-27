@@ -99,7 +99,7 @@
         <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
             <div style="display: flex; align-items: center; gap: 15px;">
                 <div id="type-badge" class="badge-type" style="background-color: #e8f4fd; color: #3498db; border-color: #d1e9fb;">出荷（販売）</div>
-                <div style="font-size: 24px; font-weight: bold;">TASK-527</div>
+                <div id="main-task-id" style="font-size: 24px; font-weight: bold;">TASK-527</div>
             </div>
         </div>
         
@@ -137,8 +137,7 @@
             </div>
         </div>
         <div id="action-buttons" style="display: flex; gap: 12px;">
-            <button class="btn-reject" onclick="location.href='tasklist.html'">却下する</button>
-            <button class="btn-blue" id="main-scan-btn" onclick="const t = new URLSearchParams(window.location.search).get('type')||'receive'; location.href='task_scan_barcode.html?type=' + t">バーコードスキャンを開始</button>
+            <button class="btn-blue" id="main-scan-btn" onclick="let tid = new URLSearchParams(window.location.search).get('id')||''; let t = new URLSearchParams(window.location.search).get('type')||'receive'; let p = (tid==='501'?'task_scan_barcode_v2.html':'task_scan_barcode.html'); location.href=`${p}?type=${t}${tid?'&id='+tid:''}`">バーコードスキャンを開始</button>
         </div>
     </div>
 
@@ -150,7 +149,7 @@
         <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
             <div class="field-item">
                 <div class="field-label" style="font-size: 11px; color: #888;">タスクID</div>
-                <div class="field-value" style="font-size: 14px; font-weight: bold;">527</div>
+                <div id="overview-task-id" class="field-value" style="font-size: 14px; font-weight: bold;">527</div>
             </div>
             <div class="field-item">
                 <div class="field-label" style="font-size: 11px; color: #888;">作業指示元ID</div>
@@ -178,18 +177,18 @@
                     <th class="col-mid" style="width: 60px;">単位</th>
                     <th class="col-num" style="width: 100px;">完了数</th>
                     <th class="col-num" style="width: 100px;">未完了</th>
-                    <th class="col-mid" style="width: 120px;">ステータス</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="product-table-body">
                 <tr>
-                    <td style="font-weight: bold; color: var(--kintone-blue);">CER-BASE-01</td>
+                    <td style="font-weight: bold; color: var(--kintone-blue);">
+                        <a href="https://credit-group.cybozu.com/k/34/show#record=58&tab=none" target="_blank" style="text-decoration: none; color: inherit;">CER-BASE-01</a>
+                    </td>
                     <td class="col-product-name">セラミック基板用素材 PREMIUM</td>
                     <td class="col-num" style="font-weight: bold;">3</td>
                     <td class="col-mid">箱</td>
-                    <td class="col-num" id="shipped-qty">0</td>
-                    <td class="col-num" id="pending-qty" style="color: var(--kintone-danger); font-weight: bold;">3</td>
-                    <td class="col-mid" id="item-status-col"><span class="badge-status status-neutral">未完了</span></td>
+                    <td class="col-num" class="shipped-qty-cell">0</td>
+                    <td class="col-num" class="pending-qty-cell" style="color: var(--kintone-danger); font-weight: bold;">3</td>
                 </tr>
             </tbody>
         </table>
@@ -269,28 +268,36 @@
         const statusEl = document.getElementById('main-status');
         
         if (type === 'sample') {
-            // Shipment flow: Picking is done, now "In Shipment"
-            statusEl.innerHTML = '出荷中'; statusEl.style.color = 'var(--kintone-blue)';
-            
-            document.getElementById('shipped-qty').textContent = '3';
-            document.getElementById('pending-qty').textContent = '0';
-            document.getElementById('pending-qty').style.color = '#666';
-            document.getElementById('item-status-col').innerHTML = '<span class="badge-status status-active">出荷中</span>';
-            
+            // Shipment flow: Picking is done, ready to issue label
+            statusEl.innerHTML = '作業中'; statusEl.style.color = 'var(--kintone-blue)';
+
+            // Update all product rows to show picked qty
+            const body = document.getElementById('product-table-body');
+            Array.from(body.querySelectorAll('tr')).forEach(row => {
+                const qty = row.cells[2].textContent;
+                row.cells[4].textContent = qty;
+                row.cells[5].textContent = '0';
+                row.cells[5].style.color = '#666';
+            });
+
             const nextActionArea = document.getElementById('next-action-area');
             nextActionArea.className = 'next-action-card accent-primary';
             nextActionArea.innerHTML = `
                 <div class="next-action-content">
-                    <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-print"></i></span>
+                    <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-box-open"></i></span>
                     <div>
-                        次の対応: <span style="color: var(--kintone-blue); font-weight: 800;">配送ラベル発行</span><br>
-                        <span style="font-weight: normal; font-size: 12px; color: #666;">ピッキングが完了しました。梱包を行い、配送ラベルを発行してください。</span>
+                        次の対応: <span style="color: var(--kintone-blue); font-weight: 800;">Ship&amp;Co でラベルを発行する</span><br>
+                        <span style="font-weight: normal; font-size: 11px; color: #666;">ピッキングが完了しました。梱包を行い、Ship&amp;Co から配送ラベルを発行してください。</span>
                     </div>
                 </div>
-                <div id="label-action-area">
-                    <button class="btn-blue" onclick="showShippingInfo()" style="padding: 10px 40px;">ラベルを発行する</button>
-                </div>
+                <button class="btn-blue" onclick="showShippingInfo()" style="padding: 10px 30px; font-weight: 800;">
+                    <i class="fas fa-print" style="margin-right: 8px;"></i>ラベルを発行する
+                </button>
             `;
+
+            // Clear top action buttons
+            const topButtons = document.getElementById('action-buttons');
+            if (topButtons) topButtons.innerHTML = '';
         } else {
             statusEl.innerHTML = '完了'; statusEl.style.color = 'var(--kintone-success)';
             document.getElementById('shipped-qty').textContent = '3';
@@ -418,13 +425,37 @@
                     <span style="font-weight: normal; font-size: 12px; color: #666;">全ての発行が完了したら「出荷確定」を行ってください。</span>
                 </div>
             </div>
-            <button class="btn-blue" onclick="finishTaskAndGoHome()" style="padding: 10px 40px;">出荷確定</button>
+            <button class="btn-blue" onclick="finishTaskAndStay()" style="padding: 10px 40px;">出荷確定</button>
         `;
     }
 
-    function finishTaskAndGoHome() {
+    function finishTaskAndStay() {
         showToast('出荷を確定しました。お疲れ様でした！');
-        setTimeout(() => { location.href = 'tasklist.html'; }, 1500);
+        
+        // Update global status to "Completed"
+        const statusEl = document.getElementById('main-status');
+        statusEl.innerHTML = '完了'; statusEl.style.color = 'var(--kintone-success)';
+        
+        // Completion logic here...
+        // No per-row status to update anymore
+
+        // Update Next Action area to "Finished" state
+        const nextActionArea = document.getElementById('next-action-area');
+        nextActionArea.className = 'next-action-card accent-success';
+        nextActionArea.innerHTML = `
+            <div class="next-action-content">
+                <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>
+                <div>
+                    状況: <span style="font-weight: 800; color: var(--kintone-success);">完了</span><br>
+                    <span style="font-weight: normal; font-size: 12px; color: #666;">出荷作業が正常に完了しました。お疲れ様でした。</span>
+                </div>
+            </div>
+            <button class="btn-secondary" onclick="location.href='tasklist.html'" style="padding: 10px 40px;">一覧に戻る</button>
+        `;
+
+        // Finalize form UI (lock Add button etc)
+        document.getElementById('add-new-pack-btn').style.display = 'none';
+        document.getElementById('packing-form-body').style.display = 'none';
     }
 
     function setNewTaskUI(type) {
@@ -446,9 +477,11 @@
             actionLabel.textContent = config.action;
             actionIcon.className = `fas ${config.icon}`;
             guideText.textContent = '内容を確認し、問題なければバーコードをスキャンして作業を進めてください。';
+            const currentTid = new URLSearchParams(window.location.search).get('id') || '';
+            const scanPage = currentTid === '501' ? 'task_scan_barcode_v2.html' : 'task_scan_barcode.html';
             actionButtons.innerHTML = `
                 <button class="btn-secondary" onclick="location.href='tasklist.html'">一覧に戻る</button>
-                <button class="btn-blue" onclick="location.href='task_scan_barcode.html?type=${type}'" style="padding: 10px 30px;">
+                <button class="btn-blue" onclick="location.href='${scanPage}?type=${type}${currentTid?'&id='+currentTid:''}'" style="padding: 10px 30px;">
                     <i class="fas fa-barcode" style="margin-right: 8px;"></i>バーコードスキャンを開始
                 </button>`;
         }
@@ -463,14 +496,62 @@
         const params = new URLSearchParams(window.location.search);
         const status = params.get('status'); 
         const type = params.get('type') || 'receive';
+        const tid = params.get('id'); // Define tid here
         
         // Ensure UI matches task type badge/colors
         updateBadge(type);
         
-        // Update the main scan button in HTML directly for non-status-specific loads
+        // Update the main scan button
         const mainScanBtn = document.getElementById('main-scan-btn');
-        if (mainScanBtn) {
-            mainScanBtn.setAttribute('onclick', `location.href='task_scan_barcode.html?type=${type}'`);
+        const topButtons = document.getElementById('action-buttons');
+        
+        if (status === 'finished') {
+            // If finished, we want "Issue Label" to be the main thing, hide top scan btn
+            if (topButtons) topButtons.style.display = 'none';
+        } else {
+            const targetScan = tid === '501' ? 'task_scan_barcode_v2.html' : 'task_scan_barcode.html';
+            mainScanBtn.setAttribute('onclick', `location.href='${targetScan}?type=${type}${tid?'&id='+tid:''}'`);
+        }
+
+        if (tid === '501') {
+            document.getElementById('main-task-id').textContent = 'TASK-501';
+            document.getElementById('overview-task-id').textContent = '501';
+            document.getElementById('summary-work-source').textContent = '注文ID: 0015';
+            document.getElementById('overview-work-source').innerHTML = '<a href="#" style="color: var(--kintone-blue);">PO-0015 / 325</a>';
+            
+            const tableBody = document.getElementById('product-table-body');
+            tableBody.innerHTML = `
+                <tr>
+                    <td style="font-weight: bold; color: var(--kintone-blue);">
+                        <a href="https://credit-group.cybozu.com/k/34/show#record=58&tab=none" target="_blank" style="text-decoration: none; color: inherit;">CER-BASE-01</a>
+                    </td>
+                    <td class="col-product-name">セラミック基板用素材 PREMIUM</td>
+                    <td class="col-num" style="font-weight: bold;">3</td>
+                    <td class="col-mid">箱</td>
+                    <td class="col-num">0</td>
+                    <td class="col-num" style="color: var(--kintone-danger); font-weight: bold;">3</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; color: var(--kintone-blue);">
+                        <a href="https://credit-group.cybozu.com/k/34/show#record=58&tab=none" target="_blank" style="text-decoration: none; color: inherit;">GLS-SUB-05</a>
+                    </td>
+                    <td class="col-product-name">高透過ガラス基板 0.5mm</td>
+                    <td class="col-num" style="font-weight: bold;">5</td>
+                    <td class="col-mid">枚</td>
+                    <td class="col-num">0</td>
+                    <td class="col-num" style="color: var(--kintone-danger); font-weight: bold;">5</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; color: var(--kintone-blue);">
+                        <a href="https://credit-group.cybozu.com/k/34/show#record=58&tab=none" target="_blank" style="text-decoration: none; color: inherit;">CHM-COAT-X</a>
+                    </td>
+                    <td class="col-product-name">特殊コーティング剤 Type-X</td>
+                    <td class="col-num" style="font-weight: bold;">10</td>
+                    <td class="col-mid">L</td>
+                    <td class="col-num">0</td>
+                    <td class="col-num" style="color: var(--kintone-danger); font-weight: bold;">10</td>
+                </tr>
+            `;
         }
 
         if (status === 'finished') setFinishedUI(type);
