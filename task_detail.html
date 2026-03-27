@@ -198,50 +198,66 @@
     <div id="shipping-input-section" class="section-card" style="display: none; border: 1px solid #d1e9fb; background-color: #f0f7ff;">
         <div class="section-title" style="color: #3498db; font-weight: 800; font-size: 15px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center;">
             <div><span><i class="fas fa-truck-fast" style="margin-right: 12px;"></i></span>配送・梱包情報の入力</div>
-            <button id="add-new-pack-btn" class="btn-primary-action" style="padding: 4px 15px; background: var(--kintone-blue); border-radius: 4px; display: none;" onclick="resetPackingForm()"><span>+ </span>追加</button>
+            <button id="add-new-pack-btn" class="btn-primary-action" style="padding: 6px 18px; background: var(--kintone-blue); color: white; border: none; border-radius: 4px; font-weight: 700; font-size: 12px; cursor: pointer; display: none;" onclick="resetPackingForm()"><i class="fas fa-plus" style="margin-right: 6px;"></i>別の箱を追加</button>
         </div>
         <p style="font-size: 11px; color: #666; margin-bottom: 20px;">複数の箱がある場合は、1つずつ情報を入力し「ラベルを発行する」を行ってください。</p>
-        
-        <div id="packing-entries-list" style="margin-bottom: 25px;">
-            <!-- Already issued labels will be listed here -->
-        </div>
 
-        <div id="packing-form-body">
-            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr); gap: 15px;">
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 11px; color: #888;">梱包サイズID参照</div>
-                    <div style="display: flex; gap: 5px;">
-                        <input type="text" id="packing-size-val" class="field-box" value="" placeholder="未選択" readonly style="font-weight: bold; background: white;">
-                        <button class="btn-blue-sm" style="padding: 2px 8px; font-size: 10px;" onclick="openPackingModal()">取得</button>
-                        <button class="btn-reject" style="padding: 2px 8px; font-size: 10px; background: #eee; color:#666; border:1px solid #ddd;" onclick="clearPackingSize()">クリア</button>
-                    </div>
+        <!-- Issued labels history -->
+        <div id="packing-entries-list" style="margin-bottom: 20px;"></div>
+
+        <!-- Packing form -->
+        <div id="packing-form-body" style="border: 1px solid #c8e0f5; border-radius: 8px; background: white; overflow: hidden;">
+
+            <!-- Step 1: 対象商品 -->
+            <div style="padding: 16px 20px; border-bottom: 1px solid #e8f4fd;">
+                <div style="font-size: 12px; font-weight: 800; color: #3498db; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <span style="background: #3498db; color: white; width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0;">1</span>
+                    この箱に含まれる商品を選択
                 </div>
-                
-                <!-- These fields stay hidden until "取得" is clicked -->
-                <div class="field-item packing-detail-field" style="visibility: hidden;">
-                    <div class="field-label" style="font-size: 11px; color: #888;">配送業者</div>
-                    <div id="carrier-val" class="field-value-box" style="background-color: #f9f9f9; color: #666; min-height: 18px;">—</div>
-                </div>
-                <div class="field-item packing-detail-field" style="visibility: hidden;">
-                    <div class="field-label" style="font-size: 11px; color: #888;">サイズ種別</div>
-                    <div id="size-type-val" class="field-value-box" style="background-color: #f9f9f9; color: #666; min-height: 18px;">—</div>
-                </div>
-                <div class="field-item packing-detail-field" style="visibility: hidden;">
-                    <div class="field-label" style="font-size: 11px; color: #888;">パッケージ数量</div>
-                    <input type="number" id="package-qty-input" class="field-box" value="1" style="padding: 6px 10px; font-weight: bold;">
-                </div>
-                <div class="field-item packing-detail-field" style="visibility: hidden;">
-                    <div class="field-label" style="font-size: 11px; color: #888;">梱包重量 (kg)</div>
-                    <div id="weight-val" class="field-value-box" style="background-color: #f9f9f9; color: #666; min-height: 18px;">—</div>
-                </div>
-                <div class="field-item packing-detail-field" style="visibility: hidden;">
-                    <div class="field-label" style="font-size: 11px; color: #888;">送り状ステータス</div>
-                    <div id="label-url-display" class="field-value-box" style="color: #999;">--</div>
+                <div id="product-checkbox-list" style="display: flex; flex-direction: column; gap: 8px;">
+                    <!-- dynamically populated -->
                 </div>
             </div>
 
-            <div id="issue-label-btn-container" style="margin-top: 25px; text-align: right; border-top: 1px solid #d1e9fb; padding-top: 20px;">
-                <button class="btn-blue" style="padding: 10px 40px;" onclick="confirmIssueLabel()">ラベルを発行する</button>
+            <!-- Step 2: 梱包サイズ -->
+            <div style="padding: 16px 20px; border-bottom: 1px solid #e8f4fd;">
+                <div style="font-size: 12px; font-weight: 800; color: #3498db; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <span style="background: #3498db; color: white; width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0;">2</span>
+                    梱包サイズを選択
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 5px; align-items: center;">
+                        <input type="text" id="packing-size-val" class="field-box" value="" placeholder="未選択" readonly style="font-weight: bold; background: white; width: 90px;">
+                        <button class="btn-blue-sm" style="padding: 5px 12px; font-size: 12px;" onclick="openPackingModal()"><i class="fas fa-search" style="margin-right: 4px;"></i>選択</button>
+                        <button style="padding: 5px 10px; font-size: 12px; background: #eee; color:#666; border:1px solid #ddd; border-radius: 4px; cursor: pointer;" onclick="clearPackingSize()">クリア</button>
+                    </div>
+                    <!-- Auto-filled details -->
+                    <div id="size-detail-row" style="display: none; gap: 16px; flex-wrap: wrap; align-items: center;">
+                        <span style="font-size: 12px; color: #666;">配送業者: <strong id="carrier-val">—</strong></span>
+                        <span style="font-size: 12px; color: #666;">サイズ: <strong id="size-type-val">—</strong></span>
+                        <span style="font-size: 12px; color: #666;">重量: <strong id="weight-val">—</strong> kg</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: 数量 -->
+            <div class="packing-detail-field" style="padding: 16px 20px; border-bottom: 1px solid #e8f4fd; visibility: hidden;">
+                <div style="font-size: 12px; font-weight: 800; color: #3498db; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <span style="background: #3498db; color: white; width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0;">3</span>
+                    パッケージ数量
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="number" id="package-qty-input" class="field-box" value="1" min="1" style="padding: 6px 10px; font-weight: bold; width: 80px;">
+                    <span style="font-size: 12px; color: #888;">箱</span>
+                </div>
+            </div>
+
+            <!-- Issue button -->
+            <div id="issue-label-btn-container" style="padding: 16px 20px; background: #f0f7ff; display: flex; justify-content: flex-end; align-items: center; gap: 12px;">
+                <div id="label-url-display" style="font-size: 12px; color: #999; flex: 1;"></div>
+                <button class="btn-blue" style="padding: 10px 36px; font-weight: 800;" onclick="confirmIssueLabel()">
+                    <i class="fas fa-print" style="margin-right: 8px;"></i>ラベルを発行する
+                </button>
             </div>
         </div>
     </div>
@@ -317,11 +333,36 @@
 
     function showShippingInfo() {
         document.getElementById('shipping-input-section').style.display = 'block';
+        buildProductCheckboxes();
         document.getElementById('shipping-input-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function buildProductCheckboxes() {
+        const rows = document.querySelectorAll('#product-table-body tr');
+        const container = document.getElementById('product-checkbox-list');
+        container.innerHTML = '';
+        rows.forEach((row, i) => {
+            const sku = row.cells[0].textContent.trim();
+            const name = row.cells[1].textContent.trim();
+            const qty = row.cells[2].textContent.trim();
+            const unit = row.cells[3].textContent.trim();
+            const label = document.createElement('label');
+            label.style = "display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid #d1e9fb; border-radius: 6px; cursor: pointer; font-size: 13px; background: #f8fbff;";
+            label.innerHTML = `
+                <input type="checkbox" name="pack-product" value="${sku}" data-qty="${qty}" data-unit="${unit}"
+                    style="width: 16px; height: 16px; cursor: pointer; accent-color: var(--kintone-blue);"
+                    ${rows.length === 1 ? 'checked' : ''}>
+                <span style="font-weight: 700; color: var(--kintone-blue); min-width: 90px;">${sku}</span>
+                <span style="color: #555;">${name}</span>
+                <span style="margin-left: auto; color: #888; font-size: 12px;">${qty} ${unit}</span>
+            `;
+            container.appendChild(label);
+        });
     }
 
     function openPackingModal() { document.getElementById('packing-size-modal').style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
     function resetPackingForm() {
         document.getElementById('packing-size-val').value = '';
         document.getElementById('carrier-val').textContent = '—';
@@ -329,25 +370,23 @@
         document.getElementById('weight-val').textContent = '—';
         document.getElementById('package-qty-input').value = '1';
         document.getElementById('package-qty-input').disabled = false;
-        document.getElementById('package-qty-input').style.backgroundColor = 'white';
-        document.getElementById('label-url-display').innerHTML = '--';
-        document.getElementById('label-url-display').style.color = '#999';
-        
-        // Hide details
+        document.getElementById('label-url-display').innerHTML = '';
+        document.getElementById('size-detail-row').style.display = 'none';
+
+        // Hide step 3 (qty)
         document.querySelectorAll('.packing-detail-field').forEach(el => el.style.visibility = 'hidden');
-        
-        // Show/Hide buttons
-        document.getElementById('issue-label-btn-container').style.display = 'block';
+
+        // Rebuild product checkboxes (uncheck all)
+        buildProductCheckboxes();
+
+        document.getElementById('issue-label-btn-container').style.display = 'flex';
         document.getElementById('add-new-pack-btn').style.display = 'none';
         document.getElementById('packing-form-body').style.display = 'block';
     }
 
     function selectPackingSize(val) {
         document.getElementById('packing-size-val').value = val;
-        
-        // Show detail fields
-        document.querySelectorAll('.packing-detail-field').forEach(el => el.style.visibility = 'visible');
-        
+
         // Fill data based on ID (simulated)
         if (val === '11') {
             document.getElementById('carrier-val').textContent = 'yamato';
@@ -362,18 +401,28 @@
             document.getElementById('size-type-val').textContent = '140';
             document.getElementById('weight-val').textContent = '20';
         }
-        
+
+        // Show inline detail row + step 3 (qty)
+        document.getElementById('size-detail-row').style.display = 'flex';
+        document.querySelectorAll('.packing-detail-field').forEach(el => el.style.visibility = 'visible');
+
         closeModal('packing-size-modal');
     }
 
     function clearPackingSize() {
         document.getElementById('packing-size-val').value = '';
+        document.getElementById('size-detail-row').style.display = 'none';
         document.querySelectorAll('.packing-detail-field').forEach(el => el.style.visibility = 'hidden');
     }
 
     function confirmIssueLabel() {
+        const checked = document.querySelectorAll('input[name="pack-product"]:checked');
+        if (checked.length === 0) {
+            alert('対象商品を1つ以上選択してください。');
+            return;
+        }
         if (document.getElementById('packing-size-val').value === '') {
-            alert('梱包サイズIDを取得してください。');
+            alert('梱包サイズを選択してください。');
             return;
         }
         document.getElementById('confirm-issue-modal').style.display = 'flex';
@@ -384,37 +433,46 @@
         packageCounter++;
         closeModal('confirm-issue-modal');
         showToast('ラベルを発行しました。情報を確認し、「出荷確定」を行ってください。');
-        
-        // Finalize current form state
+
         const sizeId = document.getElementById('packing-size-val').value;
         const qty = document.getElementById('package-qty-input').value;
         const carrier = document.getElementById('carrier-val').textContent;
         const size = document.getElementById('size-type-val').textContent;
         const pdfUrl = "https://storage.googleapis.com/live-shipandco/labels/202603/97Ttedfxjbis5G6ty/b9WMryrkox9WY5GpT.pdf";
 
+        // Collect selected products
+        const checkedProducts = Array.from(document.querySelectorAll('input[name="pack-product"]:checked'))
+            .map(cb => `<span style="background: #e8f4fd; color: #1565c0; border-radius: 3px; padding: 1px 7px; font-size: 11px; font-weight: 700;">${cb.value}</span>`)
+            .join(' ');
+
         // Add to history list
         const historyList = document.getElementById('packing-entries-list');
         const entryRow = document.createElement('div');
-        entryRow.style = "background: white; border: 1px solid #ddd; padding: 10px 15px; border-radius: 6px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; font-size: 13px;";
+        entryRow.style.cssText = "background: white; border: 1px solid #c8e0f5; padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 13px;";
         entryRow.innerHTML = `
-            <div>
-                <span class="badge-status status-ok" style="margin-right: 10px;">発行済 #${packageCounter}</span>
-                <strong>Size ${sizeId}</strong> (${carrier} / ${size}サイズ) / 
-                数量: <strong>${qty}</strong>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="badge-status status-ok">発行済 #${packageCounter}</span>
+                    <strong>Size ${sizeId}</strong>
+                    <span style="color: #888; font-size: 11px;">${carrier} / ${size}サイズ / ${qty}箱</span>
+                </div>
+                <a href="${pdfUrl}" target="_blank" style="color: #3498db; font-weight: 800; font-size: 12px; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                    <i class="fas fa-file-pdf"></i> ラベルPDF
+                </a>
             </div>
-            <a href="${pdfUrl}" target="_blank" style="color: #3498db; font-weight: 800; text-decoration: underline;"><i class="fas fa-file-pdf"></i> URL</a>
+            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span style="font-size: 11px; color: #888;">対象商品:</span>${checkedProducts}
+            </div>
         `;
         historyList.appendChild(entryRow);
 
-        // Hide current form body and show "Add New"
+        // Hide form body and show "Add New"
         document.getElementById('packing-form-body').style.display = 'none';
         document.getElementById('add-new-pack-btn').style.display = 'inline-block';
 
-        // Keep global status as "Shipping" (出荷中)
         document.getElementById('main-status').innerHTML = '出荷中';
         document.getElementById('main-status').style.color = 'var(--kintone-blue)';
 
-        // Update Action area to label-issued state
         const nextActionArea = document.getElementById('next-action-area');
         nextActionArea.className = 'next-action-card accent-primary';
         nextActionArea.innerHTML = `
