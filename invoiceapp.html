@@ -149,6 +149,20 @@
 
     <div id="flash-message" class="sticky-flash" style="display:none;"></div>
 
+    <!-- 次の対応 -->
+    <div id="next-action-area" class="next-action-card accent-warning" style="margin-bottom: 24px;">
+        <div class="next-action-content">
+            <span style="font-size: 30px; color: #ab47bc;"><i class="fas fa-file-pdf"></i></span>
+            <div>
+                次の対応: <span style="color: #ab47bc; font-weight: 800;">請求書の内容を確認し、発行する</span><br>
+                <span style="font-weight: normal; font-size: 12px; color: #666;">請求先・金額・支払期日を確認してください。内容に問題がなければ請求書PDFを発行してください。</span>
+            </div>
+        </div>
+        <button id="next-action-issue-btn" onclick="issuePDF()" style="padding: 10px 28px; background: #6a1b9a; color: white; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 14px; white-space: nowrap; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-file-pdf"></i>請求書PDFを発行する
+        </button>
+    </div>
+
     <!-- Summary Header -->
     <div class="summary-header" style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 25px; border-radius: 12px; margin-bottom: 30px;">
         <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
@@ -356,11 +370,32 @@
         emBtn.style.opacity = '1';
         emBtn.style.cursor = 'pointer';
 
-        // Disable issue button
+        // Disable issue button in section
         const issueBtn = document.getElementById('btn-issue-pdf');
         issueBtn.disabled = true;
         issueBtn.style.opacity = '0.5';
         issueBtn.style.cursor = 'not-allowed';
+
+        // Update 次の対応 area to issued state
+        const naa = document.getElementById('next-action-area');
+        naa.className = 'next-action-card accent-success';
+        naa.innerHTML = `
+            <div class="next-action-content">
+                <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-circle-check"></i></span>
+                <div>
+                    状況: <span style="color: var(--kintone-success); font-weight: 800;">請求書PDFを発行済み</span><br>
+                    <span style="font-weight: normal; font-size: 12px; color: #666;">発行日時: ${dateStr}　PDFをダウンロードするか、メールで送付してください。</span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-invoice-secondary" onclick="downloadPDF()" style="font-size: 13px; padding: 9px 18px;">
+                    <i class="fas fa-download"></i> PDFをダウンロード
+                </button>
+                <button onclick="sendEmail()" style="padding: 9px 18px; background: var(--kintone-blue); color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 7px;">
+                    <i class="fas fa-envelope"></i>メール送信
+                </button>
+            </div>
+        `;
 
         showToast('請求書PDFを発行しました。');
     }
