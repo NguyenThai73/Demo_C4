@@ -9,48 +9,6 @@
     <link rel="stylesheet" href="detail-style.css">
     <!-- Font Awesome 6.x CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .shipping-info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            background: #f0f7ff;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #cce4ff;
-        }
-        .info-group-title {
-            font-size: 12px;
-            font-weight: 800;
-            color: #004085;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            grid-column: span 3;
-            border-bottom: 1px solid #cce4ff;
-            padding-bottom: 6px;
-        }
-        .track-id-box {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: white;
-            padding: 4px 10px;
-            border-radius: 4px;
-            border: 1px solid #cce4ff;
-            font-family: monospace;
-            font-weight: bold;
-            color: #333;
-        }
-        .btn-copy {
-            font-size: 10px;
-            color: #3498db;
-            cursor: pointer;
-            border: none;
-            background: none;
-        }
-    </style>
 </head>
 
 <body>
@@ -155,65 +113,6 @@
             <!-- Rendered by JS -->
         </div>
 
-        <!-- NEW PRETTY PACKING & SHIPPING INFO -->
-        <div class="section-card">
-            <div class="section-title" style="color: #004085; font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
-                <span><i class="fas fa-box-open" style="margin-right: 12px;"></i></span>
-                梱包・出荷情報
-            </div>
-            
-            <div class="shipping-info-grid">
-                <!-- Group 1: Physical Shipping -->
-                <div class="info-group-title">
-                    <i class="fas fa-truck-ramp-box"></i> 配送状況
-                </div>
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 10px; color: #55708a;">配送方法</div>
-                    <div class="field-value" style="font-weight: 800; color: #004085;" id="ship-method">—</div>
-                </div>
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 10px; color: #55708a;">出荷予定/実績日</div>
-                    <div class="field-value" style="font-weight: bold;" id="ship-date">—</div>
-                </div>
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 10px; color: #55708a;">梱包箱数</div>
-                    <div class="field-value" style="font-weight: bold;" id="ship-boxes">0 箱</div>
-                </div>
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 10px; color: #55708a;">配送業者</div>
-                    <div class="field-value" id="ship-carrier">—</div>
-                </div>
-                <div class="field-item" style="grid-column: span 2;">
-                    <div class="field-label" style="font-size: 10px; color: #55708a;">送り状番号</div>
-                    <div class="track-id-box">
-                        <span id="ship-track-id">未発行</span>
-                        <button class="btn-copy" onclick="copyTrackID()"><i class="fas fa-copy"></i> コピー</button>
-                    </div>
-                </div>
-
-                <!-- Group 2: Final Destination -->
-                <div class="info-group-title" style="margin-top: 10px;">
-                    <i class="fas fa-location-dot"></i> お届け先情報詳細
-                </div>
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 10px; color: #55708a;">受取人名</div>
-                    <div class="field-value" style="font-weight: bold;">渋谷物流センター (D-02)</div>
-                </div>
-                <div class="field-item" style="grid-column: span 2;">
-                    <div class="field-label" style="font-size: 10px; color: #55708a;">配送先住所</div>
-                    <div class="field-value">東京都渋谷区1-2-3 サンプルビル 4F (入庫口12)</div>
-                </div>
-                <div class="field-item">
-                    <div class="field-label" style="font-size: 10px; color: #55708a;">着指定時間</div>
-                    <div class="field-value">午前中指定</div>
-                </div>
-                <div class="field-item" style="grid-column: span 2;">
-                    <div class="field-label" style="font-size: 10px; color: #55708a;">配送時注意事項</div>
-                    <div class="field-value" style="font-size: 12px; color: #666;">※不在時は宅配BOX不可、必ず手渡し</div>
-                </div>
-            </div>
-        </div>
-
         <div class="section-card section-info">
             <div class="section-title"
                 style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
@@ -232,6 +131,54 @@
                 <div class="field-item">
                     <div class="field-label">作成日時</div>
                     <div class="field-value">2026-03-23 10:45</div>
+                </div>
+            </div>
+            <div class="field-item" style="margin-top: 15px;">
+                <div class="field-label">注文メモ</div>
+                <div class="field-value" style="min-height: 20px; color: #666; font-style: italic;">特になし</div>
+            </div>
+        </div>
+
+        <div class="section-card section-info">
+            <div class="section-title"
+                style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+                <span><i class="fas fa-building" style="margin-right: 12px;"></i></span>
+                取引先情報
+            </div>
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item">
+                    <div class="field-label">Partner ID</div>
+                    <div class="field-value">PRT-0042</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">取引先名</div>
+                    <div class="field-value" style="font-weight: bold;">株式会社サンプル商事</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">担当者名 / 窓口</div>
+                    <div class="field-value">佐藤 健太郎 様</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card section-info">
+            <div class="section-title"
+                style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+                <span><i class="fas fa-truck-fast" style="margin-right: 12px;"></i></span>
+                配送先情報
+            </div>
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item">
+                    <div class="field-label">納品先名</div>
+                    <div class="field-value" style="font-weight: bold;">渋谷物流センター (D-02)</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">住所</div>
+                    <div class="field-value">東京都渋谷区1-2-3 サンプルビル 4F</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">電話番号</div>
+                    <div class="field-value">03-1234-5678</div>
                 </div>
             </div>
         </div>
@@ -280,6 +227,29 @@
                     <button class="btn-blue" onclick="submitShipment()">納品を確定する</button>
                 </div>
             </div>
+
+            <div id="return-input-area"
+                style="display: none; margin-top: 25px; padding-top: 20px; border-top: 2px solid var(--kintone-danger); background: #fffcfc; padding: 20px; border-radius: 8px;">
+                <div style="font-weight: 800; margin-bottom: 20px; color: var(--kintone-danger); font-size: 15px;">
+                    <i class="fas fa-rotate-left" style="margin-right: 10px;"></i> 返品を登録する
+                </div>
+                <table class="return-input-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 150px;">納品SKU</th>
+                            <th>商品名</th>
+                            <th style="width: 120px;">返品数</th>
+                            <th>理由</th>
+                        </tr>
+                    </thead>
+                    <tbody id="return-input-body"></tbody>
+                </table>
+                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+                    <button class="btn-secondary" onclick="hideReturnInput()">キャンセル</button>
+                    <button class="btn-reject" onclick="submitReturn()"
+                        style="background-color: var(--kintone-danger); color: white; border: none;">返品を確定する</button>
+                </div>
+            </div>
         </div>
 
         <div class="section-card section-hist">
@@ -300,12 +270,34 @@
                 </table>
             </div>
         </div>
+
+        <div class="section-card section-hist">
+            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span>🛑</span> 返品履歴</div>
+            <div id="return-history-container">
+                <div class="empty-history-state" id="no-return-history">履歴はありません</div>
+                <table class="k-table" id="return-history-table" style="font-size: 11px; display: none;">
+                    <thead>
+                        <tr>
+                            <th>タスクID</th>
+                            <th class="col-mid">ステータス</th>
+                            <th class="col-mid">返品日</th>
+                            <th>理由</th>
+                            <th>備考</th>
+                        </tr>
+                    </thead>
+                    <tbody id="return-history-body"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script>
         let orderState = {
             status: 'CONFIRM_WAIT',
             totalAmount: 153000,
+            tempAmount: 0,
+            isConfirmed: false,
+            isPaid: false,
             items: [
                 { id: 'RC50-V01', name: 'Rice Silica 50mL', orderQty: 500, deliveredQty: 0, returnQty: 0, price: 153000 }
             ],
@@ -315,21 +307,18 @@
         function updateUI() {
             const nextActionArea = document.getElementById('next-action-area');
             const summaryTotal = document.getElementById('summary-total');
+            const summaryPayment = document.getElementById('summary-payment');
+            const summaryShipping = document.getElementById('summary-shipping');
             const productTbody = document.getElementById('product-tbody');
 
             summaryTotal.innerText = orderState.isConfirmed ? `¥${orderState.totalAmount.toLocaleString()}` : `¥0`;
+            summaryPayment.innerText = orderState.isPaid ? '入金済み' : (orderState.isConfirmed ? '入金待ち' : '未入金');
+            summaryPayment.style.color = orderState.isPaid ? 'var(--kintone-success)' : (orderState.isConfirmed ? 'var(--kintone-warning)' : '#999');
 
             const totalOrdered = orderState.items.reduce((acc, item) => acc + item.orderQty, 0);
             const totalDelivered = orderState.items.reduce((acc, item) => acc + item.deliveredQty, 0);
-
-            // Update Physical Info Card Logic
-            if (totalDelivered > 0) {
-                document.getElementById('ship-method').innerText = '宅配便 (通常)';
-                document.getElementById('ship-date').innerText = '2026-03-24 (予定)';
-                document.getElementById('ship-boxes').innerText = '2 箱';
-                document.getElementById('ship-carrier').innerText = 'ヤマト運輸';
-                document.getElementById('ship-track-id').innerText = 'YMT-2026-X8821';
-            }
+            summaryShipping.innerText = totalDelivered >= totalOrdered ? '完納' : (totalDelivered > 0 ? '分納中' : (orderState.isPaid ? '準備中' : '未出荷'));
+            summaryShipping.style.color = totalDelivered >= totalOrdered ? 'var(--kintone-success)' : (totalDelivered > 0 ? 'var(--kintone-blue)' : '#999');
 
             let guideHtml = '';
             if (orderState.status === 'CONFIRM_WAIT') {
@@ -337,7 +326,12 @@
             } else if (orderState.status === 'PAYMENT_WAIT') {
                 guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-warning);"><i class="fas fa-coins"></i></span><div>次の対応: <span style="color: var(--kintone-warning);">入金確認</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">顧客の入金が完了したら、ボタンを押して進めてください。</span></div></div><button class="btn-submit-ship" style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;" onclick="verifyPayment()">入金完了を確認する</button>`;
             } else if (orderState.status === 'DELIVERY_READY' || (orderState.status === 'FINISHED' && totalDelivered < totalOrdered)) {
-                guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-truck-fast"></i></span><div>次の対応: <span style="color: var(--kintone-blue);">配送・納品登録</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">配送準備が整いました。納品登録を行ってください。</span></div></div><div style="display: flex; gap: 12px;"><button class="btn-blue" onclick="showShipmentInput()">納品を登録する</button></div>`;
+                const returnBtn = totalDelivered > 0
+                    ? `<button class="btn-reject" onclick="showReturnInput()">返品をする</button>`
+                    : '';
+                guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-truck-fast"></i></span><div>次の対応: <span style="color: var(--kintone-blue);">配送・納品登録</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">配送準備が整いました。納品登録を行ってください。</span></div></div><div style="display: flex; gap: 12px;">${returnBtn}<button class="btn-blue" onclick="showShipmentInput()">納品を登録する</button></div>`;
+            } else if (orderState.status === 'FINISHED') {
+                guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span><div>状況: <span style="color: var(--kintone-success);">取引完了</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">全ての納品が完了しました。返品が必要な場合は返品ボタンから登録してください。</span></div></div><button class="btn-reject" onclick="showReturnInput()">返品をする</button>`;
             }
             nextActionArea.innerHTML = guideHtml;
 
@@ -348,14 +342,65 @@
             }).join('');
         }
 
-        function confirmOrder() { orderState.isConfirmed = true; orderState.status = 'PAYMENT_WAIT'; updateUI(); }
-        function showShipmentInput() { document.getElementById('shipment-input-area').style.display = 'block'; const tbody = document.getElementById('fulfillment-input-body'); tbody.innerHTML = orderState.items.filter(i => i.orderQty > i.deliveredQty).map(i => `<tr><td>${i.id}</td><td>${i.name}</td><td><input type="number" id="shp-qty-${i.id}" value="${i.orderQty - i.deliveredQty}" max="${i.orderQty - i.deliveredQty}" min="1" style="width: 80px;"></td><td><input type="text" id="shp-note-${i.id}" style="width: 100%;"></td></tr>`).join(''); }
+        function confirmOrder() { orderState.isConfirmed = true; orderState.status = 'PAYMENT_WAIT'; showToast('注文を確定しました。'); updateUI(); }
+        function rejectOrder() { if (confirm('却下しますか？')) location.href = 'order_list_view.html'; }
+        function verifyPayment() { orderState.isPaid = true; orderState.status = 'DELIVERY_READY'; showToast('入金を確認しました。'); updateUI(); }
+
+        function showShipmentInput() {
+            const area = document.getElementById('shipment-input-area');
+            const tbody = document.getElementById('fulfillment-input-body');
+            tbody.innerHTML = orderState.items.filter(i => i.orderQty > i.deliveredQty).map(i => `<tr><td>${i.id}</td><td>${i.name}</td><td><input type="number" id="shp-qty-${i.id}" value="${i.orderQty - i.deliveredQty}" max="${i.orderQty - i.deliveredQty}" min="1" style="width: 80px;"></td><td><input type="text" id="shp-note-${i.id}" style="width: 100%;"></td></tr>`).join('');
+            area.style.display = 'block';
+        }
         function hideShipmentInput() { document.getElementById('shipment-input-area').style.display = 'none'; }
-        function submitShipment() { orderState.items.forEach(i => { const el = document.getElementById(`shp-qty-${i.id}`); if (el) { const q = parseInt(el.value); i.deliveredQty += q; addLog('SHIP', i.name, q, document.getElementById(`shp-note-${i.id}`).value); } }); if (orderState.items.every(i => i.deliveredQty >= i.orderQty)) orderState.status = 'FINISHED'; hideShipmentInput(); updateUI(); }
-        
-        function verifyPayment() { orderState.isPaid = true; orderState.status = 'DELIVERY_READY'; updateUI(); }
-        function addLog(type, name, qty, note) { orderState.historyCount++; const bodyId = 'shipment-history-body'; document.getElementById('no-shipment-history').style.display = 'none'; document.getElementById('shipment-history-table').style.display = 'table'; const row = `<tr><td>#${type}-${100 + orderState.historyCount}</td><td><span class="badge-status status-ok">完了</span></td><td>${new Date().toISOString().split('T')[0]}</td><td>${name} x ${qty}</td><td>${note || '-'}</td></tr>`; document.getElementById(bodyId).insertAdjacentHTML('afterbegin', row); }
-        function copyTrackID() { alert('送り状番号をコピーしました：' + document.getElementById('ship-track-id').innerText); }
+        function submitShipment() {
+            orderState.items.forEach(i => {
+                const el = document.getElementById(`shp-qty-${i.id}`);
+                if (el) {
+                    const q = parseInt(el.value);
+                    i.deliveredQty += q;
+                    addLog('SHIP', i.name, q, document.getElementById(`shp-note-${i.id}`).value);
+                }
+            });
+            if (orderState.items.every(i => i.deliveredQty >= i.orderQty)) orderState.status = 'FINISHED';
+            hideShipmentInput(); showToast('納品を登録しました。'); updateUI();
+        }
+
+        function showReturnInput() {
+            const area = document.getElementById('return-input-area');
+            const tbody = document.getElementById('return-input-body');
+            tbody.innerHTML = orderState.items.filter(i => i.deliveredQty > 0).map(i => `<tr><td>${i.id}</td><td>${i.name}</td><td><input type="number" id="ret-qty-${i.id}" value="1" max="${i.deliveredQty}" min="1" style="width: 80px;"></td><td><input type="text" id="ret-reason-${i.id}" style="width: 100%;"></td></tr>`).join('');
+            area.style.display = 'block';
+        }
+        function hideReturnInput() { document.getElementById('return-input-area').style.display = 'none'; }
+        function submitReturn() {
+            orderState.items.forEach(i => {
+                const el = document.getElementById(`ret-qty-${i.id}`);
+                if (el) {
+                    const q = parseInt(el.value);
+                    i.deliveredQty -= q; i.returnQty += q;
+                    addLog('RET', i.name, q, document.getElementById(`ret-reason-${i.id}`).value);
+                }
+            });
+            if (orderState.status === 'FINISHED') orderState.status = 'DELIVERY_READY';
+            hideReturnInput(); showToast('返品を登録しました。'); updateUI();
+        }
+
+        function addLog(type, name, qty, note) {
+            orderState.historyCount++;
+            const tableId = type === 'SHIP' ? 'shipment-history-table' : 'return-history-table';
+            const emptyId = type === 'SHIP' ? 'no-shipment-history' : 'no-return-history';
+            const bodyId = type === 'SHIP' ? 'shipment-history-body' : 'return-history-body';
+            document.getElementById(emptyId).style.display = 'none';
+            document.getElementById(tableId).style.display = 'table';
+            const row = `<tr><td>#${type}-${100 + orderState.historyCount}</td><td><span class="badge-status ${type === 'SHIP' ? 'status-ok' : 'status-return'}">${type === 'SHIP' ? '完了' : '返品'}</span></td><td>${new Date().toISOString().split('T')[0]}</td><td>${name} x ${qty}</td><td>${note || '-'}</td></tr>`;
+            document.getElementById(bodyId).insertAdjacentHTML('afterbegin', row);
+        }
+
+        function showToast(m) {
+            const f = document.getElementById('flash-message'); f.innerText = `🎉 ${m}`; f.style.display = 'block';
+            setTimeout(() => f.style.display = 'none', 3000);
+        }
         window.onload = updateUI;
     </script>
 </body>
