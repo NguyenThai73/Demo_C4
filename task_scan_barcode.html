@@ -152,14 +152,21 @@
             display: flex; align-items: center; justify-content: center; gap: 10px;
             cursor: not-allowed; background: #ccc; color: white; transition: background .2s;
         }
-        .btn-confirm-next.ready { background: var(--green); cursor: pointer; }
+        .btn-confirm-next.ready { background: var(--blue); cursor: pointer; }
+        
+        .btn-picking-done {
+            width: 100%; padding: 15px; border: none; border-radius: 10px;
+            font-size: 16px; font-weight: 800;
+            display: none; align-items: center; justify-content: center; gap: 10px;
+            cursor: pointer; background: var(--green); color: white;
+        }
     </style>
 </head>
 <body>
 
 <div class="scan-header">
     <div class="task-id-label">Task ID: <span>527</span></div>
-    <div class="progress-label">進捗: <span id="header-progress">0</span> / <span id="header-target">3</span> 行</div>
+    <div class="progress-label">進捗: <span id="header-progress">0</span> / <span id="header-target">3</span> 箱</div>
 </div>
 
 <div class="scan-container">
@@ -171,84 +178,84 @@
         <div class="req-qty">必要数量: <span id="req-qty-val">3</span> 箱</div>
     </div>
 
-    <!-- ── Step 1: 棚番号をスキャン ── -->
-    <div class="step-card active" id="step1">
-        <div class="step-header">
-            <div class="step-num"><span class="num-text">1</span></div>
-            <span>ステップ1: 棚番号をスキャン</span>
-        </div>
-        <div class="step-body">
-            <div class="input-row">
-                <div class="scan-field">
-                    <i class="fas fa-location-dot"></i>
-                    <input type="text" id="shelf-input" placeholder="棚コード"
-                        onchange="checkStep1()">
+    <div id="picking-steps">
+        <!-- ── Step 1: 棚番号をスキャン ── -->
+        <div class="step-card active" id="step1">
+            <div class="step-header">
+                <div class="step-num"><span class="num-text">1</span></div>
+                <span>ステップ1: 棚番号をスキャン</span>
+            </div>
+            <div class="step-body">
+                <div class="input-row">
+                    <div class="scan-field">
+                        <i class="fas fa-location-dot"></i>
+                        <input type="text" id="shelf-input" placeholder="棚コード"
+                            onchange="checkStep1()">
+                    </div>
+                    <button class="cam-btn" onclick="simulateScan('shelf-input', 'A-03-2')">
+                        <i class="fas fa-camera"></i>
+                    </button>
                 </div>
-                <button class="cam-btn" onclick="simulateScan('shelf-input', 'A-03-2')">
-                    <i class="fas fa-camera"></i>
-                </button>
             </div>
         </div>
-    </div>
 
-    <!-- ── Step 2: 商品・資材SKUをスキャン ── -->
-    <div class="step-card" id="step2">
-        <div class="step-header">
-            <div class="step-num"><span class="num-text">2</span></div>
-            <span>ステップ2: 商品・資材SKUをスキャン</span>
-        </div>
-        <div class="step-body">
-            <div class="input-row">
-                <div class="scan-field">
-                    <i class="fas fa-cube"></i>
-                    <input type="text" id="sku-input" placeholder="商品コード"
-                        onchange="checkStep2()">
+        <!-- ── Step 2: 商品・資材SKUをスキャン ── -->
+        <div class="step-card" id="step2">
+            <div class="step-header">
+                <div class="step-num"><span class="num-text">2</span></div>
+                <span>ステップ2: 商品・資材SKUをスキャン</span>
+            </div>
+            <div class="step-body">
+                <div class="input-row">
+                    <div class="scan-field">
+                        <i class="fas fa-cube"></i>
+                        <input type="text" id="sku-input" placeholder="商品コード"
+                            onchange="checkStep2()">
+                    </div>
+                    <button class="cam-btn" onclick="simulateScan('sku-input', 'CER-BASE-01')">
+                        <i class="fas fa-camera"></i>
+                    </button>
                 </div>
-                <button class="cam-btn" onclick="simulateScan('sku-input', 'CER-BASE-01')">
-                    <i class="fas fa-camera"></i>
-                </button>
             </div>
         </div>
-    </div>
 
-    <!-- ── Step 3: ロット番号を入力 ── -->
-    <div class="step-card" id="step3">
-        <div class="step-header">
-            <div class="step-num"><span class="num-text">3</span></div>
-            <span>ステップ3: ロット番号を入力</span>
-        </div>
-        <div class="step-body">
-            <div class="input-row">
-                <div class="scan-field">
-                    <i class="fas fa-hashtag"></i>
-                    <input type="text" id="lot-input" placeholder="LOT番号"
-                        onchange="checkStep3()">
+        <!-- ── Step 3: ロット番号を入力 ── -->
+        <div class="step-card" id="step3">
+            <div class="step-header">
+                <div class="step-num"><span class="num-text">3</span></div>
+                <span>ステップ3: ロット番号を入力</span>
+            </div>
+            <div class="step-body">
+                <div class="input-row">
+                    <div class="scan-field">
+                        <i class="fas fa-hashtag"></i>
+                        <input type="text" id="lot-input" placeholder="LOT番号"
+                            onchange="checkStep3()">
+                    </div>
+                    <button class="cam-btn" onclick="simulateScan('lot-input', 'LOT-2026-001')">
+                        <i class="fas fa-camera"></i>
+                    </button>
                 </div>
-                <button class="cam-btn" onclick="simulateScan('lot-input', 'LOT-2026-001')">
-                    <i class="fas fa-camera"></i>
-                </button>
             </div>
         </div>
-    </div>
 
-    <!-- ── Step 4: 数量入力 ── -->
-    <div class="step-card done" id="step4">
-        <div class="step-header">
-            <div class="step-num"><span class="num-text">4</span></div>
-            <span>ステップ4: 実際にピッキングした数量</span>
-        </div>
-        <div class="step-body">
-            <div class="qty-row">
-                <button class="qty-btn-circle btn-minus" onclick="changeQty(-1)">−</button>
-                <div class="qty-box" id="qty-display">0</div>
-                <button class="qty-btn-circle btn-plus" onclick="changeQty(1)">＋</button>
+        <!-- ── Step 4: 数量入力 ── -->
+        <div class="step-card done" id="step4">
+            <div class="step-header">
+                <div class="step-num"><span class="num-text">4</span></div>
+                <span>ステップ4: ピッキング数量入力</span>
             </div>
-            <div class="quick-btns">
-                <button class="quick-btn" onclick="addQty(1)">+1</button>
-                <button class="quick-btn" onclick="addQty(5)">+5</button>
-                <button class="quick-btn" onclick="addQty(10)">+10</button>
-                <button class="quick-btn" onclick="addQty(20)">+20</button>
-                <button class="quick-btn" onclick="addQty(50)">+50</button>
+            <div class="step-body">
+                <div class="qty-row">
+                    <button class="qty-btn-circle btn-minus" onclick="changeQty(-1)">−</button>
+                    <div class="qty-box" id="qty-display">0</div>
+                    <button class="qty-btn-circle btn-plus" onclick="changeQty(1)">＋</button>
+                </div>
+                <div class="quick-btns">
+                    <button class="quick-btn" onclick="addQty(1)">+1</button>
+                    <button class="quick-btn" onclick="addQty(5)">+5</button>
+                    <button class="quick-btn" onclick="addQty(10)">+10</button>
+                </div>
             </div>
         </div>
     </div>
@@ -269,15 +276,20 @@
 <div class="footer-action">
     <button class="btn-confirm-next" id="confirm-btn" onclick="confirmAndNext()">
         <i class="fas fa-circle-check"></i>
-        <span id="confirm-label">確認して次へ 0/<span id="footer-target">3</span></span>
+        <span>確認してスキャン継続</span>
+    </button>
+    <button class="btn-picking-done" id="done-btn" onclick="finishPicking()">
+        <i class="fas fa-flag-checkered"></i>
+        <span>ピッキング完了</span>
     </button>
 </div>
 
 <script>
     let currentQty = 0;
+    let totalPicked = 0;
     const target = parseInt(document.getElementById('req-qty-val').textContent);
+    
     document.getElementById('header-target').textContent = target;
-    document.getElementById('footer-target').textContent = target;
 
     // ── Qty controls ──
     function changeQty(delta) {
@@ -290,8 +302,6 @@
     }
     function refreshQtyDisplay() {
         document.getElementById('qty-display').textContent = currentQty;
-        document.getElementById('confirm-label').innerHTML =
-            `確認して次へ ${currentQty}/<span id="footer-target">${target}</span>`;
         const btn = document.getElementById('confirm-btn');
         if (currentQty > 0) {
             btn.classList.add('ready');
@@ -304,20 +314,16 @@
     function checkStep1() {
         const val = document.getElementById('shelf-input').value.trim();
         if (val) document.getElementById('step1').classList.add('done');
-        else      document.getElementById('step1').classList.remove('done');
     }
     function checkStep2() {
         const val = document.getElementById('sku-input').value.trim();
         if (val) document.getElementById('step2').classList.add('done');
-        else      document.getElementById('step2').classList.remove('done');
     }
     function checkStep3() {
         const val = document.getElementById('lot-input').value.trim();
         if (val) document.getElementById('step3').classList.add('done');
-        else      document.getElementById('step3').classList.remove('done');
     }
 
-    // Simulate camera scan (demo)
     function simulateScan(inputId, value) {
         const el = document.getElementById(inputId);
         el.value = value;
@@ -328,6 +334,8 @@
     function confirmAndNext() {
         if (currentQty <= 0) return;
 
+        totalPicked += currentQty;
+        
         const shelf = document.getElementById('shelf-input').value || '—';
         const sku   = document.getElementById('sku-input').value  || '—';
         const lot   = document.getElementById('lot-input').value  || '—';
@@ -344,11 +352,10 @@
                 <div style="font-size:16px; font-weight:800; color:var(--blue);">+ ${currentQty}</div>
             </div>`);
 
-        // Update progress header
-        const done = parseInt(document.getElementById('header-progress').textContent) + 1;
-        document.getElementById('header-progress').textContent = done;
+        // Update header progress
+        document.getElementById('header-progress').textContent = totalPicked;
 
-        // Reset all steps
+        // Reset inputs
         document.getElementById('shelf-input').value = '';
         document.getElementById('sku-input').value   = '';
         document.getElementById('lot-input').value   = '';
@@ -356,9 +363,18 @@
         currentQty = 0;
         refreshQtyDisplay();
 
-        // Navigate back to task detail when all done
-        if (done >= target) {
-            setTimeout(() => { location.href = 'task_detail.html?status=in-progress'; }, 500);
+        // Check completion
+        if (totalPicked >= target) {
+            document.getElementById('confirm-btn').style.display = 'none';
+            document.getElementById('done-btn').style.display = 'flex';
+            document.getElementById('picking-steps').style.opacity = '0.5';
+            document.getElementById('picking-steps').style.pointerEvents = 'none';
+        }
+    }
+
+    function finishPicking() {
+        if (confirm('ピッキングを完了して詳細画面に戻りますか？')) {
+            location.href = 'task_detail.html?status=finished';
         }
     }
 </script>
