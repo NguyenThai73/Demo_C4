@@ -57,12 +57,37 @@
     --badge-task-border:       #d1e9fb;
 
     /* ── Status-Badge Colors ────────────────────────────────── */
-    --status-ok-bg:            #e8f5e9;
-    --status-ok-text:          #2e7d32;
-    --status-warn-bg:          #fff3e0;
-    --status-warn-text:        #e65100;
+    /*
+     * Status color system — 7 states:
+     *
+     *  neutral   (gray)       未着手 / 未出荷 / 未入金
+     *  warn      (orange)     確定待ち / 入金待ち / 準備中
+     *  active    (blue)       出荷中 / 作業中 / 分納中
+     *  delivery  (purple)     配送中
+     *  ok        (green)      完納 / 完了 / 入金済み
+     *  return    (pink-red)   返品処理中
+     *  done      (blue-gray)  返品完了 / 取引完了
+     */
     --status-neutral-bg:       #f5f5f5;
     --status-neutral-text:     #9e9e9e;
+
+    --status-warn-bg:          #fff3e0;
+    --status-warn-text:        #e65100;
+
+    --status-active-bg:        #e3f2fd;
+    --status-active-text:      #1565c0;
+
+    --status-delivery-bg:      #f3e5f5;
+    --status-delivery-text:    #6a1b9a;
+
+    --status-ok-bg:            #e8f5e9;
+    --status-ok-text:          #2e7d32;
+
+    --status-return-bg:        #fce4ec;
+    --status-return-text:      #c62828;
+
+    --status-done-bg:          #eceff1;
+    --status-done-text:        #546e7a;
 
     /* ── Font Sizes ─────────────────────────────────────────── */
     --text-size-xs:            11px;   /* labels, captions          */
@@ -393,27 +418,65 @@ td.col-product-name {
 }
 
 /* ── Status badge (record status pill) ──────────────────────── */
+/*
+ * Usage:
+ *   <span class="badge-status status-neutral">未着手</span>
+ *   <span class="badge-status status-warn">確定待ち</span>
+ *   <span class="badge-status status-active">出荷中</span>
+ *   <span class="badge-status status-delivery">配送中</span>
+ *   <span class="badge-status status-ok">完了</span>
+ *   <span class="badge-status status-return">返品処理中</span>
+ *   <span class="badge-status status-done">返品完了</span>
+ */
 .badge-status {
     padding: var(--space-xs) var(--space-md);
     border-radius: var(--radius-badge);
     font-size: var(--text-size-xs);
     font-weight: var(--font-extrabold);
     display: inline-block;
+    white-space: nowrap;
 }
 
-.status-ok {
-    background-color: var(--status-ok-bg);
-    color: var(--status-ok-text);
+/* gray — 未着手 / 未出荷 / 未入金 */
+.status-neutral {
+    background-color: var(--status-neutral-bg);
+    color: var(--status-neutral-text);
 }
 
+/* orange — 確定待ち / 入金待ち / 準備中 */
 .status-warn {
     background-color: var(--status-warn-bg);
     color: var(--status-warn-text);
 }
 
-.status-neutral {
-    background-color: var(--status-neutral-bg);
-    color: var(--status-neutral-text);
+/* blue — 出荷中 / 作業中 / 分納中 */
+.status-active {
+    background-color: var(--status-active-bg);
+    color: var(--status-active-text);
+}
+
+/* purple — 配送中 */
+.status-delivery {
+    background-color: var(--status-delivery-bg);
+    color: var(--status-delivery-text);
+}
+
+/* green — 完納 / 完了 / 入金済み */
+.status-ok {
+    background-color: var(--status-ok-bg);
+    color: var(--status-ok-text);
+}
+
+/* pink-red — 返品処理中 */
+.status-return {
+    background-color: var(--status-return-bg);
+    color: var(--status-return-text);
+}
+
+/* blue-gray — 返品完了 / 取引完了 */
+.status-done {
+    background-color: var(--status-done-bg);
+    color: var(--status-done-text);
 }
 
 
