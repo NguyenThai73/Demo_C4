@@ -9,9 +9,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Specific workflow logic overrides */
-        #incoming-fields { display: none; margin-top: 20px; }
+        #task-form-content { display: none; margin-top: 20px; }
         .badge-type { font-weight: 800; font-size: 12px; padding: 4px 12px; border: 1px solid; border-radius: 4px; }
         .section-card { margin-bottom: 25px; }
+        #movement-info-section { display: none; margin-top: 25px; }
+        .btn-mini { font-size: 10px; padding: 2px 8px; white-space: nowrap; height: 24px; }
     </style>
 </head>
 <body>
@@ -91,8 +93,9 @@
         </div>
     </div>
 
-    <!-- B. Incoming Specific Fields (入荷) -->
-    <div id="incoming-fields">
+    <!-- Main Form Fields -->
+    <div id="task-form-content">
+        <!-- B. Basic Info Section -->
         <div class="section-card">
             <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
                 <span><i class="fas fa-info-circle" style="margin-right: 12px;"></i></span> 基本情報
@@ -107,17 +110,18 @@
                 </div>
                 <div class="field-item">
                     <div class="field-label" style="font-size: 11px; color: #888;">実行期限</div>
-                    <input type="date" id="due-date" class="field-box" style="width: 100%;">
+                    <input type="date" id="due-date" class="field-box" style="width: 100%;" value="2026-03-27">
                 </div>
                 <div class="field-item">
                     <div class="field-label" style="font-size: 11px; color: #888;">倉庫 <span style="color: var(--kintone-danger);">*</span></div>
-                    <div style="display: flex; gap: 8px;">
+                    <div style="display: flex; gap: 4px;">
                         <select id="warehouse" class="field-box" style="flex: 1;">
                             <option value="">-- 選択 --</option>
-                            <option>岐阜倉庫</option>
+                            <option selected>岐阜倉庫</option>
                             <option>東京倉庫</option>
                         </select>
-                        <button class="btn-secondary" style="font-size: 10px; padding: 0 10px; white-space: nowrap;" onclick="document.getElementById('warehouse').value=''">取得クリア</button>
+                        <button class="btn-secondary btn-mini" onclick="alert('取得')">取得</button>
+                        <button class="btn-secondary btn-mini" onclick="document.getElementById('warehouse').value=''">クリア</button>
                     </div>
                 </div>
                 <div class="field-item">
@@ -133,8 +137,24 @@
                     <input type="text" id="memo" class="field-box" style="width: 100%;" placeholder="備考を入力してください">
                 </div>
             </div>
+
+            <!-- Movement Info (Specific to Sample/Transfer) -->
+            <div id="movement-info-section">
+                <div style="font-weight: 800; font-size: 13px; color: #333; margin-top: 20px; margin-bottom: 10px; border-top: 1px solid #eee; padding-top: 15px;">移動情報</div>
+                <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="field-item">
+                        <div class="field-label" style="font-size: 11px; color: #888;">移動元棚 <span style="color: var(--kintone-danger);">*</span></div>
+                        <div style="display: flex; gap: 4px;">
+                            <input type="text" id="source-shelf" class="field-box" style="flex: 1;" placeholder="棚番を入力">
+                            <button class="btn-secondary btn-mini" onclick="alert('取得')">取得</button>
+                            <button class="btn-secondary btn-mini" onclick="document.getElementById('source-shelf').value=''">クリア</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- C. Product Details Section -->
         <div class="section-card" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; margin-bottom: 0;">
@@ -188,26 +208,36 @@
 
     function handleTypeChange() {
         const val = document.getElementById('task-type').value;
-        const incomingFields = document.getElementById('incoming-fields');
+        const taskFormContent = document.getElementById('task-form-content');
+        const movementSection = document.getElementById('movement-info-section');
         const saveBtn = document.getElementById('save-btn');
         const badge = document.getElementById('task-type-badge');
 
-        if (val === 'receive') {
-            incomingFields.style.display = 'block';
+        if (val) {
+            taskFormContent.style.display = 'block';
             saveBtn.style.display = 'block';
+            
+            // Movement Info Logic: Sample & Transfer only
+            if (val === 'sample' || val === 'transfer') {
+                movementSection.style.display = 'block';
+            } else {
+                movementSection.style.display = 'none';
+            }
+
             const t = TYPE_LABELS[val];
             badge.textContent = t.label;
             badge.style.backgroundColor = t.bg;
             badge.style.color = t.color;
             badge.style.borderColor = t.border;
+            
             if (rowCount === 0) addProductRow('CER-BASE-01', 'セラミック基板用素材 PREMIUM', 1);
         } else {
-            incomingFields.style.display = 'none';
+            taskFormContent.style.display = 'none';
             saveBtn.style.display = 'none';
-            badge.textContent = val ? TYPE_LABELS[val].label : '未選択';
-            badge.style.backgroundColor = val ? TYPE_LABELS[val].bg : '#f5f5f5';
-            badge.style.color = val ? TYPE_LABELS[val].color : '#9e9e9e';
-            badge.style.borderColor = val ? TYPE_LABELS[val].border : '#e0e0e0';
+            badge.textContent = '未選択';
+            badge.style.backgroundColor = '#f5f5f5';
+            badge.style.color = '#9e9e9e';
+            badge.style.borderColor = '#e0e0e0';
         }
     }
 
