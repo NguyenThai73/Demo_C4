@@ -149,20 +149,6 @@
 
     <div id="flash-message" class="sticky-flash" style="display:none;"></div>
 
-    <!-- 次の対応 -->
-    <div id="next-action-area" class="next-action-card accent-warning" style="margin-bottom: 24px;">
-        <div class="next-action-content">
-            <span style="font-size: 30px; color: #ab47bc;"><i class="fas fa-file-pdf"></i></span>
-            <div>
-                次の対応: <span style="color: #ab47bc; font-weight: 800;">請求書の内容を確認し、発行する</span><br>
-                <span style="font-weight: normal; font-size: 12px; color: #666;">請求先・金額・支払期日を確認してください。内容に問題がなければ請求書PDFを発行してください。</span>
-            </div>
-        </div>
-        <button id="next-action-issue-btn" onclick="issuePDF()" style="padding: 10px 28px; background: #6a1b9a; color: white; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 14px; white-space: nowrap; display: flex; align-items: center; gap: 8px;">
-            <i class="fas fa-file-pdf"></i>請求書PDFを発行する
-        </button>
-    </div>
-
     <!-- Summary Header -->
     <div class="summary-header" style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 25px; border-radius: 12px; margin-bottom: 30px;">
         <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
@@ -192,6 +178,25 @@
                 <div class="summary-label" style="font-size: 11px; color: #888; margin-bottom: 4px;">支払期日</div>
                 <div class="summary-value" style="font-weight: bold;">2026-04-01</div>
             </div>
+        </div>
+    </div>
+
+    <!-- 次の対応 -->
+    <div id="next-action-area" class="next-action-card accent-warning" style="margin-bottom: 24px;">
+        <div class="next-action-content">
+            <span style="font-size: 30px; color: #ab47bc;"><i class="fas fa-file-pdf"></i></span>
+            <div>
+                次の対応: <span style="color: #ab47bc; font-weight: 800;">請求書の内容を確認し、発行する</span><br>
+                <span style="font-weight: normal; font-size: 12px; color: #666;">請求先・金額・支払期日を確認してください。内容に問題がなければ請求書PDFを発行してください。</span>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px; flex-shrink: 0;">
+            <button onclick="openPreview()" style="padding: 10px 20px; background: white; color: #6a1b9a; border: 1.5px solid #ab47bc; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 7px; white-space: nowrap;">
+                <i class="fas fa-eye"></i>プレビュー
+            </button>
+            <button id="next-action-issue-btn" onclick="issuePDF()" style="padding: 10px 24px; background: #6a1b9a; color: white; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+                <i class="fas fa-file-pdf"></i>請求書PDFを発行する
+            </button>
         </div>
     </div>
 
@@ -309,6 +314,80 @@
     </div>
 </div>
 
+<!-- Preview Modal -->
+<div class="modal-overlay" id="preview-modal" style="display: none; align-items: flex-start; padding: 30px; overflow-y: auto;">
+    <div style="background: white; border-radius: 12px; width: 100%; max-width: 620px; margin: auto; padding: 36px 40px; font-size: 13px; position: relative;">
+        <button onclick="closePreview()" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: #999;">✕</button>
+
+        <!-- Invoice Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px;">
+            <div>
+                <div style="font-size: 26px; font-weight: 900; color: #6a1b9a; margin-bottom: 6px; letter-spacing: -0.5px;">請求書</div>
+                <div style="color: #888; margin-bottom: 2px;">Invoice No: <strong>INV-DRAFT-0311</strong></div>
+                <div style="color: #888; margin-bottom: 2px;">請求日: 2026-03-27</div>
+                <div style="color: #e53935; font-weight: 700;">支払期日: 2026-04-01</div>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-weight: 900; font-size: 15px; color: #333; margin-bottom: 4px;">株式会社 Silica Link</div>
+                <div style="color: #666; font-size: 12px;">東京都港区1-1-1</div>
+                <div style="color: #666; font-size: 12px;">TEL: 03-0000-0000</div>
+                <div style="color: #666; font-size: 12px;">billing@silicalink.co.jp</div>
+            </div>
+        </div>
+
+        <!-- Bill To -->
+        <div style="background: #f3e5f5; border-left: 3px solid #ab47bc; border-radius: 0 6px 6px 0; padding: 12px 16px; margin-bottom: 24px;">
+            <div style="font-size: 10px; color: #888; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px;">請求先</div>
+            <div style="font-weight: 800; font-size: 14px;">test_agency@yopmail.com</div>
+            <div style="color: #666; font-size: 12px; margin-top: 2px;">関連注文: <strong>339</strong></div>
+        </div>
+
+        <!-- Items Table -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 12px;">
+            <thead>
+                <tr style="background: #f3e5f5;">
+                    <th style="padding: 9px 12px; text-align: left; border: 1px solid #e1bee7; color: #6a1b9a;">商品・サービス</th>
+                    <th style="padding: 9px 12px; text-align: right; border: 1px solid #e1bee7; color: #6a1b9a; width: 100px;">金額</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 10px 12px; border: 1px solid #e8e8e8;">Agency手数料 / 注文 #339</td>
+                    <td style="padding: 10px 12px; border: 1px solid #e8e8e8; text-align: right; font-weight: 700;">¥20,025</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Totals -->
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
+            <div style="width: 220px; font-size: 13px;">
+                <div style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #eee; color: #666;">
+                    <span>小計</span><span>¥20,025</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #eee; color: #666;">
+                    <span>消費税 (0%)</span><span>¥0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; font-weight: 900; font-size: 16px; color: #6a1b9a;">
+                    <span>合計</span><span>¥20,025</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bank Info -->
+        <div style="border-top: 1px dashed #e1bee7; padding-top: 16px; font-size: 11px; color: #999; line-height: 1.8;">
+            振込先: ○○銀行 渋谷支店 普通 1234567　カ）シリカリンク<br>
+            ※振込手数料はご負担をお願いいたします。
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px; gap: 10px;">
+            <button class="btn-invoice-secondary" onclick="closePreview()">閉じる</button>
+            <button class="btn-invoice-primary" style="background: #6a1b9a;" onclick="closePreview(); issuePDF();">
+                <i class="fas fa-file-pdf"></i>このまま発行する
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Confirm Modal -->
 <div class="modal-overlay" id="issue-modal" style="display: none;">
     <div class="modal-card" style="text-align: left; max-width: 420px; padding: 30px;">
@@ -335,6 +414,13 @@
 
 <script>
     let pdfIssued = false;
+
+    function openPreview() {
+        document.getElementById('preview-modal').style.display = 'flex';
+    }
+    function closePreview() {
+        document.getElementById('preview-modal').style.display = 'none';
+    }
 
     function issuePDF() {
         document.getElementById('issue-modal').style.display = 'flex';
