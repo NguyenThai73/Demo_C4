@@ -247,6 +247,32 @@
         </div>
     </div>
 
+    <!-- 請求明細 -->
+    <div class="section-card section-op" style="border: 1px solid #ffedcc; background: #fffaf0;">
+        <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+            <i class="fas fa-list" style="margin-right: 12px;"></i>請求明細
+        </div>
+        <table class="k-table">
+            <thead>
+                <tr>
+                    <th style="min-width: 200px;">商品・サービス</th>
+                    <th class="col-mid" style="width: 80px;">SKU</th>
+                    <th class="col-num" style="width: 80px;">数量</th>
+                    <th class="col-mid" style="width: 60px;">単位</th>
+                    <th class="col-num" style="width: 110px;">単価</th>
+                    <th class="col-num" style="width: 120px;">小計</th>
+                </tr>
+            </thead>
+            <tbody id="invoice-items-body"></tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" style="text-align: right; font-weight: 700; padding: 10px 12px; color: #666; border-top: 2px solid #e0e0e0;">合計</td>
+                    <td class="col-num" style="font-weight: 900; font-size: 15px; color: #6a1b9a; border-top: 2px solid #e0e0e0;" id="items-total">¥0</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
     <!-- 入金情報・ステータス更新 -->
     <div class="section-card section-info">
         <div class="section-title" style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
@@ -391,7 +417,31 @@ TEL: 03-0000-0000</textarea>
 </div>
 
 <script>
+    const INVOICE_ITEMS = [
+        { sku: 'RC50-V01',  name: 'Rice Silica 50mL',   qty: 200, unit: '本', unitPrice: 75   },
+        { sku: 'RC300-V01', name: 'Rice Silica 300mL',  qty: 10,  unit: '本', unitPrice: 450  },
+        { sku: 'SHIP-FEE',  name: '配送手数料',           qty: 1,   unit: '式', unitPrice: 525  },
+    ];
+
     let pdfIssued = false;
+
+    function renderInvoiceItems() {
+        const tbody = document.getElementById('invoice-items-body');
+        let total = 0;
+        tbody.innerHTML = INVOICE_ITEMS.map(item => {
+            const sub = item.qty * item.unitPrice;
+            total += sub;
+            return `<tr>
+                <td>${item.name}</td>
+                <td class="col-mid" style="font-size: 11px; color: #888;">${item.sku}</td>
+                <td class="col-num" style="font-weight: 700;">${item.qty.toLocaleString()}</td>
+                <td class="col-mid">${item.unit}</td>
+                <td class="col-num">¥${item.unitPrice.toLocaleString()}</td>
+                <td class="col-num" style="font-weight: 700;">¥${sub.toLocaleString()}</td>
+            </tr>`;
+        }).join('');
+        document.getElementById('items-total').textContent = `¥${total.toLocaleString()}`;
+    }
 
     function openPreview() {
         const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>請求書 INV-DRAFT-0311</title>
@@ -422,12 +472,12 @@ TEL: 03-0000-0000</textarea>
             <div class="company"><strong>株式会社 Silica Link</strong>東京都港区1-1-1<br>TEL: 03-0000-0000<br>billing@silicalink.co.jp</div>
         </div>
         <div class="bill-to"><div class="label">請求先</div><strong>test_agency@yopmail.com</strong><div style="color:#666;font-size:12px;margin-top:3px;">関連注文: <strong>#339</strong></div></div>
-        <table><thead><tr><th style="text-align:left;">商品・サービス</th><th>金額</th></tr></thead>
-        <tbody><tr><td>Agency手数料 / 注文 #339</td><td style="text-align:right;font-weight:700;">¥20,025</td></tr></tbody></table>
+        <table><thead><tr><th style="text-align:left;">商品・サービス</th><th style="text-align:center;width:60px;">数量</th><th style="text-align:center;width:50px;">単位</th><th style="text-align:right;width:90px;">単価</th><th style="text-align:right;width:100px;">小計</th></tr></thead>
+        <tbody>${INVOICE_ITEMS.map(i => { const s = i.qty * i.unitPrice; return `<tr><td>${i.name} (${i.sku})</td><td style="text-align:center;">${i.qty}</td><td style="text-align:center;">${i.unit}</td><td style="text-align:right;">¥${i.unitPrice.toLocaleString()}</td><td style="text-align:right;font-weight:700;">¥${s.toLocaleString()}</td></tr>`; }).join('')}</tbody></table>
         <div class="totals"><div class="totals-box">
-            <div class="totals-row"><span>小計</span><span>¥20,025</span></div>
+            <div class="totals-row"><span>小計</span><span>¥${INVOICE_ITEMS.reduce((a,i)=>a+i.qty*i.unitPrice,0).toLocaleString()}</span></div>
             <div class="totals-row"><span>消費税 (0%)</span><span>¥0</span></div>
-            <div class="totals-row grand"><span>合計</span><span>¥20,025</span></div>
+            <div class="totals-row grand"><span>合計</span><span>¥${INVOICE_ITEMS.reduce((a,i)=>a+i.qty*i.unitPrice,0).toLocaleString()}</span></div>
         </div></div>
         <div class="bank">振込先: ○○銀行 渋谷支店 普通 1234567　カ）シリカリンク<br>※振込手数料はご負担をお願いいたします。</div>
         </body></html>`;
@@ -534,6 +584,7 @@ TEL: 03-0000-0000</textarea>
 
     // Read draft ID from URL if any
     window.onload = function() {
+        renderInvoiceItems();
         const params = new URLSearchParams(window.location.search);
         const draft = params.get('draft');
         if (draft) {
