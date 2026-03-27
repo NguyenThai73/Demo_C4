@@ -151,28 +151,82 @@
         <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
             <span><i class="fas fa-truck-ramp-box" style="margin-right: 12px;"></i></span> 梱包・出荷情報
         </div>
+
+        <!-- Row 1 -->
         <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
             <div class="field-item">
+                <div class="field-label" style="font-size: 11px; color: #888;">梱包サイズID参照</div>
+                <div class="field-box" style="background: #f5f5f5; color: #666; cursor: default; display: flex; align-items: center;">
+                    <i class="fas fa-link" style="margin-right: 8px; color: #bbb; font-size: 12px;"></i>
+                    <span id="pkg-size-ref" style="font-weight: 700;">__11__</span>
+                </div>
+            </div>
+            <div class="field-item">
                 <div class="field-label" style="font-size: 11px; color: #888;">配送業者</div>
-                <select class="field-box" style="width: 100%; border-radius: 8px;">
-                    <option>ヤマト運輸</option>
-                    <option>佐川急便</option>
+                <select id="carrier" class="field-box" style="width: 100%;">
+                    <option value="yamato">ヤマト運輸</option>
+                    <option value="sagawa">佐川急便</option>
+                    <option value="yupack">ゆうパック</option>
                 </select>
             </div>
             <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">梱包サイズ</div>
-                <select class="field-box" style="width: 100%; border-radius: 8px;">
-                    <option>サイズ 80</option>
-                    <option>サイズ 100</option>
+                <div class="field-label" style="font-size: 11px; color: #888;">サイズ種別</div>
+                <select id="size-type" class="field-box" style="width: 100%;">
+                    <option value="60">60</option>
+                    <option value="80" selected>80</option>
+                    <option value="100">100</option>
+                    <option value="120">120</option>
+                    <option value="140">140</option>
+                    <option value="160">160</option>
                 </select>
-            </div>
-            <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">パッケージ数</div>
-                <input type="number" class="field-box" value="1" style="width: 100%; border-radius: 8px;">
             </div>
         </div>
-        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 25px;">
-             <button class="btn-blue" onclick="createLabel()">ラベル作成・出荷確定</button>
+
+        <!-- Row 2 -->
+        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 0;">
+            <div class="field-item">
+                <div class="field-label" style="font-size: 11px; color: #888;">パッケージ数量</div>
+                <input id="pkg-qty" type="number" class="field-box" value="10" min="1" style="width: 100%; text-align: right;">
+            </div>
+            <div class="field-item">
+                <div class="field-label" style="font-size: 11px; color: #888;">梱包重量 (kg)</div>
+                <input id="pkg-weight" type="number" class="field-box" value="5" min="0" step="0.1" style="width: 100%; text-align: right;">
+            </div>
+            <div class="field-item">
+                <div class="field-label" style="font-size: 11px; color: #888;">送り状ステータス</div>
+                <div id="label-status-display" class="field-box" style="background: #f5f5f5; color: #9e9e9e; cursor: default; display: flex; align-items: center; gap: 8px;">
+                    <span id="label-status-badge" class="badge-status status-neutral" style="font-size: 11px;">未作成</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="field-grid" style="grid-template-columns: 1fr 1fr; margin-top: 0;">
+            <div class="field-item">
+                <div class="field-label" style="font-size: 11px; color: #888;">URL</div>
+                <input id="label-url" type="url" class="field-box" placeholder="https://..." style="width: 100%;">
+            </div>
+            <div class="field-item">
+                <div class="field-label" style="font-size: 11px; color: #888;">送り状ラベル</div>
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                    <input id="label-file" type="file" accept=".pdf,.png,.jpg" style="display: none;" onchange="showFileName(this)">
+                    <div class="field-box" onclick="document.getElementById('label-file').click()"
+                        style="flex: 1; cursor: pointer; color: #888; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-paperclip" style="color: #bbb;"></i>
+                        <span id="label-filename">ファイルを添付</span>
+                    </div>
+                    <button class="btn-secondary" onclick="event.preventDefault(); document.getElementById('label-file').click()"
+                        style="padding: 8px 14px; font-size: 12px; white-space: nowrap;">
+                        <i class="fas fa-upload" style="margin-right: 4px;"></i>参照
+                    </button>
+                </label>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+            <button class="btn-blue" onclick="createLabel()">
+                <i class="fas fa-print" style="margin-right: 8px;"></i>ラベル作成・出荷確定
+            </button>
         </div>
     </div>
 
@@ -236,9 +290,18 @@
         }
     }
 
+    function showFileName(input) {
+        const name = input.files[0] ? input.files[0].name : 'ファイルを添付';
+        document.getElementById('label-filename').textContent = name;
+    }
+
     function createLabel() {
-        showToast('出荷を確定しました。');
-        setTimeout(() => { location.href = 'tasklist.html'; }, 1500);
+        // Update 送り状ステータス → 作成済み
+        const badge = document.getElementById('label-status-badge');
+        badge.textContent = '作成済み';
+        badge.className = 'badge-status status-ok';
+        showToast('ラベルを作成しました。出荷を確定します。');
+        setTimeout(() => { location.href = 'tasklist.html'; }, 1800);
     }
 
     function showToast(m) {
