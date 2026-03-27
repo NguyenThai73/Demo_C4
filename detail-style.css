@@ -37,6 +37,7 @@
     --color-border:            #dddddd;
     --color-border-light:      #eeeeee;
     --color-border-op:         #ffedcc;   /* operational / warning border */
+    --color-border-table:      #e0e0e0;   /* unified: k-table + input tables + input fields */
 
     /* ── Text Colors ────────────────────────────────────────── */
     --text-primary:            #333333;
@@ -291,16 +292,16 @@ td.col-product-name {
 
 .k-table th {
     background-color: var(--color-bg-table-head);
-    border: 1px solid var(--color-border);
-    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-border-table);
+    padding: var(--space-sm) var(--space-md);   /* 8px 12px */
     text-align: left;
     color: var(--text-secondary);
     font-weight: var(--font-bold);
 }
 
 .k-table td {
-    border: 1px solid var(--color-border);
-    padding: var(--space-md);
+    border: 1px solid var(--color-border-table);
+    padding: var(--space-sm) var(--space-md);   /* 8px 12px — khớp với input table */
     background: var(--color-bg-surface);
     font-size: var(--text-size-sm);
     vertical-align: middle;
@@ -319,22 +320,22 @@ td.col-product-name {
 .shipment-input-table th,
 .return-input-table th {
     background-color: var(--color-bg-table-head);
-    border: 1px solid var(--color-border);
-    padding: var(--space-sm);
+    border: 1px solid var(--color-border-table);
+    padding: var(--space-sm) var(--space-md);   /* 8px 12px — khớp k-table */
     text-align: left;
 }
 
 .shipment-input-table td,
 .return-input-table td {
-    border: 1px solid var(--color-border);
-    padding: var(--space-sm);
+    border: 1px solid var(--color-border-table);
+    padding: var(--space-sm) var(--space-md);   /* 8px 12px — khớp k-table */
 }
 
 .shipment-input-table input,
 .return-input-table input {
     width: 100%;
     padding: 6px var(--space-md);
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-border-table); /* thống nhất với table cell */
     border-radius: var(--radius-md);
     box-sizing: border-box;
 }
