@@ -74,24 +74,20 @@
         
         <div class="summary-grid" style="width: 100%; border-top: 1px solid #eee; padding-top: 15px;">
             <div class="summary-item">
-                <div class="summary-label">合計金額</div>
-                <div class="summary-primary-value">¥150,000</div>
+                <div class="summary-label">注文金額合計</div>
+                <div class="summary-primary-value">¥165,000</div>
             </div>
             <div class="summary-item">
-                <div class="summary-label">支払い状況</div>
-                <div class="summary-primary-value" style="color: var(--kintone-success);">入金済み</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">出荷状況</div>
-                <div class="summary-primary-value col-important">50/100</div>
+                <div class="summary-label">注文ステータス</div>
+                <div class="summary-primary-value" style="color: var(--kintone-blue);">一部出荷済み</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">注文日</div>
                 <div class="summary-value">2026-03-20</div>
             </div>
             <div class="summary-item">
-                <div class="summary-label">作成日時</div>
-                <div class="summary-value">2026-03-20 18:07</div>
+                <div class="summary-label">配送予定日</div>
+                <div class="summary-value">2026-03-25</div>
             </div>
         </div>
     </div>
@@ -195,8 +191,14 @@
                     <td class="col-mid"><span class="badge-status status-active">出荷中</span></td>
                     <td class="col-mid">
                         <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                            <button class="btn-primary-action" onclick="toggleShipmentInput()" style="padding: 6px 15px; min-width: 60px;">出荷</button>
-                            <button class="btn-action" style="background-color: #ff4d4f; color: white; border: none; padding: 6px 15px; min-width: 60px;" onclick="toggleReturnInput()">返品</button>
+                            <button class="btn-primary-action" onclick="toggleShipmentInput()" 
+                                style="padding: 10px 15px; min-width: 80px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; border: none; background: var(--kintone-blue); color: white; transition: all 0.2s;">
+                                出荷
+                            </button>
+                            <button class="btn-action" onclick="toggleReturnInput()" 
+                                style="padding: 10px 15px; min-width: 80px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; border: none; background: var(--kintone-danger); color: white; transition: all 0.2s;">
+                                返品
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -269,10 +271,14 @@
             <table class="k-table" id="shipment-history-table" style="font-size: 11px; display: none;">
                 <thead>
                     <tr>
-                        <th>タスクID</th>
-                        <th class="col-mid">ステータス</th>
-                        <th>配送先</th>
-                        <th>サマリー</th>
+                        <th style="width: 100px;">タスクID</th>
+                        <th class="col-mid" style="width: 90px;">ステータス</th>
+                        <th style="width: 100px;">出荷日</th>
+                        <th style="width: 130px;">追跡番号</th>
+                        <th style="width: 100px;">出荷ステータス</th>
+                        <th>出荷サマリー</th>
+                        <th style="width: 120px;">備考</th>
+                        <th class="text-right" style="width: 110px;">操作</th>
                     </tr>
                 </thead>
                 <tbody id="shipment-history-body"></tbody>
@@ -290,10 +296,12 @@
             <table class="k-table" id="return-history-table" style="font-size: 11px; display: none;">
                 <thead>
                     <tr>
-                        <th>タスクID</th>
-                        <th>返品日</th>
-                        <th>理由</th>
-                        <th>備考</th>
+                        <th style="width: 100px;">タスクID</th>
+                        <th class="col-mid" style="width: 90px;">ステータス</th>
+                        <th style="width: 110px;">返品日</th>
+                        <th>返品サマリー</th>
+                        <th style="width: 120px;">備考</th>
+                        <th class="text-right" style="width: 110px;">操作</th>
                     </tr>
                 </thead>
                 <tbody id="return-history-body"></tbody>
@@ -321,11 +329,21 @@
         
         const body = document.getElementById('shipment-history-body');
         const now = new Date().toISOString().split('T')[0];
+        const tId = "SHO-881";
         const newRow = `<tr>
-            <td><a href="task_detail.html" class="field-value-link">#SHO-881</a></td>
-            <td><span class="badge-status status-warn">配送準備中</span></td>
-            <td>Main Store Address</td>
+            <td style="font-weight:bold;"><a href="task_detail.html" class="field-value-link">${tId}</a></td>
+            <td class="col-mid"><span class="badge-status status-warn">待機中</span></td>
+            <td>${now}</td>
+            <td><span style="color:#666; font-family:monospace;">1234-5678-9012</span></td>
+            <td class="col-mid"><span class="badge-status" style="background:#e3f2fd; color:#1976d2; border:1px solid #bbdefb; font-size:10px;">配送中</span></td>
             <td>米ぬかの恵み 300mL x 100</td>
+            <td style="color:#999;">ヤマト運輸にて発送</td>
+            <td class="text-right">
+                <div style="display:flex; justify-content:flex-end; gap:8px;">
+                    <button class="icon-btn" onclick="alert('タスク #${tId} の編集画面を開きます')" title="編集" style="background:none; border:none; color:var(--kintone-blue); cursor:pointer;"><i class="fas fa-edit"></i></button>
+                    <button class="icon-btn" onclick="deleteTask(this, '${tId}')" title="取消" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer;"><i class="fas fa-trash-can"></i></button>
+                </div>
+            </td>
         </tr>`;
         body.insertAdjacentHTML('afterbegin', newRow);
 
@@ -339,16 +357,40 @@
         
         const body = document.getElementById('return-history-body');
         const now = new Date().toISOString().split('T')[0];
+        const tId = "RET-990";
         const newRow = `<tr>
-            <td><a href="task_detail.html" class="field-value-link">#RET-990</a></td>
+            <td style="font-weight:bold;"><a href="task_detail.html" class="field-value-link">${tId}</a></td>
+            <td class="col-mid"><span class="badge-status status-warn">待機中</span></td>
             <td>${now}</td>
-            <td>誤配送</td>
-            <td>KM300-V01 x 2</td>
+            <td>米ぬかの恵み 300mL x 2</td>
+            <td>誤配送による返品受付</td>
+            <td class="text-right">
+                <div style="display:flex; justify-content:flex-end; gap:8px;">
+                    <button class="icon-btn" onclick="alert('タスク #${tId} の編集画面を開きます')" title="編集" style="background:none; border:none; color:var(--kintone-blue); cursor:pointer;"><i class="fas fa-edit"></i></button>
+                    <button class="icon-btn" onclick="deleteTask(this, '${tId}')" title="取消" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer;"><i class="fas fa-trash-can"></i></button>
+                </div>
+            </td>
         </tr>`;
         body.insertAdjacentHTML('afterbegin', newRow);
 
         document.getElementById('flash-message').style.display = 'block';
         setTimeout(() => { document.getElementById('flash-message').style.display = 'none'; }, 3000);
+    }
+
+    function deleteTask(btn, tId) {
+        if (confirm(`タスク #${tId} を取消しますか？`)) {
+            const tr = btn.closest('tr');
+            const tbody = tr.parentNode;
+            tr.remove();
+            
+            if (tbody.children.length === 0) {
+                const tableId = tbody.parentNode.id;
+                const type = tableId.split('-')[0];
+                const emptyId = type === 'shipment' ? 'no-shipment-history' : 'no-return-history';
+                document.getElementById(tableId).style.display = 'none';
+                document.getElementById(emptyId).style.display = 'block';
+            }
+        }
     }
 </script>
 

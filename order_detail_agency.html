@@ -76,34 +76,22 @@
                 </div>
             </div>
 
-            <div class="summary-grid"
-                style="width: 100%; border-top: 1px solid #eee; padding-top: 20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
+            <div class="summary-grid" 
+                style="width: 100%; border-top: 1px solid #eee; padding-top: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
                 <div class="summary-item">
-                    <div class="summary-label"
-                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">合計金額</div>
-                    <div id="summary-total" class="summary-primary-value" style="font-size: 20px; font-weight: 800;">¥0
-                    </div>
+                    <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文金額合計</div>
+                    <div id="summary-total" class="summary-primary-value" style="font-size: 20px; font-weight: 800;">¥0</div>
                 </div>
                 <div class="summary-item">
-                    <div class="summary-label"
-                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">入金状況</div>
-                    <div id="summary-payment" class="summary-primary-value"
-                        style="font-size: 18px; font-weight: 700; color: #999;">未入金</div>
+                    <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文ステータス</div>
+                    <div id="summary-shipping" class="summary-primary-value" style="font-size: 18px; font-weight: 700; color: #999;">未出荷</div>
                 </div>
                 <div class="summary-item">
-                    <div class="summary-label"
-                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">出荷状況</div>
-                    <div id="summary-shipping" class="summary-primary-value"
-                        style="font-size: 18px; font-weight: 700; color: #999;">未出荷</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label"
-                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文日</div>
+                    <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文日</div>
                     <div class="summary-value" style="font-weight: bold;">2026-03-23</div>
                 </div>
                 <div class="summary-item">
-                    <div class="summary-label"
-                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">配送予定日</div>
+                    <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">配送予定日</div>
                     <div class="summary-value" style="font-weight: bold;">2026-03-25</div>
                 </div>
             </div>
@@ -280,11 +268,12 @@
                 <table class="k-table" id="shipment-history-table" style="font-size: 11px; display: none;">
                     <thead>
                         <tr>
-                            <th>タスクID</th>
-                            <th class="col-mid">ステータス</th>
-                            <th class="col-mid">出荷日</th>
+                            <th style="width: 80px;">タスクID</th>
+                            <th class="col-mid" style="width: 80px;">ステータス</th>
+                            <th class="col-mid" style="width: 100px;">出荷日</th>
                             <th>出荷サマリー</th>
-                            <th>備考</th>
+                            <th style="width: 150px;">備考</th>
+                            <th class="text-right" style="width: 120px;">操作</th>
                         </tr>
                     </thead>
                     <tbody id="shipment-history-body"></tbody>
@@ -333,12 +322,12 @@
             const productTbody = document.getElementById('product-tbody');
 
             summaryTotal.innerText = orderState.isConfirmed ? `¥${orderState.totalAmount.toLocaleString()}` : `¥0`;
-            summaryPayment.innerText = orderState.isPaid ? '入金済み' : (orderState.isConfirmed ? '入金待ち' : '未入金');
-            summaryPayment.style.color = orderState.isPaid ? 'var(--kintone-success)' : (orderState.isConfirmed ? 'var(--kintone-warning)' : '#999');
+            summaryPayment.innerText = orderState.isPaid ? '入金済み' : (orderState.status === 'PAYMENT_WAIT' ? '入金待ち' : (orderState.isConfirmed ? '未発行' : '未入金'));
+            summaryPayment.style.color = orderState.isPaid ? 'var(--kintone-success)' : (orderState.status === 'PAYMENT_WAIT' ? 'var(--kintone-warning)' : '#999');
 
             const totalOrdered = orderState.items.reduce((acc, item) => acc + item.orderQty, 0);
             const totalDelivered = orderState.items.reduce((acc, item) => acc + item.deliveredQty, 0);
-            summaryShipping.innerText = totalDelivered >= totalOrdered ? '完納' : (totalDelivered > 0 ? '分納中' : (orderState.isPaid ? '準備中' : '未出荷'));
+            summaryShipping.innerText = totalDelivered >= totalOrdered ? '出荷中' : (totalDelivered > 0 ? '出荷中' : (orderState.isPaid ? '準備中' : '未出荷'));
             summaryShipping.style.color = totalDelivered >= totalOrdered ? 'var(--kintone-success)' : (totalDelivered > 0 ? 'var(--kintone-blue)' : '#999');
 
             let guideHtml = '';
@@ -347,7 +336,17 @@
             } else if (orderState.status === 'INVOICE_WAIT') {
                 guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: #ab47bc;"><i class="fas fa-file-invoice"></i></span><div>次の対応: <span style="color: #ab47bc; font-weight: 800;">請求書を発行する</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">請求書ドラフトが作成されました。請求書アプリで発行後、こちらで発行済みとして確認してください。</span></div></div><div style="display: flex; gap: 12px; flex-wrap: wrap;"><button class="btn-secondary" onclick="rollbackToConfirm()"><i class="fas fa-rotate-left" style="margin-right: 6px;"></i>確認待ちに戻る</button><button onclick="markInvoiceIssued()" style="padding: 10px 24px; background: #6a1b9a; color: white; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px;"><i class="fas fa-check" style="margin-right: 8px;"></i>発行済みとして確認する</button></div>`;
             } else if (orderState.status === 'PAYMENT_WAIT') {
-                guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-warning);"><i class="fas fa-coins"></i></span><div>次の対応: <span style="color: var(--kintone-warning);">入金確認</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">請求書を送付しました。顧客の入金が完了したら、ボタンを押して進めてください。</span></div></div><button class="btn-submit-ship" style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;" onclick="verifyPayment()">入金完了を確認する</button>`;
+                guideHtml = `<div class="next-action-content">
+                    <span style="font-size: 32px; color: var(--kintone-warning);"><i class="fas fa-coins"></i></span>
+                    <div>
+                        次の対応: <span style="color: var(--kintone-warning); font-weight: 800;">入金完了を確認する</span><br>
+                        <span style="font-weight: normal; font-size: 11px; color: #666;">請求書は送信済み（入金待ち）です。代理店からの振込を確認後、ステータスを更新してください。</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn-invoice-secondary" onclick="location.href='invoiceapp.html?draft=INV-76'"><i class="fas fa-file-invoice"></i> 請求書を閲覧</button>
+                    <button class="btn-blue" style="padding: 10px 30px; border-radius:12px; font-weight:800;" onclick="verifyPayment()">入金完了を確定する</button>
+                </div>`;
             } else if (orderState.status === 'DELIVERY_READY' || (orderState.status === 'FINISHED' && totalDelivered < totalOrdered)) {
                 const returnBtn = totalDelivered > 0
                     ? `<button class="btn-reject" onclick="showReturnInput()">返品をする</button>`
@@ -362,7 +361,7 @@
                 const remaining = item.orderQty - item.deliveredQty;
                 const progress = (item.deliveredQty / item.orderQty) * 100;
                 const recUrl = `https://credit-group.cybozu.com/k/34/show#record=${item.recordId}&tab=none`;
-                return `<tr><td class="col-product-name"><a href="${recUrl}" target="_blank" style="color: var(--kintone-blue); text-decoration: none; font-weight: bold;">${item.name} (${item.id})</a></td><td class="col-num">${item.orderQty}</td><td class="col-mid">個</td><td class="col-num">${item.deliveredQty}</td><td class="col-num" style="background-color: ${remaining > 0 ? '#fffaf0' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--kintone-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td class="col-num" style="color: ${item.returnQty > 0 ? 'var(--kintone-danger)' : '#999'}">${item.returnQty}</td><td class="col-mid"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '完納' : (progress > 0 ? '分納中' : '未出荷')}</span></td></tr>`;
+                return `<tr><td class="col-product-name"><a href="${recUrl}" target="_blank" style="color: var(--kintone-blue); text-decoration: none; font-weight: bold;">${item.name} (${item.id})</a></td><td class="col-num">${item.orderQty}</td><td class="col-mid">個</td><td class="col-num">${item.deliveredQty}</td><td class="col-num" style="background-color: ${remaining > 0 ? '#fffaf0' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--kintone-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td class="col-num" style="color: ${item.returnQty > 0 ? 'var(--kintone-danger)' : '#999'}">${item.returnQty}</td><td class="col-mid"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '出荷中' : (progress > 0 ? '出荷中' : '未出荷')}</span></td></tr>`;
             }).join('');
         }
 
@@ -406,12 +405,12 @@
                 const el = document.getElementById(`shp-qty-${i.id}`);
                 if (el) {
                     const q = parseInt(el.value);
-                    i.deliveredQty += q;
+                    // i.deliveredQty += q; // Logic change: newly registered tasks stay at 0 in main summary if status is standby
                     addLog('SHIP', i.name, q, document.getElementById(`shp-note-${i.id}`).value);
                 }
             });
-            if (orderState.items.every(i => i.deliveredQty >= i.orderQty)) orderState.status = 'FINISHED';
-            hideShipmentInput(); showToast('納品を登録しました。'); updateUI();
+            // if (orderState.items.every(i => i.deliveredQty >= i.orderQty)) orderState.status = 'FINISHED';
+            hideShipmentInput(); showToast('配送タスクを登録しました。 (出荷状況は後ほど更新されます)'); updateUI();
         }
 
         function showReturnInput() {
@@ -436,13 +435,49 @@
 
         function addLog(type, name, qty, note) {
             orderState.historyCount++;
+            const tId = `${type}-${100 + orderState.historyCount}`;
             const tableId = type === 'SHIP' ? 'shipment-history-table' : 'return-history-table';
             const emptyId = type === 'SHIP' ? 'no-shipment-history' : 'no-return-history';
             const bodyId = type === 'SHIP' ? 'shipment-history-body' : 'return-history-body';
             document.getElementById(emptyId).style.display = 'none';
             document.getElementById(tableId).style.display = 'table';
-            const row = `<tr><td>#${type}-${100 + orderState.historyCount}</td><td><span class="badge-status ${type === 'SHIP' ? 'status-ok' : 'status-return'}">${type === 'SHIP' ? '完了' : '返品'}</span></td><td>${new Date().toISOString().split('T')[0]}</td><td>${name} x ${qty}</td><td>${note || '-'}</td></tr>`;
+            
+            let actions = '';
+            if (type === 'SHIP') {
+                actions = `
+                    <div style="display:flex; justify-content:flex-end; gap:8px;">
+                        <button class="icon-btn" onclick="alert('タスク #${tId} の編集画面を開きます')" title="編集" style="background:none; border:none; color:var(--kintone-blue); cursor:pointer;"><i class="fas fa-edit"></i> 編集</button>
+                        <button class="icon-btn" onclick="deleteTask(this, '${tId}')" title="取消" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer;"><i class="fas fa-trash-can"></i> 取消</button>
+                    </div>
+                `;
+            }
+
+            const row = `<tr>
+                <td style="font-weight:bold;"><a href="task_detail.html?id=${tId}" style="color:var(--kintone-blue); text-decoration:none;">${tId}</a></td>
+                <td><span class="badge-status ${type === 'SHIP' ? 'status-ok' : 'status-return'}">${type === 'SHIP' ? '待機中' : '返品'}</span></td>
+                <td>${new Date().toISOString().split('T')[0]}</td>
+                <td>${name} x ${qty}</td>
+                <td>${note || '-'}</td>
+                ${type === 'SHIP' ? `<td class="text-right">${actions}</td>` : ''}
+            </tr>`;
             document.getElementById(bodyId).insertAdjacentHTML('afterbegin', row);
+        }
+
+        function deleteTask(btn, tId) {
+            if (confirm(`タスク #${tId} を取消しますか？`)) {
+                const tr = btn.closest('tr');
+                const tbody = tr.parentNode;
+                tr.remove();
+                showToast('タスクを取消しました。');
+                
+                if (tbody.children.length === 0) {
+                    const tableId = tbody.parentNode.id;
+                    const type = tableId.split('-')[0];
+                    const emptyId = type === 'shipment' ? 'no-shipment-history' : 'no-return-history';
+                    document.getElementById(tableId).style.display = 'none';
+                    document.getElementById(emptyId).style.display = 'block';
+                }
+            }
         }
 
         function showToast(m) {

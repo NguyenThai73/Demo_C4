@@ -1,7 +1,8 @@
-/* 
+/*
    Silica Link Standard Design System (Kintone-Style Premium)
    Extracted from order_detail_agency.html
 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap');
 
 :root {
     /* --- Colors --- */
@@ -39,7 +40,7 @@
 body {
     background-color: var(--k-bg-light);
     color: var(--k-dark);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+    font-family: 'Noto Sans JP', sans-serif;
     font-size: var(--font-size-body);
     line-height: 1.5;
 }

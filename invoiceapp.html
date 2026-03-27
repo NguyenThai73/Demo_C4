@@ -29,33 +29,46 @@
             margin-top: 20px;
         }
         .btn-invoice-primary {
-            padding: 10px 22px;
+            padding: 12px 28px;
             background: var(--kintone-blue);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 16px;
             font-weight: 800;
-            font-size: 13px;
+            font-size: 15px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.2s;
         }
+        .btn-invoice-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
         .btn-invoice-secondary {
-            padding: 10px 22px;
-            background: white;
-            color: var(--text-primary);
-            border: 1px solid var(--color-border);
-            border-radius: 4px;
-            font-weight: 700;
-            font-size: 13px;
+            padding: 12px 28px;
+            background: #f1f3f4;
+            color: #555;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            transition: background 0.2s;
         }
-        .btn-invoice-secondary:hover { background: #f5f5f5; }
-        .btn-invoice-primary:disabled { background: #ccc; cursor: not-allowed; }
+        .btn-invoice-secondary:hover { background: #e8eaed; }
+        .btn-invoice-primary:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        .btn-orange { background: #e67e22; color: white; }
+        .btn-orange:hover { background: #d35400; }
+        .btn-green { background: #2ecc71; color: white; }
+        .btn-green:hover { background: #27ae60; }
+        .btn-blue { background: #3498db; color: white; }
+        .btn-blue:hover { background: #2980b9; }
 
         .issued-chip {
             display: inline-flex;
@@ -129,6 +142,16 @@
         .quick-add-chip.discount:hover { background: #fff5f5; border-color: #c62828; }
         .quick-add-chip.custom { border-color: #b0bec5; color: #546e7a; }
         .quick-add-chip.custom:hover { background: #f5f5f5; border-color: #546e7a; }
+
+        /* Modal Layout */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 10000;
+        }
+        .modal-card {
+            background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
+            width: 90%; max-width: 500px; padding: 30px; position: relative;
+        }
     </style>
 </head>
 <body>
@@ -221,18 +244,18 @@
     <!-- 次の対応 -->
     <div id="next-action-area" class="next-action-card accent-warning" style="margin-bottom: 24px;">
         <div class="next-action-content">
-            <span style="font-size: 30px; color: #ab47bc;"><i class="fas fa-file-pdf"></i></span>
+            <span style="font-size: 32px; color: #e67e22;"><i class="fas fa-file-pdf"></i></span>
             <div>
-                次の対応: <span style="color: #ab47bc; font-weight: 800;">請求書の内容を確認し、発行する</span><br>
-                <span style="font-weight: normal; font-size: 12px; color: #666;">請求先・金額・支払期日を確認してください。内容に問題がなければ請求書PDFを発行してください。</span>
+                次の対応: <span style="color: #e67e22; font-weight: 800;">請求書の内容を確認し、発行する</span><br>
+                <span style="font-weight: normal; font-size: 11px; color: #666;">内容を確認してください。問題がなければPDF発行ボタンを押し、確定処理を行います。</span>
             </div>
         </div>
         <div style="display: flex; gap: 10px; flex-shrink: 0;">
-            <button onclick="openPreview()" style="padding: 10px 20px; background: white; color: #6a1b9a; border: 1.5px solid #ab47bc; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 7px; white-space: nowrap;">
+            <button onclick="openPreview()" class="btn-invoice-secondary">
                 <i class="fas fa-eye"></i>プレビュー
             </button>
-            <button id="next-action-issue-btn" onclick="issuePDF()" style="padding: 10px 24px; background: #6a1b9a; color: white; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 8px; white-space: nowrap;">
-                <i class="fas fa-file-pdf"></i>請求書PDFを発行する
+            <button id="next-action-issue-btn" onclick="showConfirmPop()" class="btn-invoice-primary btn-orange">
+                <i class="fas fa-file-invoice" style="margin-right: 2px;"></i>請求書を発行する
             </button>
         </div>
     </div>
@@ -344,32 +367,117 @@
             </div>
             <div class="field-item" style="grid-column: 1 / -1;">
                 <div class="field-label">備考</div>
-                <div class="field-box-readonly muted" style="min-height: 48px; align-items: flex-start; padding-top: 10px;">―</div>
+                <div class="field-box-readonly muted" id="payment-remarks-val" style="min-height: 48px; align-items: flex-start; padding-top: 10px;">―</div>
             </div>
         </div>
     </div>
 
 </div>
 
-<!-- Email Modal -->
-<div class="modal-overlay" id="email-modal" style="display: none;">
-    <div class="modal-card" style="text-align: center; max-width: 380px; padding: 32px 28px;">
-        <div style="font-size: 38px; color: var(--kintone-blue); margin-bottom: 14px;">
-            <i class="fas fa-envelope"></i>
+<!-- Confirmation Modal (Before Issue) -->
+<div class="modal-overlay" id="confirm-modal" style="display: none;">
+    <div class="modal-card" style="text-align: center; max-width: 480px; padding: 45px 35px; border-radius: 24px;">
+        <div style="font-size: 80px; color: #e67e22; margin-bottom: 25px; line-height: 1;">
+            <i class="fas fa-file-invoice"></i>
         </div>
-        <div style="font-size: 17px; font-weight: 800; margin-bottom: 10px; color: #333;">
-            代理店にメールを送信しますか？
+        <h2 style="font-size: 24px; font-weight: 900; margin-bottom: 16px; color: #333;">請求書を発行しますか？</h2>
+        <p style="font-size: 15px; color: #666; margin-bottom: 35px; line-height: 1.6; font-weight: 500;">
+            請求書を発行し、取引先側へ入金依頼を通知します。
+        </p>
+        <div style="display: flex; gap: 15px; justify-content: center;">
+            <button class="btn-invoice-secondary" onclick="closeConfirmPop()" style="padding: 14px 40px; border-radius: 12px; font-size: 16px; min-width: 140px;">
+                キャンセル
+            </button>
+            <button class="btn-invoice-primary btn-blue" onclick="issuePDF()" style="padding: 14px 40px; border-radius: 12px; font-size: 16px; min-width: 140px;">
+                実行する
+            </button>
         </div>
-        <p style="font-size: 13px; color: #666; margin-bottom: 6px; line-height: 1.7;">
-            請求書PDFを添付してメールを送信します。
+    </div>
+</div>
+
+<!-- Success Modal (After Issue) -->
+<div class="modal-overlay" id="success-modal" style="display: none;">
+    <div class="modal-card" style="text-align: center; max-width: 500px; padding: 40px 30px; border-radius: 24px; border: 2px solid #2ecc71;">
+        <div style="width: 70px; height: 70px; border-radius: 50%; background: #e8f5e9; color: #2ecc71; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px;">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2 style="font-size: 20px; font-weight: 900; margin-bottom: 12px; color: #333;">請求書の発行が完了しました</h2>
+        <p style="font-size: 14px; color: #666; margin-bottom: 30px; line-height: 1.6;">
+            レコード番号: #76<br>
+            請求書PDF作成、および売上確定処理が正常に完了しました。
         </p>
-        <p style="font-size: 12px; color: #999; margin-bottom: 26px;">
-            宛先: test_agency@yopmail.com
+        
+        <div id="modal-initial-actions" style="display: flex; gap: 12px; justify-content: center; margin-bottom: 20px;">
+            <button class="btn-invoice-secondary" onclick="downloadPDF()" style="padding: 12px 24px; border-radius: 12px;">
+                <i class="fas fa-file-pdf" style="color:#e53935;"></i> PDFダウンロード
+            </button>
+            <button class="btn-invoice-primary btn-blue" onclick="showEmailPreview()" style="padding: 12px 24px; border-radius: 12px;">
+                <i class="fas fa-envelope"></i> メールで送付する
+            </button>
+        </div>
+
+        <!-- Email Preview Section (Hidden by default) -->
+        <div id="email-preview-area" style="display: none; text-align: left; margin-top: 25px; border-top: 2px dashed #eee; padding-top: 25px;">
+            <div style="font-size: 12px; font-weight: 800; color: #888; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-eye"></i> 送信メールのプレビュー
+            </div>
+            <div style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; font-size: 13px; line-height: 1.8; color: #444;">
+                <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 10px;">
+                    <span style="color: #999;">宛先:</span> <strong>test_agency@yopmail.com</strong><br>
+                    <span style="color: #999;">件名:</span> <strong>【Silica Link】請求書送付のご案内 (No: INV-76)</strong>
+                </div>
+                <div>
+                    test_agency@yopmail.com 様<br><br>
+                    いつも大変お世話になっております。<br>
+                    株式会社 Silica Link でございます。<br><br>
+                    下記内容にて請求書を発行いたしましたので、ご査収ください。<br><br>
+                    ■請求内容<br>
+                    ・請求番号: INV-76<br>
+                    ・請求金額: <span style="font-weight: bold; color: #6a1b9a;" id="preview-amount">¥20,025</span><br>
+                    ・支払期日: 2026-04-01<br><br>
+                    ※本メールに請求書PDFを添付しております。<br>
+                    ご確認のほど、何卒よろしくお願い申し上げます。
+                </div>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn-invoice-secondary" onclick="hideEmailPreview()" style="flex: 1;">キャンセル</button>
+                <button class="btn-invoice-primary" onclick="confirmSendEmail()" style="flex: 2; background: var(--kintone-blue);">
+                    <i class="fas fa-paper-plane"></i> この内容で送信する
+                </button>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <button class="link-text" onclick="closeModal()" style="background: none; border: none; font-size: 12px; cursor: pointer; color: #888;">閉じて詳細画面へ</button>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Date Modal (Before Finalizing) -->
+<div class="modal-overlay" id="payment-modal" style="display: none;">
+    <div class="modal-card" style="text-align: center; max-width: 440px; padding: 40px 30px; border-radius: 24px; border: 2px solid #2ecc71;">
+        <div style="font-size: 60px; color: #2ecc71; margin-bottom: 20px;">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+        <h2 style="font-size: 22px; font-weight: 900; margin-bottom: 12px; color: #333;">入金日を確認します</h2>
+        <p style="font-size: 14px; color: #666; margin-bottom: 25px; line-height: 1.6;">
+            実際に代金が到着した日付を選択してください。
         </p>
-        <div style="display: flex; gap: 10px; justify-content: center;">
-            <button class="btn-invoice-secondary" onclick="skipEmail()">スキップ</button>
-            <button class="btn-invoice-primary" style="background: var(--kintone-blue);" onclick="confirmSendEmail()">
-                <i class="fas fa-paper-plane"></i>送信する
+        
+        <div style="margin-bottom: 20px; text-align: left;">
+            <label style="font-size: 12px; font-weight: 800; color: #888; display: block; margin-bottom: 8px;">入金日</label>
+            <input type="date" id="input-payment-date" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1.5px solid #eee; font-size: 15px; font-weight: bold; font-family: inherit; box-sizing: border-box; margin-bottom: 15px;">
+            
+            <label style="font-size: 12px; font-weight: 800; color: #888; display: block; margin-bottom: 8px;">備考 (任意)</label>
+            <textarea id="input-payment-remarks" placeholder="振込先情報や手数料調整など" style="width: 100%; height: 80px; padding: 12px 15px; border-radius: 12px; border: 1.5px solid #eee; font-size: 13px; font-family: inherit; box-sizing: border-box; resize: none;"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: center;">
+            <button class="btn-invoice-secondary" onclick="closePaymentModal()" style="padding: 12px 24px; border-radius: 12px; min-width: 120px;">
+                キャンセル
+            </button>
+            <button class="btn-invoice-primary btn-green" onclick="markAsPaid()" style="padding: 12px 30px; border-radius: 12px; min-width: 120px;">
+                入金を確定する
             </button>
         </div>
     </div>
@@ -492,7 +600,7 @@
 
         const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>請求書 INV-DRAFT-0311</title>
         <style>
-            body { font-family: -apple-system, 'Hiragino Sans', Meiryo, sans-serif; padding: 50px 60px; max-width: 740px; margin: 0 auto; font-size: 13px; color: #333; }
+            body { font-family: 'Noto Sans JP', sans-serif; padding: 50px 60px; max-width: 740px; margin: 0 auto; font-size: 13px; color: #333; }
             h1 { font-size: 28px; font-weight: 900; color: #6a1b9a; margin: 0 0 6px; }
             .meta { color: #888; font-size: 12px; margin-bottom: 3px; }
             .due { color: #e53935; font-weight: 700; font-size: 12px; }
@@ -532,71 +640,146 @@
         w.document.close();
     }
 
-    function issuePDF() {
-        confirmIssue();
+    function showConfirmPop() {
+        document.getElementById('confirm-modal').style.display = 'flex';
+    }
+    function closeConfirmPop() {
+        document.getElementById('confirm-modal').style.display = 'none';
     }
 
-    function confirmIssue() {
+    function issuePDF() {
+        closeConfirmPop();
         pdfIssued = true;
+        const total = document.getElementById('items-total').textContent;
+        document.getElementById('preview-amount').textContent = total;
 
-        const now = new Date();
-        const dateStr = now.toISOString().replace('T', ' ').slice(0, 16);
-
-        // Update summary header
+        // Update summary status
         document.getElementById('summary-pdf').textContent = '発行済';
         document.getElementById('summary-pdf').style.color = 'var(--kintone-success)';
 
-        // Disable issue button in 次の対応
+        // Show Success Modal
+        document.getElementById('success-modal').style.display = 'flex';
+        
+        // Update background UI
         const issueBtn = document.getElementById('next-action-issue-btn');
         if (issueBtn) {
             issueBtn.disabled = true;
             issueBtn.style.opacity = '0.5';
-            issueBtn.style.cursor = 'not-allowed';
         }
-
-        showToast('請求書PDFを発行しました。');
-
-        // Show email confirmation modal
-        setTimeout(() => {
-            document.getElementById('email-modal').style.display = 'flex';
-        }, 600);
     }
 
-    function downloadPDF() {
-        if (!pdfIssued) return;
-        showToast('PDFをダウンロードしています...');
-        // In real app: trigger PDF download
-        setTimeout(() => showToast('ダウンロードが完了しました。'), 1200);
+    function showEmailPreview() {
+        document.getElementById('modal-initial-actions').style.display = 'none';
+        document.activeElement.blur();
+        document.getElementById('email-preview-area').style.display = 'block';
+    }
+
+    function hideEmailPreview() {
+        document.getElementById('email-preview-area').style.display = 'none';
+        document.getElementById('modal-initial-actions').style.display = 'flex';
     }
 
     function confirmSendEmail() {
-        document.getElementById('email-modal').style.display = 'none';
-        const sent = new Date().toISOString().replace('T', ' ').slice(0, 16);
-        updateNextActionAfterIssue(sent, true);
-        showToast('代理店にメールを送信しました。');
+        document.getElementById('success-modal').style.display = 'none';
+        const sentTime = new Date().toISOString().replace('T', ' ').slice(0, 16);
+        updateNextActionAfterIssue(sentTime, true);
+        showToast('請求書をメールで送信しました。');
     }
 
-    function skipEmail() {
-        document.getElementById('email-modal').style.display = 'none';
-        const dateStr = new Date().toISOString().replace('T', ' ').slice(0, 16);
-        updateNextActionAfterIssue(dateStr, false);
+    function closeModal() {
+        const modal = document.getElementById('success-modal');
+        if (modal.style.display === 'none') return;
+        modal.style.display = 'none';
+        const now = new Date().toISOString().replace('T', ' ').slice(0, 16);
+        updateNextActionAfterIssue(now, false);
     }
 
     function updateNextActionAfterIssue(dateStr, emailSent) {
         const naa = document.getElementById('next-action-area');
         naa.className = 'next-action-card accent-success';
-        naa.innerHTML = `
-            <div class="next-action-content">
-                <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-circle-check"></i></span>
-                <div>
-                    状況: <span style="color: var(--kintone-success); font-weight: 800;">請求書PDF発行済み${emailSent ? ' · メール送信済み' : ''}</span><br>
-                    <span style="font-weight: normal; font-size: 12px; color: #666;">発行日時: ${dateStr}${emailSent ? '　代理店へのメール送信が完了しました。' : '　必要に応じてPDFをダウンロードしてください。'}</span>
-                </div>
-            </div>
-            <button class="btn-invoice-secondary" onclick="downloadPDF()" style="font-size: 13px; padding: 9px 18px; flex-shrink: 0;">
-                <i class="fas fa-download"></i> PDFをダウンロード
+        
+        const paymentBtnHtml = `
+            <button class="btn-invoice-primary btn-green" onclick="showPaymentModal()" style="padding: 10px 24px; font-size: 14px; border-radius: 12px;">
+                <i class="fas fa-hand-holding-dollar"></i> 入金を確認済み
             </button>
         `;
+
+        naa.innerHTML = `
+            <div class="next-action-content">
+                <span style="font-size: 32px; color: #2ecc71;"><i class="fas fa-circle-check"></i></span>
+                <div>
+                    状況: <span style="color: #2ecc71; font-weight: 800;">請求書発行済み${emailSent ? ' · 送信完了' : ''}</span><br>
+                    <span style="font-weight: normal; font-size: 11px; color: #666;">${emailSent ? '代理店への対応が完了しました。入金を確認したら処理を完了してください。' : 'PDFの発行が完了しました。入金を確認したら処理を完了してください。'}</span>
+                </div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <div style="display:flex; gap:5px;">
+                    <button class="btn-invoice-secondary" onclick="downloadPDF()" style="font-size: 11px; padding: 6px 12px; border-color:#e0e0e0; background:#fafafa;">
+                        <i class="fas fa-download"></i> PDF
+                    </button>
+                    <button class="btn-invoice-secondary" onclick="issuePDF()" style="font-size: 11px; padding: 6px 12px; border-color:#e0e0e0; background:#fafafa;">
+                        <i class="fas fa-redo"></i> 再発行
+                    </button>
+                </div>
+                ${paymentBtnHtml}
+            </div>
+        `;
+    }
+
+    function showPaymentModal() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('input-payment-date').value = today;
+        document.getElementById('payment-modal').style.display = 'flex';
+    }
+    function closePaymentModal() {
+        document.getElementById('payment-modal').style.display = 'none';
+    }
+
+    function markAsPaid() {
+        const customDate = document.getElementById('input-payment-date').value || new Date().toISOString().split('T')[0];
+        const remarks = document.getElementById('input-payment-remarks').value;
+        closePaymentModal();
+        
+        // Update Summary Header
+        document.getElementById('summary-payment').textContent = '入金済み';
+        document.getElementById('summary-payment').className = 'summary-primary-value';
+        document.getElementById('summary-payment').style.color = '#2ecc71';
+        
+        // Update Detailed Fields
+        document.getElementById('payment-status-val').innerHTML = '<span class="issued-chip"><i class="fas fa-check"></i> 入金済み</span>';
+        document.getElementById('payment-date-val').textContent = customDate;
+        document.getElementById('payment-date-val').classList.remove('muted');
+
+        const remEl = document.getElementById('payment-remarks-val');
+        if (remarks) {
+            remEl.textContent = remarks;
+            remEl.classList.remove('muted');
+        }
+
+        // Final UI State
+        const naa = document.getElementById('next-action-area');
+        naa.className = 'next-action-card accent-primary';
+        naa.innerHTML = `
+            <div class="next-action-content">
+                <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-award"></i></span>
+                <div>
+                    状況: <span style="color: var(--kintone-blue); font-weight: 800;">全ての処理が完了しました</span><br>
+                    <span style="font-weight: normal; font-size: 11px; color: #666;">入金の確認が取れました。このレコードのすべてのワークフローは終了しています。</span>
+                </div>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button class="btn-invoice-secondary" onclick="downloadPDF()" style="font-size: 12px; padding: 8px 15px;">
+                    <i class="fas fa-download"></i> 請求書PDF
+                </button>
+            </div>
+        `;
+        
+        showToast('入金を確認しました。処理を終了します。');
+    }
+
+    function downloadPDF() {
+        showToast('PDFを作成中...');
+        setTimeout(() => showToast('ダウンロードを開始しました'), 1000);
     }
 
     function sendEmail() { /* legacy – now handled by email modal */ }
