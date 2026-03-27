@@ -340,6 +340,17 @@ td.col-product-name {
     box-sizing: border-box;
 }
 
+/* ── Column Alignment Rules ──────────────────────────────────
+   Apply to BOTH <th> and <td> for consistent column alignment.
+   Rule:
+     .col-text  → text, label, name fields          → left
+     .col-num   → numbers (qty, price, count)        → right
+     .col-mid   → date, status, type (種別), action  → center
+   ──────────────────────────────────────────────────────────── */
+.col-text  { text-align: left; }
+.col-num   { text-align: right;  font-variant-numeric: tabular-nums; }
+.col-mid   { text-align: center; }
+
 /* Footer row for shipment/return forms */
 .shipment-footer-btns {
     display: flex;

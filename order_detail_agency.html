@@ -193,12 +193,12 @@
                 <thead>
                     <tr>
                         <th style="min-width: 250px;">商品名</th>
-                        <th style="width: 100px; text-align: right;">注文数量</th>
-                        <th style="width: 60px; text-align: center;">単位</th>
-                        <th style="width: 100px; text-align: right;">出荷済</th>
-                        <th style="width: 100px; text-align: right;">未出荷</th>
-                        <th style="width: 100px; text-align: right;">返品</th>
-                        <th style="width: 120px;">ステータス</th>
+                        <th class="col-num" style="width: 100px;">注文数量</th>
+                        <th class="col-mid" style="width: 60px;">単位</th>
+                        <th class="col-num" style="width: 100px;">出荷済</th>
+                        <th class="col-num" style="width: 100px;">未出荷</th>
+                        <th class="col-num" style="width: 100px;">返品</th>
+                        <th class="col-mid" style="width: 120px;">ステータス</th>
                     </tr>
                 </thead>
                 <tbody id="product-tbody">
@@ -267,8 +267,8 @@
                     <thead>
                         <tr>
                             <th>タスクID</th>
-                            <th>ステータス</th>
-                            <th>出荷日</th>
+                            <th class="col-mid">ステータス</th>
+                            <th class="col-mid">出荷日</th>
                             <th>出荷サマリー</th>
                             <th>備考</th>
                         </tr>
@@ -286,8 +286,8 @@
                     <thead>
                         <tr>
                             <th>タスクID</th>
-                            <th>ステータス</th>
-                            <th>返品日</th>
+                            <th class="col-mid">ステータス</th>
+                            <th class="col-mid">返品日</th>
                             <th>理由</th>
                             <th>備考</th>
                         </tr>
@@ -342,7 +342,7 @@
             productTbody.innerHTML = orderState.items.map(item => {
                 const remaining = item.orderQty - item.deliveredQty;
                 const progress = (item.deliveredQty / item.orderQty) * 100;
-                return `<tr><td class="col-product-name">${item.name} (${item.id})</td><td style="text-align: right;">${item.orderQty}</td><td style="text-align: center;">個</td><td style="text-align: right;">${item.deliveredQty}</td><td style="text-align: right; background-color: ${remaining > 0 ? '#fffaf0' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--kintone-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td style="text-align: right; color: ${item.returnQty > 0 ? 'var(--kintone-danger)' : '#999'}">${item.returnQty}</td><td style="text-align: center;"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '完納' : (progress > 0 ? '分納中' : '未出荷')}</span></td></tr>`;
+                return `<tr><td class="col-product-name">${item.name} (${item.id})</td><td class="col-num">${item.orderQty}</td><td class="col-mid">個</td><td class="col-num">${item.deliveredQty}</td><td class="col-num" style="background-color: ${remaining > 0 ? '#fffaf0' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--kintone-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td class="col-num" style="color: ${item.returnQty > 0 ? 'var(--kintone-danger)' : '#999'}">${item.returnQty}</td><td class="col-mid"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '完納' : (progress > 0 ? '分納中' : '未出荷')}</span></td></tr>`;
             }).join('');
         }
 

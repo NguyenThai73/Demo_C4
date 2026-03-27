@@ -172,28 +172,28 @@
             <thead>
                 <tr>
                     <th style="min-width: 250px;">商品名</th>
-                    <th style="width: 100px; text-align: right;">注文数量</th>
-                    <th style="width: 60px; text-align: center;">単位</th>
-                    <th style="width: 100px; text-align: right;">出荷済</th>
-                    <th style="width: 100px; text-align: right;">未出荷</th>
-                    <th style="width: 100px; text-align: right;">返品</th>
-                    <th style="width: 120px;">ステータス</th>
-                    <th style="width: 180px;">操作</th>
+                    <th class="col-num" style="width: 100px;">注文数量</th>
+                    <th class="col-mid" style="width: 60px;">単位</th>
+                    <th class="col-num" style="width: 100px;">出荷済</th>
+                    <th class="col-num" style="width: 100px;">未出荷</th>
+                    <th class="col-num" style="width: 100px;">返品</th>
+                    <th class="col-mid" style="width: 120px;">ステータス</th>
+                    <th class="col-mid" style="width: 180px;">操作</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td class="col-product-name">米ぬかの恵み 300mL (KM300-V01)</td>
-                    <td style="text-align: right;">100</td>
-                    <td style="text-align: center;">個</td>
-                    <td style="text-align: right;">50</td>
-                    <td style="text-align: right; background-color: #fffaf0;">
+                    <td class="col-num">100</td>
+                    <td class="col-mid">個</td>
+                    <td class="col-num">50</td>
+                    <td class="col-num" style="background-color: #fffaf0;">
                         <div class="primary-value-huge">50</div>
                         <div class="secondary-info" style="color: var(--kintone-danger);">未出荷</div>
                     </td>
-                    <td style="text-align: right; color: #999;">0</td>
-                    <td><span class="badge-status">出荷中</span></td>
-                    <td style="text-align: center;">
+                    <td class="col-num" style="color: #999;">0</td>
+                    <td class="col-mid"><span class="badge-status">出荷中</span></td>
+                    <td class="col-mid">
                         <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                             <button class="btn-primary-action" onclick="toggleShipmentInput()" style="padding: 6px 15px; min-width: 60px;">出荷</button>
                             <button class="btn-action" style="background-color: #ff4d4f; color: white; border: none; padding: 6px 15px; min-width: 60px;" onclick="toggleReturnInput()">返品</button>
@@ -270,7 +270,7 @@
                 <thead>
                     <tr>
                         <th>タスクID</th>
-                        <th>ステータス</th>
+                        <th class="col-mid">ステータス</th>
                         <th>配送先</th>
                         <th>サマリー</th>
                     </tr>
