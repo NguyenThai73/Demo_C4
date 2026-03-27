@@ -194,7 +194,7 @@
         <!-- Top Bar -->
         <div class="kintone-header-top">
             <div class="header-content-inner">
-                <div class="header-logo">kintone</div>
+                <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;">kintone</a></div>
                 <div class="header-user">
                     <span>✉</span>
                     <div style="display: flex; align-items: center; gap: 8px;">
@@ -314,7 +314,7 @@
                     </tr>
                     <!-- Row 2 -->
                     <tr>
-                        <td><a href="task_detail.html" class="link-text">501</a></td>
+                        <td><a href="task_detail.html?id=501" class="link-text">501</a></td>
                         <td>出荷 (販売)</td>
                         <td><span class="badge-status status-wait">待機中</span></td>
                         <td>8</td>
@@ -377,37 +377,6 @@
                         </td>
                     </tr>
                     <!-- Row 4 -->
-                    <tr>
-                        <td><a href="task_detail.html" class="link-text">499</a></td>
-                        <td>出荷 (販売)</td>
-                        <td><span class="badge-status status-wait">待機中</span></td>
-                        <td>15</td>
-                        <td>商品</td>
-                        <td><a href="task_detail.html" class="link-text">317</a></td>
-                        <td>2026-03-30</td>
-                        <td><a href="task_detail.html" class="link-text">岐阜倉庫</a></td>
-                        <td>
-                            <div class="user-cell">
-                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
-                                    class="cell-avatar">
-                                Test staff
-                            </div>
-                        </td>
-                        <td>2026-03-23 18:55</td>
-                        <td>
-                            <div class="user-cell">
-                                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
-                                    class="cell-avatar">
-                                Administrator
-                            </div>
-                        </td>
-                        <td>
-                            <div class="action-btns">
-                                <span>✎</span>
-                                <span class="icon-trash">✔️</span>
-                            </div>
-                        </td>
-                    </tr>
                     <!-- Row 3 -->
                     <tr>
                         <td><a href="task_detail.html" class="link-text">498</a></td>
@@ -680,8 +649,13 @@
                         
                         // Update the link to pass type=sample
                         const link = row.cells[0].querySelector('a');
-                        if (link && !link.href.includes('type=')) {
-                            link.href = 'task_detail.html?type=sample';
+                        const taskId = link.textContent.trim();
+                        if (link) {
+                            if (taskId === '501') {
+                                link.href = 'task_detail.html?id=501&type=sample';
+                            } else if (!link.href.includes('type=')) {
+                                link.href = 'task_detail.html?type=sample';
+                            }
                         }
                     } else {
                         row.style.display = 'none';
