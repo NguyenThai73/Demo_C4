@@ -677,6 +677,12 @@
                     // Show only "出荷 (販売)" that are "待機中" AND are "岐阜倉庫"
                     if (taskType === '出荷 (販売)' && statusText === '待機中' && warehouse === '岐阜倉庫') {
                         row.style.display = '';
+                        
+                        // Update the link to pass type=sample
+                        const link = row.cells[0].querySelector('a');
+                        if (link && !link.href.includes('type=')) {
+                            link.href = 'task_detail.html?type=sample';
+                        }
                     } else {
                         row.style.display = 'none';
                     }
