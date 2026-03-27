@@ -223,12 +223,8 @@
                     <tbody id="fulfillment-input-body"></tbody>
                 </table>
                 <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
-                    <button class="btn-cancel-ship"
-                        style="padding: 10px 25px; border: 1px solid #ccc; background: #fff;"
-                        onclick="hideShipmentInput()">キャンセル</button>
-                    <button class="btn-submit-ship"
-                        style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;"
-                        onclick="submitShipment()">納品を确定する</button>
+                    <button class="btn-secondary" onclick="hideShipmentInput()">キャンセル</button>
+                    <button class="btn-blue" onclick="submitShipment()">納品を確定する</button>
                 </div>
             </div>
 
@@ -249,12 +245,9 @@
                     <tbody id="return-input-body"></tbody>
                 </table>
                 <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
-                    <button class="btn-cancel-ship"
-                        style="padding: 10px 25px; border: 1px solid #ccc; background: #fff;"
-                        onclick="hideReturnInput()">キャンセル</button>
-                    <button class="btn-submit-ship"
-                        style="padding: 10px 30px; background-color: var(--kintone-danger); color: white; border: none;"
-                        onclick="submitReturn()">返品を确定する</button>
+                    <button class="btn-secondary" onclick="hideReturnInput()">キャンセル</button>
+                    <button class="btn-reject" onclick="submitReturn()"
+                        style="background-color: var(--kintone-danger); color: white; border: none;">返品を確定する</button>
                 </div>
             </div>
         </div>
@@ -333,9 +326,12 @@
             } else if (orderState.status === 'PAYMENT_WAIT') {
                 guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-warning);"><i class="fas fa-coins"></i></span><div>次の対応: <span style="color: var(--kintone-warning);">入金確認</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">顧客の入金が完了したら、ボタンを押して進めてください。</span></div></div><button class="btn-submit-ship" style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;" onclick="verifyPayment()">入金完了を确认する</button>`;
             } else if (orderState.status === 'DELIVERY_READY' || (orderState.status === 'FINISHED' && totalDelivered < totalOrdered)) {
-                guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-truck-fast"></i></span><div>次の対応: <span style="color: var(--kintone-blue);">配送・納品登録</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">配送準備が整いました。納品登録を行ってください。</span></div></div><div style="display: flex; gap: 12px;">${totalDelivered > 0 ? `<button class="btn-cancel-ship" style="padding: 10px 20px; color: var(--kintone-danger); border-color: var(--kintone-danger);" onclick="showReturnInput()">返品をする</button>` : ''}<button class="btn-submit-ship" style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;" onclick="showShipmentInput()">納品を登録する</button></div>`;
+                const returnBtn = totalDelivered > 0
+                    ? `<button class="btn-reject" onclick="showReturnInput()">返品をする</button>`
+                    : '';
+                guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-truck-fast"></i></span><div>次の対応: <span style="color: var(--kintone-blue);">配送・納品登録</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">配送準備が整いました。納品登録を行ってください。</span></div></div><div style="display: flex; gap: 12px;">${returnBtn}<button class="btn-blue" onclick="showShipmentInput()">納品を登録する</button></div>`;
             } else if (orderState.status === 'FINISHED') {
-                guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span><div>状況: <span style="color: var(--kintone-success);">取引完了</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">全てのプロセスが完了しました。</span></div></div><button class="btn-cancel-ship" style="padding: 10px 20px; color: var(--kintone-danger); border-color: var(--kintone-danger);" onclick="showReturnInput()">返品をする</button>`;
+                guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span><div>状況: <span style="color: var(--kintone-success);">取引完了</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">全ての納品が完了しました。返品が必要な場合は返品ボタンから登録してください。</span></div></div><button class="btn-reject" onclick="showReturnInput()">返品をする</button>`;
             }
             nextActionArea.innerHTML = guideHtml;
 
