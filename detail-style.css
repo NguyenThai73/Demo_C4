@@ -433,12 +433,14 @@ th.col-mid { text-align: center; }
  *   <span class="badge-status status-done">返品完了</span>
  */
 .badge-status {
-    padding: var(--space-xs) var(--space-md);
-    border-radius: var(--radius-badge);
+    padding: 3px 10px;
+    border-radius: 100px;          /* full pill shape */
     font-size: var(--text-size-xs);
-    font-weight: var(--font-extrabold);
+    font-weight: var(--font-bold);
+    line-height: 1.4;
     display: inline-block;
     white-space: nowrap;
+    letter-spacing: 0.02em;
 }
 
 /* gray — 未着手 / 未出荷 / 未入金 */
