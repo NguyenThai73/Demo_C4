@@ -281,7 +281,7 @@
 
 .field-value {
     font-size: var(--text-size-base);
-    font-weight: var(--font-bold);
+    font-weight: var(--font-normal);
     color: var(--text-primary);
     background: var(--color-bg-field);
     border: 1px solid var(--color-border);
