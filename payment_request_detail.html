@@ -288,10 +288,12 @@
             }
             
             modal.classList.remove('hidden');
+            modal.style.display = 'flex';
         }
 
         function closeModal() {
             modal.classList.add('hidden');
+            modal.style.display = 'none';
         }
 
         function showConfirmApproval() {
