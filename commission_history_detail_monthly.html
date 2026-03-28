@@ -6,8 +6,57 @@
     <title>報酬取引詳細 (今月) | Silica Link</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="detail-style.css">
+    <link rel="stylesheet" href="modal-style.css">
     <!-- Font Awesome 6.x CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #1e272e;
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            max-width: 480px;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+        .toast-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
+            margin-left: 8px;
+        }
+        /* Confirmed table row highlight */
+        tr.confirmed-row td { background-color: #f0fff4 !important; }
+        tr.excluded-row td { background-color: #fafafa !important; color: #bbb; }
+        tr.excluded-row td a { color: #bbb !important; pointer-events: none; }
+    </style>
 </head>
 <body>
 
@@ -43,26 +92,33 @@
 
 <div class="main-container">
     <div class="breadcrumb">
-        🏠 <span>/</span> <a href="commission_history_list_monthly.html" style="color: inherit; text-decoration: none;">アプリ: 報酬取引履歴管理</a> <span>/</span> レコード: #66
+        🏠 <span>/</span> <a href="commission_history_list_monthly.html" style="color: inherit; text-decoration: none;">アプリ: 報酬取引履歴管理</a> <span>/</span> レコード詳細
     </div>
 
-    <!-- ... Same as detail ... but with monthly context links -->
+    <div class="kintone-action-toolbar">
+        <div class="action-icon-btn">︿</div>
+        <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
+        <div class="action-icon-btn">+</div>
+        <div class="action-icon-btn">📄</div>
+        <div class="action-icon-btn">⚙ <span>▼</span></div>
+        <div class="action-icon-btn">⋯</div>
+    </div>
+
+    <!-- Summary Header -->
     <div class="summary-header">
         <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
             <div style="display: flex; align-items: center; gap: 15px;">
                 <div class="badge-type" style="background-color: #e7f5ff; color: #1864ab; border-color: #a5d8ff;">今月の報酬</div>
-                <div style="font-size: 24px; font-weight: bold;">Record #66 (2026年3月度)</div>
             </div>
         </div>
-        
         <div class="summary-grid" style="grid-template-columns: repeat(4, 1fr);">
             <div class="summary-item">
                 <div class="summary-label">報酬金額</div>
-                <div class="summary-primary-value">¥28,250</div>
+                <div class="summary-primary-value">¥ 27,000</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">ステータス</div>
-                <div class="summary-primary-value" style="color: var(--color-success); font-size: 18px;">確定済</div>
+                <div id="summary-status" class="summary-primary-value" style="color: var(--color-warning); font-size: 18px;">一時計上</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">期間</div>
@@ -75,12 +131,36 @@
         </div>
     </div>
 
+    <!-- Next Action Card -->
+    <div id="next-action-area" class="next-action-card" style="border-left-color: #e67e22; background-color: #fff8f0; margin-bottom: 24px;">
+        <div class="next-action-content">
+            <span style="font-size: 32px; color: #e67e22;"><i class="fas fa-circle-check"></i></span>
+            <div>
+                次の対応: <span style="color: #e67e22; font-weight: 800;">報酬を確定する</span><br>
+                <span style="font-weight: normal; font-size: 11px; color: #555;">「配送完了」となっている注文を対象に報酬を確定し、支払依頼を作成します。</span>
+            </div>
+        </div>
+        <button id="btn-confirm" onclick="showConfirmModal()"
+            style="padding: 10px 28px; background: #e67e22; color: white; border: none; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 12px rgba(230,126,34,0.25); transition: opacity 0.2s;">
+            <i class="fas fa-check" style="margin-right: 8px;"></i>確定する
+        </button>
+    </div>
+
+    <!-- 基本情報 -->
     <div class="section-card section-info">
-        <div class="section-title"><span><i class="fas fa-file-invoice-dollar"></i></span> 2026年3月度の報酬詳細</div>
+        <div class="section-title"><span><i class="fas fa-file-invoice-dollar"></i></span> 報酬詳細情報</div>
         <div class="field-grid">
             <div class="field-item">
                 <div class="field-label">報酬取引ID</div>
                 <div class="field-box">66</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">承認者</div>
+                <div class="field-box">一</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">報酬種別</div>
+                <div class="field-box">アフィリエイト報酬</div>
             </div>
             <div class="field-item">
                 <div class="field-label">期間</div>
@@ -88,65 +168,234 @@
             </div>
             <div class="field-item">
                 <div class="field-label">計上日</div>
-                <div class="field-box">2026-03-20</div>
+                <div class="field-box">2026-03-31</div>
             </div>
             <div class="field-item">
-                <div class="field-label">報酬種別</div>
-                <div class="field-box">アフィリエイト報酬</div>
+                <div class="field-label">取引先名</div>
+                <div class="field-box" style="color: var(--color-primary); font-weight: bold;">TORI</div>
             </div>
             <div class="field-item">
-                <div class="field-label">ステータス</div>
-                <div style="margin-top: 4px;"><span class="badge-status status-ok">確定済</span></div>
+                <div class="field-label">計算対象金額</div>
+                <div class="field-box text-right" style="font-weight: 800; color: #666; font-size: 15px;">¥ 565,000</div>
             </div>
             <div class="field-item">
                 <div class="field-label">報酬金額</div>
-                <div class="field-box text-right" style="font-weight: 800; color: var(--color-primary); font-size: 16px;">¥ 28,250</div>
+                <div class="field-box text-right" style="font-weight: 900; color: var(--color-primary); font-size: 18px;">¥ 27,000</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-card section-info">
+        <div class="section-title"><span><i class="fas fa-handshake"></i></span> パートナーの情報</div>
+        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="field-item">
+                <div class="field-label">パートナーID</div>
+                <div class="field-box">TOR-9912</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">氏名/会社名</div>
+                <div class="field-box" style="font-weight: 800;">株式会社ＴＯＲＩ</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">パートナー種別</div>
+                <div class="field-box">アフィリエイト</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">パートナーランク</div>
+                <div class="field-box"><span style="color: #d4af37; font-weight: bold;">★ ゴールド</span></div>
+            </div>
+            <div class="field-item" style="grid-column: span 2;">
+                <div class="field-label">メールアドレス</div>
+                <div class="field-box">tori-partner@test.com</div>
             </div>
         </div>
     </div>
 
     <!-- Linked Orders -->
-    <div class="section-card">
-        <div class="section-title" style="color: var(--text-primary);"><span><i class="fas fa-list-check"></i></span> 今月の計算対象分</div>
-        <table class="k-table">
+    <div class="section-card section-info">
+        <div class="section-title"><span><i class="fas fa-list-check"></i></span> 今月の計算対象分</div>
+        <table class="k-table" style="font-size: 11.5px;">
             <thead>
                 <tr>
-                    <th style="width: 80px;">注文ID</th>
-                    <th style="width: 100px;">注文日</th>
-                    <th>商品名</th>
-                    <th class="col-num" style="width: 120px;">報酬金額</th>
+                    <th style="width: 70px;">注文ID</th>
+                    <th style="width: 90px;">注文日</th>
+                    <th style="width: 100px;">注文ステータス</th>
+                    <th style="width: 130px;">トランザクション</th>
+                    <th style="width: 100px;">対象商品SKU</th>
+                    <th>対象商品名</th>
+                    <th class="col-num" style="width: 50px;">数量</th>
+                    <th class="col-num" style="width: 90px;">注文金額</th>
+                    <th class="col-num" style="width: 80px;">掛け率(%)</th>
+                    <th class="col-num" style="width: 100px;">報酬金額</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><a href="order_detail_delivered.html" class="link-text">308</a></td>
+                <tr id="row-306">
+                    <td><a href="order_detail_delivered.html" style="color: var(--color-primary); text-decoration: none; font-weight: 800;">306</a></td>
                     <td>2026-03-20</td>
-                    <td>田七人参の恵み 300mL</td>
-                    <td class="col-num">¥ 25,000</td>
+                    <td><span class="badge-status status-ok" style="font-size: 10px;">配送完了</span></td>
+                    <td>注文</td>
+                    <td>JS300-V01</td>
+                    <td>田七人参de笑み 300mL</td>
+                    <td class="col-num">100</td>
+                    <td class="col-num">¥ 500,000</td>
+                    <td class="col-num">5.0%</td>
+                    <td class="col-num" style="font-weight: bold; color: var(--color-primary);">¥ 25,000</td>
                 </tr>
-                <tr>
-                    <td><a href="order_detail_delivered.html" class="link-text">307</a></td>
+                <tr id="row-307">
+                    <td><a href="order_detail_delivered.html" style="color: var(--color-primary); text-decoration: none; font-weight: 800;">307</a></td>
                     <td>2026-03-20</td>
+                    <td><span class="badge-status status-info" style="font-size: 10px; background-color: #e3f2fd; color: #1e88e5; border-color: #bbdefb;">出荷中</span></td>
+                    <td>注文</td>
+                    <td>KM300-V01</td>
                     <td>米ぬかの恵み 300mL</td>
-                    <td class="col-num">¥ 2,250</td>
+                    <td class="col-num">5</td>
+                    <td class="col-num">¥ 45,000</td>
+                    <td class="col-num">5.0%</td>
+                    <td class="col-num" style="font-weight: bold; color: var(--color-primary);">¥ 2,250</td>
                 </tr>
-                <tr>
-                    <td><a href="order_detail_delivered.html" class="link-text">309</a></td>
+                <tr id="row-309">
+                    <td><a href="order_detail_delivered.html" style="color: var(--color-primary); text-decoration: none; font-weight: 800;">309</a></td>
                     <td>2026-03-20</td>
+                    <td><span class="badge-status status-warn" style="font-size: 10px;">確認待ち</span></td>
+                    <td>注文</td>
+                    <td>RC50-V01</td>
                     <td>Rice Silica 50mL</td>
-                    <td class="col-num">¥ 1,000</td>
+                    <td class="col-num">100</td>
+                    <td class="col-num">¥ 20,000</td>
+                    <td class="col-num">5.0%</td>
+                    <td class="col-num" style="font-weight: bold; color: var(--color-primary);">¥ 1,000</td>
+                </tr>
+                <tr id="row-300">
+                    <td><a href="order_detail_delivered.html" style="color: var(--color-primary); text-decoration: none; font-weight: 800;">300</a></td>
+                    <td>2026-02-15</td>
+                    <td><span class="badge-status status-return" style="font-size: 10px;">返品完了</span></td>
+                    <td>返品</td>
+                    <td>JS300-V01</td>
+                    <td>田七人参de笑み 300mL</td>
+                    <td class="col-num" style="color: #e74c3c;">-1</td>
+                    <td class="col-num" style="color: #e74c3c;">- ¥ 25,000</td>
+                    <td class="col-num">5.0%</td>
+                    <td class="col-num" style="font-weight: bold; color: #e74c3c;">- ¥ 1,250</td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr style="background-color: #f8f9fa;">
+                    <td colspan="9" style="text-align: right; font-weight: 800; padding: 12px;">今月の合計報酬（暫定）</td>
+                    <td class="col-num" style="font-weight: 900; color: var(--color-primary); font-size: 14px; border-bottom: 3px double var(--color-primary);">¥ 27,000</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
+</div>
 
-    <div style="margin-top: 40px; padding: 20px; text-align: center;">
-        <button class="btn-secondary" onclick="location.href='commission_history_list_monthly.html'" style="padding: 12px 60px;">今月の報酬一覧に戻る</button>
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirm-modal" style="display:none;">
+    <div class="modal-card">
+        <div class="modal-icon" style="color: #e67e22;">
+            <i class="fas fa-circle-check"></i>
+        </div>
+        <div class="modal-title">報酬を確定しますか？</div>
+        <div class="modal-description" style="text-align: left; font-size: 13px; line-height: 1.8;">
+            以下の条件で報酬を確定し、<strong>支払依頼レコード</strong>を作成します。<br><br>
+            <div style="background: #f0fff4; border: 1px solid #b2dfdb; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px;">
+                <div style="font-weight: 800; color: #2e7d32; margin-bottom: 6px;"><i class="fas fa-check-circle" style="margin-right: 6px;"></i>確定対象（配送完了）</div>
+                <div style="font-size: 12px; color: #333;">注文 #306 — 田七人参de笑み 300mL &nbsp;<strong>¥ 25,000</strong></div>
+            </div>
+            <div style="background: #fafafa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px 16px;">
+                <div style="font-weight: 700; color: #999; margin-bottom: 6px;"><i class="fas fa-minus-circle" style="margin-right: 6px;"></i>対象外（未完了・返品）</div>
+                <div style="font-size: 12px; color: #bbb;">注文 #307, #309, #300</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-secondary" onclick="closeModal()">キャンセル</button>
+            <button class="modal-btn modal-btn-orange" onclick="executeConfirm()">確定する</button>
+        </div>
     </div>
+</div>
 
+<!-- Toast -->
+<div class="toast" id="toast">
+    <i class="fas fa-check-circle" style="color: #2ecc71; font-size: 18px; flex-shrink:0;"></i>
+    <span id="toast-msg"></span>
 </div>
 
 <footer style="text-align: center; padding: 40px; font-size: 11px; color: #95a5a6;">© 2026 Silica Link Management System</footer>
+
+<script>
+    function showConfirmModal() {
+        document.getElementById('confirm-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('confirm-modal').style.display = 'none';
+    }
+
+    function executeConfirm() {
+        closeModal();
+
+        // 1. Update summary status → 確定済み
+        const summaryStatus = document.getElementById('summary-status');
+        summaryStatus.textContent = '確定済み';
+        summaryStatus.style.color = '#2ecc71';
+
+        // 2. Highlight confirmed / excluded rows
+        document.getElementById('row-306').classList.add('confirmed-row');
+        document.getElementById('row-307').classList.add('excluded-row');
+        document.getElementById('row-309').classList.add('excluded-row');
+        document.getElementById('row-300').classList.add('excluded-row');
+
+        // 3. Update next-action-card → 支払依頼を登録する
+        document.getElementById('next-action-area').style.borderLeftColor = '#2ecc71';
+        document.getElementById('next-action-area').style.backgroundColor = '#f0fff4';
+        document.getElementById('next-action-area').innerHTML = `
+            <div class="next-action-content">
+                <span style="font-size: 32px; color: #2ecc71;"><i class="fas fa-circle-check"></i></span>
+                <div>
+                    次の対応: <span style="color: #2ecc71; font-weight: 800;">支払依頼を登録する</span><br>
+                    <span style="font-weight: normal; font-size: 11px; color: #555;">報酬が確定されました。支払依頼レコードを作成し、承認フローへ進んでください。</span>
+                </div>
+            </div>
+            <button onclick="registerPaymentRequest()"
+                style="padding: 10px 28px; background: #2ecc71; color: white; border: none; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 12px rgba(46,204,113,0.25); transition: opacity 0.2s;">
+                <i class="fas fa-file-circle-plus" style="margin-right: 8px;"></i>支払依頼を登録する
+            </button>
+        `;
+    }
+
+    function registerPaymentRequest() {
+        // Disable button
+        const btn = document.querySelector('#next-action-area button');
+        if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
+
+        // Update next-action → 完了
+        document.getElementById('next-action-area').style.borderLeftColor = '#3498db';
+        document.getElementById('next-action-area').style.backgroundColor = '#f0f7ff';
+        document.getElementById('next-action-area').innerHTML = `
+            <div class="next-action-content">
+                <span style="font-size: 32px; color: #3498db;"><i class="fas fa-paper-plane"></i></span>
+                <div>
+                    状況: <span style="color: #3498db; font-weight: 800;">支払依頼を登録しました</span><br>
+                    <span style="font-weight: normal; font-size: 11px; color: #555;">支払依頼レコード (ID: 96) が作成されました。承認者による確認をお待ちください。</span>
+                </div>
+            </div>
+            <a href="payment_request_detail.html"
+                style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 28px; background: #3498db; color: white; border-radius: 8px; font-weight: 800; font-size: 14px; text-decoration: none; white-space: nowrap; box-shadow: 0 4px 12px rgba(52,152,219,0.25);">
+                <i class="fas fa-arrow-right"></i>支払確認へ進む
+            </a>
+        `;
+
+        // Show toast
+        showToast('支払依頼レコード (ID: 96) を作成しました。');
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-msg').textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+</script>
 
 </body>
 </html>
