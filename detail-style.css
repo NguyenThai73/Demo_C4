@@ -29,7 +29,7 @@
     --color-bg-page:           #f4f7f9;
     --color-bg-surface:        #ffffff;
     --color-bg-table-head:     #f8f9fa;
-    --color-bg-field:          #f8f9fa;
+    --color-bg-field:          #f1f3f4;
     --color-bg-op-section:     #fffaf0;   /* operational section tint */
     --color-bg-modal-overlay:  rgba(0, 0, 0, 0.5);
 
@@ -288,10 +288,14 @@
 /* Input/select box inside field items */
 .field-box {
     background: var(--color-bg-field);
-    border: 1px solid var(--color-border);
-    padding: var(--space-sm) var(--space-md);
+    border: 1px solid #ddd;
+    padding: 10px 14px;
     border-radius: var(--radius-md);
-    font-size: 13px;
+    font-size: 14px;
+    color: #333;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
     width: 100%;
     box-sizing: border-box;
 }
