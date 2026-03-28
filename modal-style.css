@@ -1,0 +1,101 @@
+/* Modal Style System for Silica Link Portal */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(2px);
+}
+
+.modal-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+    width: 95%;
+    max-width: 480px;
+    padding: 40px 30px;
+    position: relative;
+    text-align: center;
+    animation: modal-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modal-pop {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    line-height: 1;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.modal-description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* Modal Buttons */
+.modal-btn {
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    border: none;
+    min-width: 120px;
+    transition: all 0.2s;
+}
+
+.modal-btn-secondary {
+    background: #f1f3f4;
+    color: #5f6368;
+}
+
+.modal-btn-secondary:hover {
+    background: #e8eaed;
+}
+
+.modal-btn-primary {
+    background: var(--kintone-blue, #3498db);
+    color: white;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.modal-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(52, 152, 219, 0.3);
+}
+
+.modal-btn-orange {
+    background: #e67e22;
+    color: white;
+    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.2);
+}
+
+.modal-btn-orange:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(230, 126, 34, 0.3);
+}

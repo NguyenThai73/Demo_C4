@@ -15,7 +15,8 @@
 
     <div class="kintone-header-top">
         <div class="header-content-inner">
-            <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;"><span class="k-icon">k</span> kintone</a></div>
+            <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;"><span
+                        class="k-icon">k</span> kintone</a></div>
             <div class="header-user">
                 <span>✉</span>
                 <div style="display: flex; align-items: center; gap: 8px;">
@@ -52,7 +53,7 @@
 
     <div class="main-container">
         <div class="breadcrumb">
-            🏠 <span>/</span> アプリ: 注文管理 <span>/</span> レコード: Order #311
+            🏠 <span>/</span> アプリ: 注文管理
         </div>
         <div class="kintone-action-toolbar">
             <div class="action-icon-btn">︿</div>
@@ -72,30 +73,38 @@
                     <div class="badge-type badge-agency"
                         style="font-size: 12px; background-color: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; font-weight: 800; padding: 4px 12px;">
                         Agency注文</div>
-                    <div style="font-size: 24px; font-weight: bold;">Order #311</div>
+                    <div style="font-size: 24px; font-weight: bold;"></div>
                 </div>
             </div>
 
             <div class="summary-grid"
                 style="width: 100%; border-top: 1px solid #eee; padding-top: 20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
                 <div class="summary-item">
-                    <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文金額合計</div>
-                    <div id="summary-total" class="summary-primary-value" style="font-size: 20px; font-weight: 800;">¥168,300</div>
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文金額合計</div>
+                    <div id="summary-total" class="summary-primary-value" style="font-size: 20px; font-weight: 800;">
+                        ¥168,300</div>
                 </div>
                 <div class="summary-item">
-                    <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">入金状況</div>
-                    <div id="summary-payment" class="summary-primary-value" style="font-size: 18px; font-weight: 700; color: var(--kintone-success);">入金済み</div>
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">入金状況</div>
+                    <div id="summary-payment" class="summary-primary-value"
+                        style="font-size: 18px; font-weight: 700; color: var(--kintone-success);">入金済み</div>
                 </div>
                 <div class="summary-item">
-                    <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">出荷状況</div>
-                    <div id="summary-shipping" class="summary-primary-value" style="font-size: 18px; font-weight: 700; color: #999;">出荷準備中</div>
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文ステータス</div>
+                    <div id="summary-shipping" class="summary-primary-value"
+                        style="font-size: 18px; font-weight: 700; color: #999;">出荷中</div>
                 </div>
                 <div class="summary-item">
-                    <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文日</div>
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文日</div>
                     <div class="summary-value" style="font-weight: bold;">2026-03-23</div>
                 </div>
                 <div class="summary-item">
-                    <div class="summary-label" style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">配送予定日</div>
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">配送予定日</div>
                     <div class="summary-value" style="font-weight: bold;">2026-03-25</div>
                 </div>
             </div>
@@ -113,7 +122,7 @@
             </div>
             <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
                 <div class="field-item">
-                    <div class="field-label">Partner注文番号 (PO)</div>
+                    <div class="field-label">PO発注ID</div>
                     <div class="field-value" style="font-weight: bold;">PO-2026-0322-01</div>
                 </div>
                 <div class="field-item">
@@ -153,7 +162,7 @@
             <div id="shipment-input-area"
                 style="display: none; margin-top: 25px; padding-top: 20px; border-top: 2px solid var(--kintone-blue); background: #ffffff; padding: 20px; border-radius: 8px;">
                 <div style="font-weight: 800; margin-bottom: 20px; color: var(--kintone-blue); font-size: 15px;">
-                    <i class="fas fa-truck-ramp-box" style="margin-right: 10px;"></i> 納品を登録する
+                    <i class="fas fa-truck-ramp-box" style="margin-right: 10px;"></i> 出荷する
                 </div>
                 <table class="shipment-input-table">
                     <thead>
@@ -168,7 +177,7 @@
                 </table>
                 <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
                     <button class="btn-secondary" onclick="hideShipmentInput()">キャンセル</button>
-                    <button class="btn-blue" onclick="submitShipment()">納品を確定する</button>
+                    <button class="btn-blue" onclick="submitShipment()">出荷を確定する</button>
                 </div>
             </div>
         </div>
@@ -220,34 +229,52 @@
 
             const totalOrdered = orderState.items.reduce((acc, item) => acc + item.orderQty, 0);
             const totalDelivered = orderState.items.reduce((acc, item) => acc + item.deliveredQty, 0);
-            summaryShipping.innerText = totalDelivered >= totalOrdered ? '出荷中' : (totalDelivered > 0 ? '出荷中' : '出荷準備中');
+            summaryShipping.innerText = totalDelivered >= totalOrdered ? '出荷中' : (totalDelivered > 0 ? '出荷中' : '出荷中');
             summaryShipping.style.color = totalDelivered >= totalOrdered ? 'var(--kintone-success)' : (totalDelivered > 0 ? 'var(--kintone-blue)' : '#999');
 
             let guideHtml = '';
-            const returnBtn = totalDelivered > 0
-                ? `<button class="btn-reject" onclick="showReturnInput()">返品をする</button>`
-                : '';
-            
-            guideHtml = `<div class="next-action-content">
-                <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-truck-fast"></i></span>
-                <div>
-                    次の対応: <span style="color: var(--kintone-blue); font-weight:800;">配送・納品登録</span><br>
-                    <span style="font-weight: normal; font-size: 11px; color: #666;">入金が確認され、配送準備が整いました。ピッキングおよび配送登録を行ってください。</span>
-                </div>
-            </div>
-            <div style="display: flex; gap: 12px;">
-                ${returnBtn}
-                <button class="btn-blue" style="padding: 10px 30px; border-radius:12px; font-weight:800;" onclick="showShipmentInput()">納品を登録する</button>
-            </div>`;
-            
-            nextActionArea.innerHTML = guideHtml;
-            nextActionArea.className = 'next-action-card accent-primary';
+            const allDelivered = totalDelivered >= totalOrdered;
 
+            if (allDelivered) {
+                // Toàn bộ số lượng đã được đăng ký xuất hàng (500/500)
+                guideHtml = `<div class="next-action-content">
+                    <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-boxes-packing"></i></span>
+                    <div>
+                        次の対応: <span style="color: var(--kintone-blue); font-weight:800;">ピッキング・梱包作業</span><br>
+                        <span style="font-weight: normal; font-size: 11px; color: #666;">納品登録が完了しました。タスク管理へ進み、ピッキング・梱包作業を完了させてください。</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn-blue" style="padding: 10px 40px; border-radius:12px; font-weight:800; background-color: #e67e22; border:none;" onclick="location.href='task_detail.html?type=sample'">タスクを確認する</button>
+                </div>`;
+            } else {
+                // Vẫn còn hàng cần đăng ký
+                const returnBtn = totalDelivered > 0
+                    ? `<button class="btn-reject" onclick="showReturnInput()">返品をする</button>`
+                    : '';
+
+                guideHtml = `<div class="next-action-content">
+                    <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-truck-fast"></i></span>
+                    <div>
+                        次の対応: <span style="color: var(--kintone-blue); font-weight:800;">配送・納品登録</span><br>
+                        <span style="font-weight: normal; font-size: 11px; color: #666;">入金が確認され、配送準備が整いました。ピッキングおよび配送登録を行ってください。</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    ${returnBtn}
+                    <button class="btn-blue" style="padding: 10px 30px; border-radius:12px; font-weight:800;" onclick="showShipmentInput()">出荷する</button>
+                </div>`;
+            }
+
+            nextActionArea.innerHTML = guideHtml;
+            nextActionArea.className = allDelivered ? 'next-action-card accent-warning' : 'next-action-card accent-primary';
+
+            // Re-render product table
             productTbody.innerHTML = orderState.items.map(item => {
                 const remaining = item.orderQty - item.deliveredQty;
                 const progress = (item.deliveredQty / item.orderQty) * 100;
                 const recUrl = `https://credit-group.cybozu.com/k/34/show#record=${item.recordId}&tab=none`;
-                return `<tr><td class="col-product-name"><a href="${recUrl}" target="_blank" style="color: var(--kintone-blue); text-decoration: none; font-weight: bold;">${item.name} (${item.id})</a></td><td class="col-num">${item.orderQty}</td><td class="col-mid">個</td><td class="col-num">${item.deliveredQty}</td><td class="col-num" style="background-color: ${remaining > 0 ? '#fffaf0' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--kintone-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td class="col-num" style="color: ${item.returnQty > 0 ? 'var(--kintone-danger)' : '#999'}">${item.returnQty}</td><td class="col-mid"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '出荷中' : (progress > 0 ? '出荷中' : '出荷待ち')}</span></td></tr>`;
+                return `<tr><td class="col-product-name"><a href="${recUrl}" target="_blank" style="color: var(--color-primary); text-decoration: none; font-weight: bold;">${item.name} (${item.id})</a></td><td class="col-num">${item.orderQty}</td><td class="col-mid">個</td><td class="col-num">${item.deliveredQty}</td><td class="col-num" style="background-color: ${remaining > 0 ? '#fffaf0' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--color-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td class="col-num" style="color: ${item.returnQty > 0 ? 'var(--color-danger)' : '#999'}">${item.returnQty}</td><td class="col-mid"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '出荷中' : (progress > 0 ? '出荷中' : '出荷中')}</span></td></tr>`;
             }).join('');
         }
 
@@ -281,19 +308,19 @@
             const bodyId = type === 'SHIP' ? 'shipment-history-body' : 'return-history-body';
             document.getElementById(emptyId).style.display = 'none';
             document.getElementById(tableId).style.display = 'table';
-            
+
             let actions = '';
             if (type === 'SHIP') {
                 actions = `
                     <div style="display:flex; justify-content:flex-end; gap:8px;">
-                        <button class="icon-btn" onclick="alert('タスク #${tId} の編集画面を開きます')" title="編集" style="background:none; border:none; color:var(--kintone-blue); cursor:pointer;"><i class="fas fa-edit"></i> 編集</button>
+                        <button class="icon-btn" onclick="editTask(this, '${tId}', ${qty}, '${note}')" title="編集" style="background:none; border:none; color:var(--kintone-blue); cursor:pointer;"><i class="fas fa-edit"></i> 編集</button>
                         <button class="icon-btn" onclick="deleteTask(this, '${tId}')" title="取消" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer;"><i class="fas fa-trash-can"></i> 取消</button>
                     </div>
                 `;
             }
 
             const row = `<tr>
-                <td style="font-weight:bold;"><a href="task_detail.html?id=${tId}" style="color:var(--kintone-blue); text-decoration:none;">${tId}</a></td>
+                <td style="font-weight:bold;"><a href="task_detail.html?type=sample&id=${tId}" style="color:var(--kintone-blue); text-decoration:none;">${tId}</a></td>
                 <td><span class="badge-status ${type === 'SHIP' ? 'status-ok' : 'status-return'}">${type === 'SHIP' ? '待機中' : '返品'}</span></td>
                 <td>${new Date().toISOString().split('T')[0]}</td>
                 <td>${name} x ${qty}</td>
@@ -303,13 +330,29 @@
             document.getElementById(bodyId).insertAdjacentHTML('afterbegin', row);
         }
 
+        function editTask(btn, tId, qty, note) {
+            const tr = btn.closest('tr');
+            // Populate form
+            showShipmentInput();
+            // Assuming 1 item for simplicity in this demo logic
+            const firstItem = orderState.items[0];
+            const qtyInput = document.getElementById(`shp-qty-${firstItem.id}`);
+            const noteInput = document.getElementById(`shp-note-${firstItem.id}`);
+            if (qtyInput) qtyInput.value = qty;
+            if (noteInput) noteInput.value = note || '';
+
+            // Remove the old row as it's being "re-registered"
+            tr.remove();
+            showToast('内容を編集し、再度「出荷を確定する」を押してください。');
+        }
+
         function deleteTask(btn, tId) {
             if (confirm(`タスク #${tId} を取消しますか？`)) {
                 const tr = btn.closest('tr');
                 const tbody = tr.parentNode;
                 tr.remove();
                 showToast('タスクを取消しました。');
-                
+
                 if (tbody.children.length === 0) {
                     const tableId = tbody.parentNode.id;
                     const type = tableId.split('-')[0];
@@ -327,4 +370,5 @@
         window.onload = updateUI;
     </script>
 </body>
+
 </html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注文詳細 (Agency) - 返品完了 | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="kintone-header-top">
+        <div class="header-content-inner">
+            <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;"><span
+                        class="k-icon">k</span> kintone</a></div>
+            <div class="header-user">
+                <span>✉</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                        alt="User">
+                    <span>Administrator</span>
+                    <span style="font-size: 10px;">▼</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-header-sub">
+        <div class="header-content-inner">
+            <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+            <div class="header-sub-right">
+                <span>⚙</span> <span>❓</span>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="アプリ内検索">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-app-title-bar">
+        <div class="header-content-inner" style="padding: 12px 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="app-icon">🛒</div>
+                <div class="app-title">注文管理 (Agency)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="breadcrumb">
+            🏠 <span>/</span> アプリ: 注文管理
+        </div>
+        <div class="kintone-action-toolbar">
+            <div class="action-icon-btn">︿</div>
+            <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
+            <div class="action-icon-btn" onclick="alert('ここでは注文を直接作成できません。Agencyポータルから操作してください。')">+</div>
+            <div class="action-icon-btn">📄</div>
+            <div class="action-icon-btn">⚙ <span>▼</span></div>
+            <div class="action-icon-btn">⋯</div>
+        </div>
+
+        <div class="summary-header"
+            style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 25px; border-radius: 12px; margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="badge-type badge-agency"
+                        style="font-size: 12px; background-color: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; font-weight: 800; padding: 4px 12px;">
+                        Agency注文</div>
+                    <div style="font-size: 24px; font-weight: bold;"></div>
+                </div>
+            </div>
+
+            <div class="summary-grid"
+                style="width: 100%; border-top: 1px solid #eee; padding-top: 20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;">
+                <div class="summary-item">
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文金額合計</div>
+                    <div id="summary-total" class="summary-primary-value" style="font-size: 20px; font-weight: 800;">
+                        ¥168,300</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">入金状況</div>
+                    <div id="summary-payment" class="summary-primary-value"
+                        style="font-size: 18px; font-weight: 700; color: var(--kintone-success);">入金済み</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文ステータス</div>
+                    <div id="summary-shipping" class="summary-primary-value"
+                        style="font-size: 18px; font-weight: 700; color: var(--kintone-success);">配送完了</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文日</div>
+                    <div class="summary-value" style="font-weight: bold;">2026-03-23</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">配送予定日</div>
+                    <div class="summary-value" style="font-weight: bold;">2026-03-25</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="next-action-area" class="next-action-card accent-success">
+            <div class="next-action-content">
+                <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>
+                <div>状況: <span style="color: var(--kintone-success); font-weight: 800;">全工程完了 (返品処理済)</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">この注文に関する全ての配送および返品作業が完了しています。</span></div>
+            </div>
+        </div>
+
+        <div class="section-card section-info">
+            <div class="section-title"
+                style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+                <span><i class="fas fa-clipboard-list" style="margin-right: 12px;"></i></span>
+                注文概要
+            </div>
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item">
+                    <div class="field-label">PO発注ID</div>
+                    <div class="field-value" style="font-weight: bold;">PO-2026-0322-01</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">チャネル</div>
+                    <div class="field-value">Agency Portal</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">作成日時</div>
+                    <div class="field-value">2026-03-23 10:45</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card section-op" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
+            <div class="section-title"
+                style="color: #856404; font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+                <span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span>
+                商品明細
+            </div>
+            <table class="k-table">
+                <thead>
+                    <tr>
+                        <th style="min-width: 250px;">商品名</th>
+                        <th class="col-num" style="width: 100px;">注文数量</th>
+                        <th class="col-mid" style="width: 60px;">単位</th>
+                        <th class="col-num" style="width: 100px;">出荷済</th>
+                        <th class="col-num" style="width: 100px;">未出荷</th>
+                        <th class="col-num" style="width: 100px;">返品</th>
+                        <th class="col-mid" style="width: 120px;">ステータス</th>
+                    </tr>
+                </thead>
+                <tbody id="product-tbody">
+                    <tr>
+                        <td class="col-product-name"><a href="#" style="color: var(--color-primary); text-decoration: none; font-weight: bold;">Rice Silica 50mL (RC50-V01)</a></td>
+                        <td class="col-num">500</td>
+                        <td class="col-mid">個</td>
+                        <td class="col-num">500</td>
+                        <td class="col-num">0</td>
+                        <td class="col-num" style="color: var(--color-danger)">50</td>
+                        <td class="col-mid"><span class="badge-status status-ok">完了</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Shipment History Section -->
+        <div class="section-card section-hist">
+            <div class="section-title" style="border-bottom: none; padding-bottom: 0;">
+                <span>📜</span> 出荷履歴
+            </div>
+            <div id="shipment-history-container" style="margin-top: 15px;">
+                <table class="k-table" style="font-size: 11px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">タスクID</th>
+                            <th class="col-mid" style="width: 100px;">ステータス</th>
+                            <th class="col-mid" style="width: 120px;">出荷日</th>
+                            <th class="col-mid" style="width: 120px;">追跡番号</th>
+                            <th style="min-width: 150px;">出荷サマリー</th>
+                            <th>備考</th>
+                            <th class="col-mid" style="width: 120px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight:bold;"><a href="task_detail.html?id=SHIP-101&status=finished&type=sample"
+                                    style="color:var(--kintone-blue); text-decoration:none;">SHIP-101</a></td>
+                            <td class="col-mid"><span class="badge-status status-ok">出荷完了</span></td>
+                            <td class="col-mid">2026-03-26</td>
+                            <td class="col-mid" style="font-family: monospace; font-weight: bold; color: #333;">1234-5678-9012</td>
+                            <td>Rice Silica 50mL x 500</td>
+                            <td>ヤマト運輸 (宅急便)</td>
+                            <td class="col-mid">—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Return History Section -->
+        <div class="section-card section-hist" style="margin-top: 20px;">
+            <div class="section-title" style="border-bottom: none; padding-bottom: 0;">
+                <span>🔄</span> 返品履歴
+            </div>
+            <div id="return-history-container" style="margin-top: 15px;">
+                <table class="k-table" style="font-size: 11px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">タスクID</th>
+                            <th class="col-mid" style="width: 100px;">ステータス</th>
+                            <th class="col-mid" style="width: 120px;">返品日</th>
+                            <th class="col-mid" style="width: 120px;">追跡番号</th>
+                            <th style="min-width: 150px;">返品サマリー</th>
+                            <th>備考</th>
+                            <th class="col-mid" style="width: 120px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight:bold;"><a href="task_detail.html?id=RET-101&status=finished&type=return"
+                                    style="color:var(--kintone-blue); text-decoration:none;">RET-101</a></td>
+                            <td class="col-mid"><span class="badge-status"
+                                    style="background-color: #fce4ec; color: #d81b60;">返品完了</span></td>
+                            <td class="col-mid">2026-03-28</td>
+                            <td class="col-mid">—</td>
+                            <td>Rice Silica 50mL x 50</td>
+                            <td>破損につき返品受付</td>
+                            <td class="col-mid">—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Portal</footer>
+
+</body>
+
+</html>

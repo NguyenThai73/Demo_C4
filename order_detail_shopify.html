@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,328 +10,336 @@
     <!-- Font Awesome 6.x CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
-<div class="kintone-header-top">
-    <div class="header-content-inner">
-        <div class="header-logo"><span class="k-icon">k</span> kintone</div>
-        <div class="header-user">
-            <span>✉</span>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
-                <span>Administrator</span>
-                <span style="font-size: 10px;">▼</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="kintone-header-sub">
-    <div class="header-content-inner">
-        <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
-        <div class="header-sub-right">
-            <span>⚙</span> <span>❓</span>
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="アプリ内検索">
-                <span class="search-icon">🔍</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="kintone-app-title-bar">
-    <div class="header-content-inner" style="padding: 12px 10px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <div class="app-icon">🛒</div>
-            <div class="app-title">注文管理 (Shopify)</div>
-        </div>
-    </div>
-</div>
-
-<div class="main-container">
-    <div class="breadcrumb">
-        🏠 <span>/</span> アプリ: 注文管理 <span>/</span> レコード: #309
-    </div>
-    <div class="kintone-action-toolbar">
-        <div class="action-icon-btn">︿</div>
-        <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
-        <div class="action-icon-btn" onclick="alert('ここでは注文を直接作成できません。Shopify管理画面から操作してください。')">+</div>
-        <div class="action-icon-btn">📄</div>
-        <div class="action-icon-btn">⚙ <span>▼</span></div>
-        <div class="action-icon-btn">⋯</div>
-    </div>
-
-    <!-- Success Message - Sticky -->
-    <div id="flash-message" class="sticky-flash">🎉 操作を完了しました。</div>
-
-    <!-- Enhanced Header Summary (Summary First) -->
-    <div class="summary-header" style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 20px;">
-        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div class="badge-type badge-shopify" style="font-size: 14px;">Shopify注文</div>
-                <div style="font-size: 24px; font-weight: bold;">Order #309</div>
-            </div>
-        </div>
-        
-        <div class="summary-grid" style="width: 100%; border-top: 1px solid #eee; padding-top: 15px;">
-            <div class="summary-item">
-                <div class="summary-label">注文金額合計</div>
-                <div class="summary-primary-value">¥165,000</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">注文ステータス</div>
-                <div class="summary-primary-value" style="color: var(--kintone-blue);">一部出荷済み</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">注文日</div>
-                <div class="summary-value">2026-03-20</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">配送予定日</div>
-                <div class="summary-value">2026-03-25</div>
+    <div class="kintone-header-top">
+        <div class="header-content-inner">
+            <div class="header-logo"><span class="k-icon">k</span> kintone</div>
+            <div class="header-user">
+                <span>✉</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                        alt="User">
+                    <span>Administrator</span>
+                    <span style="font-size: 10px;">▼</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Action priority Guide -->
-    <div class="next-action-card">
-        <div class="next-action-content">
-            <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-truck-ramp-box"></i></span>
-            <div>
-                次の対応: <span style="color: var(--kintone-blue);">出荷または返品</span><br>
-                <span id="guide-desc" style="font-weight: normal; font-size: 12px; color: #666;">現在50個出荷済みです。残り50個の出荷を行うか、必要に応じて返品を行ってください。</span>
+    <div class="kintone-header-sub">
+        <div class="header-content-inner">
+            <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+            <div class="header-sub-right">
+                <span>⚙</span> <span>❓</span>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="アプリ内検索">
+                    <span class="search-icon">🔍</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Section: Order Overview -->
-    <div class="section-card section-info">
-        <div class="section-title"><span>📋</span> 注文概要</div>
-        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
-            <div class="field-item">
-                <div class="field-label">Shopify Order ID</div>
-                <div class="field-value" style="font-weight: bold;">#1004928309</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">チャネル</div>
-                <div class="field-value">Shopify (Main Store)</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">作成日時</div>
-                <div class="field-value">2026-03-20 18:07</div>
-            </div>
-        </div>
-        <div class="field-item" style="margin-top: 15px;">
-            <div class="field-label">注文メモ</div>
-            <div class="field-value" style="min-height: 20px; color: #666; font-style: italic;">特になし</div>
-        </div>
-    </div>
-
-    <div class="section-card section-info">
-        <div class="section-title"><span>👤</span> 顧客情報</div>
-        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
-            <div class="field-item">
-                <div class="field-label">顧客ID</div>
-                <div class="field-value">SHO-USER-8821</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">氏名</div>
-                <div class="field-value" style="font-weight: bold;">テスト 太郎 様</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">顧客メール</div>
-                <div class="field-value">test-tarou@example.com</div>
-            </div>
-        </div>
-    </div>
-    <div class="section-card section-info">
-        <div class="section-title"><span>🚚</span> 配送先情報</div>
-        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
-            <div class="field-item">
-                <div class="field-label">宛名</div>
-                <div class="field-value" style="font-weight: bold;">テスト 太郎</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">住所</div>
-                <div class="field-value">大阪府大阪市中央区1-1-1 サンプルレジデンス 101</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">電話番号</div>
-                <div class="field-value">090-9999-8888</div>
+    <div class="kintone-app-title-bar">
+        <div class="header-content-inner" style="padding: 12px 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="app-icon">🛒</div>
+                <div class="app-title">注文管理 (Shopify)</div>
             </div>
         </div>
     </div>
 
-    <!-- Product Processing Section -->
-    <div class="section-card section-op">
-        <div class="section-title"><span>📦</span> 商品・出荷処理 (Shopify項目)</div>
-        <table class="k-table">
-            <thead>
-                <tr>
-                    <th style="min-width: 250px;">商品名</th>
-                    <th class="col-num" style="width: 100px;">注文数量</th>
-                    <th class="col-mid" style="width: 60px;">単位</th>
-                    <th class="col-num" style="width: 100px;">出荷済</th>
-                    <th class="col-num" style="width: 100px;">未出荷</th>
-                    <th class="col-num" style="width: 100px;">返品</th>
-                    <th class="col-mid" style="width: 120px;">ステータス</th>
-                    <th class="col-mid" style="width: 180px;">操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="col-product-name">米ぬかの恵み 300mL (KM300-V01)</td>
-                    <td class="col-num">100</td>
-                    <td class="col-mid">個</td>
-                    <td class="col-num">50</td>
-                    <td class="col-num" style="background-color: #fffaf0;">
-                        <div class="primary-value-huge">50</div>
-                        <div class="secondary-info" style="color: var(--kintone-danger);">未出荷</div>
-                    </td>
-                    <td class="col-num" style="color: #999;">0</td>
-                    <td class="col-mid"><span class="badge-status status-active">出荷中</span></td>
-                    <td class="col-mid">
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                            <button class="btn-primary-action" onclick="toggleShipmentInput()" 
-                                style="padding: 10px 15px; min-width: 80px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; border: none; background: var(--kintone-blue); color: white; transition: all 0.2s;">
-                                出荷
-                            </button>
-                            <button class="btn-action" onclick="toggleReturnInput()" 
-                                style="padding: 10px 15px; min-width: 80px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; border: none; background: var(--kintone-danger); color: white; transition: all 0.2s;">
-                                返品
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="main-container">
+        <div class="breadcrumb">
+            🏠 <span>/</span> アプリ: 注文管理 <span>/</span> レコード: #309
+        </div>
+        <div class="kintone-action-toolbar">
+            <div class="action-icon-btn">︿</div>
+            <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
+            <div class="action-icon-btn" onclick="alert('ここでは注文を直接作成できません。Shopify管理画面から操作してください。')">+</div>
+            <div class="action-icon-btn">📄</div>
+            <div class="action-icon-btn">⚙ <span>▼</span></div>
+            <div class="action-icon-btn">⋯</div>
+        </div>
 
-        <!-- Shipment Input Section -->
-        <div id="shipment-input-area">
-            <div style="font-weight: bold; margin-bottom: 10px; color: var(--kintone-blue);">➡ 出荷</div>
-            <table class="shipment-input-table">
+        <!-- Success Message - Sticky -->
+        <div id="flash-message" class="sticky-flash">🎉 操作を完了しました。</div>
+
+        <!-- Enhanced Header Summary (Summary First) -->
+        <div class="summary-header" style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="badge-type badge-shopify" style="font-size: 14px;">Shopify注文</div>
+                    <div style="font-size: 24px; font-weight: bold;">Order #309</div>
+                </div>
+            </div>
+
+            <div class="summary-grid" style="width: 100%; border-top: 1px solid #eee; padding-top: 15px;">
+                <div class="summary-item">
+                    <div class="summary-label">注文金額合計</div>
+                    <div class="summary-primary-value">¥165,000</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">注文ステータス</div>
+                    <div class="summary-primary-value" style="color: var(--kintone-blue);">一部出荷済み</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">注文日</div>
+                    <div class="summary-value">2026-03-20</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">配送予定日</div>
+                    <div class="summary-value">2026-03-25</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action priority Guide -->
+        <div class="next-action-card">
+            <div class="next-action-content">
+                <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-truck-ramp-box"></i></span>
+                <div>
+                    次の対応: <span style="color: var(--kintone-blue);">商品の出荷・返品登録</span><br>
+                    <span id="guide-desc" style="font-weight: normal; font-size: 12px; color: #666;">
+                        ページ下部の「商品明細」まで進み、対象商品の「出荷」ボタンまたは「返品」ボタンをクリックして、作業内容を登録してください。
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Order Overview -->
+        <div class="section-card section-info">
+            <div class="section-title"><span>📋</span> 注文概要</div>
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item">
+                    <div class="field-label">Shopify Order ID</div>
+                    <div class="field-value" style="font-weight: bold;">#1004928309</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">チャネル</div>
+                    <div class="field-value">Shopify (Main Store)</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">作成日時</div>
+                    <div class="field-value">2026-03-20 18:07</div>
+                </div>
+            </div>
+            <div class="field-item" style="margin-top: 15px;">
+                <div class="field-label">注文メモ</div>
+                <div class="field-value" style="min-height: 20px; color: #666; font-style: italic;">特になし</div>
+            </div>
+        </div>
+
+        <div class="section-card section-info">
+            <div class="section-title"><span>👤</span> 顧客情報</div>
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item">
+                    <div class="field-label">顧客ID</div>
+                    <div class="field-value">SHO-USER-8821</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">氏名</div>
+                    <div class="field-value" style="font-weight: bold;">テスト 太郎 様</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">顧客メール</div>
+                    <div class="field-value">test-tarou@example.com</div>
+                </div>
+            </div>
+        </div>
+        <div class="section-card section-info">
+            <div class="section-title"><span>🚚</span> 配送先情報</div>
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item">
+                    <div class="field-label">宛名</div>
+                    <div class="field-value" style="font-weight: bold;">テスト 太郎</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">住所</div>
+                    <div class="field-value">大阪府大阪市中央区1-1-1 サンプルレジデンス 101</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">電話番号</div>
+                    <div class="field-value">090-9999-8888</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Processing Section -->
+        <div class="section-card section-op">
+            <div class="section-title"><span>📦</span> 商品明細</div>
+            <table class="k-table">
                 <thead>
                     <tr>
-                        <th style="width: 150px;">納品SKU</th>
-                        <th>商品名</th>
-                        <th style="width: 120px;">数量</th>
-                        <th>コメント</th>
+                        <th style="width: 120px;">商品SKU</th>
+                        <th style="min-width: 250px;">商品名</th>
+                        <th class="col-num" style="width: 100px;">注文数量</th>
+                        <th class="col-mid" style="width: 60px;">単位</th>
+                        <th class="col-num" style="width: 100px;">出荷済</th>
+                        <th class="col-num" style="width: 100px;">未出荷</th>
+                        <th class="col-num" style="width: 100px;">返品</th>
+                        <th class="col-mid" style="width: 120px;">ステータス</th>
+                        <th class="col-mid" style="width: 180px;">操作</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>KM300-V01</td>
-                        <td>米ぬかの恵み 300mL</td>
-                        <td><input type="number" value="100"></td>
-                        <td><input type="text" placeholder="指示事項を入力"></td>
+                        <td style="font-weight: bold; color: var(--kintone-blue);">KM300-V01</td>
+                        <td class="col-product-name">米ぬかの恵み 300mL</td>
+                        <td class="col-num">100</td>
+                        <td class="col-mid">個</td>
+                        <td class="col-num">50</td>
+                        <td class="col-num" style="background-color: #fffaf0;">
+                            <div class="primary-value-huge">50</div>
+                            <div class="secondary-info" style="color: var(--kintone-danger);">未出荷</div>
+                        </td>
+                        <td class="col-num" style="color: #999;">0</td>
+                        <td class="col-mid"><span class="badge-status status-active">出荷中</span></td>
+                        <td class="col-mid">
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                <button class="btn-primary-action" onclick="toggleShipmentInput()"
+                                    style="padding: 10px 15px; min-width: 80px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; border: none; background: var(--kintone-blue); color: white; transition: all 0.2s;">
+                                    出荷
+                                </button>
+                                <button class="btn-action" onclick="toggleReturnInput()"
+                                    style="padding: 10px 15px; min-width: 80px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; border: none; background: var(--kintone-danger); color: white; transition: all 0.2s;">
+                                    返品
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-            <div class="shipment-footer-btns">
-                <button class="btn-cancel-ship" onclick="toggleShipmentInput()">選択を解除</button>
-                <button class="btn-submit-ship" onclick="submitShipment()">出荷依頼を確定する</button>
+
+            <!-- Shipment Input Section -->
+            <div id="shipment-input-area">
+                <div style="font-weight: bold; margin-bottom: 10px; color: var(--kintone-blue);">➡ 出荷</div>
+                <table class="shipment-input-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 150px;">納品SKU</th>
+                            <th>商品名</th>
+                            <th style="width: 120px;">数量</th>
+                            <th>コメント</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>KM300-V01</td>
+                            <td>米ぬかの恵み 300mL</td>
+                            <td><input type="number" value="100"></td>
+                            <td><input type="text" placeholder="指示事項を入力"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="shipment-footer-btns">
+                    <button class="btn-cancel-ship" onclick="toggleShipmentInput()">選択を解除</button>
+                    <button class="btn-submit-ship" onclick="submitShipment()">出荷依頼を確定する</button>
+                </div>
+            </div>
+
+            <!-- Return Input Section -->
+            <div id="return-input-area"
+                style="display: none; margin-top: 15px; padding-top: 15px; border-top: 2px solid var(--kintone-danger);">
+                <div style="font-weight: bold; margin-bottom: 10px; color: var(--kintone-danger);">➡ 返品</div>
+                <table class="return-input-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 150px;">納品SKU</th>
+                            <th>商品名</th>
+                            <th style="width: 120px;">返品数</th>
+                            <th>理由</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>KM300-V01</td>
+                            <td>米ぬかの恵み 300mL</td>
+                            <td><input type="number" value="1"></td>
+                            <td><input type="text" placeholder="理由を入力"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="shipment-footer-btns">
+                    <button class="btn-cancel-ship" onclick="toggleReturnInput()">選択を解除</button>
+                    <button class="btn-submit-ship" style="background-color: var(--kintone-danger);"
+                        onclick="submitReturn()">返品を確定する</button>
+                </div>
             </div>
         </div>
 
-        <!-- Return Input Section -->
-        <div id="return-input-area" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 2px solid var(--kintone-danger);">
-            <div style="font-weight: bold; margin-bottom: 10px; color: var(--kintone-danger);">➡ 返品</div>
-            <table class="return-input-table">
-                <thead>
-                    <tr>
-                        <th style="width: 150px;">納品SKU</th>
-                        <th>商品名</th>
-                        <th style="width: 120px;">返品数</th>
-                        <th>理由</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>KM300-V01</td>
-                        <td>米ぬかの恵み 300mL</td>
-                        <td><input type="number" value="1"></td>
-                        <td><input type="text" placeholder="理由を入力"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="shipment-footer-btns">
-                <button class="btn-cancel-ship" onclick="toggleReturnInput()">選択を解除</button>
-                <button class="btn-submit-ship" style="background-color: var(--kintone-danger);" onclick="submitReturn()">返品を確定する</button>
+        <!-- Simplified History Sections -->
+        <div class="section-card section-hist">
+            <div class="section-title"><span>📜</span> 出荷履歴 (直近)</div>
+            <div id="shipment-history-container">
+                <div class="empty-history-state" id="no-shipment-history">
+                    <div style="font-size: 24px; margin-bottom: 5px;">📜</div>
+                    履歴はありません
+                </div>
+                <table class="k-table" id="shipment-history-table" style="font-size: 11px; display: none;">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">タスクID</th>
+                            <th class="col-mid" style="width: 90px;">ステータス</th>
+                            <th style="width: 100px;">出荷日</th>
+                            <th style="width: 130px;">追跡番号</th>
+                            <th style="width: 100px;">出荷ステータス</th>
+                            <th>出荷サマリー</th>
+                            <th style="width: 120px;">備考</th>
+                            <th class="text-right" style="width: 110px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="shipment-history-body"></tbody>
+                </table>
             </div>
         </div>
+
+        <div class="section-card section-hist">
+            <div class="section-title"><span>🛑</span> 返品履歴</div>
+            <div id="return-history-container">
+                <div class="empty-history-state" id="no-return-history">
+                    <div style="font-size: 24px; margin-bottom: 5px;">🛑</div>
+                    履歴はありません
+                </div>
+                <table class="k-table" id="return-history-table" style="font-size: 11px; display: none;">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">タスクID</th>
+                            <th class="col-mid" style="width: 90px;">ステータス</th>
+                            <th style="width: 110px;">返品日</th>
+                            <th>返品サマリー</th>
+                            <th style="width: 120px;">備考</th>
+                            <th class="text-right" style="width: 110px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="return-history-body"></tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Simplified History Sections -->
-    <div class="section-card section-hist">
-        <div class="section-title"><span>📜</span> 出荷履歴 (直近)</div>
-        <div id="shipment-history-container">
-            <div class="empty-history-state" id="no-shipment-history">
-                <div style="font-size: 24px; margin-bottom: 5px;">📜</div>
-                履歴はありません
-            </div>
-            <table class="k-table" id="shipment-history-table" style="font-size: 11px; display: none;">
-                <thead>
-                    <tr>
-                        <th style="width: 100px;">タスクID</th>
-                        <th class="col-mid" style="width: 90px;">ステータス</th>
-                        <th style="width: 100px;">出荷日</th>
-                        <th style="width: 130px;">追跡番号</th>
-                        <th style="width: 100px;">出荷ステータス</th>
-                        <th>出荷サマリー</th>
-                        <th style="width: 120px;">備考</th>
-                        <th class="text-right" style="width: 110px;">操作</th>
-                    </tr>
-                </thead>
-                <tbody id="shipment-history-body"></tbody>
-            </table>
-        </div>
-    </div>
+    <script>
+        function toggleShipmentInput() {
+            const area = document.getElementById('shipment-input-area');
+            area.style.display = area.style.display === 'block' ? 'none' : 'block';
+            if (area.style.display === 'block') area.scrollIntoView({ behavior: 'smooth' });
+        }
+        function toggleReturnInput() {
+            const area = document.getElementById('return-input-area');
+            area.style.display = area.style.display === 'block' ? 'none' : 'block';
+            if (area.style.display === 'block') area.scrollIntoView({ behavior: 'smooth' });
+        }
+        function submitShipment() {
+            document.getElementById('shipment-input-area').style.display = 'none';
+            document.getElementById('no-shipment-history').style.display = 'none';
+            document.getElementById('shipment-history-table').style.display = 'table';
 
-    <div class="section-card section-hist">
-        <div class="section-title"><span>🛑</span> 返品履歴</div>
-        <div id="return-history-container">
-            <div class="empty-history-state" id="no-return-history">
-                <div style="font-size: 24px; margin-bottom: 5px;">🛑</div>
-                履歴はありません
-            </div>
-            <table class="k-table" id="return-history-table" style="font-size: 11px; display: none;">
-                <thead>
-                    <tr>
-                        <th style="width: 100px;">タスクID</th>
-                        <th class="col-mid" style="width: 90px;">ステータス</th>
-                        <th style="width: 110px;">返品日</th>
-                        <th>返品サマリー</th>
-                        <th style="width: 120px;">備考</th>
-                        <th class="text-right" style="width: 110px;">操作</th>
-                    </tr>
-                </thead>
-                <tbody id="return-history-body"></tbody>
-            </table>
-        </div>
-    </div>
-
-</div>
-
-<script>
-    function toggleShipmentInput() {
-        const area = document.getElementById('shipment-input-area');
-        area.style.display = area.style.display === 'block' ? 'none' : 'block';
-        if(area.style.display === 'block') area.scrollIntoView({behavior: 'smooth'});
-    }
-    function toggleReturnInput() {
-        const area = document.getElementById('return-input-area');
-        area.style.display = area.style.display === 'block' ? 'none' : 'block';
-        if(area.style.display === 'block') area.scrollIntoView({behavior: 'smooth'});
-    }
-    function submitShipment() {
-        document.getElementById('shipment-input-area').style.display = 'none';
-        document.getElementById('no-shipment-history').style.display = 'none';
-        document.getElementById('shipment-history-table').style.display = 'table';
-        
-        const body = document.getElementById('shipment-history-body');
-        const now = new Date().toISOString().split('T')[0];
-        const tId = "SHO-881";
-        const newRow = `<tr>
+            const body = document.getElementById('shipment-history-body');
+            const now = new Date().toISOString().split('T')[0];
+            const tId = "SHO-881";
+            const newRow = `<tr>
             <td style="font-weight:bold;"><a href="task_detail.html" class="field-value-link">${tId}</a></td>
             <td class="col-mid"><span class="badge-status status-warn">待機中</span></td>
             <td>${now}</td>
@@ -345,20 +354,20 @@
                 </div>
             </td>
         </tr>`;
-        body.insertAdjacentHTML('afterbegin', newRow);
+            body.insertAdjacentHTML('afterbegin', newRow);
 
-        document.getElementById('flash-message').style.display = 'block';
-        setTimeout(() => { document.getElementById('flash-message').style.display = 'none'; }, 3000);
-    }
-    function submitReturn() {
-        document.getElementById('return-input-area').style.display = 'none';
-        document.getElementById('no-return-history').style.display = 'none';
-        document.getElementById('return-history-table').style.display = 'table';
-        
-        const body = document.getElementById('return-history-body');
-        const now = new Date().toISOString().split('T')[0];
-        const tId = "RET-990";
-        const newRow = `<tr>
+            document.getElementById('flash-message').style.display = 'block';
+            setTimeout(() => { document.getElementById('flash-message').style.display = 'none'; }, 3000);
+        }
+        function submitReturn() {
+            document.getElementById('return-input-area').style.display = 'none';
+            document.getElementById('no-return-history').style.display = 'none';
+            document.getElementById('return-history-table').style.display = 'table';
+
+            const body = document.getElementById('return-history-body');
+            const now = new Date().toISOString().split('T')[0];
+            const tId = "RET-990";
+            const newRow = `<tr>
             <td style="font-weight:bold;"><a href="task_detail.html" class="field-value-link">${tId}</a></td>
             <td class="col-mid"><span class="badge-status status-warn">待機中</span></td>
             <td>${now}</td>
@@ -371,28 +380,29 @@
                 </div>
             </td>
         </tr>`;
-        body.insertAdjacentHTML('afterbegin', newRow);
+            body.insertAdjacentHTML('afterbegin', newRow);
 
-        document.getElementById('flash-message').style.display = 'block';
-        setTimeout(() => { document.getElementById('flash-message').style.display = 'none'; }, 3000);
-    }
+            document.getElementById('flash-message').style.display = 'block';
+            setTimeout(() => { document.getElementById('flash-message').style.display = 'none'; }, 3000);
+        }
 
-    function deleteTask(btn, tId) {
-        if (confirm(`タスク #${tId} を取消しますか？`)) {
-            const tr = btn.closest('tr');
-            const tbody = tr.parentNode;
-            tr.remove();
-            
-            if (tbody.children.length === 0) {
-                const tableId = tbody.parentNode.id;
-                const type = tableId.split('-')[0];
-                const emptyId = type === 'shipment' ? 'no-shipment-history' : 'no-return-history';
-                document.getElementById(tableId).style.display = 'none';
-                document.getElementById(emptyId).style.display = 'block';
+        function deleteTask(btn, tId) {
+            if (confirm(`タスク #${tId} を取消しますか？`)) {
+                const tr = btn.closest('tr');
+                const tbody = tr.parentNode;
+                tr.remove();
+
+                if (tbody.children.length === 0) {
+                    const tableId = tbody.parentNode.id;
+                    const type = tableId.split('-')[0];
+                    const emptyId = type === 'shipment' ? 'no-shipment-history' : 'no-return-history';
+                    document.getElementById(tableId).style.display = 'none';
+                    document.getElementById(emptyId).style.display = 'block';
+                }
             }
         }
-    }
-</script>
+    </script>
 
 </body>
+
 </html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>請求書を確認する (入金待ち) | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <link rel="stylesheet" href="modal-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .field-box-readonly {
+            background: #fff;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-sm) var(--space-md);
+            font-size: var(--text-size-base);
+            color: var(--text-primary);
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+        }
+        .field-box-readonly.muted { color: var(--text-muted); }
+        .field-box-readonly.amount { font-weight: 800; font-size: 15px; color: #6a1b9a; }
+
+        .action-btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .btn-invoice-primary {
+            padding: 12px 28px;
+            background: var(--kintone-blue);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+        .btn-invoice-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
+        .btn-invoice-secondary {
+            padding: 12px 28px;
+            background: #f1f3f4;
+            color: #555;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        .btn-invoice-secondary:hover { background: #e8eaed; }
+        .btn-invoice-primary:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        .btn-orange { background: #e67e22; color: white; }
+        .btn-orange:hover { background: #d35400; }
+        .btn-green { background: #2ecc71; color: white; }
+        .btn-green:hover { background: #27ae60; }
+        .btn-blue { background: #3498db; color: white; }
+        .btn-blue:hover { background: #2980b9; }
+
+        .issued-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--kintone-blue);
+            text-decoration: none;
+            margin-bottom: 8px;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        .status-row .label {
+            font-size: 11px;
+            color: var(--text-muted);
+            min-width: 60px;
+        }
+
+        #invoice-items-body input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            font-size: 12px;
+            padding: 4px;
+        }
+        #invoice-items-body input:focus {
+            background: #fff;
+            outline: 1px solid var(--kintone-blue);
+        }
+
+        .summary-grid            { grid-template-columns: repeat(4, 1fr); }
+        .field-grid              { grid-template-columns: repeat(2, 1fr); gap: 16px 30px; }
+        #summary-amount          { color: #6a1b9a; }
+        #summary-payment         { font-size: var(--text-size-lg); font-weight: var(--font-bold); color: #e67e22; }
+        #summary-pdf             { font-size: var(--text-size-lg); font-weight: var(--font-bold); color: var(--kintone-success); }
+        .section-title.between   { justify-content: space-between; }
+    </style>
+</head>
+<body>
+
+<div class="kintone-header-top">
+    <div class="header-content-inner">
+        <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;"><span class="k-icon">k</span> kintone</a></div>
+        <div class="header-user">
+            <span>✉</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                <span>Administrator</span>
+                <span style="font-size: 10px;">▼</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kintone-header-sub">
+    <div class="header-content-inner">
+        <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+        <div class="header-sub-right">
+            <span>⚙</span> <span>❓</span>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="アプリ内検索">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kintone-app-title-bar">
+    <div class="header-content-inner" style="padding: 12px 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="app-icon">📄</div>
+            <div class="app-title">請求書を確認する</div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="breadcrumb">
+        🏠 <span>/</span> <a href="index.html" style="color: var(--kintone-blue); text-decoration: none;">アプリ: 請求書を確認する</a> <span>/</span> レコード: <span id="breadcrumb-record">76</span>
+    </div>
+
+    <div class="kintone-action-toolbar">
+        <div class="action-icon-btn">︿</div>
+        <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
+        <div class="action-icon-btn">+</div>
+        <div class="action-icon-btn">📄</div>
+        <div class="action-icon-btn">⚙ <span>▼</span></div>
+        <div class="action-icon-btn">⋯</div>
+    </div>
+
+    <div id="flash-message" class="sticky-flash" style="display:none;"></div>
+
+    <!-- Summary Header -->
+    <div class="summary-header">
+        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <div class="badge-type badge-agency">請求書</div>
+            <a href="order_detail_agency_paid.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> 注文詳細に戻る
+            </a>
+        </div>
+
+        <div class="summary-grid">
+            <div class="summary-item">
+                <div class="summary-label">請求金額</div>
+                <div id="summary-amount" class="summary-primary-value">¥20,025</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">入金ステータス</div>
+                <div id="summary-payment" class="summary-primary-value">未入金</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">PDF送付状況</div>
+                <div id="summary-pdf" class="summary-primary-value">発行済</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">支払期日</div>
+                <div class="summary-value">2026-04-01</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 次の対応 (入金待ちステータス) -->
+    <div id="next-action-area" class="next-action-card accent-success" style="margin-bottom: 24px;">
+        <div class="next-action-content">
+            <span style="font-size: 32px; color: #2ecc71;"><i class="fas fa-circle-check"></i></span>
+            <div>
+                状況: <span style="color: #2ecc71; font-weight: 800;">請求書発行済み (入金待ち)</span><br>
+                <span style="font-weight: normal; font-size: 11px; color: #666;">PDFの発行が完了しました。入金を確認したら処理を完了してください。</span>
+            </div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+            <div style="display:flex; gap:5px;">
+                <button class="btn-invoice-secondary" onclick="downloadPDF()" style="font-size: 11px; padding: 6px 12px; border-color:#e0e0e0; background:#fafafa;">
+                    <i class="fas fa-download"></i> PDF
+                </button>
+                <button class="btn-invoice-secondary" onclick="alert('再発行処理を開始します')" style="font-size: 11px; padding: 6px 12px; border-color:#e0e0e0; background:#fafafa;">
+                    <i class="fas fa-redo"></i> 再発行
+                </button>
+            </div>
+            <button class="btn-invoice-primary btn-green" onclick="showPaymentModal()" style="padding: 10px 24px; font-size: 14px; border-radius: 12px;">
+                <i class="fas fa-hand-holding-dollar"></i> 入金を確認済み
+            </button>
+        </div>
+    </div>
+
+    <!-- 請求基本情報 -->
+    <div class="section-card section-info">
+        <div class="section-title">
+            <i class="fas fa-file-invoice"></i>請求基本情報
+        </div>
+        <div class="field-grid">
+            <div class="field-item">
+                <div class="field-label">レコード番号</div>
+                <div class="field-box-readonly">76</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">請求日</div>
+                <div class="field-box-readonly">2026-03-27</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">代理店</div>
+                <div class="field-box-readonly">test_agency@yopmail.com</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">請求金額</div>
+                <div class="field-box-readonly amount">¥ 20,025</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">通貨</div>
+                <div class="field-box-readonly">JPY</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">VA ID</div>
+                <div class="field-box-readonly muted">―</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">支払期日</div>
+                <div class="field-box-readonly">2026-04-01</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">関連注文</div>
+                <div class="field-box-readonly">
+                    <a href="order_detail_agency_paid.html" style="color: var(--kintone-blue); text-decoration: none; font-weight: bold;">339</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 請求明細 (閲覧のみ) -->
+    <div class="section-card section-op">
+        <div class="section-title">
+            <span><i class="fas fa-list" style="margin-right: 10px;"></i></span>請求明細
+        </div>
+        <table class="k-table">
+            <thead>
+                <tr>
+                    <th class="col-mid">商品SKU</th>
+                    <th>商品名</th>
+                    <th class="col-num">数量</th>
+                    <th class="col-mid">単位</th>
+                    <th class="col-num">単価</th>
+                    <th class="col-num">小計</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-mid">RC50-V01</td>
+                    <td>Rice Silica 50mL</td>
+                    <td class="col-num">200</td>
+                    <td class="col-mid">本</td>
+                    <td class="col-num">¥75</td>
+                    <td class="col-num">¥15,000</td>
+                </tr>
+                <tr>
+                    <td class="col-mid">RC300-V01</td>
+                    <td>Rice Silica 300mL</td>
+                    <td class="col-num">10</td>
+                    <td class="col-mid">本</td>
+                    <td class="col-num">¥450</td>
+                    <td class="col-num">¥4,500</td>
+                </tr>
+                <tr>
+                    <td class="col-mid">SHIP-FEE</td>
+                    <td>配送手数料</td>
+                    <td class="col-num">1</td>
+                    <td class="col-mid">式</td>
+                    <td class="col-num">¥525</td>
+                    <td class="col-num">¥525</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" style="text-align: right; font-weight: 700; padding: 10px 12px; color: #666;">合計</td>
+                    <td class="col-num" style="font-weight: 900; font-size: 15px; color: #6a1b9a;">¥20,025</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+
+<!-- Payment Date Modal -->
+<div class="modal-overlay" id="payment-modal" style="display: none;">
+    <div class="modal-card" style="text-align: center; max-width: 440px; padding: 40px 30px; border-radius: 24px; border: 2px solid #2ecc71;">
+        <div style="font-size: 60px; color: #2ecc71; margin-bottom: 20px;">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+        <h2 style="font-size: 22px; font-weight: 900; margin-bottom: 12px; color: #333;">入金日を確認します</h2>
+        <p style="font-size: 14px; color: #666; margin-bottom: 25px; line-height: 1.6;">
+            実際に代金が到着した日付を選択してください。
+        </p>
+        
+        <div style="margin-bottom: 20px; text-align: left;">
+            <label style="font-size: 12px; font-weight: 800; color: #888; display: block; margin-bottom: 8px;">入金日</label>
+            <input type="date" id="input-payment-date" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1.5px solid #eee; font-size: 15px; font-weight: bold; font-family: inherit; box-sizing: border-box; margin-bottom: 15px;">
+            
+            <label style="font-size: 12px; font-weight: 800; color: #888; display: block; margin-bottom: 8px;">備考 (任意)</label>
+            <textarea id="input-payment-remarks" placeholder="振込先情報や手数料調整など" style="width: 100%; height: 80px; padding: 12px 15px; border-radius: 12px; border: 1.5px solid #eee; font-size: 13px; font-family: inherit; box-sizing: border-box; resize: none;"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: center;">
+            <button class="btn-invoice-secondary" onclick="closePaymentModal()" style="padding: 12px 24px; border-radius: 12px; min-width: 120px;">
+                キャンセル
+            </button>
+            <button class="btn-invoice-primary btn-green" onclick="alert('入金を確定しました。注文ステータスを更新します。'); location.href='order_detail_agency_paid.html';" style="padding: 12px 30px; border-radius: 12px; min-width: 120px;">
+                入金を確定する
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function downloadPDF() {
+        alert('PDFをダウンロードします');
+    }
+    function showPaymentModal() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('input-payment-date').value = today;
+        document.getElementById('payment-modal').style.display = 'flex';
+    }
+    function closePaymentModal() {
+        document.getElementById('payment-modal').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

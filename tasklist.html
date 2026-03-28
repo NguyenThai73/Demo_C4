@@ -194,7 +194,8 @@
         <!-- Top Bar -->
         <div class="kintone-header-top">
             <div class="header-content-inner">
-                <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;">kintone</a></div>
+                <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;">kintone</a>
+                </div>
                 <div class="header-user">
                     <span>✉</span>
                     <div style="display: flex; align-items: center; gap: 8px;">
@@ -627,26 +628,26 @@
     </main>
 
     <script>
-        window.onload = function() {
+        window.onload = function () {
             const params = new URLSearchParams(window.location.search);
             const filter = params.get('filter');
-            
+
             if (filter === 'shipment') {
                 // Update label
                 const label = document.getElementById('current-filter-label');
                 if (label) label.textContent = '出荷 (販売)';
-                
+
                 // Filter table rows
                 const rows = document.querySelectorAll('.task-table tbody tr');
                 rows.forEach(row => {
                     const taskType = row.cells[1].textContent.trim();
                     const statusText = row.cells[2].textContent.trim();
                     const warehouse = row.cells[7].textContent.trim();
-                    
+
                     // Show only "出荷 (販売)" that are "待機中" AND are "岐阜倉庫"
                     if (taskType === '出荷 (販売)' && statusText === '待機中' && warehouse === '岐阜倉庫') {
                         row.style.display = '';
-                        
+
                         // Update the link to pass type=sample
                         const link = row.cells[0].querySelector('a');
                         const taskId = link.textContent.trim();

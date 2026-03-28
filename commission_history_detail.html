@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>報酬取引詳細 | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="kintone-header-top">
+    <div class="header-content-inner">
+        <div class="header-logo"><span class="k-icon">k</span> kintone</div>
+        <div class="header-user">
+            <span>✉</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                <span>Administrator</span>
+                <span style="font-size: 10px;">▼</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kintone-header-sub">
+    <div class="header-content-inner">
+        <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+        <div class="header-sub-right">
+            <span>⚙</span> <span>❓</span>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="アプリ内検索">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kintone-app-title-bar">
+    <div class="header-content-inner" style="padding: 12px 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="app-icon" style="background-color: #e67e22;">💰</div>
+            <div class="app-title">報酬取引履歴管理</div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="breadcrumb">
+        🏠 <span>/</span> アプリ: 報酬取引履歴管理 <span>/</span> レコード: #66
+    </div>
+
+    <div class="kintone-action-toolbar">
+        <div class="action-icon-btn">︿</div>
+        <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
+        <div class="action-icon-btn">+</div>
+        <div class="action-icon-btn">📄</div>
+        <div class="action-icon-btn">⚙ <span>▼</span></div>
+        <div class="action-icon-btn">⋯</div>
+    </div>
+
+    <!-- Summary Header -->
+    <div class="summary-header">
+        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="badge-type" style="background-color: #fff4e5; color: #e67e22; border-color: #ffd8a8; border-radius: 4px;">報酬取引</div>
+                <div style="font-size: 24px; font-weight: bold;">Record #66</div>
+            </div>
+        </div>
+        
+        <div class="summary-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="summary-item">
+                <div class="summary-label">報酬金額</div>
+                <div class="summary-primary-value">¥28,250</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">ステータス</div>
+                <div class="summary-primary-value" style="color: var(--color-success); font-size: 18px;">確定済</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">計上日</div>
+                <div class="summary-value">2026-03-20</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">取引先</div>
+                <div class="summary-value" style="color: var(--color-primary);">TORI</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Basic Info -->
+    <div class="section-card section-info">
+        <div class="section-title"><span><i class="fas fa-file-invoice-dollar"></i></span> 基本情報</div>
+        <div class="field-grid">
+            <div class="field-item">
+                <div class="field-label">報酬取引ID</div>
+                <div class="field-box">66</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">承認日</div>
+                <div class="field-box" style="color: #999;">—</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">報酬種別</div>
+                <div class="field-box">アフィリエイト報酬</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">期間</div>
+                <div class="field-box">2026年3月度</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">計上日</div>
+                <div class="field-box">2026-03-20</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">ステータス</div>
+                <div style="margin-top: 4px;"><span class="badge-status status-ok">確定済</span></div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">取引先名</div>
+                <div class="field-box" style="color: var(--color-primary); font-weight: 800;">TORI</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">計算対象金額</div>
+                <div class="field-box text-right">¥ 565,000</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">報酬金額</div>
+                <div class="field-box text-right">¥ 28,250</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Calculation Details -->
+    <div class="section-card" style="border: 1px solid var(--color-border-light);">
+        <div class="section-title" style="color: var(--text-primary);"><span><i class="fas fa-calculator"></i></span> 報酬計算</div>
+        <table class="k-table">
+            <thead>
+                <tr>
+                    <th style="width: 80px;">注文ID</th>
+                    <th style="width: 100px;">注文日</th>
+                    <th style="width: 120px;" class="col-mid">トランザクション状況</th>
+                    <th style="width: 120px;">販売代理店SKU</th>
+                    <th>販売代理店商品名</th>
+                    <th class="col-num" style="width: 60px;">数量</th>
+                    <th class="col-num" style="width: 120px;">注文金額</th>
+                    <th class="col-num" style="width: 100px;">預かり率 (%)</th>
+                    <th class="col-num" style="width: 120px;">報酬金額</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="order_detail_agency_paid.html" class="link-text" style="color: var(--color-primary);">308</a></td>
+                    <td>2026-03-20</td>
+                    <td class="col-mid">注文</td>
+                    <td><a href="#" class="link-text" style="color: var(--color-primary);">JS300-V01</a></td>
+                    <td>田七人参の恵み 300mL</td>
+                    <td class="col-num">100</td>
+                    <td class="col-num">¥ 500,000</td>
+                    <td class="col-num">5.0 %</td>
+                    <td class="col-num">¥ 25,000</td>
+                </tr>
+                <tr>
+                    <td><a href="order_detail_agency_paid.html" class="link-text" style="color: var(--color-primary);">307</a></td>
+                    <td>2026-03-20</td>
+                    <td class="col-mid">注文</td>
+                    <td><a href="#" class="link-text" style="color: var(--color-primary);">KM300-V01</a></td>
+                    <td>米ぬかの恵み 300mL</td>
+                    <td class="col-num">5</td>
+                    <td class="col-num">¥ 45,000</td>
+                    <td class="col-num">5.0 %</td>
+                    <td class="col-num">¥ 2,250</td>
+                </tr>
+                <tr>
+                    <td><a href="order_detail_shopify.html" class="link-text" style="color: var(--color-primary);">309</a></td>
+                    <td>2026-03-20</td>
+                    <td class="col-mid">注文</td>
+                    <td><a href="#" class="link-text" style="color: var(--color-primary);">RC50-V01</a></td>
+                    <td>Rice Silica 50mL</td>
+                    <td class="col-num">100</td>
+                    <td class="col-num">¥ 20,000</td>
+                    <td class="col-num">5.0 %</td>
+                    <td class="col-num">¥ 1,000</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr style="background-color: #fcfcfc;">
+                    <td colspan="8" class="text-right" style="font-weight: 800; border: none; padding-top: 15px;">合計金額:</td>
+                    <td class="text-right" style="font-weight: 800; color: var(--color-primary); font-size: 16px; border: none; padding-top: 15px;">¥ 28,250</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Section: Payment Linkage -->
+    <div class="section-card section-info">
+        <div class="section-title"><span><i class="fas fa-link"></i></span> 支払管理との紐づけ</div>
+        <div class="field-grid">
+            <div class="field-item">
+                <div class="field-label">支払ID</div>
+                <div class="field-box" style="color: var(--color-primary); font-weight: 800;">80</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">支払ステータス</div>
+                <div class="field-box">待機中</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">支払予定日</div>
+                <div class="field-box">2026-04-30</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Manual Update -->
+    <div class="section-card" style="border: 1px solid var(--color-border-light); background-color: #fbfbfb;">
+        <div class="section-title" style="color: var(--text-secondary);"><span><i class="fas fa-user-edit"></i></span> 手動でステータス更新</div>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="field-item" style="max-width: 400px;">
+                <div class="field-label">ステータス変更</div>
+                <select class="field-box">
+                    <option>一時計上</option>
+                    <option selected>確定済</option>
+                    <option>対象外</option>
+                </select>
+            </div>
+            <div class="field-item">
+                <div class="field-label">更新理由</div>
+                <textarea class="field-box" style="min-height: 100px; resize: vertical; background: white;">Shopify webhook</textarea>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <button class="btn-blue" style="padding: 8px 30px;">更新する</button>
+                <button class="btn-secondary" style="padding: 8px 30px;">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Action Ribbon -->
+    <div style="margin-top: 40px; padding: 20px; text-align: center; border-top: 1px solid #eee;">
+        <button class="btn-secondary" style="padding: 12px 60px; font-size: 13px;">支払リクエスト確認</button>
+    </div>
+
+</div>
+
+<footer style="text-align: center; padding: 40px; font-size: 11px; color: #95a5a6;">© 2026 Silica Link Management System</footer>
+
+</body>
+</html>

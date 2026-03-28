@@ -213,7 +213,7 @@
     </div>
 
     <!-- 3. History -->
-    <div class="history-section">
+    <div class="history-section" id="history-section">
         <div style="font-size: 13px; font-weight: 800; margin-bottom: 12px; color: #666;">作業履歴</div>
         <div id="history-body"></div>
     </div>
@@ -245,7 +245,9 @@
     let ITEMS = [{ sku: 'CER-BASE-01', name: 'セラミック基板用素材 PREMIUM', target: 3, unit: '箱' }];
     
     // Specialized Task Data
-    if (taskId === '501') {
+    if (type === 'return') {
+        ITEMS = [{ sku: 'RC500-V01', name: 'Rice Silica 500mL', target: 1, unit: '個' }];
+    } else if (taskId === '501') {
         ITEMS = [
             { sku: 'CER-BASE-01', name: 'セラミック基板用素材 PREMIUM', target: 3, unit: '箱' },
             { sku: 'GLS-SUB-05', name: '高透過ガラス基板 0.5mm', target: 5, unit: '枚' },
@@ -263,23 +265,27 @@
         const badge = document.getElementById('type-badge');
         const notice = document.getElementById('shipment-notice');
         const noticeText = document.getElementById('notice-text');
+        const hist = document.getElementById('history-section');
         
         if (type === 'receive') {
             badge.textContent = '入荷'; badge.style.background = '#e8f5e9'; badge.style.color = '#2e7d32'; badge.style.borderColor = '#c8e6c9';
             notice.style.background = '#e8f5e9'; notice.style.borderColor = '#c8e6c9';
             noticeText.innerHTML = `<strong>入荷 (購買)</strong><br>一括入荷対象: ${ITEMS.length}アイテム`;
             document.getElementById('shelf-input').placeholder = "入荷先棚番号をスキャン";
-            document.getElementById('barcode-input').placeholder = "商品バーコードをスキャン";
-            document.getElementById('next-btn').textContent = "一括入荷を続ける";
-            document.getElementById('finish-btn').textContent = "入荷を終了する";
-            document.getElementById('modal-title').textContent = "入荷を完了しますか？";
+        } else if (type === 'return') {
+            badge.textContent = '返品入荷';
+            badge.style.background = '#fce4ec';
+            badge.style.color = '#d81b60';
+            badge.style.borderColor = '#f8bbd0';
+            notice.style.background = '#fce4ec';
+            notice.style.borderColor = '#f8bbd0';
+            noticeText.innerHTML = `<strong>返品入荷</strong><br>検品・受入対象: ${ITEMS.length}アイテム`;
+            document.getElementById('shelf-input').placeholder = "受入先棚番号をスキャン";
+            if (hist) hist.style.display = 'none';
         } else {
             badge.textContent = '出荷'; badge.style.background = '#fff3e0'; badge.style.color = '#e65100'; badge.style.borderColor = '#ffe0b2';
             noticeText.innerHTML = `<strong>出荷 (販売)</strong><br>一括ピッキング対象: ${ITEMS.length}アイテム`;
             document.getElementById('shelf-input').placeholder = "ピッキング棚番号をスキャン";
-            document.getElementById('barcode-input').placeholder = "商品バーコードをスキャン";
-            document.getElementById('next-btn').textContent = "一括ピックを続ける";
-            document.getElementById('finish-btn').textContent = "ピックを終了する";
         }
     }
 

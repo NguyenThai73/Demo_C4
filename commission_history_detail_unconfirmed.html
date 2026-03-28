@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>報酬取引詳細 (一時計上) | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="kintone-header-top">
+    <div class="header-content-inner">
+        <div class="header-logo"><span class="k-icon">k</span> kintone</div>
+        <div class="header-user">
+            <span>✉</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                <span>Administrator</span>
+                <span style="font-size: 10px;">▼</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kintone-header-sub">
+    <div class="header-content-inner">
+        <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+        <div class="header-sub-right"><span>⚙</span> <span>❓</span><div class="search-container"><input type="text" class="search-input" placeholder="アプリ内検索"><span class="search-icon">🔍</span></div></div>
+    </div>
+</div>
+
+<div class="kintone-app-title-bar">
+    <div class="header-content-inner" style="padding: 12px 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="app-icon" style="background-color: #e67e22;">💰</div>
+            <div class="app-title">報酬取引履歴管理</div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="breadcrumb">
+        🏠 <span>/</span> <a href="commission_history_list_unconfirmed.html" style="color: inherit; text-decoration: none;">アプリ: 報酬取引履歴管理</a> <span>/</span> レコード: #63
+    </div>
+
+    <div class="kintone-action-toolbar">
+        <div class="action-icon-btn">︿</div>
+        <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
+        <div class="action-icon-btn">+</div>
+        <div class="action-icon-btn">📄</div>
+        <div class="action-icon-btn">⚙ <span>▼</span></div>
+        <div class="action-icon-btn">⋯</div>
+    </div>
+
+    <!-- Summary Header -->
+    <div class="summary-header" style="border-left: 5px solid #f39c12;">
+        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="badge-type" style="background-color: #fff4e5; color: #e67e22; border-color: #ffd8a8;">未確定報酬</div>
+                <div style="font-size: 24px; font-weight: bold;">Record #63</div>
+            </div>
+        </div>
+        
+        <div class="summary-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="summary-item">
+                <div class="summary-label">報酬金額</div>
+                <div class="summary-primary-value">¥50,400</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">ステータス</div>
+                <div class="summary-primary-value" style="color: #f39c12; font-size: 18px;">一時計上</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">計上日</div>
+                <div class="summary-value">2026-03-19</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">取引先</div>
+                <div class="summary-value" style="color: var(--color-primary);">Văn Mạnh</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Basic Info -->
+    <div class="section-card section-info">
+        <div class="section-title"><span><i class="fas fa-file-invoice-dollar"></i></span> 基本情報</div>
+        <div class="field-grid">
+            <div class="field-item">
+                <div class="field-label">報酬取引ID</div>
+                <div class="field-box">63</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">ステータス</div>
+                <div style="margin-top: 4px;"><span class="badge-status" style="background-color: #fff4e5; color: #f39c12; border: 1px solid #f39c12;">一時計上</span></div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">報酬種別</div>
+                <div class="field-box">アフィリエイト報酬</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">期間</div>
+                <div class="field-box">2026年3月度</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">計上日</div>
+                <div class="field-box">2026-03-19</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">取引先名</div>
+                <div class="field-box" style="color: var(--color-primary); font-weight: 800;">Văn Mạnh</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">報酬金額</div>
+                <div class="field-box text-right">¥ 50,400</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manual Update Area (Highlighted for Unconfirmed) -->
+    <div class="section-card" style="border: 1px solid #ffe066; background-color: #fff9db;">
+        <div class="section-title" style="color: #856404;"><span><i class="fas fa-gavel"></i></span> 報酬の確定処理</div>
+        <p style="font-size: 11px; color: #856404; margin-bottom: 20px;">この報酬は現在「一時計上」です。内容を確認し、問題なければ「確定済」へ更新してください。</p>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="field-item" style="max-width: 400px;">
+                <div class="field-label">ステータス変更</div>
+                <select class="field-box" style="background: white;">
+                    <option selected>一時計上</option>
+                    <option>確定済</option>
+                    <option>対象外</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <button class="btn-blue" style="padding: 10px 40px; font-weight: bold;">確定する</button>
+                <button class="btn-secondary" style="padding: 10px 30px; border-color: #ccc;">保留</button>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; padding: 20px; text-align: center;">
+        <button class="btn-secondary" onclick="location.href='commission_history_list_unconfirmed.html'" style="padding: 12px 60px;">未確定一覧に戻る</button>
+    </div>
+
+</div>
+
+<footer style="text-align: center; padding: 40px; font-size: 11px; color: #95a5a6;">© 2026 Silica Link Management System</footer>
+
+</body>
+</html>

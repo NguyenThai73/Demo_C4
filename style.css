@@ -152,10 +152,10 @@ body {
     font-size: 13px;
     display: inline-block;
 }
-.status-ok { background-color: #e8f5e9; color: var(--kintone-success); border: 2px solid var(--kintone-success); }
-.status-warn { background-color: #fff3e0; color: var(--kintone-warning); border: 2px solid var(--kintone-warning); }
-.status-alert { background-color: #ffebee; color: var(--kintone-danger); border: 2px solid var(--kintone-danger); }
-.status-neutral { background-color: #f5f5f5; color: var(--kintone-neutral); border: 2px solid var(--kintone-neutral); }
+.status-ok { background-color: #e8f5e9; color: var(--kintone-success); border: none; }
+.status-warn { background-color: #fff3e0; color: var(--kintone-warning); border: none; }
+.status-alert { background-color: #ffebee; color: var(--kintone-danger); border: none; }
+.status-neutral { background-color: #f5f5f5; color: var(--kintone-neutral); border: none; }
 
 .summary-grid {
     display: grid;

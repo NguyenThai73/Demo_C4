@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,12 @@
             --kintone-rakuten-text: #bf0000;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Noto Sans JP', sans-serif;
             background-color: var(--kintone-body-bg);
@@ -32,16 +38,43 @@
             justify-content: space-between;
             padding: 0 16px;
             border-bottom: 2px solid var(--kintone-blue);
-            position: sticky; top: 0; z-index: 1000;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .header-left { display: flex; align-items: center; gap: 20px; }
-        .logo { font-weight: bold; color: var(--kintone-blue); font-size: 18px; display: flex; align-items: center; gap: 8px; }
-        
-        .header-icons { display: flex; gap: 15px; color: #666; font-size: 18px; }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
 
-        .header-right { display: flex; align-items: center; gap: 15px; }
-        .search-container { position: relative; }
+        .logo {
+            font-weight: bold;
+            color: var(--kintone-blue);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 15px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
         .search-input {
             padding: 6px 30px 6px 10px;
             border: 1px solid #ddd;
@@ -51,21 +84,59 @@
             font-size: 12px;
         }
 
-        .user-profile { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-        .avatar { width: 32px; height: 32px; border-radius: 50%; background-color: #ccc; }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #ccc;
+        }
 
         /* Main Content */
-        .main-container { padding: 10px 20px; }
-
-        .breadcrumb { font-size: 11px; color: var(--kintone-blue); margin-bottom: 10px; }
-        .breadcrumb span { color: #999; margin: 0 5px; }
-
-        .app-title-section { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .app-icon {
-            width: 32px; height: 32px; background-color: #7ed321; border-radius: 6px;
-            display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;
+        .main-container {
+            padding: 10px 20px;
         }
-        .app-name { font-size: 18px; font-weight: bold; }
+
+        .breadcrumb {
+            font-size: 11px;
+            color: var(--kintone-blue);
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb span {
+            color: #999;
+            margin: 0 5px;
+        }
+
+        .app-title-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .app-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #7ed321;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .app-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
 
         /* Control Bar */
         .control-bar {
@@ -100,7 +171,12 @@
         }
 
         .icon-btn {
-            border: 1px solid #ccc; background-color: #f8f8f8; padding: 6px 10px; border-radius: 4px; cursor: pointer; color: #666;
+            border: 1px solid #ccc;
+            background-color: #f8f8f8;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #666;
         }
 
         /* List Table View */
@@ -111,7 +187,12 @@
             overflow: hidden;
         }
 
-        .k-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .k-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
         .k-table th {
             background-color: #f7f9fa;
             border: 1px solid #e3e7e8;
@@ -120,7 +201,12 @@
             font-weight: normal;
             color: #666;
         }
-        .k-table td { border: 1px solid #e3e7e8; padding: 8px; background-color: #fff; }
+
+        .k-table td {
+            border: 1px solid #e3e7e8;
+            padding: 8px;
+            background-color: #fff;
+        }
 
         .badge-status {
             display: inline-block;
@@ -131,7 +217,7 @@
             font-size: 11px;
             font-weight: bold;
         }
-        
+
         .badge-waiting {
             background-color: #fff3e0;
             color: #ef6c00;
@@ -163,16 +249,36 @@
 
         .channel-icon {
             display: inline-block;
-            width: 14px; height: 14px; border-radius: 2px; margin-right: 5px; vertical-align: middle;
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            margin-right: 5px;
+            vertical-align: middle;
         }
-        .channel-shopify { background-color: #95bf47; }
-        .channel-agency { background-color: #9c27b0; }
 
-        .action-cell { text-align: right; white-space: nowrap; }
-        .action-icon {
-            cursor: pointer; font-size: 14px; margin-left: 8px; color: #3498db;
+        .channel-shopify {
+            background-color: #95bf47;
         }
-        .action-icon.delete { color: #5dade2; }
+
+        .channel-agency {
+            background-color: #9c27b0;
+        }
+
+        .action-cell {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .action-icon {
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 8px;
+            color: #3498db;
+        }
+
+        .action-icon.delete {
+            color: #5dade2;
+        }
 
         /* Pagination */
         .pagination {
@@ -185,151 +291,174 @@
             font-size: 12px;
             color: #666;
         }
+
         .page-btn {
-            border: 1px solid #ccc; background-color: #fff; padding: 4px 10px; border-radius: 4px; cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
         }
-        .page-btn:disabled { color: #ccc; cursor: default; }
+
+        .page-btn:disabled {
+            color: #ccc;
+            cursor: default;
+        }
 
         /* Alignment Helpers */
-        .text-right { text-align: right !important; }
-        .text-center { text-align: center !important; }
-        .text-left { text-align: left !important; }
+        .text-right {
+            text-align: right !important;
+        }
 
+        .text-center {
+            text-align: center !important;
+        }
+
+        .text-left {
+            text-align: left !important;
+        }
     </style>
 </head>
+
 <body>
 
-<header>
-    <div class="header-left">
-        <div class="logo">kintone</div>
-        <div class="header-icons">
-            <span>🏠</span> <span>🔔</span> <span>⭐</span>
+    <header>
+        <div class="header-left">
+            <div class="logo">kintone</div>
+            <div class="header-icons">
+                <span>🏠</span> <span>🔔</span> <span>⭐</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="アプリ内検索">
+            </div>
+            <div class="user-profile">
+                <span>Administrator</span>
+                <div class="avatar"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="breadcrumb">🏠 <span>/</span> アプリ: 注文一覧を見る</div>
+
+        <div class="app-title-section">
+            <div class="app-icon">🛒</div>
+            <div class="app-name">注文一覧を見る</div>
+        </div>
+
+        <div class="control-bar">
+            <button class="view-selector">🔥 今月受注 <span style="font-size: 10px;">▼</span></button>
+            <button class="graph-btn">📊 <span style="font-size: 10px;">▼</span></button>
+            <button class="icon-btn">🔍</button>
+            <button class="icon-btn">📈</button>
+            <button class="icon-btn">⚙ <span style="font-size: 10px;">▼</span></button>
+            <button class="icon-btn">⋮</button>
+        </div>
+
+        <div class="list-card">
+            <table class="k-table">
+                <thead>
+                    <tr>
+                        <th class="text-center">注文ID</th>
+                        <th class="text-center">注文日時</th>
+                        <th>チャネル</th>
+                        <th class="text-center">顧客区分</th>
+                        <th>顧客表示名</th>
+                        <th class="text-right">注文金額</th>
+                        <th class="text-center">注文ステータス</th>
+                        <th class="text-right">出荷進捗</th>
+                        <th class="text-center">配送予定日</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;"
+                            onclick="location.href='order_detail_delivered.html'">285</td>
+                        <td class="text-center">2026-03-10 14:22</td>
+                        <td><span class="channel-icon channel-shopify"></span> Shopify</td>
+                        <td class="text-center">B2C</td>
+                        <td>佐藤 健太 様</td>
+                        <td class="text-right">12,800</td>
+                        <td class="text-center"><span class="badge-status status-ok"
+                                style="background-color: var(--kintone-status-bg); color: var(--kintone-status-blue);">配送完了</span>
+                        </td>
+                        <td class="text-right">1/1</td>
+                        <td class="text-center">2026-03-12</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;"
+                            onclick="location.href='order_detail_agency_paid.html'">311</td>
+                        <td class="text-center">2026-03-26 15:37</td>
+                        <td><span class="channel-icon channel-agency"></span> Agency</td>
+                        <td class="text-center">B2B</td>
+                        <td>Zenshin 株式会社</td>
+                        <td class="text-right">153,000</td>
+                        <td class="text-center"><span class="badge-status">出荷中</span></td>
+                        <td class="text-right">0/17</td>
+                        <td class="text-center">2026-03-28</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;"
+                            onclick="location.href='order_detail_shopify.html'">309</td>
+                        <td class="text-center">2026-03-26 18:07</td>
+                        <td><span class="channel-icon channel-shopify"></span> Shopify</td>
+                        <td class="text-center">B2C</td>
+                        <td>勇人 渡辺</td>
+                        <td class="text-right">20,000</td>
+                        <td class="text-center"><span class="badge-shipping">出荷中</span></td>
+                        <td class="text-right">50/100</td>
+                        <td class="text-center">2026-03-28</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;"
+                            onclick="location.href='order_detail_agency.html'">303</td>
+                        <td class="text-center">2026-03-26 13:33</td>
+                        <td><span class="channel-icon channel-agency"></span> Agency</td>
+                        <td class="text-center">B2B</td>
+                        <td>Bean株式会社</td>
+                        <td class="text-right">148,500</td>
+                        <td class="text-center"><span class="badge-waiting" style="background-color: #fffbe6; color: #bf4b00; border: 1px solid #ffe58f;">確定待ち</span></td>
+                        <td class="text-right">0/11</td>
+                        <td class="text-center"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;"
+                            onclick="location.href='order_detail_shopify.html'">302</td>
+                        <td class="text-center">2026-03-26 18:36</td>
+                        <td><span class="channel-icon channel-shopify"></span> Shopify</td>
+                        <td class="text-center">B2C</td>
+                        <td>勇人 渡辺</td>
+                        <td class="text-right">82,500</td>
+                        <td class="text-center"><span class="badge-waiting" style="background-color: #fffbe6; color: #bf4b00; border: 1px solid #ffe58f;">確定待ち</span></td>
+                        <td class="text-right">0/8</td>
+                        <td class="text-center"></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button class="page-btn" disabled>⏮ 最初</button>
+            <button class="page-btn" disabled>◀ 前へ</button>
+            <span>ページ <strong>1 / 1</strong> (全 <strong>4</strong> 件)</span>
+            <button class="page-btn" disabled>次へ ▶</button>
+            <button class="page-btn" disabled>最後 ⏭</button>
+            <select style="margin-left: 10px; padding: 4px;">
+                <option>10件/ページ</option>
+                <option>20件/ページ</option>
+                <option>50件/ページ</option>
+            </select>
         </div>
     </div>
-    <div class="header-right">
-        <div class="search-container">
-            <input type="text" class="search-input" placeholder="アプリ内検索">
-        </div>
-        <div class="user-profile">
-            <span>Administrator</span>
-            <div class="avatar"></div>
-        </div>
-    </div>
-</header>
-
-<div class="main-container">
-    <div class="breadcrumb">🏠 <span>/</span> アプリ: 注文一覧を見る</div>
-
-    <div class="app-title-section">
-        <div class="app-icon">🛒</div>
-        <div class="app-name">注文一覧を見る</div>
-    </div>
-
-    <div class="control-bar">
-        <button class="view-selector">🔥 今月受注 <span style="font-size: 10px;">▼</span></button>
-        <button class="graph-btn">📊 <span style="font-size: 10px;">▼</span></button>
-        <button class="icon-btn">🔍</button>
-        <button class="icon-btn">📈</button>
-        <div style="flex-grow: 1;"></div>
-        <button class="icon-btn" style="background-color: #fff; border: 1px solid #ccc; font-size: 18px; color: #999;">+</button>
-        <button class="icon-btn">⚙ <span style="font-size: 10px;">▼</span></button>
-        <button class="icon-btn">⋮</button>
-    </div>
-
-    <div class="list-card">
-        <table class="k-table">
-            <thead>
-                <tr>
-                    <th class="text-center">注文ID</th>
-                    <th class="text-center">注文日時</th>
-                    <th>チャネル</th>
-                    <th class="text-center">顧客区分</th>
-                    <th>顧客表示名</th>
-                    <th class="text-right">注文金額</th>
-                    <th class="text-center">注文ステータス</th>
-                    <th class="text-right">出荷進捗</th>
-                    <th class="text-center">配送予定日</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;" onclick="location.href='order_detail_agency_paid.html'">311</td>
-                    <td class="text-center">2026-03-26 15:37</td>
-                    <td><span class="channel-icon channel-agency"></span> Agency</td>
-                    <td class="text-center">B2B</td>
-                    <td>Zenshin 株式会社</td>
-                    <td class="text-right">153,000</td>
-                    <td class="text-center"><span class="badge-status">出荷中</span></td>
-                    <td class="text-right">0/17</td>
-                    <td class="text-center">2026-03-28</td>
-                    <td class="action-cell">
-                        <span class="action-icon">✎</span>
-                        <span class="action-icon delete">✖</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;" onclick="location.href='order_detail_shopify.html'">309</td>
-                    <td class="text-center">2026-03-26 18:07</td>
-                    <td><span class="channel-icon channel-shopify"></span> Shopify</td>
-                    <td class="text-center">B2C</td>
-                    <td>勇人 渡辺</td>
-                    <td class="text-right">20,000</td>
-                    <td class="text-center"><span class="badge-shipping">出荷中</span></td>
-                    <td class="text-right">50/100</td>
-                    <td class="text-center">2026-03-28</td>
-                    <td class="action-cell">
-                        <span class="action-icon">✎</span>
-                        <span class="action-icon delete">✖</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;" onclick="location.href='order_detail_agency.html'">303</td>
-                    <td class="text-center">2026-03-26 13:33</td>
-                    <td><span class="channel-icon channel-agency"></span> Agency</td>
-                    <td class="text-center">B2B</td>
-                    <td>Bean株式会社</td>
-                    <td class="text-right">148,500</td>
-                    <td class="text-center"><span class="badge-waiting">入金待ち</span></td>
-                    <td class="text-right">0/11</td>
-                    <td class="text-center"></td>
-                    <td class="action-cell">
-                        <span class="action-icon">✎</span>
-                        <span class="action-icon delete">✖</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;" onclick="location.href='order_detail_shopify.html'">302</td>
-                    <td class="text-center">2026-03-26 18:36</td>
-                    <td><span class="channel-icon channel-shopify"></span> Shopify</td>
-                    <td class="text-center">B2C</td>
-                    <td>勇人 渡辺</td>
-                    <td class="text-right">82,500</td>
-                    <td class="text-center"><span class="badge-delivering">配送中</span></td>
-                    <td class="text-right">8/8</td>
-                    <td class="text-center">2026-03-28</td>
-                    <td class="action-cell">
-                        <span class="action-icon">✎</span>
-                        <span class="action-icon delete">✖</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="pagination">
-        <button class="page-btn" disabled>⏮ 最初</button>
-        <button class="page-btn" disabled>◀ 前へ</button>
-        <span>ページ <strong>1 / 1</strong> (全 <strong>4</strong> 件)</span>
-        <button class="page-btn" disabled>次へ ▶</button>
-        <button class="page-btn" disabled>最後 ⏭</button>
-        <select style="margin-left: 10px; padding: 4px;">
-            <option>10件/ページ</option>
-            <option>20件/ページ</option>
-            <option>50件/ページ</option>
-        </select>
-    </div>
-</div>
 
 </body>
+
 </html>
