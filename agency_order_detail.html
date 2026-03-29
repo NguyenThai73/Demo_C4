@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注文詳細 | CREDIE Order Portal</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-blue: #3498db;
+            --header-bg: #fff;
+            --body-bg: #f5f6f7;
+            --border-color: #e3e7e8;
+            --status-blue: #0081cc;
+            --status-bg: #e5f3ff;
+            --badge-green: #27ae60;
+            --badge-yellow: #f39c12;
+            --badge-gray: #95a5a6;
+            --badge-red: #e74c3c;
+            --card-bg: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--body-bg);
+            color: #333;
+            font-size: 14px;
+        }
+
+        /* Top Header */
+        .top-header {
+            background-color: #1a1a1a;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            color: white;
+        }
+
+        .site-title {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .logout-btn {
+            color: #ccc;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .logout-btn:hover {
+            color: white;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            font-size: 12px;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .breadcrumb a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Page Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .back-btn, .print-btn, .invoice-btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-btn {
+            background-color: #f8f8f8;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .print-btn {
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .invoice-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+        }
+
+        .back-btn:hover {
+            background-color: #eee;
+        }
+
+        .print-btn:hover {
+            background-color: #f9f9f9;
+        }
+
+        .invoice-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Card */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid var(--primary-blue);
+            padding-bottom: 8px;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .summary-value {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .order-amount {
+            color: #e67e22;
+            font-size: 20px;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .status-unpaid {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-awaiting {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Address Card */
+        .address-content {
+            line-height: 1.6;
+        }
+
+        .address-line {
+            margin-bottom: 4px;
+        }
+
+        /* Order Items Table */
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .order-table th {
+            background-color: #f7f9fa;
+            border-bottom: 2px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .order-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .order-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Confirm Button */
+        .confirm-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .confirm-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Notes Card */
+        .notes-content {
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .order-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .order-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="site-title">CREDIE Order Portal</div>
+        <div class="user-info">
+            <span>test_agency@yopmail.com</span>
+            <span class="logout-btn">
+                <span class="material-symbols-outlined" style="font-size: 16px;">logout</span>
+                ログアウト
+            </span>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="agency_orderlist.html">注文履歴</a>
+            <span>></span>
+            <span>注文詳細</span>
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">注文詳細</h1>
+            <div class="action-buttons">
+                <button class="back-btn" onclick="history.back()">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    戻る
+                </button>
+                <button class="print-btn">
+                    <span class="material-symbols-outlined">print</span>
+                    印刷
+                </button>
+                <button class="invoice-btn">
+                    <span class="material-symbols-outlined">receipt</span>
+                    請求書
+                </button>
+            </div>
+        </div>
+
+        <!-- Order Summary Card -->
+        <div class="card">
+            <div class="order-summary">
+                <div class="summary-item">
+                    <div class="summary-label">注文番号</div>
+                    <div class="summary-value">340</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">注文日</div>
+                    <div class="summary-value">2026-03-26</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">注文金額</div>
+                    <div class="summary-value order-amount">¥28,035</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">支払ステータス</div>
+                    <div>
+                        <span class="status-badge status-unpaid">未払い</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery Address Card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="material-symbols-outlined">location_on</span>
+                配送先住所
+            </div>
+            <div class="address-content">
+                <div class="address-line">test_agency@yopmail.com</div>
+                <div class="address-line">〒130-0021</div>
+                <div class="address-line">東京都墨田区緑1-23-45</div>
+                <div class="address-line">サンプルビル 3F</div>
+                <div class="address-line">担当: TOAN DO HUU (TEL: 07035197113)</div>
+            </div>
+        </div>
+
+        <!-- Order Items Card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="material-symbols-outlined">list</span>
+                注文内容
+            </div>
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>製品名</th>
+                        <th>注文数</th>
+                        <th>配送済</th>
+                        <th>ステータス</th>
+                        <th>配送予定日</th>
+                        <th>配送完了日</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>米ぬかの恵み 300mL<br><small>SKU: KM300-V01</small></td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td><span class="status-badge status-awaiting">入荷待ち</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Dr's Power Rice Silica PREMIUM<br><small>SKU: abc</small></td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td><span class="status-badge status-awaiting">入荷待ち</span></td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="confirm-btn">
+                <span class="material-symbols-outlined">check_circle</span>
+                配送完了を確定
+            </button>
+        </div>
+
+        <!-- Notes Card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="material-symbols-outlined">edit</span>
+                備考
+            </div>
+            <div class="notes-content">
+                ヤマト運輸希望
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Print button functionality
+        document.querySelector('.print-btn').addEventListener('click', function() {
+            window.print();
+        });
+
+        // Invoice button functionality
+        document.querySelector('.invoice-btn').addEventListener('click', function() {
+            alert('請求書をダウンロードします');
+            // In real implementation: window.location.href = 'invoice_340.pdf';
+        });
+
+        // Confirm delivery button
+        document.querySelector('.confirm-btn').addEventListener('click', function() {
+            if (confirm('配送完了を確定しますか？この操作は取り消せません。')) {
+                alert('配送完了を確定しました');
+                // In real implementation: API call to confirm delivery
+            }
+        });
+
+        // Logout button
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if (confirm('ログアウトしますか？')) {
+                alert('ログアウトしました');
+                // In real implementation: window.location.href = 'logout.html';
+            }
+        });
+    </script>
+</body>
+
+</html>

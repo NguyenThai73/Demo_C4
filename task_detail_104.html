@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>入出荷タスク詳細 [#104] | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .k-table.compact th, .k-table.compact td { padding: 8px 12px; font-size: 12px; }
+        .field-value-box { border: 1px solid #ddd; padding: 8px 12px; border-radius: 4px; background: white; min-height: 20px; font-size: 13px; font-weight: bold; }
+    </style>
+</head>
+
+<body>
+
+    <div class="kintone-header-top">
+        <div class="header-content-inner">
+            <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;"><span class="k-icon">k</span> kintone</a></div>
+            <div class="header-user">
+                <span>✉</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                    <span>Administrator</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-header-sub">
+        <div class="header-content-inner">
+            <div class="header-sub-left">
+                <span>☰</span> <span onclick="location.href='index.html'" style="cursor:pointer">🏠</span>
+                <div style="display: inline-flex; margin-left: 25px; gap: 15px; font-size: 11px; font-weight: bold; align-items: center;">
+                    <a href="index.html" style="color: inherit; text-decoration: none;">受注</a>
+                    <a href="task_top.html" style="color: inherit; text-decoration: none;">入出庫</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-app-title-bar">
+        <div class="header-content-inner" style="padding: 12px 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="app-icon" style="background-color: #3498db; color: white; padding: 5px; border-radius: 4px; font-size: 14px;">🔄</div>
+                <div class="app-title" style="font-weight: bold; font-size: 14px;">入出荷タスク詳細</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container" style="padding: 20px 10px;">
+        <div class="breadcrumb" style="font-size: 12px; color: #3498db; margin-bottom: 20px;">
+            🏠 <span>/</span> <a href="task_top.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a>
+        </div>
+
+        <div class="summary-header">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div id="type-badge" class="badge-type" style="background-color: #e8f4fd; color: #3498db; border-color: #d1e9fb;">出荷（販売）</div>
+                    <div style="font-size: 24px; font-weight: bold;">#104</div>
+                </div>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-label">現在のステータス</div>
+                    <div id="main-status" class="summary-primary-value" style="color: #f1c40f; font-size: 20px;">待機中</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">作業指示元</div>
+                    <div style="font-size: 18px; color: var(--kintone-blue);">注文ID: 309</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">倉庫</div>
+                    <div style="font-size: 15px;">岐阜倉庫</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="next-action-area" class="next-action-card" style="border-left-color: #f1c40f !important;">
+            <div class="next-action-content">
+                <span style="font-size: 30px; color: var(--kintone-warning);"><i class="fas fa-truck-loading"></i></span>
+                <div>
+                    次の対応: <span style="color: var(--kintone-warning); font-weight: 800;">ピッキング作業</span><br>
+                    <span style="font-weight: normal; font-size: 12px; color: #666;">内容を確認し、問題なければ作業を開始してください。</span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn-blue" onclick="location.href='task_scan_barcode_104.html'">バーコードスキャンを開始</button>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
+                <span><i class="fas fa-info-circle" style="margin-right: 12px;"></i></span> タスク概要
+            </div>
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item">
+                    <div class="field-label">タスクID</div>
+                    <div class="field-value" style="font-weight: bold;">104</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">作業指示元ID</div>
+                    <div class="field-value" style="font-weight: bold;"><a href="order_detail_shopify_309.html" style="color: var(--kintone-blue);">309</a></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
+            <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px;">
+                <span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span> 商品明細
+            </div>
+            <table class="k-table">
+                <thead>
+                    <tr>
+                        <th style="min-width: 150px;">商品SKU</th>
+                        <th style="min-width: 250px;">表示名</th>
+                        <th class="col-num">数量</th>
+                        <th class="col-mid">単位</th>
+                        <th class="col-num">完了数</th>
+                    </tr>
+                </thead>
+                <tbody id="product-table-body">
+                    <tr>
+                        <td style="font-weight: bold; color: var(--kintone-blue);">RC50-V01</td>
+                        <td>Rice Silica 50mL</td>
+                        <td class="col-num">500</td>
+                        <td class="col-mid">個</td>
+                        <td class="col-num">0</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--kintone-blue);">RC300-V01</td>
+                        <td>Rice Silica 300mL</td>
+                        <td class="col-num">200</td>
+                        <td class="col-mid">個</td>
+                        <td class="col-num">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('status') === 'finished') {
+                document.getElementById('main-status').innerHTML = '完了';
+                document.getElementById('main-status').style.color = 'var(--kintone-success)';
+                const rows = document.querySelectorAll('#product-table-body tr');
+                rows.forEach(r => { r.cells[4].textContent = r.cells[2].textContent; });
+                document.getElementById('next-action-area').className = 'next-action-card accent-success';
+                document.getElementById('next-action-area').style.borderLeftColor = 'var(--kintone-success) !important';
+                document.getElementById('next-action-area').innerHTML = `
+                    <div class="next-action-content">
+                        <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>
+                        <div>状況: <span style="font-weight: 800; color: var(--kintone-success);">完了</span><br><span>出荷作業が正常に完了しました。</span></div>
+                    </div>
+                    <div><button onclick="location.href='order_detail_shopify_309_outfinish.html'" style="padding: 10px 24px; border-radius: 12px; border: 1px solid #ccc; background: white; font-weight: 800; cursor: pointer;">注文確認へ進む</button></div>
+                `;
+            }
+        };
+    </script>
+</body>
+</html>

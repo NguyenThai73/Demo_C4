@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注文詳細 (注文#309) [返品受入完了] | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="kintone-header-top">
+        <div class="header-content-inner">
+            <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;"><span
+                        class="k-icon">k</span> kintone</a></div>
+            <div class="header-user">
+                <span>✉</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                        alt="User">
+                    <span>Administrator</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-header-sub">
+        <div class="header-content-inner">
+            <div class="header-sub-left">
+                <span>☰</span> <span onclick="location.href='index.html'" style="cursor:pointer">🏠</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-app-title-bar">
+        <div class="header-content-inner" style="padding: 12px 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="app-icon">🛒</div>
+                <div class="app-title">注文管理 (Shopify)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="breadcrumb">
+            🏠 <span>/</span> <a href="index.html" style="color: inherit; text-decoration: none;">アプリ: 注文管理</a> <span>/</span> レコード: 309
+        </div>
+
+        <div id="flash-message" class="sticky-flash" style="display: block;">🎉 操作を完了しました。</div>
+
+        <!-- Summary Header -->
+        <div class="summary-header">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="badge-type" style="background-color: #e8f4fd; color: #3498db; border: 1px solid #d1e9fb; font-weight: 800; padding: 4px 12px; font-size: 12px;">
+                        Shopify注文（取次店）</div>
+                </div>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-label">注文金額合計</div>
+                    <div class="summary-primary-value">¥245,000</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">注文ステータス</div>
+                    <div class="summary-primary-value" style="color: var(--status-return-text);">一部返品完了</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">注文日</div>
+                    <div class="summary-value">2026-03-23</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">最終更新 / 返品完了</div>
+                    <div class="summary-value">2026-03-29</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="next-action-card" style="border-left-color: var(--status-return-text); display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+            <div class="next-action-content">
+                <span style="font-size: 32px; color: var(--status-return-text);"><i class="fas fa-rotate-left"></i></span>
+                <div>
+                    状況: <span style="color: var(--status-return-text); font-weight: 800;">一部返品完了</span><br>
+                    <span style="font-weight: normal; font-size: 11px; color: #666;">
+                        返品入庫が完了しました。売上の確定手続きを確認してください。
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Order Info -->
+        <div class="section-card section-info">
+            <div class="section-title"><span><i class="fas fa-info-circle"></i></span> 注文概要</div>
+            <div class="field-grid">
+                <div class="field-item">
+                    <div class="field-label">注文番号</div>
+                    <div class="field-box">#309</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">チャネル</div>
+                    <div class="field-box">Shopify (Agency Store)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Product List -->
+        <div class="section-card section-op" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
+            <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px;"><span><i
+                        class="fas fa-boxes" style="margin-right: 12px;"></i></span> 商品詳細</div>
+            <table class="k-table">
+                <thead>
+                    <tr>
+                        <th style="min-width: 120px;">商品SKU</th>
+                        <th style="min-width: 250px;">商品名</th>
+                        <th class="col-num">注文数量</th>
+                        <th class="col-num">出荷済数量</th>
+                        <th class="col-num">返品済数量</th>
+                        <th class="col-mid">ステータス</th>
+                    </tr>
+                </thead>
+                <tbody id="product-tbody">
+                    <tr>
+                        <td style="font-weight: bold; color: var(--kintone-blue);">RC50-V01</td>
+                        <td>Rice Silica 50mL</td>
+                        <td class="col-num">500</td>
+                        <td class="col-num">500</td>
+                        <td class="col-num" style="color: var(--status-return-text); font-weight: 800;">250</td>
+                        <td class="col-mid"><span class="badge-status status-return">返品有</span></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--kintone-blue);">RC300-V01</td>
+                        <td>Rice Silica 300mL</td>
+                        <td class="col-num">200</td>
+                        <td class="col-num">200</td>
+                        <td class="col-num" style="color: #999;">0</td>
+                        <td class="col-mid"><span class="badge-status status-ok">出庫済</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-card section-hist">
+            <div class="section-title"><span><i class="fas fa-truck-ramp-box"></i></span> 出荷履歴</div>
+            <table class="k-table">
+                <thead><tr><th>ID</th><th>ステータス</th><th>出荷日</th><th>配送業者 / 追跡番号</th><th>サマリー</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight: bold;"><a href="task_detail_103.html">103</a></td>
+                        <td><span class="badge-status status-ok">完了</span></td>
+                        <td>2026-03-24</td>
+                        <td>ヤマト運輸: 9876-5432-1098</td>
+                        <td>Rice Silica 50mL x 500, Rice Silica 300mL x 200</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-card section-hist">
+            <div class="section-title"><span><i class="fas fa-rotate-left" style="margin-right: 12px;"></i></span> 返品履歴</div>
+            <table class="k-table" style="font-size: 11px;">
+                <thead><tr><th>ID</th><th>ステータス</th><th>返品日</th><th>返品サマリー</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight:bold;"><a href="#">2483</a></td>
+                        <td><span class="badge-status status-ok">完了</span></td>
+                        <td>2026-03-29</td>
+                        <td>Rice Silica 50mL x 250</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => { document.getElementById('flash-message').style.display='none'; }, 3000);
+    </script>
+</body>
+</html>

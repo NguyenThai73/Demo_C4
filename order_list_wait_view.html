@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注文一覧 | Silica Link</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --kintone-blue: #3498db;
+            --kintone-header-bg: #fff;
+            --kintone-body-bg: #f5f6f7;
+            --kintone-border: #e3e7e8;
+            --kintone-status-blue: #0081cc;
+            --kintone-status-bg: #e5f3ff;
+            --kintone-rakuten-text: #bf0000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--kintone-body-bg);
+            color: #333;
+            font-size: 14px;
+        }
+
+        /* Top Header */
+        header {
+            background-color: #fff;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 2px solid var(--kintone-blue);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-weight: bold;
+            color: var(--kintone-blue);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 15px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 6px 30px 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            width: 200px;
+            font-size: 12px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #ccc;
+        }
+
+        /* Main Content */
+        .main-container {
+            padding: 10px 20px;
+        }
+
+        .breadcrumb {
+            font-size: 11px;
+            color: var(--kintone-blue);
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb span {
+            color: #999;
+            margin: 0 5px;
+        }
+
+        .app-title-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .app-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #7ed321;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .app-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Control Bar */
+        .control-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .view-selector {
+            background-color: var(--kintone-blue);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .graph-btn {
+            background-color: var(--kintone-blue);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .icon-btn {
+            border: 1px solid #ccc;
+            background-color: #f8f8f8;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* List Table View */
+        .list-card {
+            background-color: white;
+            border: 1px solid var(--kintone-border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .k-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .k-table th {
+            background-color: #f7f9fa;
+            border: 1px solid #e3e7e8;
+            padding: 8px;
+            text-align: left;
+            font-weight: normal;
+            color: #666;
+        }
+
+        .k-table td {
+            border: 1px solid #e3e7e8;
+            padding: 8px;
+            background-color: #fff;
+        }
+
+        .badge-status {
+            display: inline-block;
+            background-color: var(--kintone-status-bg);
+            color: var(--kintone-status-blue);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .badge-waiting {
+            background-color: #fff3e0;
+            color: #ef6c00;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .badge-shipping {
+            background-color: #e0f7fa;
+            color: #006064;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            border: 1px solid #b2ebf2;
+        }
+
+        .badge-delivering {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            border: 1px solid #c8e6c9;
+        }
+
+        .channel-icon {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+        .channel-shopify {
+            background-color: #95bf47;
+        }
+
+        .channel-agency {
+            background-color: #9c27b0;
+        }
+
+        .action-cell {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .action-icon {
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 8px;
+            color: #3498db;
+        }
+
+        .action-icon.delete {
+            color: #5dade2;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding-bottom: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .page-btn {
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .page-btn:disabled {
+            color: #ccc;
+            cursor: default;
+        }
+
+        /* Alignment Helpers */
+        .text-right {
+            text-align: right !important;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .text-left {
+            text-align: left !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TopNavBar -->
+    <nav class="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none font-['Inter'] antialiased text-sm font-medium tracking-tight docked full-width top-0 border-b-0 sticky z-50">
+        <div class="flex justify-between items-center w-full px-6 h-16 max-w-[1920px] mx-auto">
+            <div class="flex items-center gap-8">
+                <a href="index.html" class="text-xl font-bold text-[#00488d] dark:text-blue-400 tracking-tighter hover:opacity-80 transition-opacity">Kintone Dashboard</a>
+                <div class="hidden md:flex gap-6 items-center">
+                    <a class="text-[#00488d] dark:text-blue-400 border-b-2 border-[#00488d] dark:border-blue-400 pb-1" href="index.html">受注業務</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="purchase_index.html">発注業務</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="production_index.html">製造業務</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="task_top.html">入出庫・タスク</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="commission_top.html">報酬管理</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="payment_cashflow_index.html">入出金管理</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="partner_top.html">パートナー管理</a>
+                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="master_index.html">マスタ管理</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="p-2 text-on-surface-variant hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all duration-200 scale-95 active:opacity-80">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <div class="h-8 w-8 rounded-full bg-surface-container-highest overflow-hidden border border-surface-container-high">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5ojtP60fHbHvfrGuF9J-4sBUw7rQ55quXPL5EArZOUVuI-uaKnHiGd9XgLryiNM3MmyAVzRWxhK-eM9pkTHxvOgm9C8iCdc-MSgV5uuGNLbJvEyHJpQNttKgn_MSkrYX6Bpw3luyA9XgQqy67fVzJe1u6ClMJltbZcl4ipEBaMnSnochUBb1nKE1e_6SYEgToCb--ZxWWCOtmZUTU2D9KAf1pX_pSFvfJkX94qz58YyYApVKpy1oQ52ihHWbcMt95MsXemNpgbF70" alt="User">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="breadcrumb">🏠 <span>/</span> アプリ: 注文一覧を見る</div>
+
+        <div class="app-title-section">
+            <div class="app-icon">🛒</div>
+            <div class="app-name">注文一覧を見る</div>
+        </div>
+
+        <div class="control-bar">
+            <button class="view-selector">🔥 今月受注 <span style="font-size: 10px;">▼</span></button>
+            <button class="graph-btn">📊 <span style="font-size: 10px;">▼</span></button>
+            <button class="icon-btn">🔍</button>
+            <button class="icon-btn">📈</button>
+            <button class="icon-btn">⚙ <span style="font-size: 10px;">▼</span></button>
+            <button class="icon-btn">⋮</button>
+        </div>
+
+        <div class="list-card">
+            <table class="k-table">
+                <thead>
+                    <tr>
+                        <th class="text-center">注文ID</th>
+                        <th class="text-center">注文日時</th>
+                        <th>チャネル</th>
+                        <th class="text-center">顧客区分</th>
+                        <th>顧客表示名</th>
+                        <th class="text-right">注文金額</th>
+                        <th class="text-center">注文ステータス</th>
+                        <th class="text-right">出荷進捗</th>
+                        <th class="text-center">配送予定日</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;"
+                            onclick="location.href='order_detail_agency_303.html'">303</td>
+                        <td class="text-center">2026-03-26 13:33</td>
+                        <td><span class="channel-icon channel-agency"></span> Agency</td>
+                        <td class="text-center">B2B</td>
+                        <td>Bean株式会社</td>
+                        <td class="text-right">148,500</td>
+                        <td class="text-center"><span class="badge-waiting" style="background-color: #fffbe6; color: #bf4b00; border: 1px solid #ffe58f;">確定待ち</span></td>
+                        <td class="text-right">0/11</td>
+                        <td class="text-center"></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button class="page-btn" disabled>⏮ 最初</button>
+            <button class="page-btn" disabled>◀ 前へ</button>
+            <span>ページ <strong>1 / 1</strong> (全 <strong>1</strong> 件)</span>
+            <button class="page-btn" disabled>次へ ▶</button>
+            <button class="page-btn" disabled>最後 ⏭</button>
+            <select style="margin-left: 10px; padding: 4px;">
+                <option>10件/ページ</option>
+                <option>20件/ページ</option>
+                <option>50件/ページ</option>
+            </select>
+        </div>
+    </div>
+
+</body>
+
+</html>

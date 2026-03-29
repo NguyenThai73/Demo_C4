@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>バーコードスキャン (#104) | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body style="background-color: #f7f9fa; margin: 0; padding: 0;">
+
+    <div class="kintone-header-sub" style="background-color: #34495e; color: white; padding: 12px; position: sticky; top: 0; z-index: 100;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span onclick="location.href='task_detail_104.html'" style="cursor: pointer; font-size: 18px;"><i class="fas fa-chevron-left"></i></span>
+                <span style="font-weight: 800; font-size: 14px;">スキャン: #104</span>
+            </div>
+            <div style="font-size: 12px; opacity: 0.8;">Admin</div>
+        </div>
+    </div>
+
+    <div class="main-container" style="padding: 15px; max-width: 500px; margin: 0 auto;">
+
+        <div style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 20px;">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <div style="color: #666; font-size: 12px; margin-bottom: 8px;">スキャン対象のバーコードを読み取ってください</div>
+                <div style="width: 100%; height: 180px; background: #000; border-radius: 8px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; color: white;">
+                    <i class="fas fa-barcode" style="font-size: 100px; opacity: 0.3;"></i>
+                    <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: rgba(255,0,0,0.5); box-shadow: 0 0 10px red; animation: scanAnim 2s infinite linear;"></div>
+                </div>
+                <style>
+                    @keyframes scanAnim { 0% { top: 20%; } 50% { top: 80%; } 100% { top: 20%; } }
+                </style>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 12px; font-weight: 800; color: #3498db; margin-bottom: 8px;">手動入力 / スキャン結果</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="barcode-input" placeholder="JAN/SKU/棚コード" style="flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; outline: none;">
+                    <button onclick="handleScan()" style="padding: 0 20px; background-color: #3498db; color: white; border: none; border-radius: 8px; font-weight: 800;">OK</button>
+                </div>
+            </div>
+
+            <div id="scan-feedback" style="display: none; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #ccc;">
+                <div id="feedback-msg" style="font-size: 13px;"></div>
+            </div>
+        </div>
+
+        <div style="background: white; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <div style="font-weight: 800; font-size: 13px; margin-bottom: 12px; color: #333; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-list-check" style="color: #3498db;"></i> 作業状況 (2商品)
+            </div>
+            <div id="item-list">
+                <div class="scan-item-row" id="row-rc50" style="padding: 12px 0; border-bottom: 1px solid #eee;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+                        <span style="font-weight: 800; font-size: 13px;">Rice Silica 50mL</span>
+                        <span id="qty-rc50" style="font-weight: 800; color: #666;">0 / 500</span>
+                    </div>
+                    <div style="font-size: 11px; color: #999;">SKU: RC50-V01</div>
+                    <div class="progress-bar-bg" style="height: 6px; background: #eee; border-radius: 3px; margin-top: 8px;">
+                        <div id="bar-rc50" style="width: 0%; height: 100%; background: #3498db; border-radius: 3px; transition: width 0.3s;"></div>
+                    </div>
+                </div>
+                <div class="scan-item-row" id="row-rc300" style="padding: 12px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+                        <span style="font-weight: 800; font-size: 13px;">Rice Silica 300mL</span>
+                        <span id="qty-rc300" style="font-weight: 800; color: #666;">0 / 200</span>
+                    </div>
+                    <div style="font-size: 11px; color: #999;">SKU: RC300-V01</div>
+                    <div class="progress-bar-bg" style="height: 6px; background: #eee; border-radius: 3px; margin-top: 8px;">
+                        <div id="bar-rc300" style="width: 0%; height: 100%; background: #3498db; border-radius: 3px; transition: width 0.3s;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="finish-btn" disabled onclick="goDetail()" style="width: 100%; padding: 18px; margin-top: 25px; border: none; border-radius: 12px; background: #ccc; color: white; font-size: 16px; font-weight: 800; cursor: not-allowed; transition: all 0.3s;">
+            作業を完了する
+        </button>
+    </div>
+
+    <script>
+        let state = {
+            rc50: { current: 0, target: 500 },
+            rc300: { current: 0, target: 200 }
+        };
+
+        function handleScan() {
+            const input = document.getElementById('barcode-input');
+            const val = input.value.trim().toUpperCase();
+            const feedback = document.getElementById('scan-feedback');
+            const feedbackMsg = document.getElementById('feedback-msg');
+
+            if (val === 'RC50-V01' || val === '50') {
+                state.rc50.current = state.rc50.target;
+                updateItem('rc50');
+                showSuccess('Rice Silica 50mL (500個) をスキャンしました');
+            } else if (val === 'RC300-V01' || val === '300') {
+                state.rc300.current = state.rc300.target;
+                updateItem('rc300');
+                showSuccess('Rice Silica 300mL (200個) をスキャンしました');
+            } else {
+                showError('無効なSKUまたはコードです');
+            }
+            input.value = '';
+            checkFinish();
+        }
+
+        function updateItem(id) {
+            document.getElementById(`qty-${id}`).innerHTML = `<span style="color: #2ecc71;">${state[id].current}</span> / ${state[id].target}`;
+            document.getElementById(`bar-${id}`).style.width = '100%';
+            document.getElementById(`bar-${id}`).style.backgroundColor = '#2ecc71';
+        }
+
+        function showSuccess(msg) {
+            const feedback = document.getElementById('scan-feedback');
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#ebfaf0';
+            feedback.style.borderColor = '#2ecc71';
+            document.getElementById('feedback-msg').style.color = '#008a3d';
+            document.getElementById('feedback-msg').innerHTML = `<i class="fas fa-circle-check"></i> ${msg}`;
+        }
+        function showError(msg) {
+            const feedback = document.getElementById('scan-feedback');
+            feedback.style.display = 'block';
+            feedback.style.backgroundColor = '#fff5f5';
+            feedback.style.borderColor = '#e74c3c';
+            document.getElementById('feedback-msg').style.color = '#c0392b';
+            document.getElementById('feedback-msg').innerHTML = `<i class="fas fa-circle-xmark"></i> ${msg}`;
+        }
+
+        function checkFinish() {
+            if (state.rc50.current >= state.rc50.target && state.rc300.current >= state.rc300.target) {
+                const btn = document.getElementById('finish-btn');
+                btn.disabled = false;
+                btn.style.background = '#3498db';
+                btn.style.cursor = 'pointer';
+                btn.style.boxShadow = '0 4px 15px rgba(52,152,219,0.3)';
+            }
+        }
+
+        function goDetail() {
+            location.href = 'task_detail_104.html?status=finished';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規注文 | CREDIE Order Portal</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #3498db;
+            --header-dark: #2c3e50;
+            --body-bg: #f8f9fa;
+            --border-color: #ddd;
+            --text-main: #333;
+            --text-muted: #666;
+            --danger-red: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--body-bg);
+            color: var(--text-main);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Top Header */
+        .top-header {
+            background-color: #1a1a1a;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            color: white;
+        }
+
+        .site-title {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            font-size: 13px;
+        }
+
+        .user-email {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .logout-btn {
+            background-color: #444;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .logout-btn:hover {
+            background-color: #555;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px 40px;
+        }
+
+        /* Page Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #333;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-white {
+            background: white;
+            color: #666;
+            border: 1px solid #ddd;
+        }
+        .btn-outline-blue {
+            background: white;
+            color: #3498db;
+            border: 1px solid #3498db;
+        }
+        .btn-blue {
+            background: #3498db;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .card-header-styled {
+            background: #f8f9fa;
+            padding: 16px 24px;
+            border-bottom: 1px solid #eee;
+            font-weight: 800;
+            font-size: 16px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        /* Search Inner */
+        .search-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Breadcrumb Bar */
+        .breadcrumb-bar {
+            background-color: #fff;
+            padding: 12px 40px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            gap: 6px;
+        }
+
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .breadcrumb span {
+            color: #ccc;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 40px;
+        }
+
+        /* Page Title & Actions */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 24px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-white {
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .btn-blue {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-outline-blue {
+            background-color: transparent;
+            border: 1px solid #3498db;
+            color: #3498db;
+        }
+
+        .btn-blue:hover { border-color: #2980b9; }
+        .btn-white:hover { background-color: #f9f9f9; }
+
+        /* Card System */
+        .card {
+            background: white;
+            border: 1px solid #e3e7e8;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .card-header-styled {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 15px;
+            color: #333;
+            padding: 16px 24px;
+            border-bottom: 2px solid var(--primary-blue);
+        }
+
+        /* Search Section */
+        .search-area {
+            border: 1px solid #e1e9f1;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .search-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .search-hint {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* Quantity Input */
+        .quantity-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .quantity-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        /* Summary Value */
+        .summary-value {
+            font-weight: 800;
+            color: #333;
+        }
+
+        /* Delete Link Button */
+        .delete-link-btn {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 12px;
+            text-decoration: underline;
+            padding: 0;
+        }
+
+        .delete-link-btn:hover {
+            color: #c0392b;
+        }
+
+        /* Table */
+        .table-container {
+            margin-bottom: 30px;
+        }
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .styled-table th {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            padding: 16px;
+            text-align: left;
+            color: #555;
+            font-weight: 800;
+        }
+
+        .styled-table td {
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .sku-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .quantity-input {
+            width: 140px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .delete-link-btn {
+            background: none;
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Summary */
+        .summary-block {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+            padding: 20px 0;
+        }
+
+        .summary-row {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .summary-value {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .total-row {
+            font-size: 18px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .total-value {
+            color: #3498db;
+            font-size: 22px;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            font-weight: 800;
+            color: #333;
+        }
+
+        .required-star {
+            color: #e74c3c;
+            margin-left: 2px;
+        }
+
+        .form-input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .form-input:read-only {
+            background-color: #f9f9f9;
+        }
+
+        .form-textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-card {
+            background: white;
+            border-radius: 12px;
+            width: 450px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .modal-icon { font-size: 40px; margin-bottom: 20px; }
+        .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 12px; color: #333; }
+        .modal-description { font-size: 13px; color: #666; margin-bottom: 24px; line-height: 1.6; text-align: left; background: #f8f9fa; padding: 15px; border-radius: 8px; }
+        .modal-footer { display: flex; gap: 12px; justify-content: center; }
+        .modal-btn { padding: 10px 24px; border-radius: 6px; font-weight: 800; cursor: pointer; border: none; font-size: 13px; }
+        .modal-btn-secondary { background: #eee; color: #666; }
+        .modal-btn-primary { background: #3498db; color: white; }
+        .modal-btn-danger { background: #e74c3c; color: white; }
+
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .action-buttons { flex-direction: column; width: 100%; }
+            .top-header { padding: 0 20px; }
+            .main-container { padding: 0 20px; }
+            .summary-row { gap: 20px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="site-title">CREDIE Order Portal</div>
+        <div class="user-info">
+            <div class="user-email">
+                <span class="material-symbols-outlined" style="font-size: 20px;">account_circle</span>
+                <span>test_agency@yopmail.com</span>
+            </div>
+            <span class="logout-btn">
+                <span class="material-symbols-outlined" style="font-size: 16px;">logout</span>
+                ログアウト
+            </span>
+        </div>
+    </div>
+
+    <!-- Breadcrumb Bar -->
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb">
+            <a href="agency_orderlist.html">注文履歴</a>
+            <span>></span>
+            <span>新規注文</span>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">新規注文</h1>
+            <div class="action-buttons">
+                <button class="btn btn-white" id="cancelBtn">キャンセル</button>
+                <button class="btn btn-outline-blue" id="draftBtn">
+                    <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 18px;">save_as</span>
+                    下書き
+                </button>
+                <button class="btn btn-blue" id="confirmBtn">注文を確定</button>
+            </div>
+        </div>
+
+        <!-- Next Action Area (Subtle Style) -->
+        <div id="next-action-area" style="background-color: #f0f7ff; border: 1px solid #e1e9f1; border-radius: 8px; padding: 16px 24px; margin-bottom: 30px; display: flex; align-items: flex-start; gap: 15px;">
+            <span class="material-symbols-outlined" style="color: #3498db; font-size: 24px;">info</span>
+            <div>
+                <div style="font-weight: 800; font-size: 14px; color: #333; margin-bottom: 4px;">次の対応: 注文内容を入力してください</div>
+                <div style="font-size: 12px; color: #666;">
+                    1. 検索バーから商品を追加 2. 数量を入力 3. 配送先を確認して確定
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Card -->
+        <div class="card" style="border: 2px solid #3498db66;">
+            <div class="card-header-styled">
+                <span class="material-symbols-outlined" style="font-size: 22px;">search</span>
+                注文内容
+            </div>
+            <div class="card-body">
+                <div class="search-inner">
+                    <div class="search-input-wrapper">
+                        <input type="text" class="search-input" id="productSearch" placeholder="商品名またはSKUを入力してください">
+                    </div>
+                    <div class="search-hint">
+                        <span class="material-symbols-outlined" style="font-size: 16px; color: #f39c12;">lightbulb</span>
+                        ヒント: SKUコードを入力すると候補が表示されます
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Items Card -->
+        <div class="card">
+            <div class="card-header-styled">
+                <span class="material-symbols-outlined" style="font-size: 22px;">inventory_2</span>
+                注文内容
+            </div>
+            <div class="card-body">
+                <div style="font-size: 12px; margin-bottom: 12px; color: #666;">追加された製品: (2件)</div>
+                <div class="table-container">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 150px;">SKU</th>
+                                <th>商品名</th>
+                                <th style="width: 100px;">価格</th>
+                                <th style="width: 160px;">数量</th>
+                                <th style="width: 150px;">小計</th>
+                                <th style="width: 80px;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderItems">
+                            <tr>
+                                <td><a href="#" class="sku-link">TEST-SKU-002</a></td>
+                                <td>Updated Test Product 002</td>
+                                <td>¥1,500</td>
+                                <td><input type="number" class="quantity-input" value="1000" min="1" data-price="1500"></td>
+                                <td class="summary-value">¥1,500,000</td>
+                                <td><button class="delete-link-btn" onclick="removeItem(this)">削除</button></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="sku-link">SKU-TEST-DRAFT22</a></td>
+                                <td>SKU-TEST-DRAFT34</td>
+                                <td>¥1,000</td>
+                                <td><input type="number" class="quantity-input" value="1000" min="1" data-price="1000"></td>
+                                <td class="summary-value">¥1,000,000</td>
+                                <td><button class="delete-link-btn" onclick="removeItem(this)">削除</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="summary-block">
+                    <div class="summary-row">
+                        <span class="summary-label">小計:</span>
+                        <span class="summary-value" id="subtotal">¥2,500,000</span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span style="font-weight: 800;">注文合計:</span>
+                        <span class="total-value" id="orderTotal">¥2,500,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shipping Information Card -->
+        <div class="card">
+            <div class="card-header-styled" style="justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="material-symbols-outlined" style="font-size: 22px;">push_pin</span>
+                    配送先情報
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="btn btn-white" id="restoreAddressBtn" style="padding: 4px 12px; font-size: 11px; display: none;">
+                        デフォルトの住所を使用
+                    </button>
+                    <button type="button" class="btn btn-white" id="changeAddressBtn" style="padding: 4px 12px; font-size: 11px;">
+                        別の住所に配送する
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="shipping-form" class="form-grid">
+                    <div class="form-group">
+                        <div class="form-label">会社名<span class="required-star">*</span></div>
+                        <input type="text" class="form-input" id="shipping-company" value="株式会社東京グリーン (test_agency@yopmail.com)">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label">担当者名<span class="required-star">*</span></div>
+                        <input type="text" class="form-input" id="shipping-name" value="山田 太郎">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label">メールアドレス<span class="required-star">*</span></div>
+                        <input type="email" class="form-input" id="shipping-email" value="test_agency@yopmail.com">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label">電話番号<span class="required-star">*</span></div>
+                        <input type="tel" class="form-input" id="shipping-tel" value="03-1234-5678">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label">都道府県<span class="required-star">*</span></div>
+                        <input type="text" class="form-input" id="shipping-pref" value="東京都">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-label">郵便番号<span class="required-star">*</span></div>
+                        <input type="text" class="form-input" id="shipping-zip" value="150-0001">
+                    </div>
+                    <div class="form-group full-width">
+                        <div class="form-label">住所<span class="required-star">*</span></div>
+                        <input type="text" class="form-input" id="shipping-addr1" value="東京都渋谷区代々木1-2-3">
+                    </div>
+                    <div class="form-group full-width">
+                        <div class="form-label">建物名・部署番号</div>
+                        <input type="text" class="form-input" id="shipping-addr2" value="代々木ビル 5F">
+                    </div>
+                    <div class="form-group full-width">
+                        <div class="form-label">配送に関する特記事項</div>
+                        <textarea class="form-textarea" placeholder="配送時間の指定や、その他の要望があればご記入ください"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="custom-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div id="modal-icon-container" class="modal-icon">
+                <i class="fas fa-question-circle"></i>
+            </div>
+            <div id="modal-title" class="modal-title">確認</div>
+            <div id="modal-description" class="modal-description">
+                説明がここに入ります。
+            </div>
+            <div class="modal-footer">
+                <button id="modal-cancel-btn" class="modal-btn modal-btn-secondary" onclick="closeCustomModal()">キャンセル</button>
+                <button id="modal-confirm-btn" class="modal-btn modal-btn-primary">実行する</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Master data reference
+        const masterAddr = {
+            company: '株式会社東京グリーン (test_agency@yopmail.com)',
+            name: '山田 太郎',
+            email: 'test_agency@yopmail.com',
+            tel: '03-1234-5678',
+            zip: '150-0001',
+            pref: '東京都',
+            addr1: '東京都渋谷区代々木1-2-3',
+            addr2: '代々木ビル 5F'
+        };
+
+        // Modal System
+        function openCustomModal(options) {
+            const modal = document.getElementById('custom-modal');
+            const titleNode = document.getElementById('modal-title');
+            const descNode = document.getElementById('modal-description');
+            const iconNode = document.getElementById('modal-icon-container');
+            const confirmBtn = document.getElementById('modal-confirm-btn');
+            const cancelBtn = document.getElementById('modal-cancel-btn');
+
+            titleNode.textContent = options.title || '確認';
+            descNode.innerHTML = options.description || '';
+            iconNode.innerHTML = `<i class="fas ${options.icon || 'fa-question-circle'}"></i>`;
+            iconNode.style.color = options.iconColor || '#3498db';
+            
+            confirmBtn.textContent = options.confirmText || '実行する';
+            confirmBtn.className = 'modal-btn ' + (options.confirmClass || 'modal-btn-primary');
+            confirmBtn.onclick = function() {
+                if (options.onConfirm) options.onConfirm();
+                closeCustomModal();
+            };
+
+            if (options.hideCancel) {
+                cancelBtn.style.display = 'none';
+            } else {
+                cancelBtn.style.display = 'block';
+                cancelBtn.textContent = options.cancelText || 'キャンセル';
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeCustomModal() {
+            document.getElementById('custom-modal').style.display = 'none';
+        }
+
+        // Set fields as read-only by default to simulate master data
+        const shippingInputs = document.querySelectorAll('#shipping-form input:not(.form-textarea)');
+        shippingInputs.forEach(input => input.readOnly = true);
+
+        // Toggle to new address
+        document.getElementById('changeAddressBtn').addEventListener('click', function() {
+            openCustomModal({
+                title: '別の住所に配送しますか？',
+                description: '現在の入力内容がクリアされ、編集可能になります。',
+                icon: 'fa-edit',
+                onConfirm: function() {
+                    shippingInputs.forEach(input => {
+                        input.value = '';
+                        input.readOnly = false;
+                        input.style.backgroundColor = '#fff';
+                    });
+                    document.getElementById('changeAddressBtn').style.display = 'none';
+                    document.getElementById('restoreAddressBtn').style.display = 'flex';
+                    document.getElementById('shipping-company').focus();
+                }
+            });
+        });
+
+        // Restore default address
+        document.getElementById('restoreAddressBtn').addEventListener('click', function() {
+            openCustomModal({
+                title: 'デフォルトの住所に戻しますか？',
+                description: 'マスターに登録されている住所情報を再読み込みします。',
+                icon: 'fa-history',
+                onConfirm: function() {
+                    document.getElementById('shipping-company').value = masterAddr.company;
+                    document.getElementById('shipping-name').value = masterAddr.name;
+                    document.getElementById('shipping-email').value = masterAddr.email;
+                    document.getElementById('shipping-tel').value = masterAddr.tel;
+                    document.getElementById('shipping-zip').value = masterAddr.zip;
+                    document.getElementById('shipping-pref').value = masterAddr.pref;
+                    document.getElementById('shipping-addr1').value = masterAddr.addr1;
+                    document.getElementById('shipping-addr2').value = masterAddr.addr2;
+
+                    shippingInputs.forEach(input => {
+                        input.readOnly = true;
+                        input.style.backgroundColor = '#f5f6f7';
+                    });
+
+                    document.getElementById('restoreAddressBtn').style.display = 'none';
+                    document.getElementById('changeAddressBtn').style.display = 'flex';
+                }
+            });
+        });
+
+        // Calculate subtotals and totals
+        function calculateTotals() {
+            let subtotal = 0;
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+            
+            quantityInputs.forEach(input => {
+                const price = parseInt(input.getAttribute('data-price'));
+                const quantity = parseInt(input.value) || 0;
+                const rowSubtotal = price * quantity;
+                
+                const row = input.closest('tr');
+                const subtotalCell = row.querySelector('.subtotal');
+                if (subtotalCell) subtotalCell.textContent = '¥' + rowSubtotal.toLocaleString();
+                
+                subtotal += rowSubtotal;
+            });
+            
+            const stNode = document.getElementById('subtotal');
+            const otNode = document.getElementById('orderTotal');
+            if(stNode) stNode.textContent = '¥' + subtotal.toLocaleString();
+            if(otNode) otNode.textContent = '¥' + subtotal.toLocaleString();
+        }
+        
+        calculateTotals();
+        
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('input', calculateTotals);
+        });
+        
+        // Remove item
+        function removeItem(button) {
+            openCustomModal({
+                title: '商品を削除しますか？',
+                description: 'この操作により、注文内容から商品が削除されます。',
+                icon: 'fa-trash-alt',
+                iconColor: '#e74c3c',
+                confirmClass: 'modal-btn-danger',
+                onConfirm: function() {
+                    const row = button.closest('tr');
+                    row.remove();
+                    calculateTotals();
+                }
+            });
+        }
+        
+        // Product search
+        document.getElementById('productSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const searchTerm = this.value.trim();
+                if (searchTerm) {
+                    openCustomModal({
+                        title: '商品検索中',
+                        description: `"${searchTerm}" で商品を検索します (デモ)`,
+                        icon: 'fa-search',
+                        hideCancel: true,
+                        confirmText: '閉じる'
+                    });
+                }
+            }
+        });
+        
+        // Cancel button
+        document.getElementById('cancelBtn').addEventListener('click', function() {
+            openCustomModal({
+                title: '注文作成をキャンセルしますか？',
+                description: '入力内容は保存されません。注文を破棄して一覧に戻ります。',
+                icon: 'fa-times-circle',
+                iconColor: '#e74c3c',
+                onConfirm: function() {
+                    window.location.href = 'agency_orderlist.html';
+                }
+            });
+        });
+
+        // Draft button
+        document.getElementById('draftBtn').addEventListener('click', function() {
+            openCustomModal({
+                title: '下書き保存完了',
+                description: '注文を下書きとして保存しました。',
+                icon: 'fa-save',
+                iconColor: '#27ae60',
+                hideCancel: true,
+                confirmText: '一覧へ戻る',
+                onConfirm: function() {
+                    window.location.href = 'agency_orderlist.html';
+                }
+            });
+        });
+
+        // Confirm order button
+        document.getElementById('confirmBtn').addEventListener('click', function() {
+            // Validate required fields
+            const requiredFields = document.querySelectorAll('.form-input[required]');
+            let isValid = true;
+            let missingFields = [];
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    const labelNode = field.closest('.form-group').querySelector('.form-label');
+                    const label = labelNode ? labelNode.textContent : '不明な項目';
+                    missingFields.push(label.replace('*', '').trim());
+                }
+            });
+            
+            if (!isValid) {
+                openCustomModal({
+                    title: '入力エラー',
+                    description: '以下の必須項目を入力してください：<br><br>' + missingFields.join('<br>'),
+                    icon: 'fa-exclamation-triangle',
+                    iconColor: '#f39c12',
+                    hideCancel: true,
+                    confirmText: '修正する'
+                });
+                return;
+            }
+            
+            openCustomModal({
+                title: '注文を確定しますか？',
+                description: '以下の事項を確認してください：<br>1. 注文内容および数量が正しい。<br>2. 配送先住所に誤りがない。<br>3. 希望納期などの特記事項を確認した。<br><br><span style="color: #e74c3c; font-weight: bold;">※この操作は取り消せません。</span>',
+                icon: 'fa-check-circle',
+                iconColor: '#27ae60',
+                confirmText: '注文を確定する',
+                onConfirm: function() {
+                    openCustomModal({
+                        title: '注文確定完了',
+                        description: '注文を確定しました。注文番号: ORD-' + new Date().getTime(),
+                        icon: 'fa-check-double',
+                        iconColor: '#27ae60',
+                        hideCancel: true,
+                        confirmText: '一覧へ戻る',
+                        onConfirm: function() {
+                            window.location.href = 'agency_orderlist.html';
+                        }
+                    });
+                }
+            });
+        });
+        
+        // Logout button
+        document.querySelectorAll('.logout-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                openCustomModal({
+                    title: 'ログアウトしますか？',
+                    description: 'セッションを終了してログイン画面に戻ります。',
+                    icon: 'fa-sign-out-alt',
+                    onConfirm: function() {
+                        window.location.href = 'agency_login.html';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

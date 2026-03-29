@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注文履歴 | CREDIE Order Portal</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-blue: #3498db;
+            --header-bg: #fff;
+            --body-bg: #f5f6f7;
+            --border-color: #e3e7e8;
+            --status-blue: #0081cc;
+            --status-bg: #e5f3ff;
+            --badge-green: #27ae60;
+            --badge-yellow: #f39c12;
+            --badge-gray: #95a5a6;
+            --badge-red: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--body-bg);
+            color: #333;
+            font-size: 14px;
+        }
+
+        /* Top Header */
+        .top-header {
+            background-color: #1a1a1a;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            color: white;
+        }
+
+        .site-title {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .logout-btn {
+            color: #ccc;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .logout-btn:hover {
+            color: white;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* Page Title */
+        .page-title-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb {
+            font-size: 12px;
+            color: var(--primary-blue);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .new-order-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .new-order-btn:hover {
+            background-color: #219653;
+        }
+
+        /* Filter Card */
+        .filter-card {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .filter-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid var(--primary-blue);
+            padding-bottom: 8px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .filter-select, .filter-input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            min-width: 150px;
+        }
+
+        .filter-input {
+            width: 200px;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .reset-btn, .apply-btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+
+        .reset-btn {
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        .apply-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .reset-btn:hover {
+            background-color: #eee;
+        }
+
+        .apply-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Order List Card */
+        .order-card {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: #f9f9f9;
+        }
+
+        .order-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+        }
+
+        .order-count {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Table */
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .order-table th {
+            background-color: #f7f9fa;
+            border-bottom: 2px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .order-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .order-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Order Number Link */
+        .order-link {
+            color: var(--primary-blue);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .order-link:hover {
+            color: #2980b9;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .status-shipping {
+            background-color: #e8f4fd;
+            color: #2980b9;
+        }
+
+        .status-preparing {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-returned {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-confirmed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-awaiting {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+
+        /* Payment Badges */
+        .payment-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .payment-paid {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .payment-unpaid {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        /* Action Button */
+        .reorder-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .reorder-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Invoice Status */
+        .invoice-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 60px;
+            margin-right: 8px;
+        }
+
+        .invoice-issued {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .invoice-not-issued {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        /* View Invoice Button */
+        .view-invoice-btn {
+            background-color: transparent;
+            color: var(--primary-blue);
+            border: none;
+            padding: 4px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+
+        .view-invoice-btn:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-actions {
+                margin-left: 0;
+                justify-content: flex-end;
+            }
+            
+            .order-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="site-title">CREDIE Order Portal</div>
+        <div class="user-info">
+            <span>test_agency@yopmail.com</span>
+            <span class="logout-btn">
+                <span class="material-symbols-outlined" style="font-size: 16px;">logout</span>
+                ログアウト
+            </span>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Page Title Section -->
+        <div class="page-title-section">
+            <div>
+                <div class="breadcrumb">注文履歴</div>
+                <h1 class="page-title">注文履歴</h1>
+            </div>
+            <button class="new-order-btn">
+                新規注文
+            </button>
+        </div>
+
+        <!-- Filter Card -->
+        <div class="filter-card">
+            <div class="filter-header">
+                <span class="material-symbols-outlined">search</span>
+                検索・フィルター
+            </div>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <div class="filter-label">期間</div>
+                    <select class="filter-select">
+                        <option selected>今月</option>
+                        <option>先月</option>
+                        <option>過去3ヶ月</option>
+                        <option>過去6ヶ月</option>
+                        <option>今年</option>
+                        <option>カスタム</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-label">ステータス</div>
+                    <select class="filter-select">
+                        <option selected>すべて</option>
+                        <option>配送中</option>
+                        <option>配送準備中</option>
+                        <option>返品完了</option>
+                        <option>確認待ち</option>
+                        <option>確定済</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-label">注文番号</div>
+                    <input type="text" class="filter-input" placeholder="ORD-2025-001">
+                </div>
+                <div class="filter-actions">
+                    <button class="reset-btn">リセット</button>
+                    <button class="apply-btn">適用</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order List Card -->
+        <div class="order-card">
+            <div class="order-header">
+                <div class="order-title">
+                    <span class="material-symbols-outlined">list</span>
+                    注文一覧
+                </div>
+                <div class="order-count">2件の注文</div>
+            </div>
+
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>注文番号</th>
+                        <th>注文日</th>
+                        <th>合計金額</th>
+                        <th>注文ステータス</th>
+                        <th>配送予定日</th>
+                        <th>支払ステータス</th>
+                        <th>請求書</th>
+                        <th>アクション</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="order-link" onclick="location.href='agency_order_350_detail.html'">350</span></td>
+                        <td>2026-03-24</td>
+                        <td>¥320,000</td>
+                        <td><span class="status-badge status-returned">一部返品完了</span></td>
+                        <td>2026-03-28</td>
+                        <td><span class="payment-badge payment-paid">支払済</span></td>
+                        <td>
+                            <span class="invoice-status invoice-issued">発行済</span>
+                            <button class="view-invoice-btn" onclick="window.open('invoice_350.pdf', '_blank')" title="請求書を表示"><span class="material-symbols-outlined" style="font-size: 16px;">visibility</span></button>
+                        </td><td><button class="reorder-btn">再注文</button></td>
+                    </tr>
+                    <tr>
+                        <td><span class="order-link" onclick="location.href='agency_order_349_detail.html'">349</span></td>
+                        <td>2026-03-23</td>
+                        <td>¥150,000</td>
+                        <td><span class="status-badge status-confirmed">確認済</span></td>
+                        <td>-</td>
+                        <td><span class="payment-badge payment-unpaid">未払い</span></td>
+                        <td>
+                            <span class="invoice-status invoice-issued">発行済</span>
+                            <button class="view-invoice-btn" onclick="window.open('invoice_349.pdf', '_blank')" title="請求書を表示"><span class="material-symbols-outlined" style="font-size: 16px;">visibility</span></button>
+                        </td><td><button class="reorder-btn">再注文</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        document.querySelector('.apply-btn').addEventListener('click', function() {
+            const period = document.querySelector('.filter-select:nth-of-type(1)').value;
+            const status = document.querySelector('.filter-select:nth-of-type(2)').value;
+            const orderNumber = document.querySelector('.filter-input').value;
+            
+            alert(`フィルター適用:
+期間: ${period}
+ステータス: ${status}
+注文番号: ${orderNumber || '(空)'}`);
+        });
+
+        document.querySelector('.reset-btn').addEventListener('click', function() {
+            document.querySelector('.filter-select:nth-of-type(1)').value = '今月';
+            document.querySelector('.filter-select:nth-of-type(2)').value = 'すべて';
+            document.querySelector('.filter-input').value = '';
+            alert('フィルターをリセットしました');
+        });
+
+        // New Order button
+        document.querySelector('.new-order-btn').addEventListener('click', function() {
+            window.location.href = 'agency_order_create.html';
+        });
+
+        // Reorder buttons
+        document.querySelectorAll('.reorder-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const orderId = this.closest('tr').querySelector('.order-link').textContent;
+                alert(`注文 ${orderId} を再注文します`);
+                // In real implementation: window.location.href = `order_reorder.html?id=${orderId}`;
+            });
+        });
+
+        // Order link clicks
+        document.querySelectorAll('.order-link').forEach(link => {
+            link.addEventListener('click', function() {
+                const orderId = this.textContent;
+                console.log(`注文 ${orderId} の詳細へ移動`);
+                // Navigation is already handled by onclick attribute
+            });
+        });
+
+        // Logout button
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if (confirm('ログアウトしますか？')) {
+                alert('ログアウトしました');
+                window.location.href = 'agency_login.html';
+            }
+        });
+    </script>
+</body>
+
+</html>

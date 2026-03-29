@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>返品受入スキャン [#2483] | Silica Link</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --green:   #2ecc71;
+            --blue:    #3498db;
+            --danger:  #e74c3c;
+            --warn:    #e67e22;
+            --bg:      #f4f7f9;
+            --dark:    #333;
+            --muted:   #666;
+            --label:   #888;
+            --border:  #e0e0e0;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            background: var(--bg); margin: 0; padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--dark);
+        }
+
+        /* ── Header ── */
+        .scan-header {
+            background: white; padding: 14px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #eee;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .task-id-label { font-size: 17px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .task-id-label span { color: var(--blue); }
+        .progress-label { color: var(--warn); font-size: 14px; font-weight: 800; }
+        .type-badge { font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: bold; border: 1px solid; }
+
+        /* ── Layout ── */
+        .scan-container { padding: 15px; max-width: 500px; margin: 0 auto; padding-bottom: 120px; }
+
+        /* ── Pick List Card (Roadmap) ── */
+        .pick-list-card {
+            background: white; border-radius: 12px; border: 1px solid var(--border);
+            margin-bottom: 20px; overflow: hidden;
+        }
+        .pick-list-header {
+            background: #f8f9fa; padding: 10px 15px; border-bottom: 1px solid #eee;
+            font-size: 12px; font-weight: 800; color: #555; display: flex; justify-content: space-between;
+        }
+        .pick-item {
+            padding: 12px 15px; border-bottom: 1px solid #f5f5f5;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: background 0.3s;
+        }
+        .pick-item.active { background: #f0f7ff; border-left: 4px solid var(--blue); padding-left: 11px; }
+        .pick-item.done { opacity: 0.6; }
+        .pick-item-info { display: flex; align-items: center; gap: 12px; }
+        .pick-status-ico {
+            width: 22px; height: 22px; border-radius: 50%; border: 2px solid #ddd;
+            display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;
+        }
+        .pick-item.active .pick-status-ico { border-color: var(--blue); color: var(--blue); }
+        .pick-item.done .pick-status-ico { background: var(--green); border-color: var(--green); color: white; }
+        .pick-item.done .pick-status-ico::before { content: "\f00c"; font-family: "Font Awesome 6 Free"; font-weight: 900; }
+        .sku-txt { font-weight: 800; font-size: 13px; margin-bottom: 2px; }
+        .name-txt { font-size: 10px; color: #888; }
+        .qty-txt { font-weight: 800; font-size: 13px; text-align: right; }
+
+        /* ── Active Scan Form ── */
+        .active-scan-section {
+            background: white; border-radius: 12px; padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 2px solid var(--blue);
+            margin-bottom: 20px;
+        }
+        .current-label { font-size: 12px; color: var(--blue); font-weight: 800; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .step-row { display: flex; gap: 12px; margin-bottom: 15px; }
+        .step-icon { width: 32px; height: 32px; border-radius: 8px; background: #eee; display: flex; align-items: center; justify-content: center; color: #999; flex-shrink: 0; }
+        .step-row.done .step-icon { background: var(--green); color: white; }
+        .step-input-wrap { flex: 1; position: relative; }
+        .step-input-wrap input {
+            width: 100%; padding: 10px 40px 10px 12px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 14px; outline: none; transition: border-color .2s;
+        }
+        .step-input-wrap input:focus { border-color: var(--blue); }
+        .cam-trigger {
+            position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            border: none; background: none; color: var(--green); font-size: 18px; cursor: pointer;
+        }
+
+        /* ── Qty Selector ── */
+        .qty-picker { display: flex; align-items: center; justify-content: center; gap: 20px; margin: 20px 0; }
+        .qty-btn { width: 44px; height: 44px; border-radius: 50%; border: none; background: #f0f0f0; color: #333; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .qty-btn.plus { background: var(--blue); color: white; }
+        .qty-val { width: 80px; text-align: center; font-size: 32px; font-weight: 800; }
+
+        .quick-btns { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
+        .quick-btn {
+            padding: 6px 14px; border: 1.5px solid var(--border); border-radius: 20px; background: white; 
+            font-size: 13px; font-weight: 700; color: var(--muted); cursor: pointer; border-radius: 6px;
+        }
+        .quick-btn.all { background: var(--warn); color: white; border-color: var(--warn); }
+
+
+        /* ── Footer ── */
+        .footer-action {
+            position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px 20px;
+            background: white; border-top: 1px solid #ddd; display: flex; gap: 10px;
+        }
+        .btn-main {
+            flex: 1; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: 800;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-next { background: #ccc; color: white; cursor: not-allowed; }
+        .btn-next.active { background: var(--blue); cursor: pointer; }
+        .btn-finish { background: var(--green); color: white; display: none; }
+
+        /* ── History ── */
+        .history-section { border-top: 1px solid #eee; padding-top: 15px; }
+        .history-item { 
+            background: white; border-radius: 8px; border: 1px solid #eee; padding: 10px 15px; 
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px;
+        }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+        .modal-card { background: white; border-radius: 12px; width: 100%; max-width: 380px; text-align: center; padding: 30px 20px; }
+    </style>
+</head>
+<body>
+
+<div class="scan-header">
+    <div class="task-id-label">
+        <span class="type-badge" id="type-badge">作業</span>
+        TASK-<span id="display-task-id">2483</span>
+    </div>
+    <div class="progress-label" id="header-progress">進捗: 1 / 1 品目</div>
+</div>
+
+<div class="scan-container">
+    <div id="shipment-notice" style="background: #fce4ec; border: 1px solid #f8bbd0; padding: 10px 15px; border-radius: 8px; font-size: 11px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-info-circle" style="color:#d81b60; font-size: 16px;"></i>
+        <div id="notice-text">
+            <strong>返品入荷</strong><br>
+            検品・受入対象: 1アイテム
+        </div>
+    </div>
+
+    <!-- 1. Pick List (Roadmap) -->
+    <div class="pick-list-card">
+        <div class="pick-list-header">
+            <span>対象アイテム一覧</span>
+            <span>数量 / 単位</span>
+        </div>
+        <div id="pick-list-body">
+            <!-- Items rendered here -->
+        </div>
+    </div>
+
+    <!-- 2. Active Scan Form -->
+    <div class="active-scan-section" id="active-form">
+        <div class="current-label" id="active-label">現在のスキャン対象</div>
+        
+        <div style="margin-bottom: 20px; background: #fafafa; padding: 12px; border-radius: 8px; border: 1px solid #f0f0f0;">
+            <div style="color: var(--blue); font-weight: 800; font-size: 14px; margin-bottom: 4px;" id="current-sku">---</div>
+            <div style="font-weight: 800; font-size: 16px;" id="current-name">---</div>
+        </div>
+
+        <div class="step-row" id="step1">
+            <div class="step-icon"><i class="fas fa-location-dot"></i></div>
+            <div class="step-input-wrap">
+                <input type="text" id="shelf-input" placeholder="受入先棚番号をスキャン" onchange="markStepDone('step1')">
+                <button class="cam-trigger" onclick="autoInput('shelf-input', 'A-01-1', 'step1')"><i class="fas fa-camera"></i></button>
+            </div>
+        </div>
+        
+        <div class="step-row" id="step2">
+            <div class="step-icon"><i class="fas fa-barcode"></i></div>
+            <div class="step-input-wrap">
+                <input type="text" id="barcode-input" placeholder="商品バーコードをスキャン" onchange="markStepDone('step2')">
+                <button class="cam-trigger" id="cam-sku-btn"><i class="fas fa-camera"></i></button>
+            </div>
+        </div>
+
+        <div class="step-row" id="step3">
+            <div class="step-icon"><i class="fas fa-tag"></i></div>
+            <div class="step-input-wrap">
+                <input type="text" id="lot-input" placeholder="ロット番号をスキャン (LOT)" onchange="markStepDone('step3')">
+                <button class="cam-trigger" onclick="autoInput('lot-input', 'L45-XP01', 'step3')"><i class="fas fa-camera"></i></button>
+            </div>
+        </div>
+
+        <div class="qty-picker">
+            <button class="qty-btn" onclick="updateQty(-1)">−</button>
+            <div class="qty-val" id="qty-display">0</div>
+            <button class="qty-btn plus" onclick="updateQty(1)">＋</button>
+        </div>
+        
+        <div class="quick-btns">
+            <button class="quick-btn" onclick="updateQty(1)">+1</button>
+            <button class="quick-btn" onclick="updateQty(5)">+5</button>
+            <button class="quick-btn" onclick="updateQty(10)">+10</button>
+            <button class="quick-btn all" onclick="setAllQty()">全数</button>
+        </div>
+        
+        <div style="text-align: center; font-size: 12px; color: #888; margin-top: 15px; margin-bottom: 15px;">必要数: <span id="target-qty-val" style="font-weight: 800; color: var(--danger);">---</span> <span id="unit-val">---</span> (累計: <span id="cum-qty-val" style="font-weight:800; color:var(--blue);">0</span>)</div>
+
+        <div id="multi-shelf-action" style="border-top: 1px dashed #ddd; padding-top: 15px; text-align: center;">
+            <button class="btn-main" onclick="addShelfPick()" style="background: white; border: 1.5px solid var(--blue); color: var(--blue); font-size: 13px; padding: 10px; width: auto; min-width: 200px; margin: 0 auto; display: none;" id="add-shelf-btn">
+                <i class="fas fa-plus-circle"></i> 別の棚からスキャン
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. History (Hidden for return) -->
+    <div class="history-section" id="history-section" style="display:none;">
+        <div style="font-size: 13px; font-weight: 800; margin-bottom: 12px; color: #666;">作業履歴</div>
+        <div id="history-body"></div>
+    </div>
+</div>
+
+<div class="footer-action">
+    <button class="btn-main btn-next" id="next-btn" onclick="confirmItem()">作業を続ける</button>
+    <button class="btn-main btn-finish" id="finish-btn" onclick="openFinishModal()">作業を終了する</button>
+</div>
+
+<div class="modal-overlay" id="finish-modal">
+    <div class="modal-card">
+        <div style="width:60px; height:60px; border-radius:50%; background:#e8f5e9; color:var(--green); display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 20px;"><i class="fas fa-check"></i></div>
+        <div style="font-size:18px; font-weight:800; margin-bottom:10px;" id="modal-title">作業を完了しますか？</div>
+        <p style="font-size:14px; color:#666; margin-bottom:25px;" id="modal-desc">スキャンデータが記録されました。<br>詳細画面に戻ります。</p>
+        <div style="display:flex; gap:10px;">
+            <button style="flex:1; padding:12px; border:none; border-radius:8px; background:#eee;" onclick="closeModal()">戻る</button>
+            <button style="flex:1; padding:12px; border:none; border-radius:8px; background:var(--green); color:white; font-weight:800;" onclick="goDetail()">確定する</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const taskId = '2483';
+    const type = 'return';
+    
+    let ITEMS = [{ sku: 'RC50-V01', name: 'Rice Silica 50mL', target: 250, unit: '個' }];
+
+    let currentIdx = 0;
+    let currentQty = 0;
+    let cumQty = 0;
+    let history = [];
+
+    function initUI() {
+        document.getElementById('display-task-id').textContent = taskId;
+        const badge = document.getElementById('type-badge');
+        badge.textContent = '返品入荷';
+        badge.style.background = '#fce4ec';
+        badge.style.color = '#d81b60';
+        badge.style.borderColor = '#f8bbd0';
+    }
+
+    function renderList() {
+        const body = document.getElementById('pick-list-body');
+        body.innerHTML = '';
+        ITEMS.forEach((item, i) => {
+            const isDone = i < currentIdx;
+            const isActive = i === currentIdx;
+            const div = document.createElement('div');
+            div.className = `pick-item ${isActive ? 'active' : ''} ${isDone ? 'done' : ''}`;
+            div.innerHTML = `<div class="pick-item-info"><div class="pick-status-ico">${isDone ? '' : (i+1)}</div><div><div class="sku-txt">${item.sku}</div><div class="name-txt">${item.name}</div></div></div><div class="qty-txt">${item.target} ${item.unit}</div>`;
+            body.appendChild(div);
+        });
+        document.getElementById('header-progress').textContent = `進捗: ${currentIdx} / ${ITEMS.length} 品目`;
+    }
+
+    function updateActiveUI() {
+        const item = ITEMS[currentIdx];
+        document.getElementById('current-sku').textContent = item.sku;
+        document.getElementById('current-name').textContent = item.name;
+        document.getElementById('target-qty-val').textContent = item.target;
+        document.getElementById('unit-val').textContent = item.unit;
+        document.getElementById('cam-sku-btn').setAttribute('onclick', `autoInput('barcode-input', '${item.sku}', 'step2')`);
+        
+        document.getElementById('shelf-input').value = '';
+        document.getElementById('barcode-input').value = '';
+        document.getElementById('lot-input').value = '';
+        document.getElementById('step1').classList.remove('done');
+        document.getElementById('step2').classList.remove('done');
+        document.getElementById('step3').classList.remove('done');
+        currentQty = 0;
+        cumQty = 0;
+        document.getElementById('qty-display').textContent = '0';
+        document.getElementById('cum-qty-val').textContent = '0';
+        document.getElementById('add-shelf-btn').style.display = 'none';
+        checkReady();
+    }
+
+    function autoInput(id, val, step) { document.getElementById(id).value = val; markStepDone(step); }
+    function markStepDone(id) { document.getElementById(id).classList.add('done'); checkReady(); }
+    function updateQty(d) { currentQty = Math.max(0, currentQty + d); document.getElementById('qty-display').textContent = currentQty; checkReady(); }
+    function setAllQty() { currentQty = Math.max(0, ITEMS[currentIdx].target - cumQty); document.getElementById('qty-display').textContent = currentQty; checkReady(); }
+
+    function checkReady() {
+        const s1 = document.getElementById('step1').classList.contains('done');
+        const s2 = document.getElementById('step2').classList.contains('done');
+        const s3 = document.getElementById('step3').classList.contains('done');
+        const nextBtn = document.getElementById('next-btn');
+        const addBtn = document.getElementById('add-shelf-btn');
+        const totalNow = cumQty + currentQty;
+        const target = ITEMS[currentIdx].target;
+
+        document.getElementById('cum-qty-val').textContent = totalNow;
+
+        if (s1 && s2 && s3 && totalNow >= target) {
+            nextBtn.classList.add('active');
+            addBtn.style.display = 'none';
+        } else {
+            nextBtn.classList.remove('active');
+            if (s1 && s2 && s3 && currentQty > 0) addBtn.style.display = 'inline-flex';
+            else addBtn.style.display = 'none';
+        }
+    }
+
+    function addShelfPick() {
+        const shelf = document.getElementById('shelf-input').value;
+        const lot = document.getElementById('lot-input').value;
+        history.push({ sku: ITEMS[currentIdx].sku, shelf, lot, qty: currentQty, unit: ITEMS[currentIdx].unit });
+        cumQty += currentQty;
+        document.getElementById('shelf-input').value = '';
+        document.getElementById('lot-input').value = '';
+        document.getElementById('step1').classList.remove('done');
+        document.getElementById('step3').classList.remove('done');
+        currentQty = 0;
+        document.getElementById('qty-display').textContent = '0';
+        checkReady();
+    }
+
+    function confirmItem() {
+        if (!document.getElementById('next-btn').classList.contains('active')) return;
+        const item = ITEMS[currentIdx];
+        history.push({ sku: item.sku, shelf: document.getElementById('shelf-input').value, lot: document.getElementById('lot-input').value, qty: currentQty, unit: item.unit });
+        currentIdx++;
+        cumQty = 0;
+        if (currentIdx < ITEMS.length) { renderList(); updateActiveUI(); }
+        else { renderList(); showFinishedState(); }
+    }
+
+    function showFinishedState() {
+        document.getElementById('active-form').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('finish-btn').style.display = 'flex';
+        document.getElementById('header-progress').textContent = `進捗: 完了`;
+    }
+
+    function openFinishModal() { document.getElementById('finish-modal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('finish-modal').style.display = 'none'; }
+    function goDetail() { 
+        location.href = `task_return_2483_finish_detail.html`;
+    }
+
+    window.onload = function() {
+        initUI();
+        renderList();
+        updateActiveUI();
+    };
+</script>
+</body>
+</html>

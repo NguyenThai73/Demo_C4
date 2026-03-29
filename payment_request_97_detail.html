@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支払リクエスト詳細 | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <link rel="stylesheet" href="modal-style.css">
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Logic hidden states */
+        .hidden { display: none !important; }
+        
+        /* Transition utility */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="kintone-header-top">
+        <div class="header-content-inner">
+            <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;"><span
+                        class="k-icon">k</span> kintone</a></div>
+            <div class="header-user">
+                <span>✉</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                        alt="User">
+                    <span>Administrator</span>
+                    <span style="font-size: 10px;">▼</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-header-sub">
+        <div class="header-content-inner">
+            <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+            <div class="header-sub-right"><span>⚙</span> <span>❓</span>
+                <div class="search-container"><input type="text" class="search-input" placeholder="アプリ内検索"><span
+                        class="search-icon">🔍</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-app-title-bar">
+        <div class="header-content-inner" style="padding: 12px 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="app-icon" style="background-color: #2ecc71; color: white;"><i class="fas fa-sync-alt"></i>
+                </div>
+                <div class="app-title">払実行リクエスト管理</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="breadcrumb">
+            🏠 <span>/</span> アプリ: 払実行リクエスト管理 <span>/</span> レコード: 97
+        </div>
+
+        <div class="kintone-action-toolbar">
+            <div class="action-icon-btn">︿</div>
+            <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
+            <div class="action-icon-btn">+</div>
+            <div class="action-icon-btn"><i class="fas fa-pen"></i></div>
+            <div class="action-icon-btn">📄</div>
+            <div class="action-icon-btn">⚙ <span>▼</span></div>
+            <div class="action-icon-btn">⋯</div>
+        </div>
+
+        <!-- Summary Header -->
+        <div class="summary-header"
+            style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 25px; border-radius: 12px; margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="badge-type"
+                        style="background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9;">支払実行リクエスト</div>
+                </div>
+            </div>
+
+            <div class="summary-grid"
+                style="width: 100%; border-top: 1px solid #eee; padding-top: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+                <div class="summary-item">
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">支払金額合計</div>
+                    <div class="summary-primary-value" style="font-size: 20px; font-weight: 800; color: #e67e22;">¥
+                        26,000</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">承認ステータス</div>
+                    <div id="summary-status" class="summary-primary-value" style="font-size: 18px; font-weight: 700; color: #f39c12;">
+                        承認待ち</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">支払期限</div>
+                    <div class="summary-value" style="font-weight: bold; color: #e74c3c;">2026-04-30</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">取引先名</div>
+                    <div class="summary-value" style="font-weight: bold; color: var(--color-primary);">株式会社ＴＯＲＩ</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Action Section -->
+        <div id="next-action-area" class="next-action-card fade-in"
+            style="border-left-color: #3498db; background-color: #f0f7ff; margin-bottom: 30px; padding: 25px; border-radius: 12px; border-left: 6px solid #3498db; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <span id="next-action-icon" style="font-size: 32px; color: #3498db;"><i class="fas fa-file-signature"></i></span>
+                <div>
+                    <div id="next-action-title" style="font-weight: 800; color: #3498db; margin-bottom: 6px; font-size: 15px;">次の対応： 支払内容の承認</div>
+                    <div id="next-action-msg" style="font-size: 11px; color: #555; line-height: 1.5;">内容を確認し、支払執行の可否を選択してください。<br>承認されると、支払指示がスケジュールされます。</div>
+                </div>
+            </div>
+            <div id="next-action-btns" style="display: flex; gap: 15px;">
+                <button onclick="showConfirmApproval()"
+                    style="padding: 12px 35px; border-radius: 10px; background-color: #2ecc71; color: white; border: none; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);"><i
+                        class="fas fa-check" style="margin-right: 8px;"></i> 承認する</button>
+                <button onclick="showConfirmReject()"
+                    style="padding: 12px 35px; border-radius: 10px; border: 1px solid #e74c3c; color: #e74c3c; background: white; font-weight: 800; cursor: pointer; transition: all 0.2s;"><i
+                        class="fas fa-times" style="margin-right: 8px;"></i> 却下する</button>
+            </div>
+        </div>
+
+        <!-- Section: 基本情報 -->
+        <div class="section-card section-info">
+            <div class="section-title">
+                <span><i class="fas fa-file-invoice-dollar" style="margin-right: 12px;"></i></span>基本情報
+            </div>
+
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item">
+                    <div class="field-label">支払ID</div>
+                    <div class="field-box">97</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">支払種別</div>
+                    <div class="field-box">アフィリエイト報酬支払</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">報酬取引ID</div>
+                    <div class="field-box"><a href="commission_history_detail_fix_monthly.html"
+                            style="color: var(--kintone-blue); text-decoration: none; font-weight: bold;">1002</a></div>
+                </div>
+
+                <div class="field-item">
+                    <div class="field-label">支払金額</div>
+                    <div class="field-box" style="font-weight: 800; color: #e67e22; font-size: 16px;">¥ 26,000</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">通貨</div>
+                    <div class="field-box">JPY</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">計上日</div>
+                    <div class="field-box">2026-03-31</div>
+                </div>
+
+                <div class="field-item">
+                    <div class="field-label">支払期限</div>
+                    <div class="field-box" style="color: #e74c3c; font-weight: 800;">2026-04-30</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">最終更新日</div>
+                    <div class="field-box">2026-03-27 15:50</div>
+                </div>
+
+                <div class="field-item">
+                    <div class="field-label">承認者 / 決裁者</div>
+                    <div id="field-approver" class="field-box" style="color: #999; font-style: italic;">―</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">承認日時</div>
+                    <div id="field-approval-date" class="field-box" style="color: #999; font-style: italic;">―</div>
+                </div>
+                <div class="field-item"></div>
+            </div>
+            <div class="field-item" style="margin-top: 20px;">
+                <div class="field-label">備考</div>
+                <div class="field-box"
+                    style="height: 60px; align-items: flex-start; padding-top: 10px; color: #666; font-style: italic;">
+                    2026年3月度アフィリエイト報酬一括支払指示</div>
+            </div>
+
+            <div class="field-item" style="margin-top: 20px;">
+                <div class="field-label">添付ファイル (証憑/請求書)</div>
+                <div class="field-box">
+                    <a href="#"
+                        style="display: inline-flex; align-items: center; gap: 8px; background: #f1f3f4; padding: 6px 12px; border-radius: 6px; color: var(--kintone-blue); text-decoration: none; font-size: 12px; border: 1px solid #ddd;">
+                        <i class="far fa-file-pdf" style="font-size: 16px; color: #e74c3c;"></i>
+                        commission-invoice-20260331-TORI.pdf (45 KB)
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: GMO振込連携情報 (自動送金用) -->
+        <div class="section-card section-op" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
+            <div class="section-title" style="color: #856404; font-weight: 800;">
+                <span><i class="fas fa-robot" style="margin-right: 12px;"></i></span>GMO振込連携情報
+            </div>
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item" style="grid-column: span 2;">
+                    <div class="field-label">振込先指定 (支払URL送付先)</div>
+                    <div class="field-box" style="color: var(--kintone-blue); background: white;">tori-partner@test.com</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">GMO取引ID</div>
+                    <div class="field-box" style="color: #999; font-style: italic; background: white;">―</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Confirm Modal -->
+    <div class="modal-overlay hidden" id="custom-modal">
+        <div class="modal-card">
+            <div class="modal-icon" id="modal-icon">
+                <i class="fas fa-question-circle"></i>
+            </div>
+            <div class="modal-title" id="modal-title">確認</div>
+            <div class="modal-description" id="modal-description">
+                処理を継続してもよろしいですか？
+            </div>
+            <div id="modal-input-container" class="hidden" style="margin-top: 20px; width: 100%;">
+                <div style="font-size: 11px; color: #666; margin-bottom: 8px; font-weight: bold; text-align: left;">却下理由 (必須)</div>
+                <textarea id="modal-reject-reason" style="width: 100%; height: 80px; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-family: inherit; resize: none;" placeholder="却下の理由を入力してください..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">キャンセル</button>
+                <button class="modal-btn modal-btn-primary" id="modal-confirm-btn">実行する</button>
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Management System
+    </footer>
+
+    <script>
+        const summaryStatus = document.getElementById('summary-status');
+        const badgeStatus = document.getElementById('badge-status');
+        const nextActionArea = document.getElementById('next-action-area');
+        const nextActionTitle = document.getElementById('next-action-title');
+        const nextActionMsg = document.getElementById('next-action-msg');
+        const nextActionBtns = document.getElementById('next-action-btns');
+        const nextActionIcon = document.getElementById('next-action-icon');
+        
+        const modal = document.getElementById('custom-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-description');
+        const modalIcon = document.getElementById('modal-icon');
+        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+
+        function openModal(title, desc, type, onConfirm) {
+            modalTitle.innerText = title;
+            modalDesc.innerText = desc;
+            modalConfirmBtn.onclick = onConfirm;
+            
+            // Reset input container
+            document.getElementById('modal-input-container').classList.add('hidden');
+            document.getElementById('modal-reject-reason').value = '';
+            
+            if (type === 'approve') {
+                modalIcon.style.color = '#2ecc71';
+                modalIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                modalConfirmBtn.style.backgroundColor = '#2ecc71';
+                modalConfirmBtn.innerText = '承認する';
+            } else if (type === 'reject') {
+                modalIcon.style.color = '#e74c3c';
+                modalIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                modalConfirmBtn.style.backgroundColor = '#e74c3c';
+                modalConfirmBtn.innerText = '却下する';
+                
+                // Show input for reject
+                document.getElementById('modal-input-container').classList.remove('hidden');
+            } else if (type === 'complete') {
+                modalIcon.style.color = '#3498db';
+                modalIcon.innerHTML = '<i class="fas fa-money-bill-check"></i>';
+                modalConfirmBtn.style.backgroundColor = '#3498db';
+                modalConfirmBtn.innerText = '完了を報告';
+            }
+            
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
+
+        function showConfirmApproval() {
+            openModal(
+                '支払を承認しますか？',
+                'この内容で支払指示を確定します。承認後は支払実行フェーズへ移行します。',
+                'approve',
+                () => {
+                    executeApproval();
+                    closeModal();
+                }
+            );
+        }
+
+        function showConfirmReject() {
+            openModal(
+                '支払を却下しますか？',
+                '却下理由を入力し、このリクエストを承認不可として確定します。',
+                'reject',
+                () => {
+                    const reason = document.getElementById('modal-reject-reason').value;
+                    if (!reason) {
+                        alert('却下理由を入力してください。');
+                        return;
+                    }
+                    executeReject(reason);
+                    closeModal();
+                }
+            );
+        }
+
+        function showConfirmComplete() {
+            openModal(
+                '支払完了を報告しますか？',
+                '実際の振込作業が完了したことをシステムに反映します。',
+                'complete',
+                () => {
+                    executePaymentComplete();
+                    closeModal();
+                }
+            );
+        }
+
+        function executeApproval() {
+            // Update Status
+            summaryStatus.innerText = '支払待ち';
+            summaryStatus.style.color = '#e67e22';
+            
+            // Update Approver
+            document.getElementById('field-approver').innerText = 'Administrator (CEO)';
+            document.getElementById('field-approver').style.color = '#333';
+            document.getElementById('field-approver').style.fontStyle = 'normal';
+            document.getElementById('field-approval-date').innerText = '2026-03-28 18:45';
+            document.getElementById('field-approval-date').style.color = '#333';
+            document.getElementById('field-approval-date').style.fontStyle = 'normal';
+
+            // Change Next Action Card
+            nextActionTitle.innerText = '次の対応： 実際の支払実行と完了報告';
+            nextActionMsg.innerText = '銀行振込等の支払作業を行ってください。\n作業完了後、下のボタンから完了報告を行ってください。';
+            nextActionIcon.innerHTML = '<i class="fas fa-paper-plane"></i>';
+            
+            nextActionBtns.innerHTML = `
+                <button onclick="showConfirmComplete()" 
+                    style="padding: 12px 35px; border-radius: 10px; background-color: #3498db; color: white; border: none; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);">
+                    <i class="fas fa-check-double" style="margin-right: 8px;"></i> 支払完了を報告
+                </button>
+            `;
+            
+            // Re-trigger animation
+            nextActionArea.classList.remove('fade-in');
+            void nextActionArea.offsetWidth; // trigger reflow
+            nextActionArea.classList.add('fade-in');
+        }
+
+        function executePaymentComplete() {
+            // Update Status
+            summaryStatus.innerText = '支払済み';
+            summaryStatus.style.color = '#2ecc71';
+            
+            // Hide or update next action
+            nextActionArea.style.backgroundColor = '#f8f9fa';
+            nextActionArea.style.borderLeftColor = '#2ecc71';
+            nextActionIcon.style.color = '#2ecc71';
+            nextActionIcon.innerHTML = '<i class="fas fa-check-double"></i>';
+            nextActionTitle.innerText = 'ステータス： 完了';
+            nextActionTitle.style.color = '#2ecc71';
+            nextActionMsg.innerText = 'この支払リクエストの全工程が完了しました。';
+            nextActionBtns.innerHTML = '';
+            
+             // Re-trigger animation
+            nextActionArea.classList.remove('fade-in');
+            void nextActionArea.offsetWidth; 
+            nextActionArea.classList.add('fade-in');
+        }
+
+        function executeReject(reason) {
+            // Update Status
+            summaryStatus.innerText = '却下';
+            summaryStatus.style.color = '#e74c3c';
+            
+            // Show rejection reason in card
+            nextActionArea.classList.remove('hidden');
+            nextActionArea.style.backgroundColor = '#fff5f5';
+            nextActionArea.style.borderLeftColor = '#e74c3c';
+            nextActionIcon.style.color = '#e74c3c';
+            nextActionIcon.innerHTML = '<i class="fas fa-ban"></i>';
+            nextActionTitle.innerText = 'ステータス： 却下済み';
+            nextActionTitle.style.color = '#e74c3c';
+            nextActionMsg.innerHTML = `<span style="font-weight: 800;">却下理由:</span> ${reason}`;
+            nextActionBtns.innerHTML = '';
+
+            // Re-trigger animation
+            nextActionArea.classList.remove('fade-in');
+            void nextActionArea.offsetWidth; 
+            nextActionArea.classList.add('fade-in');
+            
+            alert('支払リクエストを却下し、理由を記録しました。');
+        }
+    </script>
+</body>
+
+</html>

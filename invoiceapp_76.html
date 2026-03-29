@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>請求書を確認する | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <link rel="stylesheet" href="modal-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .field-box-readonly {
+            background: var(--color-bg-field);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-sm) var(--space-md);
+            font-size: var(--text-size-base);
+            color: var(--text-primary);
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+        }
+        .field-box-readonly.muted { color: var(--text-muted); }
+        .field-box-readonly.amount { font-weight: 800; font-size: 15px; color: #6a1b9a; }
+
+        .action-btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .btn-invoice-primary {
+            padding: 12px 28px;
+            background: var(--kintone-blue);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+        .btn-invoice-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
+        .btn-invoice-secondary {
+            padding: 12px 28px;
+            background: #f1f3f4;
+            color: #555;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        .btn-invoice-secondary:hover { background: #e8eaed; }
+        .btn-invoice-primary:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        .btn-orange { background: #e67e22; color: white; }
+        .btn-orange:hover { background: #d35400; }
+        .btn-green { background: #2ecc71; color: white; }
+        .btn-green:hover { background: #27ae60; }
+        .btn-blue { background: #3498db; color: white; }
+        .btn-blue:hover { background: #2980b9; }
+
+        .issued-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--kintone-blue);
+            text-decoration: none;
+            margin-bottom: 8px;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        .status-row .label {
+            font-size: 11px;
+            color: var(--text-muted);
+            min-width: 60px;
+        }
+
+        /* Invoice table inputs — exact match to task_create.html .field-box override */
+        #invoice-items-body input.field-box {
+            background-color: #fff !important;
+            border: 1px solid #e3e7e8;
+            width: 100%;
+            font-size: var(--text-size-sm);
+            box-sizing: border-box;
+        }
+        /* Table header — warm tint + golden text, matching task_create.html section-op style */
+        .section-op .k-table th {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #e8d68a;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        #invoice-items-body td { padding: 6px 8px; vertical-align: middle; }
+        #invoice-items-body th { padding: 8px 12px; }
+        .item-sub-cell { font-weight: 700; transition: color 0.2s; white-space: nowrap; }
+        .quick-add-chip {
+            padding: 4px 13px; font-size: 11px; font-weight: 700; border-radius: 100px;
+            cursor: pointer; border: 1px solid #e0c97a; background: white; color: #856404;
+            transition: all 0.15s;
+        }
+        .quick-add-chip:hover { background: #fff8e1; border-color: #856404; }
+        .quick-add-chip.discount { border-color: #ef9a9a; color: #c62828; }
+        .quick-add-chip.discount:hover { background: #fff5f5; border-color: #c62828; }
+        .quick-add-chip.custom { border-color: #b0bec5; color: #546e7a; }
+        .quick-add-chip.custom:hover { background: #f5f5f5; border-color: #546e7a; }
+
+        /* ── Invoice page layout overrides ──────────────────────── */
+        /* Override default 5-col summary grid → 4-col for invoice  */
+        .summary-grid            { grid-template-columns: repeat(4, 1fr); }
+        /* Override default 3-col field-grid → 2-col for invoice    */
+        .field-grid              { grid-template-columns: repeat(2, 1fr); gap: 16px 30px; }
+        /* Amount colour (purple) */
+        #summary-amount          { color: #6a1b9a; }
+        /* Secondary summary values: smaller than primary KPI */
+        #summary-payment,
+        #summary-pdf             { font-size: var(--text-size-lg); font-weight: var(--font-bold); color: var(--text-muted); }
+        /* Section title that splits left/right content */
+        .section-title.between   { justify-content: space-between; }
+    </style>
+</head>
+<body>
+
+<!-- Kintone Header -->
+<div class="kintone-header-top">
+    <div class="header-content-inner">
+        <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;"><span class="k-icon">k</span> kintone</a></div>
+        <div class="header-user">
+            <span>✉</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                <span>Administrator</span>
+                <span style="font-size: 10px;">▼</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kintone-header-sub">
+    <div class="header-content-inner">
+        <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+        <div class="header-sub-right">
+            <span>⚙</span> <span>❓</span>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="アプリ内検索">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kintone-app-title-bar">
+    <div class="header-content-inner" style="padding: 12px 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="app-icon">📄</div>
+            <div class="app-title">請求書を確認する</div>
+        </div>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="breadcrumb">
+        🏠 <span>/</span> <a href="index.html" style="color: var(--kintone-blue); text-decoration: none;">アプリ: 請求書を確認する</a> <span>/</span> レコード: <span id="breadcrumb-record">76</span>
+    </div>
+
+    <div class="kintone-action-toolbar">
+        <div class="action-icon-btn">︿</div>
+        <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
+        <div class="action-icon-btn">+</div>
+        <div class="action-icon-btn">📄</div>
+        <div class="action-icon-btn">⚙ <span>▼</span></div>
+        <div class="action-icon-btn">⋯</div>
+    </div>
+
+    <div id="flash-message" class="sticky-flash" style="display:none;"></div>
+
+    <!-- Summary Header -->
+    <div class="summary-header">
+        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <div class="badge-type badge-agency">請求書</div>
+        </div>
+
+        <div class="summary-grid">
+            <div class="summary-item">
+                <div class="summary-label">請求金額</div>
+                <div id="summary-amount" class="summary-primary-value">¥245,000</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">入金ステータス</div>
+                <div id="summary-payment" class="summary-primary-value">未入金</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">PDF送付状況</div>
+                <div id="summary-pdf" class="summary-primary-value">未発行</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">支払期日</div>
+                <div class="summary-value">2026-04-01</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 次の対応 -->
+    <div id="next-action-area" class="next-action-card accent-warning" style="margin-bottom: 24px;">
+        <div class="next-action-content">
+            <span style="font-size: 32px; color: #e67e22;"><i class="fas fa-file-pdf"></i></span>
+            <div>
+                次の対応: <span style="color: #e67e22; font-weight: 800;">請求書の内容を確認し、発行する</span><br>
+                <span style="font-weight: normal; font-size: 11px; color: #666;">内容を確認してください。問題がなければPDF発行ボタンを押し、確定処理を行います。</span>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px; flex-shrink: 0;">
+            <button onclick="openPreview()" class="btn-invoice-secondary">
+                <i class="fas fa-eye"></i>プレビュー
+            </button>
+            <button id="next-action-issue-btn" onclick="showConfirmPop()" class="btn-invoice-primary btn-orange">
+                <i class="fas fa-file-invoice" style="margin-right: 2px;"></i>請求書を発行する
+            </button>
+            <button onclick="location.href='order_detail_agency_303.html'" style="padding: 10px 24px; border-radius: 12px; border: 1px solid #ccc; background: white; color: #666; font-weight: 800; font-size: 14px; cursor: pointer; transition: all 0.2s;">
+                注文確認へ進む
+            </button>
+        </div>
+    </div>
+
+    <!-- 請求基本情報 -->
+    <div class="section-card section-info">
+        <div class="section-title">
+            <i class="fas fa-file-invoice"></i>請求基本情報
+        </div>
+        <div class="field-grid">
+            <div class="field-item">
+                <div class="field-label">レコード番号</div>
+                <div class="field-box-readonly">76</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">請求日</div>
+                <div class="field-box-readonly">2026-03-27</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">代理店</div>
+                <div class="field-box-readonly">test_agency@yopmail.com</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">請求金額</div>
+                <div class="field-box-readonly amount">¥ 245,000</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">通貨</div>
+                <div class="field-box-readonly">JPY</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">VA ID</div>
+                <div class="field-box-readonly muted">―</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">支払期日</div>
+                <div class="field-box-readonly">2026-04-01</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">関連注文</div>
+                <div class="field-box-readonly">
+                    <a href="order_detail_agency_303.html" style="color: var(--kintone-blue); text-decoration: none; font-weight: bold;">303</a>
+                </div>
+            </div>
+            <div class="field-item" style="grid-column: 1 / -1;">
+                <div class="field-label">更新日時</div>
+                <div class="field-box-readonly muted">2026-03-27 17:36</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 請求明細 -->
+    <div class="section-card section-op" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div class="section-title" style="margin-bottom: 0; color: #856404; border-bottom: none;">
+                <span><i class="fas fa-list" style="margin-right: 10px;"></i></span>請求明細
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="quick-add-chip" onclick="addPreset('shipping')"><i class="fas fa-truck" style="margin-right: 4px;"></i>配送料</button>
+                <button class="quick-add-chip" onclick="addPreset('fee')"><i class="fas fa-file-invoice" style="margin-right: 4px;"></i>手数料</button>
+                <button class="quick-add-chip discount" onclick="addPreset('discount')"><i class="fas fa-tag" style="margin-right: 4px;"></i>割引</button>
+            </div>
+        </div>
+        <table class="k-table">
+            <thead>
+                <tr>
+                    <th class="col-mid" style="width: 110px;">商品SKU <span style="color: var(--kintone-danger);">*</span></th>
+                    <th style="min-width: 160px;">商品名 <span style="color: var(--kintone-danger);">*</span></th>
+                    <th class="col-num" style="width: 72px;">数量 <span style="color: var(--kintone-danger);">*</span></th>
+                    <th class="col-mid" style="width: 52px;">単位 <span style="color: var(--kintone-danger);">*</span></th>
+                    <th class="col-num" style="width: 106px;">単価</th>
+                    <th class="col-num" style="width: 116px;">小計</th>
+                    <th style="width: 30px;">操作</th>
+                </tr>
+            </thead>
+            <tbody id="invoice-items-body"></tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" style="text-align: right; font-weight: 700; padding: 10px 12px; color: #666; border-top: 2px solid #e0c97a;">合計</td>
+                    <td class="col-num" style="font-weight: 900; font-size: 15px; color: #6a1b9a; border-top: 2px solid #e0c97a;" id="items-total">¥0</td>
+                    <td style="border-top: 2px solid #e0c97a;"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- 入金情報・ステータス更新 (PDF発行後のみ表示) -->
+    <div class="section-card section-info" id="payment-section" style="display:none;">
+        <div class="section-title">
+            <i class="fas fa-coins"></i>入金情報・ステータス更新
+        </div>
+        <div class="field-grid">
+            <div class="field-item">
+                <div class="field-label">入金ステータス</div>
+                <div class="field-box-readonly">
+                    <span id="payment-status-val">未入金</span>
+                </div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">入金日</div>
+                <div class="field-box-readonly muted" id="payment-date-val">―</div>
+            </div>
+            <div class="field-item" style="grid-column: 1 / -1;">
+                <div class="field-label">備考</div>
+                <div class="field-box-readonly muted" id="payment-remarks-val" style="min-height: 48px; align-items: flex-start; padding-top: 10px;">―</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Confirmation Modal (Before Issue) -->
+<div class="modal-overlay" id="confirm-modal" style="display:none;">
+    <div class="modal-card">
+        <div class="modal-icon" style="color: #e67e22;">
+            <i class="fas fa-file-invoice"></i>
+        </div>
+        <div class="modal-title">請求書を発行しますか？</div>
+        <div class="modal-description">
+            請求書を発行し、取引先側へ入金依頼を通知します。
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn modal-btn-secondary" onclick="closeConfirmPop()">キャンセル</button>
+            <button class="modal-btn modal-btn-orange" onclick="issuePDF()">実行する</button>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal (After Issue) -->
+<div class="modal-overlay" id="success-modal" style="display: none;">
+    <div class="modal-card" style="text-align: center; max-width: 500px; padding: 40px 30px; border-radius: 24px; border: 2px solid #2ecc71;">
+        <div style="width: 70px; height: 70px; border-radius: 50%; background: #e8f5e9; color: #2ecc71; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px;">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2 style="font-size: 20px; font-weight: 900; margin-bottom: 12px; color: #333;">請求書の発行が完了しました</h2>
+        <p style="font-size: 14px; color: #666; margin-bottom: 30px; line-height: 1.6;">
+            レコード番号: #76<br>
+            請求書作成、および売上確定処理が正常に完了しました。
+        </p>
+        
+        <div id="modal-initial-actions" style="display: flex; gap: 12px; justify-content: center; margin-bottom: 20px;">
+            <button class="btn-invoice-secondary" onclick="downloadPDF()" style="padding: 12px 24px; border-radius: 12px;">
+                <i class="fas fa-download" style="margin-right: 8px;"></i> 請求書
+            </button>
+            <button class="btn-invoice-primary btn-blue" onclick="showEmailPreview()" style="padding: 12px 24px; border-radius: 12px;">
+                <i class="fas fa-envelope"></i> メールで送付する
+            </button>
+        </div>
+
+        <!-- Email Preview Section (Hidden by default) -->
+        <div id="email-preview-area" style="display: none; text-align: left; margin-top: 25px; border-top: 2px dashed #eee; padding-top: 25px;">
+            <div style="font-size: 12px; font-weight: 800; color: #888; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-eye"></i> 送信メールのプレビュー
+            </div>
+            <div style="background: #fdfdfd; border: 1px solid #eee; border-radius: 8px; padding: 15px; font-size: 13px; line-height: 1.8; color: #444;">
+                <div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 10px;">
+                    <span style="color: #999;">宛先:</span> <strong>test_agency@yopmail.com</strong><br>
+                    <span style="color: #999;">件名:</span> <strong>【Silica Link】請求書送付のご案内 (No: INV-76)</strong>
+                </div>
+                <textarea id="email-body-editor" style="width: 100%; height: 200px; border: 1px solid #ddd; border-radius: 8px; padding: 12px; font-size: 13px; font-family: inherit; line-height: 1.6; color: #444; resize: vertical; box-sizing: border-box;">test_agency@yopmail.com 様
+
+いつも大変お世話になっております。
+株式会社 Silica Link でございます。
+
+下記内容にて請求書を発行いたしましたので、ご査収ください。
+
+※本メールに請求書を添付しております。
+ご確認のほど、何卒よろしくお願い申し上げます。</textarea>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn-invoice-secondary" onclick="hideEmailPreview()" style="flex: 1;">キャンセル</button>
+                <button class="btn-invoice-primary" onclick="confirmSendEmail()" style="flex: 2; background: var(--kintone-blue);">
+                    <i class="fas fa-paper-plane"></i> この内容で送信する
+                </button>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <button class="link-text" onclick="closeModal()" style="background: none; border: none; font-size: 12px; cursor: pointer; color: #888;">閉じて詳細画面へ</button>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Date Modal (Before Finalizing) -->
+<div class="modal-overlay" id="payment-modal" style="display: none;">
+    <div class="modal-card" style="text-align: center; max-width: 440px; padding: 40px 30px; border-radius: 24px; border: 2px solid #2ecc71;">
+        <div style="font-size: 60px; color: #2ecc71; margin-bottom: 20px;">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+        <h2 style="font-size: 22px; font-weight: 900; margin-bottom: 12px; color: #333;">入金日を確認します</h2>
+        <p style="font-size: 14px; color: #666; margin-bottom: 25px; line-height: 1.6;">
+            実際に代金が到着した日付を選択してください。
+        </p>
+        
+        <div style="margin-bottom: 20px; text-align: left;">
+            <label style="font-size: 12px; font-weight: 800; color: #888; display: block; margin-bottom: 8px;">入金日</label>
+            <input type="date" id="input-payment-date" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1.5px solid #eee; font-size: 15px; font-weight: bold; font-family: inherit; box-sizing: border-box; margin-bottom: 15px;">
+            
+            <label style="font-size: 12px; font-weight: 800; color: #888; display: block; margin-bottom: 8px;">備考 (任意)</label>
+            <textarea id="input-payment-remarks" placeholder="振込先情報や手数料調整など" style="width: 100%; height: 80px; padding: 12px 15px; border-radius: 12px; border: 1.5px solid #eee; font-size: 13px; font-family: inherit; box-sizing: border-box; resize: none;"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: center;">
+            <button class="btn-invoice-secondary" onclick="closePaymentModal()" style="padding: 12px 24px; border-radius: 12px; min-width: 120px;">
+                キャンセル
+            </button>
+            <button class="btn-invoice-primary btn-green" onclick="markAsPaid()" style="padding: 12px 30px; border-radius: 12px; min-width: 120px;">
+                入金を確定する
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const INVOICE_ITEMS = [
+        { sku: 'RC50-V01',  name: 'Rice Silica 50mL',   qty: 500, unit: '本', unitPrice: 306  },
+        { sku: 'RC300-V01', name: 'Rice Silica 300mL',  qty: 200, unit: '本', unitPrice: 460  },
+    ];
+
+    let pdfIssued = false;
+
+    /* ---- Invoice item editing ---- */
+
+    function renderInvoiceItems() {
+        document.getElementById('invoice-items-body').innerHTML = '';
+        INVOICE_ITEMS.forEach(item => addRow(item.name, item.sku, item.qty, item.unit, item.unitPrice, true));
+    }
+
+    function addRow(name='', sku='', qty=1, unit='式', price=0, isReadOnly=false) {
+        const tbody = document.getElementById('invoice-items-body');
+        const tr = document.createElement('tr');
+
+        if (isReadOnly) {
+            tr.innerHTML = `
+                <td class="col-mid" style="font-weight:700; color:var(--kintone-blue);">${escHtml(sku)}</td>
+                <td style="color:#333;">${escHtml(name)}</td>
+                <td class="col-num">${qty}</td>
+                <td class="col-mid">${escHtml(unit)}</td>
+                <td class="col-num">¥${price.toLocaleString()}</td>
+                <td class="col-num item-sub-cell"></td>
+                <td class="col-mid"></td>
+                <input type="hidden" class="item-qty" value="${qty}">
+                <input type="hidden" class="item-price" value="${price}">
+            `;
+        } else {
+            tr.innerHTML = `
+                <td class="col-mid"><input class="field-box item-sku" value="${escHtml(sku)}" placeholder="SKU" style="text-align:center; font-weight:700; color:var(--kintone-blue);"></td>
+                <td><input class="field-box item-name" value="${escHtml(name)}" placeholder="商品名"></td>
+                <td class="col-num"><input class="field-box item-qty" type="number" value="${qty}" min="-9999" step="1" style="text-align:right;"></td>
+                <td class="col-mid"><input class="field-box item-unit" value="${escHtml(unit)}" placeholder="式" style="text-align:center;"></td>
+                <td class="col-num"><input class="field-box item-price" type="number" value="${price}" step="1" style="text-align:right;"></td>
+                <td class="col-num item-sub-cell"></td>
+                <td class="col-mid">
+                    <button onclick="this.closest('tr').remove(); updateTotal();" style="background:none; border:none; color:#c62828; cursor:pointer; font-size:14px;" title="削除">
+                        <i class="fas fa-trash-can"></i>
+                    </button>
+                </td>
+            `;
+
+            const qtyInput   = tr.querySelector('.item-qty');
+            const priceInput = tr.querySelector('.item-price');
+            const recalc = () => { refreshRowSub(tr); updateTotal(); };
+            qtyInput.addEventListener('input', recalc);
+            priceInput.addEventListener('input', recalc);
+        }
+
+        tbody.appendChild(tr);
+        refreshRowSub(tr);
+        updateTotal();
+
+        return tr;
+    }
+
+    function addPreset(type) {
+        let tr;
+        if (type === 'shipping') tr = addRow('配送手数料', 'SHIP-FEE', 1, '式', 0);
+        else if (type === 'fee')  tr = addRow('手数料',     'FEE-01',   1, '式', 0);
+        else if (type === 'discount') tr = addRow('割引',   'DISC-01',  1, '式', 0);
+        // Focus the price field so the user can type right away
+        if (tr) {
+            tr.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            tr.querySelector('.item-price').focus();
+            tr.querySelector('.item-price').select();
+        }
+    }
+
+    function refreshRowSub(tr) {
+        const qtyEl = tr.querySelector('.item-qty');
+        const priceEl = tr.querySelector('.item-price');
+        if (!qtyEl || !priceEl) return;
+        
+        const qty   = parseFloat(qtyEl.value)   || 0;
+        const price = parseFloat(priceEl.value) || 0;
+        const sub   = qty * price;
+        const cell  = tr.querySelector('.item-sub-cell');
+        cell.textContent   = `¥${sub.toLocaleString()}`;
+        cell.style.color   = sub < 0 ? '#e53935' : (sub === 0 ? '#aaa' : '#333');
+    }
+
+    function updateTotal() {
+        let total = 0;
+        document.querySelectorAll('#invoice-items-body tr').forEach(tr => {
+            const qty   = parseFloat(tr.querySelector('.item-qty')  ?.value) || 0;
+            const price = parseFloat(tr.querySelector('.item-price')?.value) || 0;
+            total += qty * price;
+        });
+        const fmt = `¥${total.toLocaleString()}`;
+        document.getElementById('items-total').textContent = fmt;
+        document.getElementById('summary-amount').textContent = fmt;
+    }
+
+    function escHtml(s) {
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    /* Read current items from DOM (used by openPreview) */
+    function getItemsFromDOM() {
+        const items = [];
+        document.querySelectorAll('#invoice-items-body tr').forEach(tr => {
+            const name  = tr.querySelector('.item-name') ?.value || '';
+            const sku   = tr.querySelector('.item-sku')  ?.value || '';
+            const qty   = parseFloat(tr.querySelector('.item-qty')  ?.value) || 0;
+            const unit  = tr.querySelector('.item-unit') ?.value || '';
+            const price = parseFloat(tr.querySelector('.item-price')?.value) || 0;
+            items.push({ name, sku, qty, unit, unitPrice: price });
+        });
+        return items;
+    }
+
+    function openPreview() {
+        const items = getItemsFromDOM();
+        const subtotal = items.reduce((a, i) => a + i.qty * i.unitPrice, 0);
+        const rowsHtml = items.map(i => {
+            const s = i.qty * i.unitPrice;
+            const color = s < 0 ? 'color:#e53935;' : '';
+            return `<tr>
+                <td>${i.name}${i.sku ? ` <span style="color:#aaa;font-size:11px;">(${i.sku})</span>` : ''}</td>
+                <td style="text-align:center;">${i.qty.toLocaleString()}</td>
+                <td style="text-align:center;">${i.unit}</td>
+                <td style="text-align:right;">¥${i.unitPrice.toLocaleString()}</td>
+                <td style="text-align:right;font-weight:700;${color}">¥${s.toLocaleString()}</td>
+            </tr>`;
+        }).join('');
+
+        const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>請求書 INV-DRAFT-0311</title>
+        <style>
+            body { font-family: 'Noto Sans JP', sans-serif; padding: 50px 60px; max-width: 740px; margin: 0 auto; font-size: 13px; color: #333; }
+            h1 { font-size: 28px; font-weight: 900; color: #6a1b9a; margin: 0 0 6px; }
+            .meta { color: #888; font-size: 12px; margin-bottom: 3px; }
+            .due { color: #e53935; font-weight: 700; font-size: 12px; }
+            .header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; }
+            .company { text-align: right; font-size: 12px; color: #666; line-height: 1.7; }
+            .company strong { font-size: 14px; color: #333; display: block; margin-bottom: 4px; }
+            .bill-to { background: #f3e5f5; border-left: 4px solid #ab47bc; padding: 12px 16px; margin-bottom: 28px; border-radius: 0 6px 6px 0; }
+            .bill-to .label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+            .bill-to strong { font-size: 14px; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+            th { background: #f3e5f5; color: #6a1b9a; padding: 9px 12px; border: 1px solid #e1bee7; font-size: 11px; }
+            th:last-child, td:last-child { text-align: right; }
+            td { padding: 10px 12px; border: 1px solid #e8e8e8; }
+            .totals { display: flex; justify-content: flex-end; }
+            .totals-box { width: 220px; font-size: 13px; }
+            .totals-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #eee; color: #666; }
+            .totals-row.grand { border-bottom: none; font-weight: 900; font-size: 16px; color: #6a1b9a; padding-top: 10px; }
+            .bank { border-top: 1px dashed #e1bee7; margin-top: 24px; padding-top: 14px; font-size: 11px; color: #999; line-height: 1.8; }
+            @media print { body { padding: 30px 40px; } }
+        </style></head><body>
+        <div class="header-row">
+            <div><h1>請求書</h1><div class="meta">Invoice No: <strong>INV-DRAFT-0311</strong></div><div class="meta">請求日: 2026-03-27</div><div class="due">支払期日: 2026-04-01</div></div>
+            <div class="company"><strong>株式会社 Silica Link</strong>東京都港区1-1-1<br>TEL: 03-0000-0000<br>billing@silicalink.co.jp</div>
+        </div>
+        <div class="bill-to"><div class="label">請求先</div><strong>test_agency@yopmail.com</strong><div style="color:#666;font-size:12px;margin-top:3px;">関連注文: <strong>#339</strong></div></div>
+        <table><thead><tr><th style="text-align:left;">商品・サービス</th><th style="text-align:center;width:60px;">数量</th><th style="text-align:center;width:50px;">単位</th><th style="text-align:right;width:90px;">単価</th><th style="text-align:right;width:100px;">小計</th></tr></thead>
+        <tbody>${rowsHtml}</tbody></table>
+        <div class="totals"><div class="totals-box">
+            <div class="totals-row"><span>小計</span><span>¥${subtotal.toLocaleString()}</span></div>
+            <div class="totals-row"><span>消費税 (0%)</span><span>¥0</span></div>
+            <div class="totals-row grand"><span>合計</span><span>¥${subtotal.toLocaleString()}</span></div>
+        </div></div>
+        <div class="bank">振込先: ○○銀行 渋谷支店 普通 1234567　カ）シリカリンク<br>※振込手数料はご負担をお願いいたします。</div>
+        </body></html>`;
+        const w = window.open('', '_blank');
+        w.document.write(html);
+        w.document.close();
+    }
+
+    function showConfirmPop() {
+        document.getElementById('confirm-modal').style.display = 'flex';
+    }
+    function closeConfirmPop() {
+        document.getElementById('confirm-modal').style.display = 'none';
+    }
+
+    function issuePDF() {
+        closeConfirmPop();
+        pdfIssued = true;
+
+        // Show 入金情報 section (REMOVE THIS LINE BASED ON USER REQUEST)
+        // document.getElementById('payment-section').style.display = 'block';
+
+        // Update summary status
+        document.getElementById('summary-pdf').textContent = '発行済';
+        document.getElementById('summary-pdf').style.color = 'var(--kintone-success)';
+
+        // Show Success Modal
+        document.getElementById('success-modal').style.display = 'flex';
+        
+        // Update background UI
+        const issueBtn = document.getElementById('next-action-issue-btn');
+        if (issueBtn) {
+            issueBtn.disabled = true;
+            issueBtn.style.opacity = '0.5';
+        }
+    }
+
+    function showEmailPreview() {
+        document.getElementById('modal-initial-actions').style.display = 'none';
+        document.activeElement.blur();
+        document.getElementById('email-preview-area').style.display = 'block';
+    }
+
+    function hideEmailPreview() {
+        document.getElementById('email-preview-area').style.display = 'none';
+        document.getElementById('modal-initial-actions').style.display = 'flex';
+    }
+
+    function confirmSendEmail() {
+        document.getElementById('success-modal').style.display = 'none';
+        const sentTime = new Date().toISOString().replace('T', ' ').slice(0, 16);
+        updateNextActionAfterIssue(sentTime, true);
+        showToast('請求書をメールで送信しました。');
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('success-modal');
+        if (modal.style.display === 'none') return;
+        modal.style.display = 'none';
+        const now = new Date().toISOString().replace('T', ' ').slice(0, 16);
+        updateNextActionAfterIssue(now, false);
+    }
+
+    function updateNextActionAfterIssue(dateStr, emailSent) {
+        const naa = document.getElementById('next-action-area');
+        naa.className = 'next-action-card accent-success';
+        
+        const paymentBtnHtml = `
+            <button class="btn-invoice-primary btn-green" onclick="showPaymentModal()" style="padding: 10px 24px; font-size: 14px; border-radius: 12px;">
+                <i class="fas fa-hand-holding-dollar"></i> 入金を確認済み
+            </button>
+        `;
+
+        naa.innerHTML = `
+            <div class="next-action-content">
+                <span style="font-size: 32px; color: #2ecc71;"><i class="fas fa-circle-check"></i></span>
+                <div>
+                    状況: <span style="color: #2ecc71; font-weight: 800;">請求書発行済み${emailSent ? ' · 送信完了' : ''}</span><br>
+                    <span style="font-weight: normal; font-size: 11px; color: #666;">${emailSent ? '代理店への対応が完了しました。入金を確認したら処理を完了してください。' : 'PDFの発行が完了しました。入金を確認したら処理を完了してください。'}</span>
+                </div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <div style="display:flex; gap:5px;">
+                    <button class="btn-invoice-secondary" onclick="downloadPDF()" style="font-size: 11px; padding: 6px 12px; border-color:#e0e0e0; background:#fafafa;">
+                        <i class="fas fa-download" style="margin-right: 4px;"></i> 請求書
+                    </button>
+                    <button class="btn-invoice-secondary" onclick="issuePDF()" style="font-size: 11px; padding: 6px 12px; border-color:#e0e0e0; background:#fafafa;">
+                        <i class="fas fa-redo"></i> 再発行
+                    </button>
+                </div>
+                ${paymentBtnHtml}
+            </div>
+        `;
+    }
+
+    function showPaymentModal() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('input-payment-date').value = today;
+        document.getElementById('payment-modal').style.display = 'flex';
+    }
+    function closePaymentModal() {
+        document.getElementById('payment-modal').style.display = 'none';
+    }
+
+    function markAsPaid() {
+        const customDate = document.getElementById('input-payment-date').value || new Date().toISOString().split('T')[0];
+        const remarks = document.getElementById('input-payment-remarks').value;
+        closePaymentModal();
+        
+        // Show 入金情報 section now that it's confirmed
+        document.getElementById('payment-section').style.display = 'block';
+        
+        // Update Summary Header
+        document.getElementById('summary-payment').textContent = '入金済み';
+        document.getElementById('summary-payment').className = 'summary-primary-value';
+        document.getElementById('summary-payment').style.color = '#2ecc71';
+        
+        // Update Detailed Fields
+        document.getElementById('payment-status-val').innerHTML = '<span class="issued-chip"><i class="fas fa-check"></i> 入金済み</span>';
+        document.getElementById('payment-date-val').textContent = customDate;
+        document.getElementById('payment-date-val').classList.remove('muted');
+
+        const remEl = document.getElementById('payment-remarks-val');
+        if (remarks) {
+            remEl.textContent = remarks;
+            remEl.classList.remove('muted');
+        }
+
+        // Final UI State
+        const naa = document.getElementById('next-action-area');
+        naa.className = 'next-action-card accent-primary';
+        naa.innerHTML = `
+            <div class="next-action-content">
+                <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-award"></i></span>
+                <div>
+                    状況: <span style="color: var(--kintone-blue); font-weight: 800;">全ての処理が完了しました</span><br>
+                    <span style="font-weight: normal; font-size: 11px; color: #666;">入金の確認が取れました。このレコードのすべてのワークフローは終了しています。</span>
+                </div>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button class="btn-invoice-secondary" onclick="downloadPDF()" style="font-size: 12px; padding: 8px 15px;">
+                    <i class="fas fa-download"></i> 請求書
+                </button>
+            </div>
+        `;
+        
+        showToast('入金を確認しました。処理を終了します。');
+    }
+
+    function downloadPDF() {
+        showToast('PDFを作成中...');
+        setTimeout(() => showToast('ダウンロードを開始しました'), 1000);
+    }
+
+    function sendEmail() { /* legacy – now handled by email modal */ }
+
+    function showToast(msg) {
+        const f = document.getElementById('flash-message');
+        f.textContent = '🎉 ' + msg;
+        f.style.display = 'block';
+        setTimeout(() => f.style.display = 'none', 3000);
+    }
+
+    function updateBackLink() {
+        const params = new URLSearchParams(window.location.search);
+        const draft = params.get('draft');
+        const backLink = document.querySelector('.back-link');
+        
+        if (backLink && draft === 'INV-DRAFT-0311') {
+            backLink.href = 'order_detail_agency_paid.html';
+            
+            // Also update the breadcrumb and related order link for consistency
+            const breadcrumbLink = document.querySelector('.breadcrumb a');
+            if (breadcrumbLink) breadcrumbLink.href = 'order_detail_agency_paid.html';
+            
+            const relatedOrderLink = document.querySelector('.field-item a[href="order_detail_agency.html"]');
+            if (relatedOrderLink) {
+                relatedOrderLink.href = 'order_detail_agency_paid.html';
+                relatedOrderLink.textContent = '311'; // Assuming INV-DRAFT-0311 corresponds to Order #311
+            }
+        }
+    }
+
+    // Read draft ID from URL if any
+    window.onload = function() {
+        renderInvoiceItems();
+        updateBackLink();
+        const params = new URLSearchParams(window.location.search);
+        const draft = params.get('draft');
+        if (draft) {
+            showToast(`ドラフト ${draft} を読み込みました。`);
+        }
+    };
+</script>
+</body>
+</html>
