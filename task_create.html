@@ -55,7 +55,7 @@
 <!-- Kintone Header Bar -->
 <div class="kintone-header-top">
     <div class="header-content-inner">
-        <div class="header-logo"><span class="k-icon">k</span> kintone</div>
+        <div class="header-logo"><a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;"><span class="k-icon">k</span> kintone</a></div>
         <div class="header-user">
             <span>✉</span>
             <div style="display: flex; align-items: center; gap: 8px;"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User"><span>Administrator</span><span style="font-size: 10px;">▼</span></div>
@@ -65,7 +65,19 @@
 
 <div class="kintone-header-sub">
     <div class="header-content-inner">
-        <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+        <div class="header-sub-left">
+            <span>☰</span> <span onclick="location.href='index.html'" style="cursor:pointer">🏠</span> <span>🔔</span> <span>⭐</span>
+                <div style="display: inline-flex; margin-left: 25px; gap: 15px; font-size: 11px; font-weight: bold; align-items: center;">
+                    <a href="index.html" style="color: inherit; text-decoration: none;">受注</a>
+                    <a href="purchase_index.html" style="color: inherit; text-decoration: none;">発注</a>
+                    <a href="production_index.html" style="color: inherit; text-decoration: none;">製造</a>
+                    <a href="task_top.html" style="color: inherit; text-decoration: none;">入出庫</a>
+                    <a href="commission_top.html" style="color: inherit; text-decoration: none;">報酬</a>
+                    <a href="payment_cashflow_index.html" style="color: inherit; text-decoration: none;">入出金</a>
+                    <a href="partner_top.html" style="color: inherit; text-decoration: none;">パートナー</a>
+                    <a href="master_index.html" style="color: inherit; text-decoration: none;">マスタ</a>
+                </div>
+        </div>
         <div class="header-sub-right"><span>⚙</span> <span>❓</span><div class="search-container"><input type="text" class="search-input" placeholder="アプリ内検索"><span class="search-icon">🔍</span></div></div>
     </div>
 </div>
@@ -76,12 +88,12 @@
 
 <div class="main-container" style="padding: 20px 10px;">
     <div class="breadcrumb" style="font-size: 12px; color: #3498db; margin-bottom: 10px;">
-        🏠 <span>/</span> <a href="tasklist.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a> <span>/</span> 新規作成
+        🏠 <span>/</span> <a href="task_top.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a> <span>/</span> 新規作成
     </div>
 
     <!-- Action Buttons at TOP -->
     <div class="top-action-bar">
-        <button class="btn-k-cancel" onclick="location.href='tasklist.html'">キャンセル</button>
+        <button class="btn-k-cancel" onclick="location.href='task_top.html'">キャンセル</button>
         <button class="btn-k-save" id="save-btn-top" style="display: none;" onclick="saveTask()">保存</button>
     </div>
 

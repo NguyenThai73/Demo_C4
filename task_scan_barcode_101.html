@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>スキャン作業 | Silica Link</title>
+    <title>スキャン作業 [#101] | Silica Link</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -131,18 +131,18 @@
 
 <div class="scan-header">
     <div class="task-id-label">
-        <span class="type-badge" id="type-badge">作業</span>
-        TASK-<span id="display-task-id">---</span>
+        <span class="type-badge" id="type-badge" style="background: #fff3e0; color: #e65100; border-color: #ffe0b2;">出荷</span>
+        #101
     </div>
-    <div class="progress-label" id="header-progress">進捗: 1 / 1 品目</div>
+    <div class="progress-label" id="header-progress">進捗: 1 / 2 品目</div>
 </div>
 
 <div class="scan-container">
-    <div id="shipment-notice" style="background: #fff8e1; border: 1px solid #ffe082; padding: 10px 15px; border-radius: 8px; font-size: 11px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
-        <i class="fas fa-info-circle" style="color:#ffa000; font-size: 16px;"></i>
+    <div id="shipment-notice" style="background: #fff3e0; border: 1px solid #ffe0b2; padding: 10px 15px; border-radius: 8px; font-size: 11px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-info-circle" style="color:#e65100; font-size: 16px;"></i>
         <div id="notice-text">
-            <strong>作業情報</strong><br>
-            スキャン対象: 1アイテム
+            <strong>出荷 (販売)</strong><br>
+            スキャン対象: 2アイテム
         </div>
     </div>
 
@@ -169,7 +169,7 @@
         <div class="step-row" id="step1">
             <div class="step-icon"><i class="fas fa-location-dot"></i></div>
             <div class="step-input-wrap">
-                <input type="text" id="shelf-input" placeholder="棚番号をスキャン" onchange="markStepDone('step1')">
+                <input type="text" id="shelf-input" placeholder="ピッキング棚番号をスキャン" onchange="markStepDone('step1')">
                 <button class="cam-trigger" onclick="autoInput('shelf-input', 'A-01-1', 'step1')"><i class="fas fa-camera"></i></button>
             </div>
         </div>
@@ -237,66 +237,17 @@
 </div>
 
 <script>
-    const params = new URLSearchParams(window.location.search);
-    const taskId = params.get('id') || '402';
-    const type = params.get('type') || 'receive';
+    const taskId = '101';
     
-    // Default Items
-    let ITEMS = [{ sku: 'CER-BASE-01', name: 'セラミック基板用素材 PREMIUM', target: 3, unit: '箱' }];
-    
-    // Specialized Task Data
-    if (type === 'return') {
-        if (taskId === '303') {
-            ITEMS = [{ sku: 'RC50-V01', name: 'Rice Silica 50mL', target: 300, unit: '個' }];
-        } else {
-            ITEMS = [{ sku: 'RC500-V01', name: 'Rice Silica 500mL', target: 1, unit: '個' }];
-        }
-    } else if (taskId === '303') {
-        ITEMS = [
-            { sku: 'RC50-V01', name: 'Rice Silica 50mL', target: 500, unit: '個' },
-            { sku: 'RC300-V01', name: 'Rice Silica 300mL', target: 200, unit: '個' }
-        ];
-    } else if (taskId === '501') {
-        ITEMS = [
-            { sku: 'CER-BASE-01', name: 'セラミック基板用素材 PREMIUM', target: 3, unit: '箱' },
-            { sku: 'GLS-SUB-05', name: '高透過ガラス基板 0.5mm', target: 5, unit: '枚' },
-            { sku: 'CHM-COAT-X', name: '特殊コーティング剤 Type-X', target: 10, unit: 'L' }
-        ];
-    }
+    const ITEMS = [
+        { sku: 'RC50-V01', name: 'Rice Silica 50mL', target: 500, unit: '個' },
+        { sku: 'RC300-V01', name: 'Rice Silica 300mL', target: 200, unit: '個' }
+    ];
 
     let currentIdx = 0;
     let currentQty = 0;
     let cumQty = 0;
     let history = [];
-
-    function initUI() {
-        document.getElementById('display-task-id').textContent = taskId;
-        const badge = document.getElementById('type-badge');
-        const notice = document.getElementById('shipment-notice');
-        const noticeText = document.getElementById('notice-text');
-        const hist = document.getElementById('history-section');
-        
-        if (type === 'receive') {
-            badge.textContent = '入荷'; badge.style.background = '#e8f5e9'; badge.style.color = '#2e7d32'; badge.style.borderColor = '#c8e6c9';
-            notice.style.background = '#e8f5e9'; notice.style.borderColor = '#c8e6c9';
-            noticeText.innerHTML = `<strong>入荷 (購買)</strong><br>一括入荷対象: ${ITEMS.length}アイテム`;
-            document.getElementById('shelf-input').placeholder = "入荷先棚番号をスキャン";
-        } else if (type === 'return') {
-            badge.textContent = '返品入荷';
-            badge.style.background = '#fce4ec';
-            badge.style.color = '#d81b60';
-            badge.style.borderColor = '#f8bbd0';
-            notice.style.background = '#fce4ec';
-            notice.style.borderColor = '#f8bbd0';
-            noticeText.innerHTML = `<strong>返品入荷</strong><br>検品・受入対象: ${ITEMS.length}アイテム`;
-            document.getElementById('shelf-input').placeholder = "受入先棚番号をスキャン";
-            if (hist) hist.style.display = 'none';
-        } else {
-            badge.textContent = '出荷'; badge.style.background = '#fff3e0'; badge.style.color = '#e65100'; badge.style.borderColor = '#ffe0b2';
-            noticeText.innerHTML = `<strong>出荷 (販売)</strong><br>一括ピッキング対象: ${ITEMS.length}アイテム`;
-            document.getElementById('shelf-input').placeholder = "ピッキング棚番号をスキャン";
-        }
-    }
 
     function renderList() {
         const body = document.getElementById('pick-list-body');
@@ -367,7 +318,6 @@
         renderHistory();
         cumQty += currentQty;
 
-        // Reset shelf/lot inputs for re-scan, keep SKU done
         document.getElementById('shelf-input').value = '';
         document.getElementById('lot-input').value = '';
         document.getElementById('step1').classList.remove('done');
@@ -406,15 +356,10 @@
     function openFinishModal() { document.getElementById('finish-modal').style.display = 'flex'; }
     function closeModal() { document.getElementById('finish-modal').style.display = 'none'; }
     function goDetail() { 
-        if (type === 'return') {
-            location.href = `task_return_finish_detail.html?id=${taskId}`;
-        } else {
-            location.href = `task_detail.html?id=${taskId}&status=finished&type=${type}`;
-        }
+        location.href = `task_detail_101.html?status=finished`;
     }
 
     window.onload = function() {
-        initUI();
         renderList();
         updateActiveUI();
     };

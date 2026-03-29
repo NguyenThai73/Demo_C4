@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注文詳細 (Agency) | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <link rel="stylesheet" href="modal-style.css">
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .btn-invoice-secondary {
+            background-color: #fff;
+            border: 1px solid #f39c12;
+            color: #f39c12;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-invoice-secondary:hover {
+            background-color: #fffde7;
+            border-color: #e67e22;
+            color: #e67e22;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="kintone-header-top">
+        <div class="header-content-inner">
+            <div class="header-logo"><a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;"><span class="k-icon">k</span> kintone</a></div>
+            <div class="header-user">
+                <span>✉</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                        alt="User">
+                    <span>Administrator</span>
+                    <span style="font-size: 10px;">▼</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-header-sub">
+        <div class="header-content-inner">
+            <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+            <div class="header-sub-right">
+                <span>⚙</span> <span>❓</span>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="アプリ内検索">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-app-title-bar">
+        <div class="header-content-inner" style="padding: 12px 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="app-icon">🛒</div>
+                <div class="app-title">注文管理 (Agency)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="breadcrumb">
+            🏠 <span>/</span> アプリ: 注文管理 <span>/</span> レコード: 303
+        </div>
+        <div class="kintone-action-toolbar">
+            <div class="action-icon-btn">︿</div>
+            <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
+            <div class="action-icon-btn">+</div>
+            <div class="action-icon-btn">📄</div>
+            <div class="action-icon-btn">⚙ <span>▼</span></div>
+            <div class="action-icon-btn">⋯</div>
+        </div>
+
+        <div id="flash-message" class="sticky-flash" style="display: block;">🎉 配送タスクが完了しました。</div>
+
+        <div class="summary-header"
+            style="flex-direction: column; align-items: flex-start; gap: 15px; padding: 25px; border-radius: 12px; margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="badge-type badge-agency"
+                        style="font-size: 12px; background-color: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; font-weight: 800; padding: 4px 12px;">
+                        Agency注文</div>
+                    <div id="order-title" style="font-size: 24px; font-weight: bold;"></div>
+                </div>
+            </div>
+
+            <div class="summary-grid"
+                style="width: 100%; border-top: 1px solid #eee; padding-top: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+                <div class="summary-item">
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文金額合計</div>
+                    <div id="summary-total" class="summary-primary-value" style="font-size: 20px; font-weight: 800;">
+                        ¥245,000</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文ステータス</div>
+                    <div id="summary-shipping" class="summary-primary-value"
+                        style="font-size: 18px; font-weight: 700; color: #7b1fa2;">配送中</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">注文日</div>
+                    <div class="summary-value">2026-03-23</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label" id="summary-delivery-label"
+                        style="font-size: 11px; color: #888; font-weight: 500; margin-bottom: 4px;">配送予定日</div>
+                    <div class="summary-value" id="summary-delivery-value">2026-03-25</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="next-action-area" class="next-action-card accent-primary" style="border-left-color: #7b1fa2;">
+            <div class="next-action-content">
+                <span style="font-size: 30px; color: #7b1fa2;"><i class="fas fa-truck-ramp-box"></i></span>
+                <div>
+                    次の対応: <span style="color: #7b1fa2; font-weight: 800;">配送完了を報告</span><br>
+                    <span style="font-weight: normal; font-size: 12px; color: #666;">商品が出荷されました。配送が完了したら報告を行ってください。</span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn-blue" onclick="showDeliveredModal()" style="background-color: #7b1fa2; padding: 10px 40px; border-radius: 12px; border: none; font-weight: 800; color: white; cursor: pointer;">配送完了を報告</button>
+            </div>
+        </div>
+
+
+        <div class="section-card section-info">
+            <div class="section-title"
+                style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+                <span><i class="fas fa-clipboard-list" style="margin-right: 12px;"></i></span>
+                注文概要
+            </div>
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item">
+                    <div class="field-label">注文ID</div>
+                    <div class="field-value">303</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">チャネル</div>
+                    <div class="field-value">Agency Portal</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">作成日時</div>
+                    <div class="field-value">2026-03-23 10:45</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card section-info">
+            <div class="section-title"
+                style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+                <span><i class="fas fa-building" style="margin-right: 12px;"></i></span>
+                取引先情報
+            </div>
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item">
+                    <div class="field-label">Partner ID</div>
+                    <div class="field-value"><a href="partner_detail.html?id=42" style="color: var(--kintone-blue); text-decoration: none; font-weight: bold;">42</a></div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">取引先名</div>
+                    <div class="field-value">株式会社サンプル商事</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">担当者名 / 窓口</div>
+                    <div class="field-value">佐藤 健太郎 様</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card section-info">
+            <div class="section-title"
+                style="color: var(--kintone-blue); font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+                <span><i class="fas fa-truck-fast" style="margin-right: 12px;"></i></span>
+                配送先情報
+            </div>
+            <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="field-item">
+                    <div class="field-label">納品先名</div>
+                    <div class="field-value">渋谷物流センター (D-02)</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">住所</div>
+                    <div class="field-value">東京都渋谷区1-2-3 サンプルビル 4F</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">電話番号</div>
+                    <div class="field-value">03-1234-5678</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card section-op" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
+            <div class="section-title"
+                style="color: #856404; font-weight: 800; font-size: 15px; border-bottom: none; margin-bottom: 15px;">
+                <span><i class="fas fa-list" style="margin-right: 12px;"></i></span>
+                商品明細
+            </div>
+            <table class="k-table">
+                <thead>
+                    <tr>
+                        <th style="min-width: 250px;">商品名</th>
+                        <th class="col-num" style="width: 100px;">注文数量</th>
+                        <th class="col-mid" style="width: 60px;">単位</th>
+                        <th class="col-num" style="width: 100px;">納品済</th>
+                        <th class="col-num" style="width: 100px;">未納品</th>
+                        <th class="col-num" style="width: 100px;">返品</th>
+                        <th class="col-mid" style="width: 120px;">ステータス</th>
+                    </tr>
+                </thead>
+                <tbody id="product-tbody">
+                    <tr>
+                        <td class="col-product-name">Rice Silica 50mL (RC50-V01)</td>
+                        <td class="col-num">500</td>
+                        <td class="col-mid">個</td>
+                        <td class="col-num">0</td>
+                        <td class="col-num" style="font-weight: bold; color: var(--kintone-danger);">500</td>
+                        <td class="col-num">0</td>
+                        <td class="col-mid"><span class="badge-status" style="background-color: #ebfaf0; color: #008a3d; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;">出荷済</span></td>
+                    </tr>
+                    <tr>
+                        <td class="col-product-name">Rice Silica 300mL (RC300-V01)</td>
+                        <td class="col-num">200</td>
+                        <td class="col-mid">個</td>
+                        <td class="col-num">0</td>
+                        <td class="col-num" style="font-weight: bold; color: var(--kintone-danger);">200</td>
+                        <td class="col-num">0</td>
+                        <td class="col-mid"><span class="badge-status" style="background-color: #ebfaf0; color: #008a3d; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;">出荷済</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Return Input Section (Rebuilt with order_detail_return_finish.html styles) -->
+            <div id="return-input-area"
+                style="display: none; margin-top: 25px; padding-top: 15px; border-top: 2px solid var(--status-return-text);">
+                <div style="font-weight: bold; margin-bottom: 12px; color: var(--status-return-text); font-size: 14px;">
+                    ➡ 返品を登録する
+                </div>
+                <table class="return-input-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 150px;">納品SKU</th>
+                            <th>商品名</th>
+                            <th style="width: 120px;">返品数</th>
+                            <th>備考</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold;">RC50-V01</td>
+                            <td>Rice Silica 50mL</td>
+                            <td><input type="number" id="ret-qty-rc50" class="ret-qty-input" value="500" min="0" max="500" placeholder="0"></td>
+                            <td><input type="text" class="ret-note-input" placeholder="備考を入力"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">RC300-V01</td>
+                            <td>Rice Silica 300mL</td>
+                            <td><input type="number" id="ret-qty-rc300" class="ret-qty-input" value="200" min="0" max="200" placeholder="0"></td>
+                            <td><input type="text" class="ret-note-input" placeholder="備考を入力"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button class="btn-cancel-ship" onclick="document.getElementById('return-input-area').style.display='none'">キャンセル</button>
+                    <button class="btn-submit-ship" onclick="submitReturn();"
+                        style="background-color: var(--status-return-text); color: white;">返品を確定する</button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="section-card section-hist">
+            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span><i class="fas fa-truck-ramp-box" style="margin-right: 12px;"></i></span> 出荷履歴</div>
+            <div id="shipment-history-container">
+                <table class="k-table" style="font-size: 11px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 70px;">ID</th>
+                            <th class="col-mid" style="width: 110px;">ステータス</th>
+                            <th class="col-mid" style="width: 90px;">出荷日</th>
+                            <th class="col-mid" style="width: 150px;">追跡番号</th>
+                            <th>出荷サマリー</th>
+                            <th style="width: 120px;">備考</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight:bold;"><a href="task_detail_101.html" style="color:var(--kintone-blue); text-decoration:none;">101</a></td>
+                            <td><span class="badge-status" style="background-color: #ebfaf0; color: #008a3d; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;">完了</span></td>
+                            <td class="col-mid">2026-03-24</td>
+                            <td class="col-mid" style="font-family: monospace; font-weight: bold; color: #444;">1234-5678-9012</td>
+                            <td>Rice Silica 50mL x 500, Rice Silica 300mL x 200</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section-card section-hist">
+            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span><i class="fas fa-rotate-left" style="margin-right: 12px;"></i></span> 返品履歴</div>
+            <div id="return-history-container">
+                <div class="empty-history-state" id="no-return-history">履歴はありません</div>
+                <table class="k-table" id="return-history-table" style="font-size: 11px; display: none;">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">タスクID</th>
+                            <th class="col-mid" style="width: 90px;">ステータス</th>
+                            <th style="width: 110px;">返品日</th>
+                            <th>返品サマリー</th>
+                            <th style="width: 150px;">備考</th>
+                            <th class="col-mid" style="width: 100px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="return-history-body"></tbody>
+                </table>
+                <div id="return-pending-notice" style="display: none; margin-top: 15px; padding: 12px 18px; border-radius: 8px; background-color: #f4f6f8; border: 1px dashed #ced4da; font-size: 11px; color: #495057; line-height: 1.6;">
+                    <i class="fas fa-circle-info" style="margin-right: 8px; color: var(--kintone-blue);"></i>
+                    ステータスが「待機中」のタスクは、「取消」ボタンを選択すると削除され、返品数を再度登録できる状態に戻ります。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delivered Confirmation Modal -->
+    <div class="modal-overlay" id="delivered-modal" style="display:none; align-items:center; justify-content:center;">
+        <div class="modal-card">
+            <div class="modal-icon" style="color: #7b1fa2;">
+                <i class="fas fa-truck-check" style="font-size: 40px;"></i>
+            </div>
+            <div class="modal-title">配送完了を確認しますか？</div>
+            <div class="modal-description">
+                全ての商品の配送が完了したことを報告します。<br>この操作により、注文ステータスが「配送完了」に更新されます。
+            </div>
+            <div class="modal-footer" style="padding-top:20px; display:flex; gap:12px; justify-content:center;">
+                <button class="modal-btn" onclick="closeDeliveredModal()" style="padding: 10px 24px; border-radius: 8px; border: 1px solid #ddd; background: white; cursor: pointer;">キャンセル</button>
+                <button class="modal-btn" onclick="executeDelivered()" style="padding: 10px 30px; border-radius: 8px; border: none; background: #7b1fa2; color: white; font-weight: 800; cursor: pointer;">報告を実行する</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showDeliveredModal() {
+            document.getElementById('delivered-modal').style.display = 'flex';
+        }
+        function closeDeliveredModal() {
+            document.getElementById('delivered-modal').style.display = 'none';
+        }
+        function executeDelivered() {
+            closeDeliveredModal();
+            
+            // Update Summary Header - Standardized light-green pill style
+            const summaryBadge = document.getElementById('summary-shipping');
+            summaryBadge.innerText = '配送完了';
+            summaryBadge.style.color = '#008a3d';
+            summaryBadge.style.backgroundColor = 'transparent';
+            summaryBadge.style.padding = '0';
+            summaryBadge.style.borderRadius = '0';
+            summaryBadge.style.display = 'block';
+            summaryBadge.style.fontSize = '18px';
+            summaryBadge.style.fontWeight = '700';
+
+            document.getElementById('summary-delivery-label').innerText = '配送日';
+            document.getElementById('summary-delivery-value').style.fontWeight = 'bold';
+            document.getElementById('summary-delivery-value').style.color = '#008a3d';
+
+            // Update Next Action area state
+            const nextActionArea = document.getElementById('next-action-area');
+            nextActionArea.className = 'next-action-card accent-success';
+            nextActionArea.style.borderLeftColor = '#008a3d';
+            nextActionArea.innerHTML = `
+                <div class="next-action-content">
+                    <span style="font-size: 30px; color: #008a3d;"><i class="fas fa-check-double"></i></span>
+                    <div>
+                        状況: <span style="color: #008a3d; font-weight: 800;">配送完了</span><br>
+                        <span style="font-weight: normal; font-size: 12px; color: #666;">全ての商品の配送が完了しました。返品が必要な場合は、こちらから返品登録をしてください。</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn-reject" id="btn-return-action-finish" onclick="showReturnInput()" style="padding: 10px 24px; border-radius: 12px; font-weight: 800; border: 1px solid #ddd; background: white; cursor: pointer;">返品する</button>
+                    <button class="btn-blue" style="background-color: #008a3d; padding: 10px 30px; border-radius: 12px; border: none; font-weight: 800; color: white; cursor: pointer;">報酬確認へ進む</button>
+                </div>
+            `;
+
+            // Flash Message
+            const flash = document.getElementById('flash-message');
+            flash.innerText = '🎉 配送完了を報告しました。';
+            flash.style.display = 'block';
+            
+            // Update product row values to delivered (mock update)
+            const rows = document.querySelectorAll('#product-tbody tr');
+            rows.forEach(r => {
+                const orderedQty = r.cells[1].innerText;
+                r.cells[3].innerText = orderedQty; // 納品済
+                r.cells[4].innerText = '0'; // 未納品
+                r.cells[4].style.color = '#ccc';
+                const statusBadge = r.querySelector('.badge-status');
+                if(statusBadge) {
+                   statusBadge.innerText = '出荷済';
+                   statusBadge.style.backgroundColor = '#ebfaf0'; // Same style previously defined
+                }
+            });
+
+            setTimeout(() => { flash.style.display = 'none'; }, 3000);
+        }
+
+        function showReturnInput() {
+            const area = document.getElementById('return-input-area');
+            area.style.display = 'block';
+            setTimeout(() => {
+                const yOffset = -100; 
+                const element = document.getElementById('return-input-area');
+                const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }, 50);
+        }
+
+        function submitReturn() {
+            const qtyRC50 = parseInt(document.getElementById('ret-qty-rc50').value) || 0;
+            const qtyRC300 = parseInt(document.getElementById('ret-qty-rc300').value) || 0;
+            
+            // Lấy số lượng đã giao hiện tại từ bảng sản phẩm
+            const rows = document.querySelectorAll('#product-tbody tr');
+            const deliveredRC50 = parseInt(rows[0].cells[3].innerText) || 0;
+            const deliveredRC300 = parseInt(rows[1].cells[3].innerText) || 0;
+
+            let errorList = [];
+
+            if (qtyRC50 > deliveredRC50) {
+                errorList.push(`<li>【Rice Silica 50mL】の数量が返品可能数 (${deliveredRC50}) を超えています。</li>`);
+            }
+            if (qtyRC300 > deliveredRC300) {
+                errorList.push(`<li>【Rice Silica 300mL】の数量が返品可能数 (${deliveredRC300}) を超えています。</li>`);
+            }
+            if (qtyRC50 === 0 && qtyRC300 === 0) {
+                errorList.push(`<li>返品する商品の数量を1以上入力してください.</li>`);
+            }
+
+            if (errorList.length > 0) {
+                showReturnError(`<ul style="margin:0; padding-left:15px; text-align:left;">${errorList.join('')}</ul>`);
+                return;
+            }
+
+            const flash = document.getElementById('flash-message');
+            flash.innerText = '🎉 返品を登録しました. ';
+            flash.style.display = 'block';
+            document.getElementById('return-input-area').style.display = 'none';
+            
+            // Cập nhật bảng sản phẩm
+            rows[0].cells[3].innerText = deliveredRC50 - qtyRC50;
+            rows[0].cells[5].innerText = (parseInt(rows[0].cells[5].innerText) || 0) + qtyRC50;
+            rows[1].cells[3].innerText = deliveredRC300 - qtyRC300;
+            rows[1].cells[5].innerText = (parseInt(rows[1].cells[5].innerText) || 0) + qtyRC300;
+
+            // Hiển thị lịch sử trả hàng
+            const historyTable = document.getElementById('return-history-table');
+            const noHistory = document.getElementById('no-return-history');
+            const historyBody = document.getElementById('return-history-body');
+            const noticeArea = document.getElementById('return-pending-notice');
+            
+            noHistory.style.display = 'none';
+            historyTable.style.display = 'table';
+            if (noticeArea) noticeArea.style.display = 'block';
+
+            const taskId = Math.floor(Math.random() * 900) + 1700;
+            const now = new Date().toISOString().split('T')[0];
+            const summary = [];
+            if (qtyRC50 > 0) summary.push(`Rice Silica 50mL x ${qtyRC50}`);
+            if (qtyRC300 > 0) summary.push(`Rice Silica 300mL x ${qtyRC300}`);
+
+            const newRow = `<tr>
+                <td style="font-weight:bold;"><a href="task_return_detail.html?id=${taskId}" style="color:var(--kintone-blue); text-decoration:none;">${taskId}</a></td>
+                <td class="col-mid"><span class="badge-status" style="background-color: #fffbe6; color: #bf4b00; border: 1px solid #ffe58f; padding: 2px 12px; border-radius: 20px; font-weight: bold;">待機中</span></td>
+                <td>${now}</td>
+                <td>${summary.join(', ')}</td>
+                <td>-</td>
+                <td class="col-mid">
+                    <button class="btn-text" onclick="cancelReturnRow(this, ${qtyRC50}, ${qtyRC300})" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer; font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 4px; justify-content: center; width: 100%;">
+                        <i class="fas fa-trash-can"></i> 取消
+                    </button>
+                </td>
+            </tr>`;
+            
+            historyBody.insertAdjacentHTML('afterbegin', newRow);
+
+            setTimeout(() => { flash.style.display = 'none'; }, 3000);
+        }
+
+        function cancelReturnRow(btn, q50, q300) {
+            if (confirm('この返品タスクを取り消しますか？')) {
+                const tr = btn.closest('tr');
+                const rows = document.querySelectorAll('#product-tbody tr');
+                
+                rows[0].cells[3].innerText = parseInt(rows[0].cells[3].innerText) + q50;
+                rows[0].cells[5].innerText = Math.max(0, parseInt(rows[0].cells[5].innerText) - q50);
+                rows[1].cells[3].innerText = parseInt(rows[1].cells[3].innerText) + q300;
+                rows[1].cells[5].innerText = Math.max(0, parseInt(rows[1].cells[5].innerText) - q300);
+
+                tr.remove();
+                
+                const historyBody = document.getElementById('return-history-body');
+                if (historyBody.children.length === 0) {
+                    document.getElementById('return-history-table').style.display = 'none';
+                    document.getElementById('no-return-history').style.display = 'block';
+                    const noticeArea = document.getElementById('return-pending-notice');
+                    if (noticeArea) noticeArea.style.display = 'none';
+                }
+                
+                const flash = document.getElementById('flash-message');
+                flash.innerText = '🎉 返品タスクを取り消しました. ';
+                flash.style.display = 'block';
+                setTimeout(() => { flash.style.display = 'none'; }, 3000);
+            }
+        }
+
+        function showReturnError(msg) {
+            document.getElementById('error-body').innerHTML = msg;
+            document.getElementById('error-modal').style.display = 'flex';
+        }
+
+        function closeErrorModal() {
+            document.getElementById('error-modal').style.display = 'none';
+        }
+
+        window.onload = function() {
+            setTimeout(() => { document.getElementById('flash-message').style.display = 'none'; }, 3000);
+        };
+    </script>
+    <!-- Error Modal -->
+    <div class="modal-overlay" id="error-modal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000;">
+        <div class="modal-card" style="width: 420px; padding: 30px; border-radius: 12px; background: white; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <div style="font-size: 40px; color: #e74c3c; margin-bottom: 20px;"><i class="fas fa-triangle-exclamation"></i></div>
+            <div style="font-size: 18px; font-weight: 800; margin-bottom: 12px;">入力内容の不備</div>
+            <div id="error-body" style="font-size: 14px; line-height: 1.6; color: #666; margin-bottom: 25px; text-align: center;"></div>
+            <button onclick="closeErrorModal()" style="padding: 12px 40px; background: #333; color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">内容を修正する</button>
+        </div>
+    </div>
+</body>
+
+</html>

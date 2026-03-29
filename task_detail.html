@@ -104,7 +104,19 @@
 
     <div class="kintone-header-sub">
         <div class="header-content-inner">
-            <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+            <div class="header-sub-left">
+                <span>☰</span> <span onclick="location.href='index.html'" style="cursor:pointer">🏠</span> <span>🔔</span> <span>⭐</span>
+                <div style="display: inline-flex; margin-left: 25px; gap: 15px; font-size: 11px; font-weight: bold; align-items: center;">
+                    <a href="index.html" style="color: inherit; text-decoration: none;">受注</a>
+                    <a href="purchase_index.html" style="color: inherit; text-decoration: none;">発注</a>
+                    <a href="production_index.html" style="color: inherit; text-decoration: none;">製造</a>
+                    <a href="task_top.html" style="color: inherit; text-decoration: none;">入出庫</a>
+                    <a href="commission_top.html" style="color: inherit; text-decoration: none;">報酬</a>
+                    <a href="payment_cashflow_index.html" style="color: inherit; text-decoration: none;">入出金</a>
+                    <a href="partner_top.html" style="color: inherit; text-decoration: none;">パートナー</a>
+                    <a href="master_index.html" style="color: inherit; text-decoration: none;">マスタ</a>
+                </div>
+            </div>
             <div class="header-sub-right"><span>⚙</span> <span>❓</span>
                 <div class="search-container"><input type="text" class="search-input" placeholder="アプリ内検索"><span
                         class="search-icon">🔍</span></div>
@@ -125,7 +137,7 @@
 
     <div class="main-container" style="padding: 20px 10px;">
         <div class="breadcrumb" style="font-size: 12px; color: #3498db; margin-bottom: 20px;">
-            🏠 <span>/</span> <a href="tasklist.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a>
+            🏠 <span>/</span> <a href="task_top.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a>
         </div>
 
         <div class="kintone-action-toolbar" style="margin-bottom: 20px;">
@@ -419,7 +431,7 @@
 
             if (type === 'sample') {
                 // Shipment flow: Picking is done, ready to issue label
-                statusEl.innerHTML = '作業中'; statusEl.style.color = 'var(--kintone-blue)';
+                statusEl.innerHTML = '実行中'; statusEl.style.color = 'var(--kintone-blue)';
 
                 // Update all product rows to show picked qty
                 const body = document.getElementById('product-table-body');
@@ -453,22 +465,33 @@
                 const tid = params.get('id');
                 if (tid === 'RET-101') {
                     document.getElementById('main-task-id').textContent = '';
-                    document.getElementById('overview-task-id').textContent = '';
-                    document.getElementById('summary-work-source').innerHTML = `<a href="order_detail_agency_return.html" style="color: var(--kintone-blue); text-decoration: none;">注文ID: 0012</a>`;
-                    document.getElementById('overview-work-source').innerHTML = `<a href="order_detail_agency_return.html" style="color: var(--kintone-blue); text-decoration: none;">0012</a>`;
+                    document.getElementById('summary-work-source').innerHTML = `<a href="order_detail_delivered.html?record=303" style="color: var(--kintone-blue); text-decoration: none;">注文ID: 303</a>`;
+                    document.getElementById('overview-work-source').innerHTML = `<a href="order_detail_delivered.html?record=303" style="color: var(--kintone-blue); text-decoration: none;">303</a>`;
                     
                     // Replace Warehouse with Execution Completion Date
                     const warehouseItem = document.getElementById('summary-warehouse').closest('.summary-item');
                     if (warehouseItem) {
                         warehouseItem.querySelector('.summary-label').textContent = '実行完了日';
-                        document.getElementById('summary-warehouse').textContent = '2026-03-28';
+                        document.getElementById('summary-warehouse').textContent = '2026-03-29';
                     }
+                } else if (tid === '303') {
+                    document.getElementById('main-task-id').textContent = '303';
                 } else {
                     document.getElementById('main-task-id').textContent = '';
                 }
 
+                // Update product rows to show finished qty
+                const body = document.getElementById('product-table-body');
+                Array.from(body.querySelectorAll('tr')).forEach(row => {
+                    const qty = row.cells[2].textContent;
+                    row.cells[4].textContent = qty; // Completed
+                    row.cells[5].textContent = '0'; // Pending
+                    row.cells[5].style.color = '#666';
+                });
+
                 statusEl.innerHTML = '完了'; statusEl.style.color = 'var(--kintone-success)';
-                const nextActionArea = document.getElementById('next-action-area');
+                const tidParam = new URLSearchParams(window.location.search).get('id');
+                const nextLink = tidParam === '303' ? 'order_detail_return.html?record=303' : 'order_detail_delivered.html';
                 nextActionArea.className = 'next-action-card accent-success';
                 nextActionArea.innerHTML = `
                 <div class="next-action-content">
@@ -479,7 +502,7 @@
                     </div>
                 </div>
                 <div style="display: flex; gap: 12px;">
-                    <button class="btn-blue" onclick="location.href='order_detail_agency_return.html'" style="padding: 10px 30px; font-weight: 800; background-color: var(--kintone-blue);">注文確認へ戻る</button>
+                    <button class="btn-blue" onclick="location.href='${nextLink}'" style="padding: 10px 30px; font-weight: 800; background-color: var(--kintone-blue);">注文確認へ進む</button>
                 </div>
             `;
             } else {
@@ -492,10 +515,7 @@
                 const nextActionArea = document.getElementById('next-action-area');
                 nextActionArea.className = 'next-action-card accent-success';
                 nextActionArea.innerHTML = `
-                <div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>
-                    <div>状況: <span style="color: var(--kintone-success); font-weight: 800;">完了</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">作業は正常に完了しました。</span></div>
-                </div>
-                <button class="btn-secondary" onclick="location.href='tasklist.html'" style="padding: 10px 40px; border: 1px solid #ddd;">一覧に戻る</button>`;
+                </div>`;
             }
         }
 
@@ -638,7 +658,7 @@
             document.getElementById('packing-form-body').style.display = 'none';
             document.getElementById('add-new-pack-btn').style.display = 'inline-block';
 
-            document.getElementById('main-status').innerHTML = '出荷中';
+            document.getElementById('main-status').innerHTML = '実行中';
             document.getElementById('main-status').style.color = 'var(--kintone-blue)';
 
             const nextActionArea = document.getElementById('next-action-area');
@@ -668,6 +688,8 @@
             // Update Next Action area to "Finished" state
             const nextActionArea = document.getElementById('next-action-area');
             nextActionArea.className = 'next-action-card accent-success';
+            const tidParam = new URLSearchParams(window.location.search).get('id');
+            const nextLink = tidParam === '303' ? 'order_detail_return.html?record=303' : 'order_detail_delivered.html';
             nextActionArea.innerHTML = `
             <div class="next-action-content">
                 <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>
@@ -677,8 +699,7 @@
                 </div>
             </div>
             <div style="display: flex; gap: 12px;">
-                <button class="btn-secondary" onclick="location.href='tasklist.html'" style="padding: 10px 40px;">一覧に戻る</button>
-                <button class="btn-blue" onclick="location.href='order_detail_delivered.html'" style="padding: 10px 30px; font-weight: 800; background-color: var(--kintone-blue);">注文を確認するへ</button>
+                <button class="btn-blue" onclick="location.href='${nextLink}'" style="padding: 10px 30px; font-weight: 800; background-color: var(--kintone-blue);">注文を確認するへ</button>
             </div>
         `;
 
@@ -709,7 +730,6 @@
                 const currentTid = new URLSearchParams(window.location.search).get('id') || '';
                 const scanPage = currentTid === '501' ? 'task_scan_barcode_v2.html' : 'task_scan_barcode.html';
                 actionButtons.innerHTML = `
-                <button class="btn-secondary" onclick="location.href='tasklist.html'">一覧に戻る</button>
                 <button class="btn-blue" onclick="location.href='${scanPage}?type=${type}${currentTid ? '&id=' + currentTid : ''}'" style="padding: 10px 30px;">
                     <i class="fas fa-barcode" style="margin-right: 8px;"></i>バーコードスキャンを開始
                 </button>`;
@@ -791,6 +811,31 @@
                     <td class="col-num" style="color: var(--kintone-danger); font-weight: bold;">10</td>
                 </tr>
             `;
+            } else if (tid === '303') {
+                // Force return type logic for 303
+                if (type !== 'return') {
+                    type = 'return';
+                    updateBadge('return');
+                    if (status !== 'finished') setNewTaskUI('return');
+                }
+
+                document.getElementById('main-task-id').textContent = '303';
+                document.getElementById('overview-task-id').textContent = '303';
+                document.getElementById('summary-work-source').textContent = '303';
+                document.getElementById('overview-work-source').innerHTML = `<a href="order_detail_delivered.html?record=303" style="color: var(--kintone-blue); text-decoration: none;">303</a>`;
+
+                const tableBody = document.getElementById('product-table-body');
+                tableBody.innerHTML = `
+                <tr>
+                    <td style="font-weight: bold; color: var(--kintone-blue);">
+                        <a href="#" style="text-decoration: none; color: inherit;">RC50-V01</a>
+                    </td>
+                    <td class="col-product-name">Rice Silica 50mL</td>
+                    <td class="col-num" style="font-weight: bold;">300</td>
+                    <td class="col-mid">個</td>
+                    <td class="col-num">0</td>
+                    <td class="col-num" style="color: var(--kintone-danger); font-weight: bold;">300</td>
+                </tr>`;
             }
 
             if (status === 'finished') setFinishedUI(type);

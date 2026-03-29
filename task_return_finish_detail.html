@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>返品入庫詳細 (完了) | Silica Link</title>
+    <title>返品受入タスク完了 | Silica Link</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="detail-style.css">
     <!-- Font Awesome 6.x CDN -->
@@ -14,7 +14,8 @@
             padding: 2px 10px; border-radius: 4px; font-weight: bold; font-size: 11px;
             display: inline-block; line-height: 1.2;
         }
-        .accent-success { border-left: 5px solid var(--kintone-success) !important; }
+        .accent-pink { border-left: 5px solid #d81b60 !important; }
+        .accent-success-return { border-left: 5px solid var(--kintone-success) !important; }
     </style>
 </head>
 <body>
@@ -35,7 +36,19 @@
 
 <div class="kintone-header-sub">
     <div class="header-content-inner">
-        <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+        <div class="header-sub-left">
+            <span>☰</span> <span onclick="location.href='index.html'" style="cursor:pointer">🏠</span> <span>🔔</span> <span>⭐</span>
+            <div style="display: inline-flex; margin-left: 25px; gap: 15px; font-size: 11px; font-weight: bold; align-items: center;">
+                <a href="index.html" style="color: inherit; text-decoration: none;">受注</a>
+                <a href="purchase_index.html" style="color: inherit; text-decoration: none;">発注</a>
+                <a href="production_index.html" style="color: inherit; text-decoration: none;">製造</a>
+                <a href="task_top.html" style="color: inherit; text-decoration: none;">入出庫</a>
+                <a href="commission_top.html" style="color: inherit; text-decoration: none;">報酬</a>
+                <a href="payment_cashflow_index.html" style="color: inherit; text-decoration: none;">入出金</a>
+                <a href="partner_top.html" style="color: inherit; text-decoration: none;">パートナー</a>
+                <a href="master_index.html" style="color: inherit; text-decoration: none;">マスタ</a>
+            </div>
+        </div>
         <div class="header-sub-right"><span>⚙</span> <span>❓</span><div class="search-container"><input type="text" class="search-input" placeholder="アプリ内検索"><span class="search-icon">🔍</span></div></div>
     </div>
 </div>
@@ -46,7 +59,7 @@
 
 <div class="main-container" style="padding: 20px 10px;">
     <div class="breadcrumb" style="font-size: 12px; color: #3498db; margin-bottom: 20px;">
-        🏠 <span>/</span> <a href="tasklist.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a> <span>/</span> レコード: 493
+        🏠 <span>/</span> <a href="task_top.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a> <span>/</span> レコード: <span id="record-id">101</span>
     </div>
     
     <div class="kintone-action-toolbar" style="margin-bottom: 20px;"><div class="action-icon-btn">︿</div><div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div><div class="action-icon-btn">+</div><div class="action-icon-btn">📄</div><div class="action-icon-btn">⚙ <span>▼</span></div><div class="action-icon-btn">⋯</div></div>
@@ -56,42 +69,46 @@
         <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
             <div style="display: flex; align-items: center; gap: 15px;">
                 <div class="badge-type-return">返品入庫</div>
-                <div style="font-size: 24px; font-weight: bold;">493</div>
             </div>
         </div>
         
         <div class="summary-grid">
             <div class="summary-item">
                 <div class="summary-label">現在のステータス</div>
-                <div class="summary-primary-value" style="color: var(--kintone-success); font-size: 20px;">完了</div>
+                <div class="summary-primary-value" style="color: var(--kintone-success); font-size: 20px; font-weight: 800;">完了</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">作業指示元</div>
-                <div class="summary-value" style="font-size: 18px; color: var(--kintone-blue);">285</div>
+                <div class="summary-value" id="summary-work-source" style="font-size: 18px; color: var(--kintone-blue);">285</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">返品タスク登録日</div>
-                <div class="summary-value" style="font-size: 15px;">2026-03-23</div>
+                <div class="summary-value" style="font-size: 15px;">2026-03-28</div>
             </div>
             <div class="summary-item">
-                <div class="summary-label">入庫完了日</div>
-                <div class="summary-value" style="font-size: 15px;">2026-03-26</div>
+                <div class="summary-label">実行完了日</div>
+                <div class="summary-value" style="font-size: 15px;">2026-03-29</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">担当者</div>
-                <div class="summary-value" style="font-size: 15px;">Test staff</div>
+                <div class="summary-value" style="font-size: 15px;">倉持 担当</div>
             </div>
         </div>
     </div>
 
-    <!-- Next Action Area -->
-    <div class="next-action-card accent-success">
+    <!-- Next Action Area (Finished) -->
+    <div class="next-action-card" style="border-left-color: var(--kintone-success) !important;">
         <div class="next-action-content">
             <span style="font-size: 32px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>
             <div>
-                状況: <span style="font-weight: 800; color: var(--kintone-success);">返品入庫 完了</span><br>
-                <span style="font-weight: normal; font-size: 11px; color: #666;">商品の検収と棚への戻し入れがすべて完了しました。在庫数が正しく更新されています。</span>
+                状況: <span style="color: var(--kintone-success); font-weight: 800;">返品入庫 完了</span><br>
+                <span style="font-weight: normal; font-size: 11px; color: #666;">返品商品の検品・入庫作業がすべて完了しました。注文の詳細を確認してください。</span>
             </div>
+        </div>
+        <div style="flex-shrink: 0;">
+            <button id="btn-back-order" class="btn-blue" style="padding: 10px 30px; font-weight: 800; background-color: var(--kintone-blue); border: none; color: white; border-radius: 20px; cursor: pointer;">
+                注文確認へ進む
+            </button>
         </div>
     </div>
 
@@ -103,11 +120,11 @@
         <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
             <div class="field-item">
                 <div class="field-label" style="font-size: 11px; color: #888;">タスクID</div>
-                <div class="field-value" style="font-size: 14px; font-weight: bold;">493</div>
+                <div class="field-value" id="field-task-id" style="font-size: 14px; font-weight: bold;">101</div>
             </div>
             <div class="field-item">
                 <div class="field-label" style="font-size: 11px; color: #888;">作業指示元ID</div>
-                <div class="field-value" style="font-size: 14px; font-weight: bold;"><a href="order_detail_delivered.html" style="color: var(--kintone-blue);">285</a></div>
+                <div class="field-value" id="field-work-source" style="font-size: 14px; font-weight: bold;"><a href="order_detail_delivered.html" style="color: var(--kintone-blue);">285</a></div>
             </div>
             <div class="field-item">
                 <div class="field-label" style="font-size: 11px; color: #888;">SKU種別</div>
@@ -117,33 +134,80 @@
     </div>
 
     <!-- B. Product Details -->
-    <div class="section-card" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
-        <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; margin-bottom: 15px;">
+    <div class="section-card" style="border: 1px solid #e0e0e0; background-color: #fcfcfc;">
+        <div class="section-title" style="color: #666; font-weight: 800; font-size: 15px; margin-bottom: 15px;">
             <span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span>
-            商品明細</div>
+            商品明細 (完了)</div>
         <table class="k-table">
             <thead>
                 <tr>
                     <th style="width: 150px;">商品SKU</th>
                     <th style="min-width: 250px;">商品・資材SKU</th>
-                    <th class="col-num" style="width: 100px;">数量</th>
+                    <th class="col-num" style="width: 100px;">指示数量</th>
+                    <th class="col-num" style="width: 100px;">入庫済</th>
                     <th class="col-mid" style="width: 100px;">単位</th>
-                    <th class="col-mid" style="width: 150px;">返品理由</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td style="font-weight: bold; color: var(--kintone-blue);">RC500-V01</td>
-                    <td class="col-product-name">Rice Silica 500mL</td>
-                    <td class="col-num" style="font-weight: bold;">10</td>
-                    <td class="col-mid">個</td>
-                    <td class="col-mid">誤注文</td>
-                </tr>
+            <tbody id="product-tbody">
+                <!-- Data populated by JS -->
             </tbody>
         </table>
     </div>
 
 </div>
+
+<script>
+    window.onload = function() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+        
+        const recordId = id || '101';
+        document.getElementById('record-id').textContent = recordId;
+        document.getElementById('field-task-id').textContent = recordId;
+
+        // Default routing for general tasks
+        let orderLink = 'order_detail_delivered.html';
+
+        if (recordId === '303') {
+            orderLink = 'order_detail_return_finish.html?record=303';
+            
+            document.getElementById('summary-work-source').innerHTML = '<a href="'+orderLink+'" style="color: var(--kintone-blue); text-decoration: none;">303</a>';
+            document.getElementById('field-work-source').innerHTML = '<a href="'+orderLink+'" style="color: var(--kintone-blue); text-decoration: none;">303</a>';
+            
+            // Update product table
+            const tbody = document.getElementById('product-tbody');
+            tbody.innerHTML = `
+                <tr>
+                    <td style="font-weight: bold; color: var(--kintone-blue);">RC50-V01</td>
+                    <td class="col-product-name">Rice Silica 50mL</td>
+                    <td class="col-num">300</td>
+                    <td class="col-num" style="font-weight: bold; color: var(--kintone-success);">300</td>
+                    <td class="col-mid">個</td>
+                </tr>
+            `;
+        } else {
+            // General setup for other IDs
+            document.getElementById('summary-work-source').innerHTML = '285';
+            document.getElementById('field-work-source').innerHTML = '<a href="order_detail_delivered.html" style="color: var(--kintone-blue);">285</a>';
+            
+            const tbody = document.getElementById('product-tbody');
+            tbody.innerHTML = `
+                <tr>
+                    <td style="font-weight: bold; color: var(--kintone-blue);">RC500-V01</td>
+                    <td class="col-product-name">Rice Silica 500mL</td>
+                    <td class="col-num">1</td>
+                    <td class="col-num" style="font-weight: bold; color: var(--kintone-success);">1</td>
+                    <td class="col-mid">個</td>
+                </tr>
+            `;
+        }
+
+        // Setup button link
+        document.getElementById('btn-back-order').onclick = () => {
+            location.href = orderLink;
+        };
+    };
+</script>
 
 <footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Portal</footer>
 

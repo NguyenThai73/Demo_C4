@@ -35,7 +35,19 @@
 
 <div class="kintone-header-sub">
     <div class="header-content-inner">
-        <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+        <div class="header-sub-left">
+            <span>☰</span> <span onclick="location.href='index.html'" style="cursor:pointer">🏠</span> <span>🔔</span> <span>⭐</span>
+            <div style="display: inline-flex; margin-left: 25px; gap: 15px; font-size: 11px; font-weight: bold; align-items: center;">
+                <a href="index.html" style="color: inherit; text-decoration: none;">受注</a>
+                <a href="purchase_index.html" style="color: inherit; text-decoration: none;">発注</a>
+                <a href="production_index.html" style="color: inherit; text-decoration: none;">製造</a>
+                <a href="task_top.html" style="color: inherit; text-decoration: none;">入出庫</a>
+                <a href="commission_top.html" style="color: inherit; text-decoration: none;">報酬</a>
+                <a href="payment_cashflow_index.html" style="color: inherit; text-decoration: none;">入出金</a>
+                <a href="partner_top.html" style="color: inherit; text-decoration: none;">パートナー</a>
+                <a href="master_index.html" style="color: inherit; text-decoration: none;">マスタ</a>
+            </div>
+        </div>
         <div class="header-sub-right"><span>⚙</span> <span>❓</span><div class="search-container"><input type="text" class="search-input" placeholder="アプリ内検索"><span class="search-icon">🔍</span></div></div>
     </div>
 </div>
@@ -46,7 +58,7 @@
 
 <div class="main-container" style="padding: 20px 10px;">
     <div class="breadcrumb" style="font-size: 12px; color: #3498db; margin-bottom: 20px;">
-        🏠 <span>/</span> <a href="tasklist.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a> <span>/</span> レコード: 101
+        🏠 <span>/</span> <a href="task_top.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a> <span>/</span> レコード: <span id="record-id">101</span>
     </div>
     
     <div class="kintone-action-toolbar" style="margin-bottom: 20px;"><div class="action-icon-btn">︿</div><div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div><div class="action-icon-btn">+</div><div class="action-icon-btn">📄</div><div class="action-icon-btn">⚙ <span>▼</span></div><div class="action-icon-btn">⋯</div></div>
@@ -130,22 +142,71 @@
                     <th style="min-width: 250px;">商品・資材SKU</th>
                     <th class="col-num" style="width: 100px;">数量</th>
                     <th class="col-mid" style="width: 100px;">単位</th>
-                    <th class="col-mid" style="width: 150px;">返品理由</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="product-tbody">
                 <tr>
                     <td style="font-weight: bold; color: var(--kintone-blue);">RC500-V01</td>
                     <td class="col-product-name">Rice Silica 500mL</td>
                     <td class="col-num" style="font-weight: bold;">1</td>
                     <td class="col-mid">個</td>
-                    <td class="col-mid">誤注文</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
 </div>
+
+<script>
+    window.onload = function() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+        
+        if (id === '303') {
+            document.getElementById('record-id').textContent = '303';
+            
+            // Update Summary Header
+            const summaryItems = document.querySelectorAll('.summary-item');
+            summaryItems[1].querySelector('.summary-value').innerHTML = '<a href="order_detail_delivered.html?record=303" style="color: var(--kintone-blue); text-decoration: none;">303</a>';
+            summaryItems[2].querySelector('.summary-value').textContent = '2026-03-29';
+            
+            // Update Task Overview
+            const fieldValues = document.querySelectorAll('.field-value');
+            fieldValues[0].textContent = '303';
+            fieldValues[1].innerHTML = '<a href="order_detail_delivered.html?record=303" style="color: var(--kintone-blue); text-decoration: none;">303</a>';
+            
+            // Update product table
+            const tbody = document.getElementById('product-tbody');
+            tbody.innerHTML = `
+                <tr>
+                    <td style="font-weight: bold; color: var(--kintone-blue);">RC50-V01</td>
+                    <td class="col-product-name">Rice Silica 50mL</td>
+                    <td class="col-num" style="font-weight: bold;">300</td>
+                    <td class="col-mid">個</td>
+                </tr>
+            `;
+
+            // Update action area with two buttons
+            // Update action area with single button
+            const actionArea = document.querySelector('.next-action-card');
+            actionArea.innerHTML = `
+                <div class="next-action-content">
+                    <span style="font-size: 32px; color: #d81b60;"><i class="fas fa-barcode"></i></span>
+                    <div>
+                        次の対応: <span style="color: #d81b60; font-weight: 800;">返品商品の検品・入庫スキャン</span><br>
+                        <span style="font-weight: normal; font-size: 11px; color: #666;">内容を確認し、問題無ければバーコードをスキャンして入庫作業を開始してください。</span>
+                    </div>
+                </div>
+                <div style="flex-shrink: 0;">
+                    <button onclick="location.href='task_scan_barcode.html?id=303&type=return'" 
+                        style="padding: 10px 30px; background: #d81b60; color: white; border: none; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(216,27,96,0.3);">
+                        <i class="fas fa-barcode"></i> スキャンを開始
+                    </button>
+                </div>
+            `;
+        }
+    };
+</script>
 
 <footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Portal</footer>
 

@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="detail-style.css">
     <!-- Font Awesome 6.x CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .editing-highlight {
+            background-color: #fff3e0 !important;
+            outline: 2px solid #ff9800;
+        }
+    </style>
 </head>
 
 <body>
@@ -122,7 +128,7 @@
             </div>
             <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
                 <div class="field-item">
-                    <div class="field-label">PO発注ID</div>
+                    <div class="field-label">注文ID</div>
                     <div class="field-value" style="font-weight: bold;">PO-2026-0322-01</div>
                 </div>
                 <div class="field-item">
@@ -183,7 +189,7 @@
         </div>
 
         <div class="section-card section-hist">
-            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span>📜</span> 出荷履歴 (直近)</div>
+            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span><i class="fas fa-truck-ramp-box" style="margin-right: 12px;"></i></span> 出荷履歴</div>
             <div id="shipment-history-container">
                 <div class="empty-history-state" id="no-shipment-history">履歴はありません</div>
                 <table class="k-table" id="shipment-history-table" style="font-size: 11px; display: none;">
@@ -216,6 +222,8 @@
             historyCount: 0
         };
 
+        let editingRow = null;
+
         function updateUI() {
             const nextActionArea = document.getElementById('next-action-area');
             const summaryTotal = document.getElementById('summary-total');
@@ -236,7 +244,6 @@
             const allDelivered = totalDelivered >= totalOrdered;
 
             if (allDelivered) {
-                // Toàn bộ số lượng đã được đăng ký xuất hàng (500/500)
                 guideHtml = `<div class="next-action-content">
                     <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-boxes-packing"></i></span>
                     <div>
@@ -248,7 +255,6 @@
                     <button class="btn-blue" style="padding: 10px 40px; border-radius:12px; font-weight:800; background-color: #e67e22; border:none;" onclick="location.href='task_detail.html?type=sample'">タスクを確認する</button>
                 </div>`;
             } else {
-                // Vẫn còn hàng cần đăng ký
                 const returnBtn = totalDelivered > 0
                     ? `<button class="btn-reject" onclick="showReturnInput()">返品をする</button>`
                     : '';
@@ -269,7 +275,6 @@
             nextActionArea.innerHTML = guideHtml;
             nextActionArea.className = allDelivered ? 'next-action-card accent-warning' : 'next-action-card accent-primary';
 
-            // Re-render product table
             productTbody.innerHTML = orderState.items.map(item => {
                 const remaining = item.orderQty - item.deliveredQty;
                 const progress = (item.deliveredQty / item.orderQty) * 100;
@@ -278,7 +283,12 @@
             }).join('');
         }
 
-        function verifyPayment() { orderState.isPaid = true; orderState.status = 'DELIVERY_READY'; showToast('入金を確認しました。'); updateUI(); }
+        function verifyPayment() { 
+            orderState.isPaid = true; 
+            orderState.status = 'DELIVERY_READY'; 
+            showToast('入金を確認しました。'); 
+            updateUI(); 
+        }
 
         function showShipmentInput() {
             const area = document.getElementById('shipment-input-area');
@@ -287,17 +297,41 @@
             area.style.display = 'block';
             area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-        function hideShipmentInput() { document.getElementById('shipment-input-area').style.display = 'none'; }
+
+        function hideShipmentInput() { 
+            document.getElementById('shipment-input-area').style.display = 'none'; 
+            if (editingRow) {
+                editingRow.classList.remove('editing-highlight');
+                editingRow = null;
+            }
+        }
+
         function submitShipment() {
             orderState.items.forEach(i => {
-                const el = document.getElementById(`shp-qty-${i.id}`);
-                if (el) {
-                    const q = parseInt(el.value);
-                    // i.deliveredQty += q; 
-                    addLog('SHIP', i.name, q, document.getElementById(`shp-note-${i.id}`).value);
+                const qtyEl = document.getElementById(`shp-qty-${i.id}`);
+                const noteEl = document.getElementById(`shp-note-${i.id}`);
+                if (qtyEl) {
+                    const q = parseInt(qtyEl.value);
+                    const n = noteEl.value;
+                    if (editingRow) {
+                        editingRow.cells[3].innerText = `${i.name} x ${q}`;
+                        editingRow.cells[4].innerText = n || '-';
+                        const tId = editingRow.cells[0].innerText;
+                        const editBtn = editingRow.querySelector('button[title="編集"]');
+                        if (editBtn) {
+                            editBtn.setAttribute('onclick', `editTask(this, '${tId}', ${q}, '${n.replace(/'/g, "\\'")}')`);
+                        }
+                        editingRow.classList.remove('editing-highlight');
+                        editingRow = null;
+                        showToast('配送タスクを更新しました。');
+                    } else {
+                        addLog('SHIP', i.name, q, n);
+                        showToast('配送タスクを登録しました。');
+                    }
                 }
             });
-            hideShipmentInput(); showToast('配送タスクを登録しました。'); updateUI();
+            hideShipmentInput();
+            updateUI();
         }
 
         function addLog(type, name, qty, note) {
@@ -313,7 +347,7 @@
             if (type === 'SHIP') {
                 actions = `
                     <div style="display:flex; justify-content:flex-end; gap:8px;">
-                        <button class="icon-btn" onclick="editTask(this, '${tId}', ${qty}, '${note}')" title="編集" style="background:none; border:none; color:var(--kintone-blue); cursor:pointer;"><i class="fas fa-edit"></i> 編集</button>
+                        <button class="icon-btn" onclick="editTask(this, '${tId}', ${qty}, '${(note || '').replace(/'/g, "\\'")}')" title="編集" style="background:none; border:none; color:var(--kintone-blue); cursor:pointer;"><i class="fas fa-edit"></i> 編集</button>
                         <button class="icon-btn" onclick="deleteTask(this, '${tId}')" title="取消" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer;"><i class="fas fa-trash-can"></i> 取消</button>
                     </div>
                 `;
@@ -331,19 +365,18 @@
         }
 
         function editTask(btn, tId, qty, note) {
-            const tr = btn.closest('tr');
-            // Populate form
+            editingRow = btn.closest('tr');
+            document.querySelectorAll('tr').forEach(r => r.classList.remove('editing-highlight'));
+            editingRow.classList.add('editing-highlight');
+
             showShipmentInput();
-            // Assuming 1 item for simplicity in this demo logic
             const firstItem = orderState.items[0];
             const qtyInput = document.getElementById(`shp-qty-${firstItem.id}`);
             const noteInput = document.getElementById(`shp-note-${firstItem.id}`);
             if (qtyInput) qtyInput.value = qty;
             if (noteInput) noteInput.value = note || '';
 
-            // Remove the old row as it's being "re-registered"
-            tr.remove();
-            showToast('内容を編集し、再度「出荷を確定する」を押してください。');
+            showToast('内容を編集して「出荷を確定する」を押してください。');
         }
 
         function deleteTask(btn, tId) {
@@ -364,9 +397,12 @@
         }
 
         function showToast(m) {
-            const f = document.getElementById('flash-message'); f.innerText = `🎉 ${m}`; f.style.display = 'block';
+            const f = document.getElementById('flash-message'); 
+            f.innerText = `🎉 ${m}`; 
+            f.style.display = 'block';
             setTimeout(() => f.style.display = 'none', 3000);
         }
+
         window.onload = updateUI;
     </script>
 </body>

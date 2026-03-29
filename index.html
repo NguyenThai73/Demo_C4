@@ -84,12 +84,16 @@
 <nav class="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none font-['Inter'] antialiased text-sm font-medium tracking-tight docked full-width top-0 border-b-0 sticky z-50">
 <div class="flex justify-between items-center w-full px-6 h-16 max-w-[1920px] mx-auto">
 <div class="flex items-center gap-8">
-<span class="text-xl font-bold text-[#00488d] dark:text-blue-400 tracking-tighter">Kintone Dashboard</span>
+                    <a href="index.html" class="text-xl font-bold text-[#00488d] dark:text-blue-400 tracking-tighter hover:opacity-80 transition-opacity">Kintone Dashboard</a>
 <div class="hidden md:flex gap-6 items-center">
-<a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="#">ホーム</a>
-<a class="text-[#00488d] dark:text-blue-400 border-b-2 border-[#00488d] dark:border-blue-400 pb-1" href="index.html">注文管理</a>
-<a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="purchase_index.html">発注管理</a>
-<a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="#">統計チャート</a>
+                    <a class="text-[#00488d] dark:text-blue-400 border-b-2 border-[#00488d] dark:border-blue-400 pb-1" href="index.html">受注業務</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="purchase_index.html">発注業務</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="production_index.html">製造業務</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="task_top.html">入出庫・タスク</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="commission_top.html">報酬管理</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="payment_cashflow_index.html">入出金管理</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="partner_top.html">パートナー管理</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="master_index.html">マスタ管理</a>
 </div>
 </div>
 <div class="flex items-center gap-4">
@@ -109,7 +113,7 @@
 <!-- Page Header -->
 <header class="mb-8 flex justify-between items-start">
 <div>
-<h1 class="text-3xl font-extrabold text-on-surface tracking-tight mb-1">注文管理</h1>
+<h1 class="text-3xl font-extrabold text-on-surface tracking-tight mb-1">受注業務</h1>
 <p class="text-on-surface-variant text-base">本日の業務と対応が必要な注文を反映しています</p>
 </div>
 <div class="flex gap-4">
@@ -136,12 +140,12 @@
 </a>
 <a href="tasklist.html" class="flex flex-col items-center gap-3 p-5 bg-white rounded-xl shadow-sm border border-transparent hover:border-tertiary transition-all group">
 <div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary font-bold text-xl group-hover:scale-110 transition-transform">3</div>
-<span class="text-sm font-semibold text-on-surface">出荷タスクを確認</span>
+<span class="text-sm font-semibold text-on-surface">出荷待ちを確認する</span>
 <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">本日分 8件</span>
 </a>
 <a href="return_tasklist.html" class="flex flex-col items-center gap-3 p-5 bg-white rounded-xl shadow-sm border border-transparent hover:border-error transition-all group">
 <div class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center text-error font-bold text-xl group-hover:scale-110 transition-transform">4</div>
-<span class="text-sm font-semibold text-on-surface">返品対応を確認</span>
+<span class="text-sm font-semibold text-on-surface">返品待ちを確認する</span>
 <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">対応要 2件</span>
 </a>
 </div>
@@ -181,38 +185,16 @@
                 </h2>
 <div class="flex flex-col gap-2">
 <a href="tasklist.html?filter=shipment" class="w-full flex items-center justify-between p-3.5 rounded-xl hover:bg-surface transition-all text-sm font-medium text-on-surface group border border-transparent hover:border-surface-container-high">
-                <span>今日の出荷を確認する</span>
+                <span>出荷待ちを確認する</span>
                 <span class="material-symbols-outlined text-outline group-hover:text-tertiary transition-colors" data-icon="arrow_forward">arrow_forward</span>
                 </a>
 <a href="return_tasklist.html" class="w-full flex items-center justify-between p-3.5 rounded-xl hover:bg-surface transition-all text-sm font-medium text-on-surface group border border-transparent hover:border-surface-container-high">
-<span>返品対応を確認する</span>
+<span>返品待ちを確認する</span>
 <span class="material-symbols-outlined text-outline group-hover:text-tertiary transition-colors" data-icon="arrow_forward">arrow_forward</span>
 </a>
 </div>
 </section>
-<!-- 報酬管理 -->
-<section class="bg-white p-6 rounded-2xl shadow-sm border border-surface-container-highest">
-<h2 class="text-lg font-bold text-on-surface mb-1 flex items-center gap-2">
-<span class="material-symbols-outlined text-tertiary" data-icon="payments">payments</span>
-    報酬管理
-</h2>
-<p class="text-xs text-on-surface-variant mb-4">アフィリエイト・代理店の報酬確認や確定を行います</p>
-<div class="flex flex-col gap-2">
-<a href="commission_list_unconfirmed.html" class="w-full flex items-center justify-between p-3.5 rounded-xl hover:bg-surface transition-all text-sm font-medium text-on-surface group border border-transparent hover:border-surface-container-high">
-    <span>未確定の報酬を確認する</span>
-    <span class="material-symbols-outlined text-outline group-hover:text-tertiary transition-colors" data-icon="arrow_forward">arrow_forward</span>
-</a>
-<a href="commission_list_thismonth.html" class="w-full flex items-center justify-between p-3.5 rounded-xl hover:bg-surface transition-all text-sm font-medium text-on-surface group border border-transparent hover:border-surface-container-high">
-    <span>今月の報酬一覧を見る</span>
-    <span class="material-symbols-outlined text-outline group-hover:text-tertiary transition-colors" data-icon="arrow_forward">arrow_forward</span>
-</a>
-<a href="payment_request_list.html" class="w-full flex items-center justify-between p-3.5 rounded-xl hover:bg-surface transition-all text-sm font-medium text-on-surface group border border-transparent hover:border-surface-container-high">
-    <span>支払待ちの報酬を確認する</span>
-    <span class="material-symbols-outlined text-outline group-hover:text-tertiary transition-colors" data-icon="arrow_forward">arrow_forward</span>
-</a>
-</div>
-</section>
-</div>
+            </div>
 <!-- Right Column (Tracking) -->
 <div class="md:col-span-8 flex flex-col gap-8">
 <!-- 要対応注文 -->
@@ -268,8 +250,8 @@
 <section class="bg-white rounded-2xl shadow-sm border border-surface-container-highest overflow-hidden">
 <div class="px-6 py-5 border-b border-surface-container-low flex justify-between items-center">
 <div>
-<h2 class="text-lg font-bold text-on-surface">本日の出荷タスク</h2>
-<p class="text-xs text-on-surface-variant mt-1">今日優先して対応すべき出荷作業を表示します</p>
+<h2 class="text-lg font-bold text-on-surface">出荷待ちのタスク</h2>
+<p class="text-xs text-on-surface-variant mt-1">本日確認・対応が必要な出荷タスクを表示します</p>
 </div>
 <button class="text-primary text-sm font-bold hover:underline">タスク管理</button>
 </div>
@@ -287,7 +269,7 @@
 <tbody class="divide-y divide-surface-container-low text-sm">
 <tr class="hover:bg-surface transition-colors">
 <td class="px-6 py-4 font-bold text-primary cursor-pointer hover:underline" onclick="location.href='task_detail.html?type=sample'">49</td>
-<td class="px-6 py-4 text-on-surface">サンプル出荷</td>
+<td class="px-6 py-4 text-on-surface">出荷（販売）</td>
 <td class="px-6 py-4 text-on-surface">Test staff</td>
 <td class="px-6 py-4 text-center">
 <span class="inline-block px-3 py-1 text-[10px] font-bold rounded-lg bg-primary-fixed text-primary">待機中</span>
@@ -296,7 +278,7 @@
 </tr>
 <tr class="hover:bg-surface transition-colors">
 <td class="px-6 py-4 font-bold text-primary cursor-pointer hover:underline" onclick="location.href='task_detail.html?type=sample'">50</td>
-<td class="px-6 py-4 text-on-surface">サンプル出荷</td>
+<td class="px-6 py-4 text-on-surface">出荷（販売）</td>
 <td class="px-6 py-4 text-on-surface">Administrator</td>
 <td class="px-6 py-4 text-center">
 <span class="inline-block px-3 py-1 text-[10px] font-bold rounded-lg bg-primary-fixed text-primary">待機中</span>
@@ -305,7 +287,7 @@
 </tr>
 <tr class="hover:bg-surface transition-colors">
 <td class="px-6 py-4 font-bold text-primary cursor-pointer hover:underline" onclick="location.href='task_detail.html?type=sample'">51</td>
-<td class="px-6 py-4 text-on-surface">サンプル出荷</td>
+<td class="px-6 py-4 text-on-surface">出荷（販売）</td>
 <td class="px-6 py-4 text-on-surface">Test staff</td>
 <td class="px-6 py-4 text-center">
 <span class="inline-block px-3 py-1 text-[10px] font-bold rounded-lg bg-primary-fixed text-primary">待機中</span>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>報酬管理 - Silica Link Portal</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+          tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                colors: {
+                  "on-tertiary": "#ffffff",
+                  "on-secondary-fixed": "#331200",
+                  "inverse-surface": "#2e3132",
+                  "tertiary": "#004888",
+                  "error": "#ba1a1a",
+                  "primary-fixed": "#d6e3ff",
+                  "on-error": "#ffffff",
+                  "primary-fixed-dim": "#a8c8ff",
+                  "surface-bright": "#f8f9fa",
+                  "on-primary-container": "#cadcff",
+                  "on-primary-fixed": "#001b3d",
+                  "tertiary-container": "#0060b1",
+                  "secondary-fixed-dim": "#ffb68f",
+                  "secondary-fixed": "#ffdbca",
+                  "secondary-container": "#fd7613",
+                  "on-surface": "#191c1d",
+                  "surface-container-highest": "#e1e3e4",
+                  "on-tertiary-fixed-variant": "#004786",
+                  "on-primary-fixed-variant": "#00468b",
+                  "on-primary": "#ffffff",
+                  "tertiary-fixed": "#d4e3ff",
+                  "surface-container-high": "#e7e8e9",
+                  "inverse-on-surface": "#f0f1f2",
+                  "tertiary-fixed-dim": "#a5c8ff",
+                  "surface-container-lowest": "#ffffff",
+                  "on-background": "#191c1d",
+                  "surface-variant": "#e1e3e4",
+                  "outline-variant": "#c2c6d4",
+                  "surface": "#f8f9fa",
+                  "on-secondary-container": "#5b2500",
+                  "on-error-container": "#93000a",
+                  "surface-dim": "#d9dadb",
+                  "surface-container-low": "#f3f4f5",
+                  "on-tertiary-fixed": "#001c3a",
+                  "outline": "#727783",
+                  "on-tertiary-container": "#c8dcff",
+                  "on-secondary-fixed-variant": "#773200",
+                  "secondary": "#9c4400",
+                  "surface-container": "#edeeef",
+                  "error-container": "#ffdad6",
+                  "surface-tint": "#005db5",
+                  "inverse-primary": "#a8c8ff",
+                  "primary-container": "#005fb8",
+                  "background": "#f8f9fa",
+                  "primary": "#00488d",
+                  "on-surface-variant": "#424752",
+                  "on-secondary": "#ffffff"
+                },
+                fontFamily: {
+                  "headline": ["Inter", "sans-serif"],
+                  "body": ["Inter", "sans-serif"],
+                  "label": ["Inter", "sans-serif"]
+                },
+                borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "9999px"},
+              },
+            },
+          }
+    </script>
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col antialiased">
+
+<!-- TopNavBar -->
+<nav class="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none font-['Inter'] antialiased text-sm font-medium tracking-tight docked full-width top-0 border-b-0 sticky z-50">
+    <div class="flex justify-between items-center w-full px-6 h-16 max-w-[1920px] mx-auto">
+        <div class="flex items-center gap-8">
+            <a href="index.html" class="text-xl font-bold text-[#00488d] dark:text-blue-400 tracking-tighter hover:opacity-80 transition-opacity">Kintone Dashboard</a>
+            <div class="hidden md:flex gap-6 items-center">
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="index.html">受注業務</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="purchase_index.html">発注業務</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="production_index.html">製造業務</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="task_top.html">入出庫・タスク</a>
+                <a class="text-[#00488d] dark:text-blue-400 border-b-2 border-[#00488d] dark:border-blue-400 pb-1" href="commission_top.html">報酬管理</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="payment_cashflow_index.html">入出金管理</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="partner_top.html">パートナー管理</a>
+                <a class="text-on-surface-variant hover:text-primary transition-colors" href="master_index.html">マスタ管理</a>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="p-2 text-on-surface-variant hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all duration-200 scale-95 active:opacity-80">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <div class="h-8 w-8 rounded-full bg-surface-container-highest overflow-hidden border border-surface-container-high">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5ojtP60fHbHvfrGuF9J-4sBUw7rQ55quXPL5EArZOUVuI-uaKnHiGd9XgLryiNM3MmyAVzRWxhK-eM9pkTHxvOgm9C8iCdc-MSgV5uuGNLbJvEyHJpQNttKgn_MSkrYX6Bpw3luyA9XgQqy67fVzJe1u6ClMJltbZcl4ipEBaMnSnochUBb1nKE1e_6SYEgToCb--ZxWWCOtmZUTU2D9KAf1pX_pSFvfJkX94qz58YyYApVKpy1oQ52ihHWbcMt95MsXemNpgbF70" alt="User">
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="flex-grow max-w-[1920px] mx-auto w-full px-6 py-8">
+    <!-- Page Header -->
+    <header class="mb-8">
+        <h1 class="text-3xl font-extrabold text-on-surface tracking-tight mb-1">報酬管理</h1>
+        <p class="text-on-surface-variant text-base">パートナーへの報酬支払、手数料、取引履歴を管理します</p>
+    </header>
+
+    <!-- Priority Section: まず確認すること -->
+    <section class="mb-10">
+        <div class="bg-primary/5 border border-primary/10 rounded-2xl p-6 md:p-8">
+            <h2 class="text-lg font-bold text-primary mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">verified</span>
+                まず確認すること
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Card 1 -->
+                <a href="#" class="flex flex-col items-center gap-3 p-5 bg-white rounded-xl shadow-sm border border-transparent hover:border-primary transition-all group">
+                    <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-primary font-bold text-xl group-hover:scale-110 transition-transform">1</div>
+                    <span class="text-sm font-semibold text-on-surface">未確定（締め前）</span>
+                    <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">32件の計上待ち</span>
+                </a>
+                <!-- Card 2 -->
+                <a href="#" class="flex flex-col items-center gap-3 p-5 bg-white rounded-xl shadow-sm border border-transparent hover:border-primary transition-all group">
+                    <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-primary font-bold text-xl group-hover:scale-110 transition-transform">2</div>
+                    <span class="text-sm font-semibold text-on-surface">承認待ち</span>
+                    <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">未承認 8件</span>
+                </a>
+                <!-- Card 3 -->
+                <a href="#" class="flex flex-col items-center gap-3 p-5 bg-white rounded-xl shadow-sm border border-transparent hover:border-primary transition-all group">
+                    <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-primary font-bold text-xl group-hover:scale-110 transition-transform">3</div>
+                    <span class="text-sm font-semibold text-on-surface">支払待ち</span>
+                    <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">次回 15件</span>
+                </a>
+                <!-- Card 4 -->
+                <a href="#" class="flex flex-col items-center gap-3 p-5 bg-white rounded-xl shadow-sm border border-transparent hover:border-error transition-all group">
+                    <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-error font-bold text-xl group-hover:scale-110 transition-transform">4</div>
+                    <span class="text-sm font-semibold text-on-surface">エラー</span>
+                    <span class="text-[10px] text-error bg-red-50 px-2 py-0.5 rounded-full">控除不整合 2件</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Sidebar: クイックリンク -->
+        <div class="lg:col-span-4 space-y-6">
+            <section class="bg-white rounded-2xl shadow-sm border border-surface-container p-6">
+                <h3 class="font-bold text-on-surface mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">bolt</span>
+                    クイックリンク
+                </h3>
+                <div class="grid grid-cols-1 gap-3">
+                    <a href="#" class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors group">
+                        <div class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+                            <span class="material-symbols-outlined">rule</span>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="text-sm font-bold text-on-surface line-clamp-1">報酬ルール</div>
+                            <div class="text-[10px] text-on-surface-variant">計算ロジック・料率の確認</div>
+                        </div>
+                        <span class="material-symbols-outlined text-on-surface-variant text-base">chevron_right</span>
+                    </a>
+                    <a href="commission_history_list.html" class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors group">
+                        <div class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+                            <span class="material-symbols-outlined">account_balance_wallet</span>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="text-sm font-bold text-on-surface line-clamp-1">Ledger（月次）</div>
+                            <div class="text-[10px] text-on-surface-variant">月次台帳データの確認</div>
+                        </div>
+                        <span class="material-symbols-outlined text-on-surface-variant text-base">chevron_right</span>
+                    </a>
+                    <a href="payment_request_list.html" class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors group">
+                        <div class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+                            <span class="material-symbols-outlined">history</span>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="text-sm font-bold text-on-surface line-clamp-1">支払履歴</div>
+                            <div class="text-[10px] text-on-surface-variant">過去の送金記録・明細</div>
+                        </div>
+                        <span class="material-symbols-outlined text-on-surface-variant text-base">chevron_right</span>
+                    </a>
+                </div>
+                <div class="mt-6 pt-6 border-t border-surface-container">
+                    <a href="commission_history_list.html" class="block w-full text-center py-2 text-xs font-bold text-primary hover:underline border border-primary/20 rounded-lg transition-colors">
+                        すべての取引を見る
+                    </a>
+                </div>
+            </section>
+
+            <!-- Status Info Card -->
+            <section class="bg-primary text-white rounded-2xl p-6 shadow-lg relative overflow-hidden ring-1 ring-white/20">
+                <div class="relative z-10">
+                    <h4 class="text-xs font-bold opacity-80 mb-1">今月の支払予定額</h4>
+                    <div class="text-3xl font-extrabold mb-4 tracking-tighter">¥1,248,500</div>
+                    <div class="flex items-center gap-2 text-[10px] font-bold py-1 px-2 bg-white/20 rounded w-fit">
+                        <span class="material-symbols-outlined text-xs">info</span>
+                        支払期日: 2026/04/15
+                    </div>
+                </div>
+                <span class="material-symbols-outlined absolute -bottom-4 -right-4 text-9xl opacity-10 rotate-12">payments</span>
+            </section>
+        </div>
+
+        <!-- Lists Section: 一覧 -->
+        <div class="lg:col-span-8 space-y-8">
+            <!-- Summary Table -->
+            <section class="bg-white rounded-2xl shadow-sm border border-surface-container overflow-hidden">
+                <div class="px-6 py-4 border-b border-surface-container flex justify-between items-center bg-slate-50/50">
+                    <h3 class="font-bold text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">pie_chart</span>
+                        今月の報酬サマリ（パートナー別）
+                    </h3>
+                    <button class="text-xs text-primary font-bold hover:underline">詳細を表示</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-surface-container/30 text-left text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+                                <th class="px-6 py-3">パートナー名</th>
+                                <th class="px-6 py-3">報酬合計</th>
+                                <th class="px-6 py-3">件数</th>
+                                <th class="px-6 py-3">ステータス</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-surface-container">
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-medium">株式会社 Aパートナー</td>
+                                <td class="px-6 py-4">¥450,000</td>
+                                <td class="px-6 py-4">120</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg text-[10px] font-bold">確定</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-medium">代理店 Bシステム</td>
+                                <td class="px-6 py-4">¥285,000</td>
+                                <td class="px-6 py-4">85</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-[10px] font-bold">計算中</span></td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-medium">パートナー Cロジスティクス</td>
+                                <td class="px-6 py-4">¥125,000</td>
+                                <td class="px-6 py-4">42</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 bg-slate-100 text-slate-700 rounded-lg text-[10px] font-bold">未処理</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Transaction Details Table -->
+            <section class="bg-white rounded-2xl shadow-sm border border-surface-container overflow-hidden">
+                <div class="px-6 py-4 border-b border-surface-container flex justify-between items-center bg-slate-50/50">
+                    <h3 class="font-bold text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">list_alt</span>
+                        取引明細（プラス/マイナス）
+                    </h3>
+                    <div class="flex gap-2">
+                        <button class="px-3 py-1 bg-primary text-white text-[10px] font-bold rounded-lg shadow-sm hover:shadow-md transition-all">CSV出力</button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-surface-container/30 text-left text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+                                <th class="px-6 py-3">注文ID</th>
+                                <th class="px-6 py-3">取引先名</th>
+                                <th class="px-6 py-3">報酬金額</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-surface-container">
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-bold text-primary">ORD-2026-0335</td>
+                                <td class="px-6 py-4 font-medium">株式会社 Aパートナー</td>
+                                <td class="px-6 py-4 text-primary font-bold">¥5,200</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-bold text-primary">ORD-2026-0338</td>
+                                <td class="px-6 py-4 font-medium">代理店 Bシステム</td>
+                                <td class="px-6 py-4 text-primary font-bold">¥12,000</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-bold text-primary">ORD-2026-0340</td>
+                                <td class="px-6 py-4 font-medium">パートナー Cロジスティクス</td>
+                                <td class="px-6 py-4 text-primary font-bold">¥8,500</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+
+<footer class="mt-auto py-8 px-6 text-center text-on-surface-variant text-xs border-t border-surface-container bg-white/50">
+    <div class="max-w-[1920px] mx-auto opacity-70">
+        &copy; 2026 Silica Link Portal. All rights reserved.
+    </div>
+</footer>
+
+</body>
+</html>

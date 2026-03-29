@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>マスタ管理 | Silica Link</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00488d",
+                        "on-primary": "#ffffff",
+                        "secondary": "#9c4400",
+                        "tertiary": "#004888",
+                        "error": "#ba1a1a",
+                        "background": "#f8f9fa",
+                        "surface": "#ffffff",
+                        "outline": "#727783",
+                        "on-surface": "#191c1d",
+                        "on-surface-variant": "#424752",
+                    },
+                    fontFamily: {
+                        "headline": ["Noto Sans JP", "sans-serif"],
+                        "body": ["Noto Sans JP", "sans-serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; }
+        .material-symbols-outlined { vertical-align: middle; }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface min-h-screen flex flex-col antialiased">
+    <!-- TopNavBar -->
+    <nav class="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none font-['Inter'] antialiased text-sm font-medium tracking-tight docked full-width top-0 border-b-0 sticky z-50">
+        <div class="flex justify-between items-center w-full px-6 h-16 max-w-[1920px] mx-auto">
+            <div class="flex items-center gap-8">
+                                    <a href="index.html" class="text-xl font-bold text-[#00488d] dark:text-blue-400 tracking-tighter hover:opacity-80 transition-opacity">Kintone Dashboard</a>
+                <div class="hidden md:flex gap-6 items-center">
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="index.html">受注業務</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="purchase_index.html">発注業務</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="production_index.html">製造業務</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="task_top.html">入出庫・タスク</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="commission_top.html">報酬管理</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="payment_cashflow_index.html">入出金管理</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="partner_top.html">パートナー管理</a>
+                    <a class="text-[#00488d] dark:text-blue-400 border-b-2 border-[#00488d] dark:border-blue-400 pb-1" href="master_index.html">マスタ管理</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="p-2 text-on-surface-variant hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all duration-200 scale-95 active:opacity-80">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <div class="h-8 w-8 rounded-full bg-slate-200 overflow-hidden border border-slate-300">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5ojtP60fHbHvfrGuF9J-4sBUw7rQ55quXPL5EArZOUVuI-uaKnHiGd9XgLryiNM3MmyAVzRWxhK-eM9pkTHxvOgm9C8iCdc-MSgV5uuGNLbJvEyHJpQNttKgn_MSkrYX6Bpw3luyA9XgQqy67fVzJe1u6ClMJltbZcl4ipEBaMnSnochUBb1nKE1e_6SYEgToCb--ZxWWCOtmZUTU2D9KAf1pX_pSFvfJkX94qz58YyYApVKpy1oQ52ihHWbcMt95MsXemNpgbF70" alt="User">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-[1920px] mx-auto w-full px-6 py-8">
+        <!-- Page Header -->
+        <header class="mb-8">
+            <h1 class="text-3xl font-extrabold text-on-surface tracking-tight mb-1">マスタ管理</h1>
+            <p class="text-on-surface-variant text-base">システム動作の基盤となる商品、構成（BOM）、取引チャネル、およびシステム設定を管理します</p>
+        </header>
+
+        <!-- Section: B) マスタカテゴリ (Card Grid) -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- 1. 商品マスタ -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+                <div class="flex justify-between items-start mb-1">
+                    <h2 class="text-lg font-bold text-on-surface font-headline flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">inventory_2</span>
+                        商品マスタ
+                    </h2>
+                    <a href="#" class="text-[10px] font-bold text-primary hover:underline">一覧を見る</a>
+                </div>
+                <p class="text-xs text-on-surface-variant mb-6">販売SKUの基本情報・価格・状態を管理</p>
+                <div class="flex flex-col gap-2 mt-auto">
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group border border-transparent hover:border-slate-200">
+                        <span class="text-sm font-medium">商品マスタ (一覧)</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">arrow_forward</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group border border-transparent hover:border-slate-200">
+                        <span class="text-sm font-medium">商品登録 (新規)</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">add_circle</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-error/5 hover:bg-error/10 transition-all group border border-transparent hover:border-error/20">
+                        <span class="text-sm font-bold text-error">要対応商品 (View)</span>
+                        <span class="material-symbols-outlined text-error/30 group-hover:text-error text-sm">warning</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2. 資材・梱包マスタ -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+                <div class="flex justify-between items-start mb-1">
+                    <h2 class="text-lg font-bold text-on-surface font-headline flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[#2ecc71]">package_2</span>
+                        資材・梱包マスタ
+                    </h2>
+                    <a href="#" class="text-[10px] font-bold text-primary hover:underline">一覧を見る</a>
+                </div>
+                <p class="text-xs text-on-surface-variant mb-6">原材料・包材・消耗品の管理</p>
+                <div class="flex flex-col gap-2 mt-auto">
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium">資材マスタ (一覧)</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">arrow_forward</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium">梱包サイズマスタ</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">square_foot</span>
+                    </a>
+                     <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium">要対応資材 (View)</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">visibility</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 3. BOMマスタ -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+                <div class="flex justify-between items-start mb-1">
+                    <h2 class="text-lg font-bold text-on-surface font-headline flex items-center gap-2">
+                        <span class="material-symbols-outlined text-orange-500">list_alt</span>
+                        BOMマスタ
+                    </h2>
+                    <a href="#" class="text-[10px] font-bold text-primary hover:underline">一覧を見る</a>
+                </div>
+                <p class="text-xs text-on-surface-variant mb-6">商品→資材の構成・消費量を定義</p>
+                <div class="flex flex-col gap-2 mt-auto">
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium">BOMマスタ (一覧)</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">arrow_forward</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-orange-50 hover:bg-orange-100 transition-all group">
+                        <span class="text-sm font-bold text-orange-700">BOM未設定商品 (View)</span>
+                        <span class="material-symbols-outlined text-orange-300 group-hover:text-orange-600 text-sm">visibility</span>
+                    </a>
+                     <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium text-on-surface-variant">不整合チェック (Audit)</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">rule</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 4. チャネルマスタ -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+                <div class="flex justify-between items-start mb-1">
+                    <h2 class="text-lg font-bold text-on-surface font-headline flex items-center gap-2">
+                        <span class="material-symbols-outlined text-purple-500">hub</span>
+                        チャネルマスタ
+                    </h2>
+                    <a href="#" class="text-[10px] font-bold text-primary hover:underline">一覧を見る</a>
+                </div>
+                <p class="text-xs text-on-surface-variant mb-6">Shopify / 代理店ポータル等のチャネル定義</p>
+                <div class="flex flex-col gap-2 mt-auto">
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium">チャネル一覧</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">arrow_forward</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium">チャネル追加 (新規)</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">add_link</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium">チャネル別設定 (View)</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">tune</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 5. 倉庫・ロケーションマスタ -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+                <div class="flex justify-between items-start mb-1">
+                    <h2 class="text-lg font-bold text-on-surface font-headline flex items-center gap-2">
+                        <span class="material-symbols-outlined text-blue-500">warehouse</span>
+                        倉庫・ロケーションマスタ
+                    </h2>
+                    <a href="#" class="text-[10px] font-bold text-primary hover:underline">一覧を見る</a>
+                </div>
+                <p class="text-xs text-on-surface-variant mb-6">倉庫／棚（ロケーション）を定義し在庫管理に連携</p>
+                <div class="flex flex-col gap-2 mt-auto">
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium">倉庫マスタ</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">arrow_forward</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium">ロケーションマスタ</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">door_front</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-blue-50 hover:bg-blue-100 transition-all group">
+                        <span class="text-sm font-bold text-blue-700">ロケーション未設定 (View)</span>
+                        <span class="material-symbols-outlined text-blue-300 group-hover:text-blue-600 text-sm">visibility</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 6. 出荷設定 -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
+                <div class="flex justify-between items-start mb-1">
+                    <h2 class="text-lg font-bold text-on-surface font-headline flex items-center gap-2">
+                        <span class="material-symbols-outlined text-slate-600">local_shipping</span>
+                        出荷設定 (配送・連携)
+                    </h2>
+                    <a href="#" class="text-[10px] font-bold text-primary hover:underline">一覧を見る</a>
+                </div>
+                <p class="text-xs text-on-surface-variant mb-6">梱包サイズ・出荷時の基本設定</p>
+                <div class="flex flex-col gap-2 mt-auto">
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium">配送方法マスタ</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">arrow_forward</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium">Ship&Co 連携設定</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">sync_alt</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition-all group">
+                        <span class="text-sm font-medium">出荷設定一覧</span>
+                        <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-sm">list</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 7. システム設定 (Full width or in grid) -->
+             <div class="bg-slate-100/50 p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:col-span-2 mt-4">
+                <div class="flex justify-between items-start mb-1">
+                    <h2 class="text-lg font-bold text-on-surface font-headline flex items-center gap-2">
+                        <span class="material-symbols-outlined text-slate-400">tune</span>
+                        システム設定
+                    </h2>
+                </div>
+                <p class="text-xs text-on-surface-variant mb-6">税率・会社情報・SMTP・通知テンプレ・業務ルール</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-white shadow-xs hover:shadow-md transition-all border border-slate-100">
+                        <span class="material-symbols-outlined text-slate-400 text-sm">percent</span>
+                        <span class="text-sm font-medium">税率設定</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-white shadow-xs hover:shadow-md transition-all border border-slate-100">
+                        <span class="material-symbols-outlined text-slate-400 text-sm">alternate_email</span>
+                        <span class="text-sm font-medium">通知テンプレ</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-white shadow-xs hover:shadow-md transition-all border border-slate-100">
+                        <span class="material-symbols-outlined text-slate-400 text-sm">mail</span>
+                        <span class="text-sm font-medium">SMTP設定</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-white shadow-xs hover:shadow-md transition-all border border-slate-100">
+                        <span class="material-symbols-outlined text-slate-400 text-sm">corporate_fare</span>
+                        <span class="text-sm font-medium">会社情報</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: C) Administrator Only -->
+        <div class="mt-20 pt-8 border-t border-slate-100 text-center">
+            <button class="text-[10px] font-bold text-slate-300 hover:text-primary transition-colors flex items-center gap-1 mx-auto" onclick="toggleAdminView()">
+                <span class="material-symbols-outlined text-[14px]">lock</span>
+                管理者向け：全マスタアプリ一覧 (Kintone App Maps)
+            </button>
+            <div id="admin-apps" class="hidden mt-4 p-6 bg-slate-50 rounded-2xl animate-in fade-in duration-500 text-left">
+                 <p class="text-[10px] font-bold text-slate-400 mb-4 uppercase tracking-widest text-center">全マスタアプリケーション・リンク (管理者権限用)</p>
+                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-medium text-slate-500">
+                    <a href="#" class="hover:text-primary">・Product Master (App ID: 101)</a>
+                    <a href="#" class="hover:text-primary">・Materials Master (App ID: 102)</a>
+                    <a href="#" class="hover:text-primary">・BOM Master (App ID: 103)</a>
+                    <a href="#" class="hover:text-primary">・Channel Settings (App ID: 104)</a>
+                    <a href="#" class="hover:text-primary">・Warehouse Map (App ID: 105)</a>
+                    <a href="#" class="hover:text-primary">・Location Grid (App ID: 106)</a>
+                    <a href="#" class="hover:text-primary">・Tax Engine (App ID: 107)</a>
+                    <a href="#" class="hover:text-primary">・Email Handlers (App ID: 108)</a>
+                 </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 w-full py-8 mt-auto text-xs uppercase tracking-widest text-on-surface-variant">
+        <div class="flex justify-between items-center px-8 h-full max-w-[1920px] mx-auto">
+            <span>© 2026 Silica Link Operational Editorial</span>
+            <div class="flex gap-8 font-semibold">
+                <a class="hover:text-primary transition-colors" href="#">Help Center</a>
+                <a class="hover:text-primary transition-colors" href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleAdminView() {
+            const el = document.getElementById('admin-apps');
+            el.classList.toggle('hidden');
+        }
+    </script>
+</body>
+
+</html>
