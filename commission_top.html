@@ -127,19 +127,19 @@
                 <a href="commission_history_list_unconfirmed.html" class="flex flex-col items-center gap-3 p-5 bg-white rounded-xl shadow-sm border border-transparent hover:border-primary transition-all group">
                     <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-primary font-bold text-xl group-hover:scale-110 transition-transform">1</div>
                     <span class="text-sm font-semibold text-on-surface">未確定（締め前）</span>
-                    <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">32件の計上待ち</span>
+                    <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">2件の計上待ち</span>
                 </a>
                 <!-- Card 2 -->
                 <a href="payment_request_before_list.html" class="flex flex-col items-center gap-3 p-5 bg-white rounded-xl shadow-sm border border-transparent hover:border-primary transition-all group">
                     <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-primary font-bold text-xl group-hover:scale-110 transition-transform">2</div>
                     <span class="text-sm font-semibold text-on-surface">承認待ち</span>
-                    <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">未承認 8件</span>
+                    <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">未承認 2件</span>
                 </a>
                 <!-- Card 3 -->
-                <a href="payment_request_before_list.html" class="flex flex-col items-center gap-3 p-5 bg-white rounded-xl shadow-sm border border-transparent hover:border-primary transition-all group">
+                <a href="payment_request_after_list.html" class="flex flex-col items-center gap-3 p-5 bg-white rounded-xl shadow-sm border border-transparent hover:border-primary transition-all group">
                     <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-primary font-bold text-xl group-hover:scale-110 transition-transform">3</div>
                     <span class="text-sm font-semibold text-on-surface">支払待ち</span>
-                    <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">次回 15件</span>
+                    <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">次回 2件</span>
                 </a>
             </div>
         </div>
@@ -227,24 +227,24 @@
                         <tbody class="divide-y divide-surface-container">
                             <tr class="hover:bg-slate-50 transition-colors">
                                 <td class="px-6 py-4 font-medium">株式会社TORI</td>
-                                <td class="px-6 py-4 font-bold text-primary">9912</td>
+                                <td class="px-6 py-4 font-bold"><a href="commission_history_9912_detail_monthly.html" class="text-primary hover:underline">1001</a></td>
                                 <td class="px-6 py-4">¥450,000</td>
                                 <td class="px-6 py-4">120</td>
-                                <td class="px-6 py-4"><span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg text-[10px] font-bold">確定</span></td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-[10px] font-bold">一時計上</span></td>
                             </tr>
                             <tr class="hover:bg-slate-50 transition-colors">
                                 <td class="px-6 py-4 font-medium">株式会社TOTA</td>
-                                <td class="px-6 py-4 font-bold text-primary">9913</td>
+                                <td class="px-6 py-4 font-bold"><a href="commission_history_9913_detail_monthly_v2.html" class="text-primary hover:underline">1002</a></td>
                                 <td class="px-6 py-4">¥285,000</td>
                                 <td class="px-6 py-4">85</td>
-                                <td class="px-6 py-4"><span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-[10px] font-bold">計算中</span></td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-[10px] font-bold">一時計上</span></td>
                             </tr>
                             <tr class="hover:bg-slate-50 transition-colors">
                                 <td class="px-6 py-4 font-medium">株式会社TOTO</td>
-                                <td class="px-6 py-4 font-bold text-primary">9914</td>
+                                <td class="px-6 py-4 font-bold"><a href="commission_history_9912_detail_monthly.html" class="text-primary hover:underline">1003</a></td>
                                 <td class="px-6 py-4">¥125,000</td>
                                 <td class="px-6 py-4">42</td>
-                                <td class="px-6 py-4"><span class="px-2 py-1 bg-slate-100 text-slate-700 rounded-lg text-[10px] font-bold">未処理</span></td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-[10px] font-bold">確認済み</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -268,6 +268,7 @@
                             <tr class="bg-surface-container/30 text-left text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
                                 <th class="px-6 py-3">注文ID</th>
                                 <th class="px-6 py-3">取引先名</th>
+                                <th class="px-6 py-3">報酬種別</th>
                                 <th class="px-6 py-3">報酬金額</th>
                             </tr>
                         </thead>
@@ -275,16 +276,19 @@
                             <tr class="hover:bg-slate-50 transition-colors">
                                 <td class="px-6 py-4 font-bold"><a href="order_detail_303_return_finish.html" class="text-primary hover:underline">303</a></td>
                                 <td class="px-6 py-4 font-medium">株式会社TORI</td>
+                                <td class="px-6 py-4 font-medium">投資家配当</td>
                                 <td class="px-6 py-4 text-error font-bold">- ¥6,250</td>
                             </tr>
                             <tr class="hover:bg-slate-50 transition-colors">
                                 <td class="px-6 py-4 font-bold"><a href="order_detail_303_return_finish.html" class="text-primary hover:underline">303</a></td>
                                 <td class="px-6 py-4 font-medium">株式会社TORI</td>
+                                <td class="px-6 py-4 font-medium">投資家配当</td>
                                 <td class="px-6 py-4 text-primary font-bold">¥12,000</td>
                             </tr>
                             <tr class="hover:bg-slate-50 transition-colors">
                                 <td class="px-6 py-4 font-bold"><a href="order_detail_309_return_finish.html" class="text-primary hover:underline">309</a></td>
                                 <td class="px-6 py-4 font-medium">株式会社TOTA</td>
+                                <td class="px-6 py-4 font-medium">アフィリエイト報酬</td>
                                 <td class="px-6 py-4 text-primary font-bold">¥8,500</td>
                             </tr>
                         </tbody>

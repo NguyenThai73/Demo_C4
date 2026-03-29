@@ -155,7 +155,7 @@
         }
         .status-waiting { background-color: #fff8e1; color: #f39c12; border: none; border-radius: 100px; padding: 2px 12px; }
         .status-confirmed { background-color: #e8f8f0; color: #2ecc71; border: 1px solid #2ecc71; }
-        .status-paid { background-color: #d4edda; color: #155724; border: none; border-radius: 100px; padding: 2px 12px; }
+        .status-paid { background-color: #eaf0fb; color: #3498db; border: 1px solid #3498db; }
 
         .view-icon { color: var(--kintone-blue); cursor: pointer; font-size: 16px; opacity: 0.7; }
         .view-icon:hover { opacity: 1; }
@@ -207,17 +207,17 @@
         <i class="fas fa-chevron-right"></i>
         <a href="payment_request_list.html">報酬管理</a>
         <i class="fas fa-chevron-right"></i>
-        <span>支払リクエスト一覧 (全ステータス)</span>
+        <span>支払待ちの報酬 (承認前)</span>
     </div>
 
     <div class="control-bar">
         <div style="display: flex;">
-            <div class="view-dropdown active">すべての報酬 <i class="fas fa-caret-down"></i></div>
+            <div class="view-dropdown active">承認前の報酬 <i class="fas fa-caret-down"></i></div>
             <div class="graph-btn"><i class="fas fa-project-diagram"></i> <i class="fas fa-caret-down" style="margin-left: 8px;"></i></div>
         </div>
         <button class="icon-btn-bordered"><i class="fas fa-filter"></i></button>
         <button class="icon-btn-bordered"><i class="fas fa-chart-bar"></i></button>
-        <span class="filter-badge"><i class="fas fa-list"></i> ステータス: すべて</span>
+        <span class="filter-badge"><i class="fas fa-clock"></i> ステータス: 承認待ち</span>
 
         <div style="flex-grow: 1;"></div>
 
@@ -254,10 +254,10 @@
                     <td class="text-center"><a href="partner_list.html" class="link-text">9912</a></td>
                     <td class="text-right" style="font-weight: bold;">¥ 29,250</td>
                     <td class="text-center">JPY</td>
-                    <td class="text-center"><span class="status-badge status-waiting">承認待ち</span></td>
+                    <td class="text-center"><span class="status-badge status-waiting">支払待ち</span></td>
                     <td>株式会社TORI</td>
                     <td class="text-center">2026-04-15</td>
-                    <td class="text-center">―</td>
+                    <td class="text-center">山田 太郎</td>
                     <td>2026-03-29 10:30</td>
                     <td class="text-center"><i class="far fa-eye view-icon" onclick="location.href='payment_request_96_detail.html'"></i></td>
                 </tr>
@@ -269,43 +269,12 @@
                     <td class="text-center"><a href="partner_list.html" class="link-text">9913</a></td>
                     <td class="text-right" style="font-weight: bold;">¥ 35,500</td>
                     <td class="text-center">JPY</td>
-                    <td class="text-center"><span class="status-badge status-waiting">承認待ち</span></td>
+                    <td class="text-center"><span class="status-badge status-waiting">支払待ち</span></td>
                     <td>株式会社TOTA</td>
-                    <td class="text-center">2026-04-15</td>
-                    <td class="text-center">―</td>
-                    <td>2026-03-29 11:15</td>
-                    <td class="text-center"><i class="far fa-eye view-icon" onclick="location.href='payment_request_97_detail.html'"></i></td>
-                </tr>
-                <!-- Records from payment_request_after_list.html -->
-                <tr>
-                    <td><a href="payment_request_100_detail.html" class="link-text">100</a></td>
-                    <td>配当支払</td>
-                    <td class="text-center"><a href="commission_history_9912_detail_monthly.html" class="link-text">1003</a></td>
-                    <td class="text-center">―</td>
-                    <td class="text-center"><a href="partner_list.html" class="link-text">9914</a></td>
-                    <td class="text-right" style="font-weight: bold;">¥ 29,250</td>
-                    <td class="text-center">JPY</td>
-                    <td class="text-center"><span class="status-badge status-paid">支払待ち</span></td>
-                    <td>株式会社TOTU</td>
-                    <td class="text-center">2026-04-15</td>
-                    <td class="text-center">山田 太郎</td>
-                    <td>2026-03-29 10:30</td>
-                    <td class="text-center"><i class="far fa-eye view-icon" onclick="location.href='payment_request_100_detail.html'"></i></td>
-                </tr>
-                <tr>
-                    <td><a href="payment_request_101_detail.html" class="link-text">101</a></td>
-                    <td>コミッション支払</td>
-                    <td class="text-center"><a href="commission_history_9913_detail_monthly_v2.html" class="link-text">1004</a></td>
-                    <td class="text-center">―</td>
-                    <td class="text-center"><a href="partner_list.html" class="link-text">9915</a></td>
-                    <td class="text-right" style="font-weight: bold;">¥ 35,500</td>
-                    <td class="text-center">JPY</td>
-                    <td class="text-center"><span class="status-badge status-paid">支払待ち</span></td>
-                    <td>株式会社TOTE</td>
                     <td class="text-center">2026-04-15</td>
                     <td class="text-center">鈴木 一郎</td>
                     <td>2026-03-29 11:15</td>
-                    <td class="text-center"><i class="far fa-eye view-icon" onclick="location.href='payment_request_101_detail.html'"></i></td>
+                    <td class="text-center"><i class="far fa-eye view-icon" onclick="location.href='payment_request_97_detail.html'"></i></td>
                 </tr>
             </tbody>
         </table>
