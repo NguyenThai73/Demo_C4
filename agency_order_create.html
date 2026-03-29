@@ -583,6 +583,19 @@
             cursor: not-allowed;
             pointer-events: none;
         }
+
+        /* Status Display */
+        .status-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: #fffaf0;
+            border: 1px solid #ffe58f;
+            border-radius: 6px;
+            font-weight: 800;
+            color: #f39c12;
+        }
     </style>
 </head>
 
@@ -616,12 +629,16 @@
         <div class="page-header">
             <h1 class="page-title">新規注文</h1>
             <div class="action-buttons">
-                <button class="btn btn-white" id="cancelBtn">キャンセル</button>
-                <button class="btn btn-outline-blue" id="draftBtn">
-                    <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 18px;">save_as</span>
-                    下書き
-                </button>
-                <button class="btn btn-blue" id="confirmBtn">注文を確定</button>
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="material-symbols-outlined" style="color: #f39c12; font-size: 20px;">schedule</span>
+                        <span style="font-weight: 800; color: #f39c12; font-size: 16px;">確認待ち</span>
+                    </div>
+                    <button class="btn btn-outline-blue" id="backToListBtn" onclick="window.location.href='agency_orderlist.html'">
+                        <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 18px;">arrow_back</span>
+                        一覧に戻る
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -1086,7 +1103,7 @@
                             <div style="flex: 1;">
                                 <div style="font-weight: 800; font-size: 14px; color: #333; margin-bottom: 4px;">次の対応: CREDIE側での確認をお待ちください</div>
                                 <div style="font-size: 12px; color: #666; line-height: 1.5;">
-                                    注文を確定しました。注文番号: <strong>ORD-${new Date().getTime()}</strong><br>
+                                    注文を確定しました。注文番号: <strong>303</strong><br>
                                     CREDIE側で注文内容を確認し、確認完了後に請求書が発行されます。<br>
                                     通常、確認には1〜2営業日かかります。
                                 </div>
@@ -1103,16 +1120,25 @@
                         input.style.cursor = 'not-allowed';
                     });
                     
-                    document.querySelectorAll('.btn').forEach(btn => {
-                        btn.disabled = true;
-                        btn.style.opacity = '0.5';
-                        btn.style.cursor = 'not-allowed';
-                    });
+                    // Replace action buttons with status and back button
+                    const actionButtons = document.querySelector('.action-buttons');
+                    actionButtons.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="material-symbols-outlined" style="color: #f39c12; font-size: 20px;">schedule</span>
+                                <span style="font-weight: 800; color: #f39c12; font-size: 16px;">確認待ち</span>
+                            </div>
+                            <button class="btn btn-outline-blue" onclick="window.location.href='agency_orderlist.html'">
+                                <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 18px;">arrow_back</span>
+                                一覧に戻る
+                            </button>
+                        </div>
+                    `;
                     
                     // Show success modal
                     openCustomModal({
                         title: '注文確定完了',
-                        description: '注文を確定しました。CREDIE側での確認をお待ちください。<br><br>注文番号: <strong>ORD-' + new Date().getTime() + '</strong>',
+                        description: '注文を確定しました。CREDIE側での確認をお待ちください。<br><br>注文番号: <strong>303</strong>',
                         icon: 'fa-check-double',
                         iconColor: '#27ae60',
                         hideCancel: true,
