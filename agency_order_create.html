@@ -309,6 +309,60 @@
             color: #888;
         }
 
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            z-index: 1000;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border-bottom: 1px solid #f5f6f7;
+            transition: background 0.2s;
+        }
+
+        .search-result-item:hover {
+            background-color: #f0f7ff;
+        }
+
+        .result-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .result-name {
+            font-weight: 700;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .result-sku {
+            font-size: 11px;
+            color: #888;
+            font-family: monospace;
+        }
+
+        .result-price {
+            font-weight: 800;
+            color: var(--primary-blue);
+            font-size: 13px;
+        }
+
         /* Quantity Input */
         .quantity-input {
             width: 100%;
@@ -332,17 +386,25 @@
 
         /* Delete Link Button */
         .delete-link-btn {
-            background: none;
-            border: none;
+            background-color: transparent;
+            border: 1px solid #e74c3c;
             color: #e74c3c;
             cursor: pointer;
-            font-size: 12px;
-            text-decoration: underline;
-            padding: 0;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .delete-link-btn:hover {
+            background-color: #fff5f5;
             color: #c0392b;
+            border-color: #c0392b;
+            transform: translateY(-1px);
         }
 
         /* Table */
@@ -384,15 +446,6 @@
             text-align: center;
         }
 
-        .delete-link-btn {
-            background: none;
-            border: 1px solid #e74c3c;
-            color: #e74c3c;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-        }
 
         /* Summary */
         .summary-block {
@@ -560,9 +613,11 @@
         <div id="next-action-area" style="background-color: #f0f7ff; border: 1px solid #e1e9f1; border-radius: 8px; padding: 16px 24px; margin-bottom: 30px; display: flex; align-items: flex-start; gap: 15px;">
             <span class="material-symbols-outlined" style="color: #3498db; font-size: 24px;">info</span>
             <div>
-                <div style="font-weight: 800; font-size: 14px; color: #333; margin-bottom: 4px;">次の対応: 注文内容を入力してください</div>
-                <div style="font-size: 12px; color: #666;">
-                    1. 検索バーから商品を追加 2. 数量を入力 3. 配送先を確認して確定
+                <div style="font-weight: 800; font-size: 14px; color: #333; margin-bottom: 8px;">次の対応: 注文内容を入力してください</div>
+                <div style="font-size: 13px; color: #666; line-height: 1.8;">
+                    1. 検索バーから商品を追加<br>
+                    2. 数量を入力<br>
+                    3. 配送先を確認して確定
                 </div>
             </div>
         </div>
@@ -576,7 +631,8 @@
             <div class="card-body">
                 <div class="search-inner">
                     <div class="search-input-wrapper">
-                        <input type="text" class="search-input" id="productSearch" placeholder="商品名またはSKUを入力してください">
+                        <input type="text" class="search-input" id="productSearch" placeholder="商品名またはSKUを入力してください" autocomplete="off">
+                        <div id="searchResults" class="search-results"></div>
                     </div>
                     <div class="search-hint">
                         <span class="material-symbols-outlined" style="font-size: 16px; color: #f39c12;">lightbulb</span>
@@ -603,26 +659,11 @@
                                 <th style="width: 100px;">価格</th>
                                 <th style="width: 160px;">数量</th>
                                 <th style="width: 150px;">小計</th>
-                                <th style="width: 80px;">操作</th>
+                                <th style="width: 120px;">操作</th>
                             </tr>
                         </thead>
                         <tbody id="orderItems">
-                            <tr>
-                                <td><a href="#" class="sku-link">TEST-SKU-002</a></td>
-                                <td>Updated Test Product 002</td>
-                                <td>¥1,500</td>
-                                <td><input type="number" class="quantity-input" value="1000" min="1" data-price="1500"></td>
-                                <td class="summary-value">¥1,500,000</td>
-                                <td><button class="delete-link-btn" onclick="removeItem(this)">削除</button></td>
-                            </tr>
-                            <tr>
-                                <td><a href="#" class="sku-link">SKU-TEST-DRAFT22</a></td>
-                                <td>SKU-TEST-DRAFT34</td>
-                                <td>¥1,000</td>
-                                <td><input type="number" class="quantity-input" value="1000" min="1" data-price="1000"></td>
-                                <td class="summary-value">¥1,000,000</td>
-                                <td><button class="delete-link-btn" onclick="removeItem(this)">削除</button></td>
-                            </tr>
+                            <!-- Empty by default -->
                         </tbody>
                     </table>
                 </div>
@@ -630,11 +671,11 @@
                 <div class="summary-block">
                     <div class="summary-row">
                         <span class="summary-label">小計:</span>
-                        <span class="summary-value" id="subtotal">¥2,500,000</span>
+                        <span class="summary-value" id="subtotal">¥0</span>
                     </div>
                     <div class="summary-row total-row">
                         <span style="font-weight: 800;">注文合計:</span>
-                        <span class="total-value" id="orderTotal">¥2,500,000</span>
+                        <span class="total-value" id="orderTotal">¥0</span>
                     </div>
                 </div>
             </div>
@@ -660,31 +701,31 @@
                 <div id="shipping-form" class="form-grid">
                     <div class="form-group">
                         <div class="form-label">会社名<span class="required-star">*</span></div>
-                        <input type="text" class="form-input" id="shipping-company" value="株式会社東京グリーン (test_agency@yopmail.com)">
+                        <input type="text" class="form-input" id="shipping-company" value="株式会社東京グリーン (test_agency@yopmail.com)" required>
                     </div>
                     <div class="form-group">
                         <div class="form-label">担当者名<span class="required-star">*</span></div>
-                        <input type="text" class="form-input" id="shipping-name" value="山田 太郎">
+                        <input type="text" class="form-input" id="shipping-name" value="山田 太郎" required>
                     </div>
                     <div class="form-group">
                         <div class="form-label">メールアドレス<span class="required-star">*</span></div>
-                        <input type="email" class="form-input" id="shipping-email" value="test_agency@yopmail.com">
+                        <input type="email" class="form-input" id="shipping-email" value="test_agency@yopmail.com" required>
                     </div>
                     <div class="form-group">
                         <div class="form-label">電話番号<span class="required-star">*</span></div>
-                        <input type="tel" class="form-input" id="shipping-tel" value="03-1234-5678">
+                        <input type="tel" class="form-input" id="shipping-tel" value="03-1234-5678" required>
                     </div>
                     <div class="form-group">
                         <div class="form-label">都道府県<span class="required-star">*</span></div>
-                        <input type="text" class="form-input" id="shipping-pref" value="東京都">
+                        <input type="text" class="form-input" id="shipping-pref" value="東京都" required>
                     </div>
                     <div class="form-group">
                         <div class="form-label">郵便番号<span class="required-star">*</span></div>
-                        <input type="text" class="form-input" id="shipping-zip" value="150-0001">
+                        <input type="text" class="form-input" id="shipping-zip" value="150-0001" required>
                     </div>
                     <div class="form-group full-width">
                         <div class="form-label">住所<span class="required-star">*</span></div>
-                        <input type="text" class="form-input" id="shipping-addr1" value="東京都渋谷区代々木1-2-3">
+                        <input type="text" class="form-input" id="shipping-addr1" value="東京都渋谷区代々木1-2-3" required>
                     </div>
                     <div class="form-group full-width">
                         <div class="form-label">建物名・部署番号</div>
@@ -859,21 +900,84 @@
             });
         }
         
-        // Product search
-        document.getElementById('productSearch').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const searchTerm = this.value.trim();
-                if (searchTerm) {
-                    openCustomModal({
-                        title: '商品検索中',
-                        description: `"${searchTerm}" で商品を検索します (デモ)`,
-                        icon: 'fa-search',
-                        hideCancel: true,
-                        confirmText: '閉じる'
-                    });
-                }
+        // Sample product data
+        const sampleProducts = [
+            { sku: 'TEST-SKU-001', name: 'Test Product 001', price: 1000 },
+            { sku: 'TEST-SKU-002', name: 'Updated Test Product 002', price: 1500 },
+            { sku: 'SKU-DR-001', name: 'Draft Product 001', price: 2000 },
+            { sku: 'SKU-PRO-302', name: 'Silica Gel Pro 302', price: 45000 },
+            { sku: 'SKU-PRO-309', name: 'Silica Gel Pro 309', price: 18500 }
+        ];
+
+        // Product search logic
+        const searchInput = document.getElementById('productSearch');
+        const resultsDiv = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            resultsDiv.innerHTML = '';
+            
+            if (!query) {
+                resultsDiv.style.display = 'none';
+                return;
+            }
+
+            const filtered = sampleProducts.filter(p => 
+                p.name.toLowerCase().includes(query) || 
+                p.sku.toLowerCase().includes(query)
+            );
+
+            if (filtered.length > 0) {
+                filtered.forEach(product => {
+                    const item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.innerHTML = `
+                        <div class="result-info">
+                            <span class="result-name">${product.name}</span>
+                            <span class="result-sku">${product.sku}</span>
+                        </div>
+                        <span class="result-price">¥${product.price.toLocaleString()}</span>
+                    `;
+                    item.onclick = function() {
+                        addProductToTable(product);
+                        searchInput.value = '';
+                        resultsDiv.style.display = 'none';
+                    };
+                    resultsDiv.appendChild(item);
+                });
+                resultsDiv.style.display = 'block';
+            } else {
+                resultsDiv.style.display = 'none';
             }
         });
+
+        // Close results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+                resultsDiv.style.display = 'none';
+            }
+        });
+
+        function addProductToTable(product) {
+            const tbody = document.getElementById('orderItems');
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+                <td><a href="#" class="sku-link">${product.sku}</a></td>
+                <td>${product.name}</td>
+                <td>¥${product.price.toLocaleString()}</td>
+                <td><input type="number" class="quantity-input" value="1" min="1" data-price="${product.price}"></td>
+                <td class="summary-value subtotal">¥${product.price.toLocaleString()}</td>
+                <td><button class="delete-link-btn" onclick="removeItem(this)">削除</button></td>
+            `;
+            
+            tbody.appendChild(row);
+            
+            // Add event listener to new quantity input
+            row.querySelector('.quantity-input').addEventListener('input', calculateTotals);
+            
+            calculateTotals();
+        }
         
         // Cancel button
         document.getElementById('cancelBtn').addEventListener('click', function() {
@@ -905,24 +1009,44 @@
 
         // Confirm order button
         document.getElementById('confirmBtn').addEventListener('click', function() {
-            // Validate required fields
-            const requiredFields = document.querySelectorAll('.form-input[required]');
-            let isValid = true;
-            let missingFields = [];
+            let errors = [];
             
+            // 1. Check for products
+            const products = document.querySelectorAll('#orderItems tr');
+            if (products.length === 0) {
+                errors.push('注文する商品が追加されていません。');
+            }
+            
+            // 2. Check quantities
+            const quantities = document.querySelectorAll('.quantity-input');
+            let zeroQty = false;
+            quantities.forEach(input => {
+                if (parseInt(input.value) <= 0 || !input.value) {
+                    zeroQty = true;
+                }
+            });
+            if (zeroQty) {
+                errors.push('すべての商品の数量は1以上に設定してください。');
+            }
+            
+            // 3. Validate required shipping fields
+            const requiredFields = document.querySelectorAll('.form-input[required]');
+            let missingFields = [];
             requiredFields.forEach(field => {
                 if (!field.value.trim()) {
-                    isValid = false;
                     const labelNode = field.closest('.form-group').querySelector('.form-label');
                     const label = labelNode ? labelNode.textContent : '不明な項目';
                     missingFields.push(label.replace('*', '').trim());
                 }
             });
+            if (missingFields.length > 0) {
+                errors.push('以下の必須項目を入力してください：<br>・' + missingFields.join('<br>・'));
+            }
             
-            if (!isValid) {
+            if (errors.length > 0) {
                 openCustomModal({
-                    title: '入力エラー',
-                    description: '以下の必須項目を入力してください：<br><br>' + missingFields.join('<br>'),
+                    title: '入力エラーがあります',
+                    description: errors.join('<br><br>'),
                     icon: 'fa-exclamation-triangle',
                     iconColor: '#f39c12',
                     hideCancel: true,
@@ -933,7 +1057,7 @@
             
             openCustomModal({
                 title: '注文を確定しますか？',
-                description: '以下の事項を確認してください：<br>1. 注文内容および数量が正しい。<br>2. 配送先住所に誤りがない。<br>3. 希望納期などの特記事項を確認した。<br><br><span style="color: #e74c3c; font-weight: bold;">※この操作は取り消せません。</span>',
+                description: '入力された内容で注文を確定します。よろしいですか？<br><br><span style="color: #e74c3c; font-weight: bold;">※この操作は取り消せません。</span>',
                 icon: 'fa-check-circle',
                 iconColor: '#27ae60',
                 confirmText: '注文を確定する',
@@ -946,7 +1070,7 @@
                         hideCancel: true,
                         confirmText: '一覧へ戻る',
                         onConfirm: function() {
-                            window.location.href = 'agency_orderlist.html';
+                            window.location.href = 'agency_order_351_detail_await.html';
                         }
                     });
                 }
