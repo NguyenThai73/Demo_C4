@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>報酬ルール | Silica Link Portal</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <style>
+        body { 
+            font-family: 'Noto Sans JP', sans-serif; 
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        
+        /* Card Styles */
+        .rule-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e9ecef;
+            overflow: hidden;
+        }
+        
+        .rule-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 24px;
+        }
+        
+        .rule-section {
+            border-bottom: 1px solid #e9ecef;
+            padding: 20px 24px;
+        }
+        
+        .rule-section:last-child {
+            border-bottom: none;
+        }
+        
+        .rule-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #2d3748;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .rule-subtitle {
+            font-size: 14px;
+            font-weight: 700;
+            color: #4a5568;
+            margin-bottom: 12px;
+            padding-left: 8px;
+            border-left: 3px solid #4299e1;
+        }
+        
+        .rule-content {
+            font-size: 13px;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+        
+        .rule-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+        
+        .rule-table th {
+            background-color: #f7fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 700;
+            color: #4a5568;
+        }
+        
+        .rule-table td {
+            border: 1px solid #e2e8f0;
+            padding: 12px 16px;
+            color: #4a5568;
+        }
+        
+        .rule-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        
+        .highlight-box {
+            background-color: #fffaf0;
+            border: 1px solid #ffe58f;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        .note-box {
+            background-color: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            font-size: 12px;
+            color: #0369a1;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+        
+        .badge-primary {
+            background-color: #ebf8ff;
+            color: #3182ce;
+            border: 1px solid #90cdf4;
+        }
+        
+        .badge-success {
+            background-color: #f0fff4;
+            color: #38a169;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .badge-warning {
+            background-color: #fffaf0;
+            color: #dd6b20;
+            border: 1px solid #fbd38d;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+<!-- Top Navigation -->
+<nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center">
+                <a href="index.html" class="text-xl font-bold text-blue-800 tracking-tight">Silica Link Portal</a>
+                <div class="hidden md:flex ml-10 space-x-8">
+                    <a href="commission_top.html" class="text-gray-700 hover:text-blue-600 font-medium">報酬管理</a>
+                    <a href="rewards_rule.html" class="text-blue-600 border-b-2 border-blue-600 pb-1 font-medium">報酬ルール</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-sm text-gray-600">test_agency@yopmail.com</div>
+                <button class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600">ログアウト</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-3">
+            <span class="material-symbols-outlined text-blue-600">monetization_on</span>
+            報酬ルールと計算方法
+        </h1>
+        <p class="text-gray-600 mt-2">パートナー報酬の計算ルール、支払条件、および適用されるレートについて</p>
+    </div>
+
+    <!-- Main Rule Card -->
+    <div class="rule-card mb-8">
+        <div class="rule-header">
+            <h2 class="text-xl font-bold flex items-center gap-3">
+                <span class="material-symbols-outlined">verified</span>
+                基本報酬ルール
+            </h2>
+            <p class="text-blue-100 mt-2">適用期間: 2026年1月1日 〜 2026年12月31日</p>
+        </div>
+        
+        <!-- 1. Commission Rate Section -->
+        <div class="rule-section">
+            <div class="rule-title">
+                <span class="material-symbols-outlined text-blue-500">percent</span>
+                1. 報酬レート体系
+            </div>
+            <div class="rule-content">
+                <p class="mb-4">パートナー種別に応じて以下の報酬レートが適用されます。</p>
+                
+                <table class="rule-table">
+                    <thead>
+                        <tr>
+                            <th>パートナー種別</th>
+                            <th>基本報酬率</th>
+                            <th>適用条件</th>
+                            <th>最低保証額</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>アフィリエイトパートナー</strong></td>
+                            <td><span class="font-bold text-green-600">5%</span></td>
+                            <td>月間売上 ¥500,000以上</td>
+                            <td>¥10,000/月</td>
+                        </tr>
+                        <tr>
+                            <td><strong>リセラーパートナー</strong></td>
+                            <td><span class="font-bold text-green-600">8%</span></td>
+                            <td>月間売上 ¥1,000,000以上</td>
+                            <td>¥25,000/月</td>
+                        </tr>
+                        <tr>
+                            <td><strong>エージェンシーパートナー</strong></td>
+                            <td><span class="font-bold text-green-600">12%</span></td>
+                            <td>月間売上 ¥2,000,000以上</td>
+                            <td>¥50,000/月</td>
+                        </tr>
+                        <tr>
+                            <td><strong>投資家パートナー</strong></td>
+                            <td><span class="font-bold text-green-600">15%</span></td>
+                            <td>投資額 ¥5,000,000以上</td>
+                            <td>¥100,000/月</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="note-box">
+                    <span class="material-symbols-outlined text-blue-500 mr-2">info</span>
+                    <strong>注意:</strong> 報酬率は純利益（売上 - 返品 - 手数料）に対して適用されます。最低保証額は条件を満たした場合に適用されます。
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2. Payment Schedule -->
+        <div class="rule-section">
+            <div class="rule-title">
+                <span class="material-symbols-outlined text-green-500">calendar_month</span>
+                2. 支払いスケジュール
+            </div>
+            <div class="rule-content">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="rule-subtitle">月次支払い</div>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>締め日: 毎月25日</li>
+                            <li>計算期間: 前月26日〜当月25日</li>
+                            <li>支払日: 翌月10日</li>
+                            <li>支払方法: 銀行振込</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="rule-subtitle">特別支払い</div>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>ボーナス支払: 四半期ごと</li>
+                            <li>早期支払い: 要請により対応</li>
+                            <li>緊急支払い: 審査により対応</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-amber-500">warning</span>
+                        <div>
+                            <div class="font-bold text-amber-800 mb-2">重要: 支払い条件</div>
+                            <ul class="text-sm space-y-1">
+                                <li>• 請求書の発行は支払いの前提条件です</li>
+                                <li>• 最低支払額: ¥5,000（未満の場合は繰越）</li>
+                                <li>• 振込手数料は弊社負担（国内振込のみ）</li>
+                                <li>• 海外振込の場合は手数料実費</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 3. Calculation Method -->
+        <div class="rule-section">
+            <div class="rule-title">
+                <span class="material-symbols-outlined text-purple-500">calculate</span>
+                3. 計算方法と例
+            </div>
+            <div class="rule-content">
+                <div class="rule-subtitle">報酬計算式</div>
+                <div class="bg-gray-50 p-4 rounded-lg font-mono text-sm mb-4">
+                    報酬額 = (売上金額 - 返品金額 - 手数料) × 報酬率 + ボーナス - 控除額
+                </div>
+                
+                <div class="rule-subtitle">計算例</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <div class="font-bold text-blue-800 mb-2">例1: アフィリエイトパートナー</div>
+                        <ul class="text-sm space-y-1">
+                            <li>• 売上: ¥1,000,000</li>
+                            <li>• 返品: ¥50,000</li>
+                            <li>• 手数料: ¥20,000</li>
+                            <li>• 報酬率: 5%</li>
+                            <li>• <strong>報酬額: ¥46,500</strong></li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <div class="font-bold text-green-800 mb-2">例2: エージェンシーパートナー</div>
+                        <ul class="text-sm space-y-1">
+                            <li>• 売上: ¥3,000,000</li>
+                            <li>• 返品: ¥100,000</li>
+                            <li>• 手数料: ¥60,000</li>
+                            <li>• 報酬率: 12%</li>
+                            <li>• <strong>報酬額: ¥340,800</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 4. Special Rules -->
+        <div class="rule-section">
+            <div class="rule-title">
+                <span class="material-symbols-outlined text-red-500">star</span>
+                4. 特別ルールとボーナス
+            </div>
+            <div class="rule-content">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="text-center p-4 border border-gray-200 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600 mb-2">+2%</div>
+                        <div class="font-bold text-gray-700">新規顧客獲得</div>
+                        <div class="text-xs text-gray-600">初回購入顧客に対して</div>
+                    </div>
+                    <div class="text-center p-4 border border-gray-200 rounded-lg">
+                        <div class="text-2xl font-bold text-green-600 mb-2">+3%</div>
+                        <div class="font-bold text-gray-700">大口取引</div>
+                        <div class="text-xs text-gray-600">¥500,000以上の単発取引</div>
+                    </div>
+                    <div class="text-center p-4 border border-gray-200 rounded-lg">
+                        <div class="text-2xl font-bold text-purple-600 mb-2">+5%</div>
+                        <div class="font-bold text-gray-700">四半期目標達成</div>
+                        <div class="text-xs text-gray-600">売上目標120%以上</div>
+                    </div>
+                </div>
+                
+                <div class="rule-subtitle">適用条件</div>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li>特別ボーナスは基本報酬率に追加で適用</li>
+                    <li>複数のボーナス条件を満たす場合は累積適用</li>
+                    <li>ボーナス上限: 基本報酬の50%まで</li>
+                    <li>適用には事前申請が必要</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 5. Status and Process -->
+        <div class="rule-section">
+            <div class="rule-title">
+                <span class="material-symbols-outlined text-gray-500">hourglass_top</span>
+                5. ステータスと処理フロー
+            </div>
+            <div class="rule-content">
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span class="badge badge-primary">一時計上</span>
+                    <span class="badge badge-warning">計算中</span>
+                    <span class="badge badge-success">確定済</span>
+                    <span class="badge">未処理</span>
+                    <span class="badge badge-success">支払済</span>
+                </div>
+                
+                <div class="rule-subtitle">処理フロー</div>
+                <ol class="list-decimal pl-5 space-y-3">
+                    <li><strong>一時計上</strong>: 注文確定時に自動計上</li>
+                    <li><strong>計算中</strong>: 月末に報酬計算を実行</li>
+                    <li><strong>確定済</strong>: 計算完了、支払待ち</li>
+                    <li><strong>支払済</strong>: 振込完了、取引終了</li>
+                </ol>
+                
+                <div class="note-box mt-4">
+                    <span class="material-symbols-outlined text-blue-500 mr-2">schedule</span>
+                    <strong>処理時間:</strong> 通常、確定から支払まで5〜7営業日かかります。月末締めの場合は翌月10日が支払日となります。
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Additional Information -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="rule-card">
+            <div class="rule-section">
+                <div class="rule-title">
+                    <span class="material-symbols-outlined text-blue-500">help</span>
+                    よくある質問
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <div class="font-bold text-gray-700 mb-1">Q: 報酬計算の対象期間は？</div>
+                        <div class="text-sm text-gray-600">A: 毎月26日から翌月25日までが1計算期間です。</div>
+                    </div>
+                    <div>
+                        <div class="font-bold text-gray-700 mb-1">Q: 返品があった場合の処理は？</div>
+                        <div class="text-sm text-gray-600">A: 返品分は当月の報酬から差し引かれます。</div>
+                    </div>
+                    <div>
+                        <div class="font-bold text-gray-700 mb-1">Q: 報酬明細はどこで確認できますか？</div>
+                        <div class="text-sm text-gray-600">A: 「報酬管理」ページから詳細を確認できます。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="rule-card">
+            <div class="rule-section">
+                <div class="rule-title">
+                    <span class="material-symbols-outlined text-green-500">contact_support</span>
+                    お問い合わせ
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-gray-500">mail</span>
+                        <div>
+                            <div class="font-bold text-gray-700">メール</div>
+                            <div class="text-sm text-gray-600">commission@silicalink.jp</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-gray-500">phone</span>
+                        <div>
+                            <div class="font-bold text-gray-700">電話</div>
+                            <div class="text-sm text-gray-600">03-1234-5678 (平日 10:00-18:00)</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-gray-500">description</span>
+                        <div>
+                            <div class="font-bold text-gray-700">関連書類</div>
+                            <div class="text-sm text-gray-600">パートナー契約書、報酬規約</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Note -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <div class="flex items-start gap-4">
+            <span class="material-symbols-outlined text-blue-600 text-3xl">gavel</span>
+            <div>
+                <div class="font-bold text-blue-800 text-lg mb-2">免責事項</div>
+                <div class="text-sm text-blue-700">
+                    本報酬ルールは予告なく変更される場合があります。最新のルールは常に本ページで確認してください。
+                    具体的な報酬計算については、個別の取引内容や契約条件によって異なる場合があります。
+                    疑問点がある場合は、必ずお問い合わせください。
+                </div>
+                <div class="text-xs text-blue-600 mt-4">
+                    最終更新: 2026年3月29日 | バージョン: 4.2
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-white border-t border-gray-200 py-6 mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center text-gray-600 text-sm">
+            <p>&copy; 2026 Silica Link Portal. All rights reserved.</p>
+            <p class="mt-2">報酬管理システム | バージョン 2.1.4</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Simple logout functionality
+    document.querySelector('button').addEventListener('click', function() {
+        if (confirm('ログアウトしますか？')) {
+            window.location.href = 'agency_login.html';
+        }
+    });
+</script>
+
+</body>
+</html>

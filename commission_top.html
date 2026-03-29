@@ -185,11 +185,7 @@
                         <span class="material-symbols-outlined text-on-surface-variant text-base">chevron_right</span>
                     </a>
                 </div>
-                <div class="mt-6 pt-6 border-t border-surface-container">
-                    <a href="commission_history_list.html" class="block w-full text-center py-2 text-xs font-bold text-primary hover:underline border border-primary/20 rounded-lg transition-colors">
-                        すべての取引を見る
-                    </a>
-                </div>
+
             </section>
 
             <!-- Status Info Card -->
@@ -215,13 +211,14 @@
                         <span class="material-symbols-outlined text-primary">pie_chart</span>
                         今月の報酬サマリ（パートナー別）
                     </h3>
-                    <button class="text-xs text-primary font-bold hover:underline">詳細を表示</button>
+                    <button class="text-xs text-primary font-bold hover:underline border-none bg-transparent">すべて表示</button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
                             <tr class="bg-surface-container/30 text-left text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
                                 <th class="px-6 py-3">パートナー名</th>
+                                <th class="px-6 py-3">報酬取引ID</th>
                                 <th class="px-6 py-3">報酬合計</th>
                                 <th class="px-6 py-3">件数</th>
                                 <th class="px-6 py-3">ステータス</th>
@@ -229,19 +226,22 @@
                         </thead>
                         <tbody class="divide-y divide-surface-container">
                             <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4 font-medium">株式会社 Aパートナー</td>
+                                <td class="px-6 py-4 font-medium">株式会社TORI</td>
+                                <td class="px-6 py-4 font-bold text-primary">9912</td>
                                 <td class="px-6 py-4">¥450,000</td>
                                 <td class="px-6 py-4">120</td>
                                 <td class="px-6 py-4"><span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg text-[10px] font-bold">確定</span></td>
                             </tr>
                             <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4 font-medium">代理店 Bシステム</td>
+                                <td class="px-6 py-4 font-medium">株式会社TOTA</td>
+                                <td class="px-6 py-4 font-bold text-primary">9913</td>
                                 <td class="px-6 py-4">¥285,000</td>
                                 <td class="px-6 py-4">85</td>
                                 <td class="px-6 py-4"><span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-[10px] font-bold">計算中</span></td>
                             </tr>
                             <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4 font-medium">パートナー Cロジスティクス</td>
+                                <td class="px-6 py-4 font-medium">株式会社TOTO</td>
+                                <td class="px-6 py-4 font-bold text-primary">9914</td>
                                 <td class="px-6 py-4">¥125,000</td>
                                 <td class="px-6 py-4">42</td>
                                 <td class="px-6 py-4"><span class="px-2 py-1 bg-slate-100 text-slate-700 rounded-lg text-[10px] font-bold">未処理</span></td>
@@ -259,7 +259,7 @@
                         取引明細（プラス/マイナス）
                     </h3>
                     <div class="flex gap-2">
-                        <button class="px-3 py-1 bg-primary text-white text-[10px] font-bold rounded-lg shadow-sm hover:shadow-md transition-all">CSV出力</button>
+                        <button class="text-xs text-primary font-bold hover:underline border-none bg-transparent">すべて表示</button>
                     </div>
                 </div>
                 <div class="overflow-x-auto">
@@ -273,18 +273,18 @@
                         </thead>
                         <tbody class="divide-y divide-surface-container">
                             <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4 font-bold text-primary">ORD-2026-0335</td>
-                                <td class="px-6 py-4 font-medium">株式会社 Aパートナー</td>
-                                <td class="px-6 py-4 text-primary font-bold">¥5,200</td>
+                                <td class="px-6 py-4 font-bold"><a href="order_detail_303_return_finish.html" class="text-primary hover:underline">303</a></td>
+                                <td class="px-6 py-4 font-medium">株式会社TORI</td>
+                                <td class="px-6 py-4 text-error font-bold">- ¥6,250</td>
                             </tr>
                             <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4 font-bold text-primary">ORD-2026-0338</td>
-                                <td class="px-6 py-4 font-medium">代理店 Bシステム</td>
+                                <td class="px-6 py-4 font-bold"><a href="order_detail_303_return_finish.html" class="text-primary hover:underline">303</a></td>
+                                <td class="px-6 py-4 font-medium">株式会社TORI</td>
                                 <td class="px-6 py-4 text-primary font-bold">¥12,000</td>
                             </tr>
                             <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4 font-bold text-primary">ORD-2026-0340</td>
-                                <td class="px-6 py-4 font-medium">パートナー Cロジスティクス</td>
+                                <td class="px-6 py-4 font-bold"><a href="order_detail_309_return_finish.html" class="text-primary hover:underline">309</a></td>
+                                <td class="px-6 py-4 font-medium">株式会社TOTA</td>
                                 <td class="px-6 py-4 text-primary font-bold">¥8,500</td>
                             </tr>
                         </tbody>
