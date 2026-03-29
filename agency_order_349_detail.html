@@ -424,7 +424,7 @@
                 <div class="summary-item">
                     <div class="summary-label">支払ステータス</div>
                     <div>
-                        <span class="status-badge status-unpaid">未払い</span>
+                        <span class="status-badge status-unpaid">支払待ち</span>
                     </div>
                 </div>
             </div>
@@ -457,21 +457,6 @@
             </div>
         </div>
 
-        <!-- Delivery Address Card -->
-        <div class="card">
-            <div class="card-header">
-                <span class="material-symbols-outlined">location_on</span>
-                配送先住所
-            </div>
-            <div class="address-content">
-                <div class="address-line">test_agency@yopmail.com</div>
-                <div class="address-line">〒130-0021</div>
-                <div class="address-line">東京都墨田区緑1-23-45</div>
-                <div class="address-line">サンプルビル 3F</div>
-                <div class="address-line">担当: TOAN DO HUU (TEL: 07035197113)</div>
-            </div>
-        </div>
-
         <!-- Order Items Card -->
         <div class="card">
             <div class="card-header">
@@ -484,7 +469,6 @@
                         <th>製品名</th>
                         <th>注文数</th>
                         <th>配送済</th>
-                        <th>ステータス</th>
                         <th>配送予定日</th>
                         <th>配送完了日</th>
                     </tr>
@@ -494,7 +478,6 @@
                         <td>米ぬかの恵み 300mL<br><small>SKU: KM300-V01</small></td>
                         <td>2</td>
                         <td>0</td>
-                        <td><span class="status-badge status-awaiting">入荷待ち</span></td>
                         <td>-</td>
                         <td>-</td>
                     </tr>
@@ -502,28 +485,59 @@
                         <td>Dr's Power Rice Silica PREMIUM<br><small>SKU: abc</small></td>
                         <td>1</td>
                         <td>0</td>
-                        <td><span class="status-badge status-awaiting">入荷待ち</span></td>
                         <td>-</td>
                         <td>-</td>
                     </tr>
                 </tbody>
             </table>
-            <button class="confirm-btn">
-                <span class="material-symbols-outlined">check_circle</span>
-                配送完了を確定
-            </button>
         </div>
 
-        <!-- Notes Card -->
+        <!-- Delivery Address Card -->
         <div class="card">
             <div class="card-header">
-                <span class="material-symbols-outlined">edit</span>
-                備考
+                <span class="material-symbols-outlined">location_on</span>
+                配送先情報
             </div>
-            <div class="notes-content">
-                ヤマト運輸希望
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                <div class="summary-item">
+                    <div class="summary-label">会社名</div>
+                    <div class="summary-value" style="font-weight: bold;">株式会社東京グリーン</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">担当者名</div>
+                    <div class="summary-value" style="font-weight: bold;">山田 太郎</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">メールアドレス</div>
+                    <div class="summary-value">test_agency@yopmail.com</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">電話番号</div>
+                    <div class="summary-value">03-1234-5678</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">都道府県</div>
+                    <div class="summary-value">東京都</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">郵便番号</div>
+                    <div class="summary-value">150-0001</div>
+                </div>
+                <div class="summary-item" style="grid-column: span 2;">
+                    <div class="summary-label">住所</div>
+                    <div class="summary-value">東京都渋谷区代々木1-2-3</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">建物名・部署番号</div>
+                    <div class="summary-value">代々木ビル 5F</div>
+                </div>
+                <div class="summary-item" style="grid-column: span 3; margin-top: 10px;">
+                    <div class="summary-label">配送に関する特記事項</div>
+                    <div class="summary-value" style="color: #888; font-style: italic;">ヤマト運輸希望</div>
+                </div>
             </div>
         </div>
+
 
 
     </div>
@@ -552,13 +566,6 @@
     <script>
 
 
-        // Confirm delivery button
-        document.querySelector('.confirm-btn').addEventListener('click', function() {
-            if (confirm('配送完了を確定しますか？この操作は取り消せません。')) {
-                alert('配送完了を確定しました');
-                // In real implementation: API call to confirm delivery
-            }
-        });
 
         // Logout button
         document.querySelector('.logout-btn').addEventListener('click', function() {

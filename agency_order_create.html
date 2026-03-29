@@ -629,16 +629,12 @@
         <div class="page-header">
             <h1 class="page-title">新規注文</h1>
             <div class="action-buttons">
-                <div style="display: flex; align-items: center; gap: 20px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span class="material-symbols-outlined" style="color: #f39c12; font-size: 20px;">schedule</span>
-                        <span style="font-weight: 800; color: #f39c12; font-size: 16px;">確認待ち</span>
-                    </div>
-                    <button class="btn btn-outline-blue" id="backToListBtn" onclick="window.location.href='agency_orderlist.html'">
-                        <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 18px;">arrow_back</span>
-                        一覧に戻る
-                    </button>
-                </div>
+                <button class="btn btn-white" id="cancelBtn">キャンセル</button>
+                <button class="btn btn-outline-blue" id="draftBtn">
+                    <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 18px;">save_as</span>
+                    下書き
+                </button>
+                <button class="btn btn-blue" id="confirmBtn">注文を確定</button>
             </div>
         </div>
 
