@@ -491,7 +491,10 @@
 
                 statusEl.innerHTML = '完了'; statusEl.style.color = 'var(--kintone-success)';
                 const tidParam = new URLSearchParams(window.location.search).get('id');
-                const nextLink = tidParam === '303' ? 'order_detail_return.html?record=303' : 'order_detail_delivered.html';
+                let nextLink = 'order_detail_delivered.html';
+                if (tidParam === '302') nextLink = 'order_detail_shopify_302_outfinish.html';
+                else if (tidParam === '309') nextLink = 'order_detail_shopify_309_outfinish.html';
+                else if (tidParam === '303') nextLink = 'order_detail_return.html?record=303';
                 nextActionArea.className = 'next-action-card accent-success';
                 nextActionArea.innerHTML = `
                 <div class="next-action-content">
@@ -689,7 +692,10 @@
             const nextActionArea = document.getElementById('next-action-area');
             nextActionArea.className = 'next-action-card accent-success';
             const tidParam = new URLSearchParams(window.location.search).get('id');
-            const nextLink = tidParam === '303' ? 'order_detail_return.html?record=303' : 'order_detail_delivered.html';
+            let nextLink = 'order_detail_delivered.html';
+            if (tidParam === '302') nextLink = 'order_detail_shopify_302_outfinish.html';
+            else if (tidParam === '309') nextLink = 'order_detail_shopify_309_outfinish.html';
+            else if (tidParam === '303') nextLink = 'order_detail_return.html?record=303';
             nextActionArea.innerHTML = `
             <div class="next-action-content">
                 <span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span>

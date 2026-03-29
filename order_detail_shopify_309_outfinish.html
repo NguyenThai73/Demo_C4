@@ -147,6 +147,10 @@
             </div>
             <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
                 <div class="field-item">
+                    <div class="field-label">注文ID</div>
+                    <div class="field-value" style="font-weight: bold;">309</div>
+                </div>
+                <div class="field-item">
                     <div class="field-label">Shopify Order ID</div>
                     <div class="field-value" style="font-weight: bold;">#1004928309</div>
                 </div>
@@ -467,14 +471,14 @@
             document.getElementById('no-return-history').style.display = 'none';
             document.getElementById('return-history-table').style.display = 'table';
 
-            const taskId = 2483;
+            const taskId = 2484;
             const now = new Date().toISOString().split('T')[0];
             const summary = [];
             if (q50 > 0) summary.push(`Rice Silica 50mL x ${q50}`);
             if (q300 > 0) summary.push(`Rice Silica 300mL x ${q300}`);
 
             const newRow = `<tr>
-                <td style="font-weight:bold;"><a href="task_return_2483_detail.html" style="color:var(--kintone-blue); text-decoration:none;">${taskId}</a></td>
+                <td style="font-weight:bold;"><a href="task_return_2484_detail.html" style="color:var(--kintone-blue); text-decoration:none;">${taskId}</a></td>
                 <td class="col-mid"><span class="badge-status" style="background-color: #fffbe6; color: #bf4b00; border: 1px solid #ffe58f; padding: 2px 12px; border-radius: 20px; font-weight: bold;">待機中</span></td>
                 <td>${now}</td>
                 <td>${summary.join(', ')}</td>
@@ -498,7 +502,7 @@
                 </div>
                 <div style="display: flex; gap: 12px;">
                     <button class="btn-blue" onclick="showReturnInput()" style="padding: 10px 24px; border-radius: 12px; font-weight: 800; border: none; background-color: var(--kintone-blue); color: white; cursor: pointer; font-size: 14px;">追加の返品を登録</button>
-                    <button class="btn-reject" onclick="location.href='task_return_2483_detail.html'" style="padding: 10px 30px; font-weight: 800; border-radius: 12px; background: white; border: 1px solid #ddd; color: #666; cursor: pointer; font-size: 14px; box-shadow: none;">入荷タスク確認へ進む</button>
+                    <button class="btn-reject" onclick="location.href='task_return_2484_detail.html'" style="padding: 10px 30px; font-weight: 800; border-radius: 12px; background: white; border: 1px solid #ddd; color: #666; cursor: pointer; font-size: 14px; box-shadow: none;">入荷タスク確認へ進む</button>
                 </div>
             `;
 

@@ -238,30 +238,22 @@
 
 <script>
     const params = new URLSearchParams(window.location.search);
-    const taskId = params.get('id') || '2482';
+    const taskId = params.get('id') || '2484';
     const type = params.get('type') || 'return';
     
     // Default Items
-    let ITEMS = [{ sku: 'CER-BASE-01', name: 'セラミック基板用素材 PREMIUM', target: 3, unit: '箱' }];
+    let ITEMS = [{ sku: 'RC50-V01', name: 'Rice Silica 50mL', target: 500, unit: '個' }];
     
     // Specialized Task Data
     if (type === 'return') {
-        if (taskId === '303' || taskId === '2482') {
-            ITEMS = [{ sku: 'RC50-V01', name: 'Rice Silica 50mL', target: 250, unit: '個' }];
+        if (taskId === '2484') {
+            ITEMS = [
+                { sku: 'RC50-V01', name: 'Rice Silica 50mL', target: 500, unit: '個' },
+                { sku: 'RC300-V01', name: 'Rice Silica 300mL', target: 200, unit: '個' }
+            ];
         } else {
-            ITEMS = [{ sku: 'RC500-V01', name: 'Rice Silica 500mL', target: 1, unit: '個' }];
+            ITEMS = [{ sku: 'RC50-V01', name: 'Rice Silica 50mL', target: 250, unit: '個' }];
         }
-    } else if (taskId === '303') {
-        ITEMS = [
-            { sku: 'RC50-V01', name: 'Rice Silica 50mL', target: 500, unit: '個' },
-            { sku: 'RC300-V01', name: 'Rice Silica 300mL', target: 200, unit: '個' }
-        ];
-    } else if (taskId === '501') {
-        ITEMS = [
-            { sku: 'CER-BASE-01', name: 'セラミック基板用素材 PREMIUM', target: 3, unit: '箱' },
-            { sku: 'GLS-SUB-05', name: '高透過ガラス基板 0.5mm', target: 5, unit: '枚' },
-            { sku: 'CHM-COAT-X', name: '特殊コーティング剤 Type-X', target: 10, unit: 'L' }
-        ];
     }
 
     let currentIdx = 0;
@@ -407,7 +399,7 @@
     function closeModal() { document.getElementById('finish-modal').style.display = 'none'; }
     function goDetail() { 
         if (type === 'return') {
-            location.href = 'order_detail_303_return_finish.html';
+            location.href = 'order_detail_shopify_309_return_finish.html';
         } else {
             location.href = `task_detail.html?id=${taskId}&status=finished&type=${type}`;
         }
