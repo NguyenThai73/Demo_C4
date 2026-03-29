@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支払待ちの報酬 | Silica Link</title>
+    <style>
+        :root {
+            --kintone-blue: #3498db;
+            --kintone-header-bg: #fff;
+            --kintone-body-bg: #f5f6f7;
+            --kintone-border: #e3e7e8;
+            --kintone-hover: #f0f7ff;
+            --kintone-success: #2ecc71;
+            --kintone-warning: #f39c12;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
+            background-color: var(--kintone-body-bg);
+            color: #333;
+            font-size: 14px;
+        }
+
+        /* Top Header */
+        header {
+            background-color: #2c3e50;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            color: white;
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .logo { font-weight: bold; color: white; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+        .k-icon { background: white; color: #2c3e50; padding: 0 4px; border-radius: 2px; }
+
+        .header-icons { display: flex; gap: 20px; color: #bdc3c7; font-size: 18px; margin-left: 10px; }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        .search-container { position: relative; }
+        .search-input {
+            padding: 6px 30px 6px 10px;
+            border: none;
+            border-radius: 2px;
+            background-color: white;
+            width: 250px;
+            font-size: 12px;
+        }
+        .search-icon { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #95a5a6; }
+
+        .user-profile { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; }
+        .avatar { width: 32px; height: 32px; border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Secondary Header */
+        .sub-header {
+            background-color: #fff;
+            height: 36px;
+            border-bottom: 1px solid var(--kintone-border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+        }
+
+        .sub-header span { font-size: 11px; color: #95a5a6; cursor: pointer; }
+        .sub-header span:hover { color: var(--kintone-blue); }
+
+        /* App Title Bar */
+        .app-title-bar {
+            background-color: #fff;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--kintone-border);
+        }
+        .app-icon {
+            width: 32px; height: 32px; background-color: #8e44ad; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;
+            box-shadow: 0 2px 4px rgba(142,68,173,0.3);
+        }
+        .app-name { font-size: 18px; font-weight: bold; }
+
+        /* Main Content */
+        .main-container { padding: 16px; }
+
+        .breadcrumb { font-size: 11px; color: #95a5a6; margin-bottom: 15px; display: flex; align-items: center; gap: 6px; }
+        .breadcrumb a { color: #95a5a6; text-decoration: none; }
+        .breadcrumb a:hover { color: var(--kintone-blue); text-decoration: underline; }
+        .breadcrumb i { font-size: 10px; }
+
+        /* Control Bar */
+        .control-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .view-dropdown {
+            background: white; border: 1px solid var(--kintone-blue); color: var(--kintone-blue);
+            padding: 6px 14px; border-radius: 2px; font-size: 13px; display: inline-flex; align-items: center; gap: 10px; cursor: pointer;
+        }
+        .view-dropdown i { font-size: 10px; }
+        .view-dropdown.active { background: var(--kintone-blue); color: white; border-color: var(--kintone-blue); border-top-right-radius: 0; border-bottom-right-radius: 0; }
+
+        .graph-btn {
+            background-color: var(--kintone-blue); color: white; border: 1px solid var(--kintone-blue);
+            padding: 6px 12px; border-radius: 2px; border-top-left-radius: 0; border-bottom-left-radius: 0;
+            display: flex; align-items: center; cursor: pointer; border-left: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .icon-btn-bordered {
+            border: 1px solid #ddd; background-color: #fff; padding: 6px 12px; border-radius: 2px; cursor: pointer; color: #7f8c8d;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+
+        .plus-btn {
+            background-color: #fff; border: 1px solid #ddd; padding: 2px 10px; border-radius: 2px; font-size: 20px; color: #bdc3c7; cursor: pointer;
+        }
+        .plus-btn:hover { color: var(--kintone-blue); border-color: var(--kintone-blue); }
+
+        /* Filter badge */
+        .filter-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #f3e8fd; border: 1px solid #8e44ad; color: #6c3483;
+            padding: 4px 10px; border-radius: 2px; font-size: 12px; font-weight: 600;
+        }
+        .filter-badge i { font-size: 11px; }
+
+        /* List Table View */
+        .list-card {
+            background-color: white; border: 1px solid var(--kintone-border); border-radius: 2px; overflow-x: auto;
+        }
+
+        .k-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 1100px; }
+        .k-table th {
+            background-color: #f7f9fa; border: 1px solid #e3e7e8; padding: 10px 8px; text-align: center; font-weight: bold; color: #444;
+            position: sticky; top: 0;
+        }
+        .k-table td { border: 1px solid #e3e7e8; padding: 10px 8px; background-color: #fff; vertical-align: middle; }
+        .k-table tr:hover td { background-color: var(--kintone-hover); }
+
+        .link-text { color: var(--kintone-blue); text-decoration: none; font-weight: 500; }
+        .link-text:hover { text-decoration: underline; }
+
+        .status-badge {
+            display: inline-block; padding: 2px 10px; border-radius: 2px; font-size: 11px; font-weight: bold; text-align: center; min-width: 70px;
+        }
+        .status-waiting { background-color: #fff8e1; color: #f39c12; border: none; border-radius: 100px; padding: 2px 12px; }
+        .status-confirmed { background-color: #e8f8f0; color: #2ecc71; border: 1px solid #2ecc71; }
+        .status-paid { background-color: #eaf0fb; color: #3498db; border: 1px solid #3498db; }
+
+        .view-icon { color: var(--kintone-blue); cursor: pointer; font-size: 16px; opacity: 0.7; }
+        .view-icon:hover { opacity: 1; }
+
+        /* Alignment Helpers */
+        .text-right { text-align: right !important; }
+        .text-center { text-align: center !important; }
+
+    </style>
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <div class="logo"><a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;"><span class="k-icon">k</span> kintone</a></div>
+        <div class="header-icons">
+            <i class="fas fa-bars"></i> <i class="fas fa-home"></i> <i class="fas fa-bell"></i> <i class="fas fa-star"></i>
+        </div>
+    </div>
+    <div class="header-right">
+        <i class="fas fa-cog" style="color:#bdc3c7; margin-right: 15px;"></i>
+        <i class="fas fa-question-circle" style="color:#bdc3c7; margin-right: 15px;"></i>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="アプリ内検索">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        <div class="user-profile">
+            <div class="avatar"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Admin"></div>
+            <span>Administrator <i class="fas fa-caret-down" style="font-size: 10px; margin-left: 5px;"></i></span>
+        </div>
+    </div>
+</header>
+
+<div class="sub-header">
+    <i class="fas fa-home" style="font-size: 10px; color:#bdc3c7; margin: 0 10px;"></i>
+    <span>アプリ: 支払管理</span>
+</div>
+
+<div class="app-title-bar">
+    <div class="app-icon"><i class="fas fa-money-bill-wave"></i></div>
+    <div class="app-name">支払管理</div>
+</div>
+
+<div class="main-container">
+    <div class="breadcrumb">
+        <a href="index.html">ホーム</a>
+        <i class="fas fa-chevron-right"></i>
+        <a href="payment_request_list.html">報酬管理</a>
+        <i class="fas fa-chevron-right"></i>
+        <span>支払待ちの報酬 (承認前)</span>
+    </div>
+
+    <div class="control-bar">
+        <div style="display: flex;">
+            <div class="view-dropdown active">承認前の報酬 <i class="fas fa-caret-down"></i></div>
+            <div class="graph-btn"><i class="fas fa-project-diagram"></i> <i class="fas fa-caret-down" style="margin-left: 8px;"></i></div>
+        </div>
+        <button class="icon-btn-bordered"><i class="fas fa-filter"></i></button>
+        <button class="icon-btn-bordered"><i class="fas fa-chart-bar"></i></button>
+        <span class="filter-badge"><i class="fas fa-clock"></i> ステータス: 承認待ち</span>
+
+        <div style="flex-grow: 1;"></div>
+
+        <button class="plus-btn">+</button>
+        <button class="icon-btn-bordered"><i class="fas fa-cog"></i> <i class="fas fa-caret-down" style="margin-left: 5px;"></i></button>
+        <button class="icon-btn-bordered"><i class="fas fa-ellipsis-h"></i></button>
+    </div>
+
+    <div class="list-card">
+        <table class="k-table">
+            <thead>
+                <tr>
+                    <th style="width: 60px;">支払ID</th>
+                    <th style="width: 100px;">支払種別</th>
+                    <th style="width: 100px;">関連報酬ID</th>
+                    <th style="width: 120px;">関連PO番号</th>
+                    <th style="width: 80px;">パートナーID</th>
+                    <th class="text-right" style="width: 120px;">支払金額</th>
+                    <th class="text-center" style="width: 60px;">通貨</th>
+                    <th class="text-center" style="width: 100px;">支払ステータス</th>
+                    <th style="width: 180px;">振込先</th>
+                    <th class="text-center" style="width: 110px;">支払予定日</th>
+                    <th class="text-center" style="width: 100px;">承認者</th>
+                    <th style="width: 150px;">最終更新日</th>
+                    <th style="width: 40px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="payment_request_96_detail.html" class="link-text">96</a></td>
+                    <td>配当支払</td>
+                    <td class="text-center"><a href="commission_history_9912_detail_monthly.html" class="link-text">1001</a></td>
+                    <td class="text-center">―</td>
+                    <td class="text-center"><a href="partner_list.html" class="link-text">9912</a></td>
+                    <td class="text-right" style="font-weight: bold;">¥ 29,250</td>
+                    <td class="text-center">JPY</td>
+                    <td class="text-center"><span class="status-badge status-waiting">承認待ち</span></td>
+                    <td>株式会社TORI</td>
+                    <td class="text-center">2026-04-15</td>
+                    <td class="text-center">―</td>
+                    <td>2026-03-29 10:30</td>
+                    <td class="text-center"><i class="far fa-eye view-icon" onclick="location.href='payment_request_96_detail.html'"></i></td>
+                </tr>
+                <tr>
+                    <td><a href="payment_request_97_detail.html" class="link-text">97</a></td>
+                    <td>コミッション支払</td>
+                    <td class="text-center"><a href="commission_history_9913_detail_monthly_v2.html" class="link-text">1002</a></td>
+                    <td class="text-center">―</td>
+                    <td class="text-center"><a href="partner_list.html" class="link-text">9913</a></td>
+                    <td class="text-right" style="font-weight: bold;">¥ 35,500</td>
+                    <td class="text-center">JPY</td>
+                    <td class="text-center"><span class="status-badge status-waiting">承認待ち</span></td>
+                    <td>株式会社TOTA</td>
+                    <td class="text-center">2026-04-15</td>
+                    <td class="text-center">―</td>
+                    <td>2026-03-29 11:15</td>
+                    <td class="text-center"><i class="far fa-eye view-icon" onclick="location.href='payment_request_97_detail.html'"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer style="text-align: center; padding: 40px; font-size: 11px; color: #95a5a6;">© 2026 Silica Link Management System</footer>
+
+</body>
+</html>
