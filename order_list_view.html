@@ -386,47 +386,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;"
-                            onclick="location.href='order_detail_delivered.html'">285</td>
-                        <td class="text-center">2026-03-10 14:22</td>
-                        <td><span class="channel-icon channel-shopify"></span> Shopify</td>
-                        <td class="text-center">B2C</td>
-                        <td>佐藤 健太 様</td>
-                        <td class="text-right">12,800</td>
-                        <td class="text-center"><span class="badge-status status-ok"
-                                style="background-color: var(--kintone-status-bg); color: var(--kintone-status-blue);">配送完了</span>
-                        </td>
-                        <td class="text-right">1/1</td>
-                        <td class="text-center">2026-03-12</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;"
-                            onclick="location.href='order_detail_agency_paid.html'">311</td>
-                        <td class="text-center">2026-03-26 15:37</td>
-                        <td><span class="channel-icon channel-agency"></span> Agency</td>
-                        <td class="text-center">B2B</td>
-                        <td>Zenshin 株式会社</td>
-                        <td class="text-right">153,000</td>
-                        <td class="text-center"><span class="badge-status">出荷中</span></td>
-                        <td class="text-right">0/17</td>
-                        <td class="text-center">2026-03-28</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;"
-                            onclick="location.href='order_detail_shopify.html'">309</td>
-                        <td class="text-center">2026-03-26 18:07</td>
-                        <td><span class="channel-icon channel-shopify"></span> Shopify</td>
-                        <td class="text-center">B2C</td>
-                        <td>勇人 渡辺</td>
-                        <td class="text-right">20,000</td>
-                        <td class="text-center"><span class="badge-shipping">出荷中</span></td>
-                        <td class="text-right">50/100</td>
-                        <td class="text-center">2026-03-28</td>
-                        <td></td>
-                    </tr>
+                    <!-- Order 303 (from wait view) -->
                     <tr>
                         <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;"
                             onclick="location.href='order_detail_agency_303.html'">303</td>
@@ -434,23 +394,38 @@
                         <td><span class="channel-icon channel-agency"></span> Agency</td>
                         <td class="text-center">B2B</td>
                         <td>Bean株式会社</td>
-                        <td class="text-right">148,500</td>
+                        <td class="text-right">245,000</td>
                         <td class="text-center"><span class="badge-waiting" style="background-color: #fffbe6; color: #bf4b00; border: 1px solid #ffe58f;">確定待ち</span></td>
-                        <td class="text-right">0/11</td>
-                        <td class="text-center"></td>
+                        <td class="text-right">0/700</td>
+                        <td class="text-center">-</td>
                         <td></td>
                     </tr>
+                    <!-- Order 309 (from progress view) -->
                     <tr>
                         <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;"
-                            onclick="location.href='order_detail_shopify.html'">302</td>
-                        <td class="text-center">2026-03-26 18:36</td>
-                        <td><span class="channel-icon channel-shopify"></span> Shopify</td>
+                            onclick="location.href='order_detail_shopify_309.html'">309</td>
+                        <td class="text-center">2026-03-27 11:30</td>
+                        <td><span class="channel-icon channel-shopify"></span> Shopify（取次店）</td>
                         <td class="text-center">B2C</td>
-                        <td>勇人 渡辺</td>
-                        <td class="text-right">82,500</td>
-                        <td class="text-center"><span class="badge-waiting" style="background-color: #fffbe6; color: #bf4b00; border: 1px solid #ffe58f;">確定待ち</span></td>
-                        <td class="text-right">0/8</td>
-                        <td class="text-center"></td>
+                        <td>山田 太郎</td>
+                        <td class="text-right">18,500</td>
+                        <td class="text-center"><span class="badge-shipping" style="background-color: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff;">出荷中</span></td>
+                        <td class="text-right">0/700</td>
+                        <td class="text-center">-</td>
+                        <td></td>
+                    </tr>
+                    <!-- Order 302 (from progress view) -->
+                    <tr>
+                        <td class="text-center" style="color: #3498db; text-decoration: underline; cursor: pointer;"
+                            onclick="location.href='order_detail_shopify_302.html'">302</td>
+                        <td class="text-center">2026-03-25 10:00</td>
+                        <td><span class="channel-icon channel-shopify"></span> Shopify (メイン）</td>
+                        <td class="text-center">B2C</td>
+                        <td>田中 実</td>
+                        <td class="text-right">45,000</td>
+                        <td class="text-center"><span class="badge-shipping" style="background-color: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff;">出荷中</span></td>
+                        <td class="text-right">0/700</td>
+                        <td class="text-center">-</td>
                         <td></td>
                     </tr>
                 </tbody>
@@ -460,7 +435,7 @@
         <div class="pagination">
             <button class="page-btn" disabled>⏮ 最初</button>
             <button class="page-btn" disabled>◀ 前へ</button>
-            <span>ページ <strong>1 / 1</strong> (全 <strong>4</strong> 件)</span>
+            <span>ページ <strong>1 / 1</strong> (全 <strong>3</strong> 件)</span>
             <button class="page-btn" disabled>次へ ▶</button>
             <button class="page-btn" disabled>最後 ⏭</button>
             <select style="margin-left: 10px; padding: 4px;">
