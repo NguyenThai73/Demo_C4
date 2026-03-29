@@ -567,6 +567,22 @@
             .main-container { padding: 0 20px; }
             .summary-row { gap: 20px; }
         }
+
+        /* Disabled States */
+        .form-input:disabled,
+        .form-textarea:disabled,
+        .quantity-input:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            color: #999;
+            border-color: #ddd;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -1062,15 +1078,50 @@
                 iconColor: '#27ae60',
                 confirmText: '注文を確定する',
                 onConfirm: function() {
+                    // Update the "次の対応" area
+                    const nextActionArea = document.getElementById('next-action-area');
+                    nextActionArea.innerHTML = `
+                        <div style="display: flex; align-items: flex-start; gap: 15px;">
+                            <span class="material-symbols-outlined" style="color: #27ae60; font-size: 24px;">check_circle</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 800; font-size: 14px; color: #333; margin-bottom: 4px;">次の対応: CREDIE側での確認をお待ちください</div>
+                                <div style="font-size: 12px; color: #666; line-height: 1.5;">
+                                    注文を確定しました。注文番号: <strong>ORD-${new Date().getTime()}</strong><br>
+                                    CREDIE側で注文内容を確認し、確認完了後に請求書が発行されます。<br>
+                                    通常、確認には1〜2営業日かかります。
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    nextActionArea.style.backgroundColor = '#f0fff4';
+                    nextActionArea.style.border = '1px solid #27ae6040';
+                    
+                    // Disable form inputs and buttons
+                    document.querySelectorAll('.form-input, .form-textarea, .quantity-input').forEach(input => {
+                        input.disabled = true;
+                        input.style.backgroundColor = '#f5f5f5';
+                        input.style.cursor = 'not-allowed';
+                    });
+                    
+                    document.querySelectorAll('.btn').forEach(btn => {
+                        btn.disabled = true;
+                        btn.style.opacity = '0.5';
+                        btn.style.cursor = 'not-allowed';
+                    });
+                    
+                    // Show success modal
                     openCustomModal({
                         title: '注文確定完了',
-                        description: '注文を確定しました。注文番号: ORD-' + new Date().getTime(),
+                        description: '注文を確定しました。CREDIE側での確認をお待ちください。<br><br>注文番号: <strong>ORD-' + new Date().getTime() + '</strong>',
                         icon: 'fa-check-double',
                         iconColor: '#27ae60',
                         hideCancel: true,
-                        confirmText: '一覧へ戻る',
+                        confirmText: 'OK',
                         onConfirm: function() {
-                            window.location.href = 'agency_order_351_detail_await.html';
+                            // Optional: redirect after a delay
+                            // setTimeout(() => {
+                            //     window.location.href = 'agency_order_351_detail_await.html';
+                            // }, 3000);
                         }
                     });
                 }
