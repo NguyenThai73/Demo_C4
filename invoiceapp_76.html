@@ -115,13 +115,14 @@
             font-size: var(--text-size-sm);
             box-sizing: border-box;
         }
-        /* Table header — warm tint + golden text, matching task_create.html section-op style */
+        /* Table header — grey theme from image */
         .section-op .k-table th {
-            color: #856404;
-            background-color: #fff3cd;
-            border-color: #e8d68a;
-            font-size: 12px;
+            color: #444;
+            background-color: #f5f7f9;
+            border-color: #e5e9eb;
+            font-size: 11px;
             font-weight: bold;
+            padding: 10px 12px;
         }
         #invoice-items-body td { padding: 6px 8px; vertical-align: middle; }
         #invoice-items-body th { padding: 8px 12px; }
@@ -140,8 +141,8 @@
         /* ── Invoice page layout overrides ──────────────────────── */
         /* Override default 5-col summary grid → 4-col for invoice  */
         .summary-grid            { grid-template-columns: repeat(4, 1fr); }
-        /* Override default 3-col field-grid → 2-col for invoice    */
-        .field-grid              { grid-template-columns: repeat(2, 1fr); gap: 16px 30px; }
+        /* Override default 3-col field-grid → 3-col for invoice (consistent with detail style) */
+        .field-grid              { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px 30px; }
         /* Amount colour (purple) */
         #summary-amount          { color: #6a1b9a; }
         /* Secondary summary values: smaller than primary KPI */
@@ -248,9 +249,6 @@
             <button id="next-action-issue-btn" onclick="showConfirmPop()" class="btn-invoice-primary btn-orange">
                 <i class="fas fa-file-invoice" style="margin-right: 2px;"></i>請求書を発行する
             </button>
-            <button onclick="location.href='order_detail_agency_303.html'" style="padding: 10px 24px; border-radius: 12px; border: 1px solid #ccc; background: white; color: #666; font-weight: 800; font-size: 14px; cursor: pointer; transition: all 0.2s;">
-                注文確認へ進む
-            </button>
         </div>
     </div>
 
@@ -269,20 +267,12 @@
                 <div class="field-box-readonly">2026-03-27</div>
             </div>
             <div class="field-item">
-                <div class="field-label">代理店</div>
-                <div class="field-box-readonly">test_agency@yopmail.com</div>
-            </div>
-            <div class="field-item">
                 <div class="field-label">請求金額</div>
                 <div class="field-box-readonly amount">¥ 245,000</div>
             </div>
             <div class="field-item">
                 <div class="field-label">通貨</div>
                 <div class="field-box-readonly">JPY</div>
-            </div>
-            <div class="field-item">
-                <div class="field-label">VA ID</div>
-                <div class="field-box-readonly muted">―</div>
             </div>
             <div class="field-item">
                 <div class="field-label">支払期日</div>
@@ -301,11 +291,32 @@
         </div>
     </div>
 
+    <!-- 取引先情報 -->
+    <div class="section-card section-info">
+        <div class="section-title">
+            <i class="fas fa-handshake"></i>取引先情報
+        </div>
+        <div class="field-grid">
+            <div class="field-item">
+                <div class="field-label">Partner ID</div>
+                <div class="field-box-readonly">AG-3303</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">取引先名</div>
+                <div class="field-box-readonly" style="font-weight: bold;">株式会社サンプル商事</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">担当者名 / 窓口</div>
+                <div class="field-box-readonly">佐藤 健太郎 様</div>
+            </div>
+        </div>
+    </div>
+
     <!-- 請求明細 -->
-    <div class="section-card section-op" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <div class="section-title" style="margin-bottom: 0; color: #856404; border-bottom: none;">
-                <span><i class="fas fa-list" style="margin-right: 10px;"></i></span>請求明細
+    <div class="section-card section-op" style="border: 1px solid #ffedcc; background-color: #fffaf0; border-radius: 12px; padding: 25px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div class="section-title" style="margin-bottom: 0; color: #856404; border-bottom: none; font-weight: 800; font-size: 16px;">
+                <span><i class="fas fa-list-ul" style="margin-right: 12px; font-size: 14px;"></i></span>請求明細
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
                 <button class="quick-add-chip" onclick="addPreset('shipping')"><i class="fas fa-truck" style="margin-right: 4px;"></i>配送料</button>
@@ -316,27 +327,50 @@
         <table class="k-table">
             <thead>
                 <tr>
-                    <th class="col-mid" style="width: 110px;">商品SKU <span style="color: var(--kintone-danger);">*</span></th>
-                    <th style="min-width: 160px;">商品名 <span style="color: var(--kintone-danger);">*</span></th>
-                    <th class="col-num" style="width: 72px;">数量 <span style="color: var(--kintone-danger);">*</span></th>
-                    <th class="col-mid" style="width: 52px;">単位 <span style="color: var(--kintone-danger);">*</span></th>
-                    <th class="col-num" style="width: 106px;">単価</th>
-                    <th class="col-num" style="width: 116px;">小計</th>
-                    <th style="width: 30px;">操作</th>
+                    <th class="col-mid" style="width: 120px;">商品SKU <span style="color: var(--kintone-danger);">*</span></th>
+                    <th style="min-width: 200px;">商品名 <span style="color: var(--kintone-danger);">*</span></th>
+                    <th class="col-num" style="width: 90px;">数量 <span style="color: var(--kintone-danger);">*</span></th>
+                    <th class="col-mid" style="width: 80px;">単位 <span style="color: var(--kintone-danger);">*</span></th>
+                    <th class="col-num" style="width: 120px;">単価</th>
+                    <th class="col-num" style="width: 130px;">小計</th>
+                    <th style="width: 70px;">操作</th>
                 </tr>
             </thead>
             <tbody id="invoice-items-body"></tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5" style="text-align: right; font-weight: 700; padding: 10px 12px; color: #666; border-top: 2px solid #e0c97a;">合計</td>
-                    <td class="col-num" style="font-weight: 900; font-size: 15px; color: #6a1b9a; border-top: 2px solid #e0c97a;" id="items-total">¥0</td>
-                    <td style="border-top: 2px solid #e0c97a;"></td>
+                    <td colspan="5" style="text-align: right; font-weight: 700; padding: 10px 12px; color: #666; border-top: 1px solid #ddd;">合計</td>
+                    <td class="col-num" style="font-weight: 900; font-size: 15px; color: #6a1b9a; border-top: 1px solid #ddd;" id="items-total">¥0</td>
+                    <td style="border-top: 1px solid #ddd;"></td>
                 </tr>
             </tfoot>
         </table>
     </div>
 
-    <!-- 入金情報・ステータス更新 (PDF発行後のみ表示) -->
+    <!-- GMOあおぞらネット銀行 振込専用口座 (バーチャル口座) -->
+    <div class="section-card section-op" style="border: 1px solid #ffedcc; background-color: #fffaf0; border-radius: 12px; padding: 25px;">
+        <div class="section-title" style="color: #856404; font-weight: 800; font-size: 16px; border-bottom: none; margin-bottom: 20px;">
+            <span><i class="fas fa-university" style="margin-right: 12px; font-size: 14px;"></i></span>GMOあおぞらネット銀行 振込専用口座 (バーチャル口座)
+        </div>
+        <div class="field-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="field-item">
+                <div class="field-label">VA ID</div>
+                <div class="field-box" style="background: white; border: 1px solid #e3e7e8; border-radius: 8px; padding: 10px 15px; color: #999;">―</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">銀行名</div>
+                <div class="field-box" style="background: white; border: 1px solid #e3e7e8; border-radius: 8px; padding: 10px 15px; color: #999;">―</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">支店名</div>
+                <div class="field-box" style="background: white; border: 1px solid #e3e7e8; border-radius: 8px; padding: 10px 15px; color: #999;">―</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">口座番号</div>
+                <div class="field-box" style="background: white; border: 1px solid #e3e7e8; border-radius: 8px; padding: 10px 15px; color: #999;">―</div>
+            </div>
+        </div>
+    </div>
     <div class="section-card section-info" id="payment-section" style="display:none;">
         <div class="section-title">
             <i class="fas fa-coins"></i>入金情報・ステータス更新
@@ -485,8 +519,8 @@
 
         if (isReadOnly) {
             tr.innerHTML = `
-                <td class="col-mid" style="font-weight:700; color:var(--kintone-blue);">${escHtml(sku)}</td>
-                <td style="color:#333;">${escHtml(name)}</td>
+                <td class="col-mid" style="font-weight:700; color: #999;">${escHtml(sku)}</td>
+                <td style="color: #3498db; font-weight: bold;">${escHtml(name)}</td>
                 <td class="col-num">${qty}</td>
                 <td class="col-mid">${escHtml(unit)}</td>
                 <td class="col-num">¥${price.toLocaleString()}</td>
