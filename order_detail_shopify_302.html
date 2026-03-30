@@ -396,11 +396,11 @@
                     <thead>
                         <tr>
                             <th style="width: 80px;">タスクID</th>
-                            <th class="col-mid" style="width: 80px;">ステータス</th>
-                            <th class="col-mid" style="width: 100px;">出荷予定日</th>
+                            <th class="col-mid" style="width: 100px;">ステータス</th>
+                            <th class="col-mid" style="width: 110px;">出荷予定日</th>
                             <th>出荷サマリー</th>
                             <th style="width: 150px;">備考</th>
-                            <th class="col-mid" style="width: 120px;">操作</th>
+                            <th class="col-mid" style="width: 150px;">操作</th>
                         </tr>
                     </thead>
                     <tbody id="shipment-history-body"></tbody>
@@ -419,11 +419,11 @@
                 <table class="k-table" id="return-history-table" style="font-size: 11px; display: none;">
                     <thead>
                         <tr>
-                            <th>タスクID</th>
-                            <th class="col-mid">ステータス</th>
-                            <th class="col-mid">返品日</th>
+                            <th style="width: 80px;">タスクID</th>
+                            <th class="col-mid" style="width: 100px;">ステータス</th>
+                            <th class="col-mid" style="width: 110px;">返品日</th>
                             <th>理由</th>
-                            <th>備考</th>
+                            <th style="width: 150px;">備考</th>
                         </tr>
                     </thead>
                     <tbody id="return-history-body"></tbody>
@@ -714,7 +714,7 @@
                     }
                 });
 
-                orderState.status = 'OUTFINISH';
+                // Task is created but not yet fulfilled/in-transit
                 orderState.hasShipmentTasks = true;
                 addLog('SHIP', summary, combinedNote || '-', shipDate);
                 hideShipmentInput();
@@ -747,6 +747,7 @@
             }, 50);
         }
         function hideReturnInput() { document.getElementById('return-input-area').style.display = 'none'; }
+        
         function submitReturn() {
             const returnedItems = [];
             let combinedReason = '';
@@ -812,14 +813,13 @@
                 `;
             }
             const shipStatusText = orderState.status === 'OUTFINISH' ? '配送中' : '未対応';
-            const badgeStyle = (type === 'SHIP' && shipStatusText === '配送中')
-                ? 'style="background-color: #f3e5f5; color: #7b1fa2; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;"'
-                : '';
+            const badgeStyle = shipStatusText === '配送中' ? 'style="background-color: #f3e5f5; color: #7b1fa2; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;"' : '';
             const badgeClass = badgeStyle ? '' : `badge-status ${type === 'SHIP' ? 'status-ok' : 'status-return'}`;
+            const badgeText = type === 'SHIP' ? shipStatusText : '入荷待ち';
 
             const row = `<tr>
                 <td style="font-weight:bold;"><a href="${detailUrl}?id=${tId}" style="color:var(--kintone-blue); text-decoration:none;">${tId}</a></td>
-                <td class="col-mid"><span class="${badgeClass}" ${badgeStyle}>${type === 'SHIP' ? shipStatusText : '入荷待ち'}</span></td>
+                <td class="col-mid"><span class="${badgeClass}" ${badgeStyle}>${badgeText}</span></td>
                 <td class="col-mid">${displayDate}</td>
                 <td>${summary}</td>
                 <td>${note || '-'}</td>

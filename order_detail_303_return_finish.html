@@ -239,7 +239,7 @@
                         <td class="col-num">200</td>
                         <td class="col-num">200</td>
                         <td class="col-num" style="color: #999;">0</td>
-                        <td class="col-mid"><span class="badge-status status-ok">出庫済</span></td>
+                        <td class="col-mid"><span class="badge-status status-ok">配送完了</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -285,16 +285,16 @@
 
         <!-- Section: Shipping History -->
         <div class="section-card section-hist">
-            <div class="section-title"><span><i class="fas fa-truck-ramp-box"></i></span> 出荷履歴</div>
+            <div class="section-title"><span><i class="fas fa-truck-ramp-box"></i></span> 出荷タスク一覧</div>
             <table class="k-table">
                 <thead>
                     <tr>
-                        <th style="width: 100px;">タスクID</th>
+                        <th style="width: 80px;">タスクID</th>
                         <th class="col-mid" style="width: 120px;">ステータス</th>
-                        <th class="col-mid" style="width: 120px;">出荷予定日</th>
-                        <th>配送業者 / 追跡番号</th>
+                        <th class="col-mid" style="width: 110px;">出荷予定日</th>
+                        <th style="width: 180px;">配送業者 / 追跡番号</th>
                         <th>出荷サマリー</th>
-                        <th>備考</th>
+                        <th style="width: 150px;">備考</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -312,17 +312,17 @@
 
         <!-- Section: Return History -->
         <div class="section-card section-hist">
-            <div class="section-title"><span><i class="fas fa-rotate-left" style="margin-right: 12px;"></i></span> 返品履歴</div>
+            <div class="section-title"><span><i class="fas fa-rotate-left" style="margin-right: 12px;"></i></span> 返品タスク一覧</div>
             <div id="return-history-container">
                 <table class="k-table" id="return-history-table" style="font-size: 11px;">
                     <thead>
                         <tr>
-                            <th style="width: 100px;">タスクID</th>
-                            <th class="col-mid" style="width: 90px;">ステータス</th>
-                            <th style="width: 110px;">返品日</th>
+                            <th style="width: 80px;">タスクID</th>
+                            <th class="col-mid" style="width: 120px;">ステータス</th>
+                            <th class="col-mid" style="width: 110px;">返品日</th>
                             <th>返品サマリー</th>
                             <th style="width: 150px;">備考</th>
-                            <th class="col-mid" style="width: 100px;">操作</th>
+                            <th class="col-mid" style="width: 150px;">操作</th>
                         </tr>
                     </thead>
                     <tbody id="return-history-body">
@@ -408,7 +408,7 @@
             const tId = Math.floor(Math.random() * 900) + 1000;
             const newRow = `<tr>
                 <td style="font-weight:bold;"><a href="task_return_detail.html?id=${tId}" style="color:var(--kintone-blue); text-decoration:none;">${tId}</a></td>
-                <td class="col-mid"><span class="badge-status status-warn">待機中</span></td>
+                <td class="col-mid"><span class="badge-status status-warn">未対応</span></td>
                 <td>${now}</td>
                 <td>${returnedItems.join(', ')}</td>
                 <td>${combinedNote || '-'}</td>

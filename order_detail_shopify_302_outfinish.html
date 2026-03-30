@@ -284,7 +284,7 @@
                         <td class="col-num" id="del-qty-rc50">0</td>
                         <td class="col-num" id="rem-qty-rc50" style="font-weight: bold; color: var(--kintone-danger);">500</td>
                         <td class="col-num">0</td>
-                        <td class="col-mid"><span class="badge-status status-ok">完了</span></td>
+                        <td class="col-mid"><span class="badge-status" style="background-color: #f3e5f5; color: #7b1fa2; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;">配送中</span></td>
                     </tr>
                     <tr>
                         <td class="col-product-name">Rice Silica 300mL (RC300-V01)</td>
@@ -293,7 +293,7 @@
                         <td class="col-num" id="del-qty-rc300">0</td>
                         <td class="col-num" id="rem-qty-rc300" style="font-weight: bold; color: var(--kintone-danger);">200</td>
                         <td class="col-num">0</td>
-                        <td class="col-mid"><span class="badge-status status-ok">完了</span></td>
+                        <td class="col-mid"><span class="badge-status" style="background-color: #f3e5f5; color: #7b1fa2; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;">配送中</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -341,22 +341,26 @@
                 <table class="k-table" style="font-size: 11px;">
                     <thead>
                         <tr>
-                            <th style="width: 70px;">ID</th>
-                            <th class="col-mid" style="width: 110px;">ステータス</th>
-                            <th class="col-mid" style="width: 90px;">出荷日</th>
-                            <th class="col-mid" style="width: 150px;">配送業者 / 追跡番号</th>
+                            <th style="width: 80px;">タスクID</th>
+                            <th class="col-mid" style="width: 120px;">ステータス</th>
+                            <th class="col-mid" style="width: 110px;">出荷日</th>
+                            <th class="col-mid" style="width: 180px;">配送業者 / 追跡番号</th>
                             <th>出荷サマリー</th>
-                            <th style="width: 120px;">備考</th>
+                            <th style="width: 150px;">備考</th>
+                            <th class="col-mid" style="width: 180px;">操作</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td style="font-weight:bold;"><a href="task_detail_102.html" style="color:var(--kintone-blue); text-decoration:none;">102</a></td>
-                            <td><span class="badge-status" style="background-color: #ebfaf0; color: #008a3d; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;">完了</span></td>
+                            <td class="col-mid"><span class="badge-status" style="background-color: #f3e5f5; color: #7b1fa2; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;">配送中</span></td>
                             <td class="col-mid">2026-03-24</td>
                             <td class="col-mid" style="font-family: monospace; font-weight: bold; color: #444;">ヤマト運輸: 1234-5678-9012</td>
                             <td>Rice Silica 50mL x 500, Rice Silica 300mL x 200</td>
                             <td>-</td>
+                            <td class="col-mid">
+                                <button class="btn-blue" onclick="reportDeliveredTask(this)" style="padding: 6px 16px; font-size: 12px; border-radius: 4px; border: none; font-weight: bold; background: #7b1fa2; color: white; cursor: pointer;">配送完了を報告</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -416,7 +420,14 @@
     </div>
 
     <script>
+        let selectedTaskRow = null;
+
         function showDeliveredModal() {
+            selectedTaskRow = null; 
+            document.getElementById('delivered-modal').style.display = 'flex';
+        }
+        function reportDeliveredTask(btn) {
+            selectedTaskRow = btn.closest('tr');
             document.getElementById('delivered-modal').style.display = 'flex';
         }
         function closeDeliveredModal() {
@@ -436,6 +447,17 @@
             document.getElementById('summary-delivery-value').style.fontWeight = 'bold';
             document.getElementById('summary-delivery-value').style.color = '#008a3d';
 
+            // Update Task Row if selected
+            if (selectedTaskRow) {
+                const statusBadge = selectedTaskRow.querySelector('.badge-status');
+                statusBadge.innerText = '完了';
+                statusBadge.style.backgroundColor = '#ebfaf0';
+                statusBadge.style.color = '#008a3d';
+                const actionCell = selectedTaskRow.cells[selectedTaskRow.cells.length - 1];
+                if (actionCell) actionCell.innerHTML = '-';
+            }
+            document.getElementById('summary-delivery-value').style.color = '#008a3d';
+
             // Update Next Action
             const nextActionArea = document.getElementById('next-action-area');
             nextActionArea.className = 'next-action-card accent-success';
@@ -453,7 +475,16 @@
                 </div>
             `;
 
-            // Update Product Table
+            // Update Product Table Status
+            const productRows = document.querySelectorAll('#product-tbody tr');
+            productRows.forEach(row => {
+                const badge = row.querySelector('.badge-status');
+                if (badge) {
+                    badge.innerText = '配送完了';
+                    badge.style.backgroundColor = '#ebfaf0';
+                    badge.style.color = '#008a3d';
+                }
+            });
             document.getElementById('del-qty-rc50').innerText = '500';
             document.getElementById('rem-qty-rc50').innerText = '0';
             document.getElementById('rem-qty-rc50').style.color = '#ccc';
