@@ -714,7 +714,8 @@
                     }
                 });
 
-                // Task is created but not yet fulfilled/in-transit
+                // Mark as in-transit BEFORE addLog so badge/button text are correct
+                orderState.status = 'OUTFINISH';
                 orderState.hasShipmentTasks = true;
                 addLog('SHIP', summary, combinedNote || '-', shipDate);
                 hideShipmentInput();
