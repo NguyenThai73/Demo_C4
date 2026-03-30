@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品マスタ | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .k-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .k-table th { background-color: #f7f9fa; border: 1px solid #e3e7e8; padding: 10px; text-align: left; font-weight: normal; color: #666; }
+        .k-table td { border: 1px solid #e3e7e8; padding: 10px; background-color: #fff; }
+        .k-table tr:hover td { background-color: #fcfcfc; }
+        
+        .badge-status {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .status-active { background-color: #e6f7ff; color: #1890ff; border: 1px solid #91d5ff; }
+        .status-ended { background-color: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding-bottom: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+        .page-btn { border: 1px solid #ccc; background-color: #fff; padding: 4px 10px; border-radius: 4px; cursor: pointer; }
+        .page-btn:disabled { color: #ccc; cursor: default; }
+
+        .cat-tag {
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="kintone-header-top">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="header-logo">
+                <div class="k-icon-box">受</div>
+                受発注管理システム
+            </div>
+            <div class="header-user">
+                <div class="mail-icon"><i class="fas fa-envelope"></i></div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-left: 10px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                    <span>Administrator</span>
+                    <span style="font-size: 10px;">▼</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-header-sub">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="header-sub-left">
+                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
+                <span><i class="fas fa-bell"></i></span>
+                <span><i class="fas fa-star"></i></span>
+            </div>
+            <div class="header-sub-right">
+                <span><i class="fas fa-cog"></i></span>
+                <span><i class="fas fa-question-circle"></i></span>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="アプリ内検索">
+                    <div class="search-icon-btn"><i class="fas fa-search"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-app-title-bar">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px; justify-content: flex-start;">
+            <div class="app-icon-box" style="margin-left: -40px;">📦</div>
+            <div class="app-title">商品マスタ</div>
+        </div>
+    </div>
+
+    <div class="kintone-sub-nav">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="sub-nav-left">
+                <i class="fas fa-house" onclick="location.href='index.html'" style="cursor:pointer;"></i>
+                <i class="fas fa-chevron-right" style="font-size: 8px;"></i>
+                <span style="margin-left: 10px;">アプリ: 商品マスタ</span>
+            </div>
+            <div class="sub-nav-right">
+                <i class="fas fa-thumbtack"></i>
+                <i class="fas fa-info-circle"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-toolbar">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="view-selector">
+                <i class="fas fa-table"></i>
+                全部商品一覧
+                <i class="fas fa-chevron-down" style="font-size: 10px; margin-left: 10px;"></i>
+            </div>
+            <div class="toolbar-icon-btn"><i class="fas fa-chart-line"></i></div>
+            <div class="toolbar-icon-btn"><i class="fas fa-filter"></i></div>
+            <div class="toolbar-icon-btn"><i class="fas fa-arrow-up-9-1"></i></div>
+
+            <div class="toolbar-right">
+                <button class="btn-add" onclick="alert('新規作成画面へ')">+</button>
+                <div class="toolbar-icon-btn"><i class="fas fa-cog"></i></div>
+                <div class="toolbar-icon-btn"><i class="fas fa-ellipsis"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container" style="max-width: 100%; margin: 0; padding: 20px;">
+        <div style="margin-top: 20px;">
+            <table class="k-table">
+                <thead>
+                    <tr>
+                        <th style="text-align: center; width: 80px;">商品ID</th>
+                        <th style="width: 120px;">商品SKU</th>
+                        <th>商品名</th>
+                        <th>カテゴリー</th>
+                        <th style="text-align: center; width: 60px;">単位</th>
+                        <th>商品区分</th>
+                        <th style="text-align: right; width: 100px;">原価価格</th>
+                        <th style="text-align: right; width: 100px;">販売価格</th>
+                        <th style="text-align: center; width: 120px;">販売ステータス</th>
+                        <th style="text-align: center; width: 80px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="product-tbody">
+                    <tr style="cursor: pointer;" onclick="location.href='product_detail.html'">
+                        <td style="text-align: center; color: #3498db; font-weight: bold;">61</td>
+                        <td>CZCZ</td>
+                        <td style="font-weight: bold;">ZCZ</td>
+                        <td><span class="cat-tag">Rice Silica</span></td>
+                        <td style="text-align: center;">個</td>
+                        <td>完成品</td>
+                        <td style="text-align: right;">550</td>
+                        <td style="text-align: right;">550</td>
+                        <td style="text-align: center;"><span class="badge-status status-ended">販売終了</span></td>
+                        <td style="text-align: center; color: #ccc;">
+                            <i class="fas fa-edit" style="margin-right: 10px;"></i>
+                            <i class="fas fa-trash-can"></i>
+                        </td>
+                    </tr>
+                    <tr style="cursor: pointer;" onclick="location.href='product_detail.html'">
+                        <td style="text-align: center; color: #3498db; font-weight: bold;">60</td>
+                        <td>RC50-V01</td>
+                        <td style="font-weight: bold;">Rice Silica 50mL</td>
+                        <td><span class="cat-tag">Rice Silica</span></td>
+                        <td style="text-align: center;">個</td>
+                        <td>完成品</td>
+                        <td style="text-align: right;">1,200</td>
+                        <td style="text-align: right;">2,500</td>
+                        <td style="text-align: center;"><span class="badge-status status-active">販売中</span></td>
+                        <td style="text-align: center; color: #ccc;">
+                            <i class="fas fa-edit" style="margin-right: 10px;"></i>
+                            <i class="fas fa-trash-can"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button class="page-btn" disabled>⏮ 最初</button>
+            <button class="page-btn" disabled>◀ 前へ</button>
+            <span>ページ <strong>1 / 1</strong> (全 <strong>2</strong> 件)</span>
+            <button class="page-btn" disabled>次へ ▶</button>
+            <button class="page-btn" disabled>最後 ⏭</button>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 40px; font-size: 11px; color: #95a5a6;">© 2026 Silica Link Portal</footer>
+
+</body>
+</html>

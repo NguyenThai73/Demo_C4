@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品詳細 | Silica Link</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="detail-style.css">
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="kintone-header-top">
+        <div class="header-content-inner">
+            <div class="header-logo">
+                <div class="k-icon-box">受</div>
+                受発注管理システム
+            </div>
+            <div class="header-user">
+                <div class="mail-icon"><i class="fas fa-envelope"></i></div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-left: 10px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                    <span>Administrator</span>
+                    <span style="font-size: 10px;">▼</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-header-sub">
+        <div class="header-content-inner">
+            <div class="header-sub-left">
+                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
+                <span><i class="fas fa-bell"></i></span>
+                <span><i class="fas fa-star"></i></span>
+            </div>
+            <div class="header-sub-right">
+                <span><i class="fas fa-cog"></i></span>
+                <span><i class="fas fa-question-circle"></i></span>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="アプリ内検索">
+                    <div class="search-icon-btn"><i class="fas fa-search"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-app-title-bar">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px; justify-content: flex-start;">
+            <div class="app-icon-box" style="margin-left: -40px;">📦</div>
+            <div class="app-title">商品マスタ</div>
+        </div>
+    </div>
+
+    <div class="kintone-sub-nav">
+        <div class="header-content-inner">
+            <div class="sub-nav-left">
+                <i class="fas fa-house" onclick="location.href='index.html'" style="cursor:pointer;"></i>
+                <i class="fas fa-chevron-right" style="font-size: 8px;"></i>
+                <span style="margin-left: 5px;">アプリ: 商品マスタ</span>
+                <i class="fas fa-chevron-right" style="font-size: 8px; margin-left: 5px;"></i>
+                <span style="margin-left: 5px;">レコード: #61</span>
+            </div>
+            <div class="sub-nav-right">
+                <i class="fas fa-thumbtack"></i>
+                <i class="fas fa-info-circle"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-action-toolbar">
+        <div class="header-content-inner" style="justify-content: flex-end; gap: 2px;">
+            <div class="action-icon-btn" style="border-radius: 4px 0 0 4px;"><i class="fas fa-chevron-up"></i></div>
+            <div class="action-icon-btn" style="border-right: 2px solid #ddd; border-radius: 0 4px 4px 0;"><i class="fas fa-chevron-down"></i></div>
+            <div class="action-icon-btn" style="margin-left: 10px;"><i class="fas fa-edit"></i></div>
+            <div class="action-icon-btn"><i class="fas fa-plus"></i></div>
+            <div class="action-icon-btn"><i class="fas fa-cog"></i> <span>▼</span></div>
+            <div class="action-icon-btn" style="border-radius: 4px;"><i class="fas fa-ellipsis"></i></div>
+        </div>
+    </div>
+
+    <div class="main-container">
+
+        <div class="summary-header">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="badge-type badge-shopify" style="background-color: #f0f0f0; color: #666; border: 1px solid #ccc;">完成品</div>
+                    <div style="font-size: 24px; font-weight: bold;">ZCZ</div>
+                </div>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-label">販売価格</div>
+                    <div class="summary-primary-value">¥550</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">ステータス</div>
+                    <div class="summary-primary-value" style="color: var(--status-return-text);">販売終了</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">商品ID</div>
+                    <div class="summary-value">61</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">SKU</div>
+                    <div class="summary-value">CZCZ</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">カテゴリー</div>
+                    <div class="summary-value">Rice Silica</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card section-info">
+            <div class="section-title"><span><i class="fas fa-info-circle"></i></span> 基本情報</div>
+            <div class="field-grid">
+                <div class="field-item">
+                    <div class="field-label">商品ID</div>
+                    <div class="field-value">61</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">商品SKU</div>
+                    <div class="field-value" style="font-weight: bold;">CZCZ</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">カテゴリー</div>
+                    <div class="field-value">Rice Silica</div>
+                </div>
+                <div class="field-item" style="grid-column: span 2;">
+                    <div class="field-label">商品名</div>
+                    <div class="field-value" style="font-weight: bold;">ZCZ</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">商品区分</div>
+                    <div class="field-value">完成品</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">単位</div>
+                    <div class="field-value">個</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card section-info">
+            <div class="section-title"><span><i class="fas fa-coins"></i></span> 価格情報</div>
+            <div class="field-grid">
+                <div class="field-item">
+                    <div class="field-label">原価価格</div>
+                    <div class="field-value">￥550</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">販売価格</div>
+                    <div class="field-value" style="font-weight: bold;">￥550</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">販売ステータス</div>
+                    <div class="field-value">
+                        <span class="badge-status status-return">販売終了</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card section-info">
+            <div class="section-title"><span><i class="fas fa-box-open"></i></span> 梱包・物流情報</div>
+            <div class="field-grid">
+                <div class="field-item">
+                    <div class="field-label">梱包形態</div>
+                    <div class="field-value">-</div>
+                </div>
+                <div class="field-item">
+                    <div class="field-label">入数/CS</div>
+                    <div class="field-value">1</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card section-info">
+            <div class="section-title"><span><i class="fas fa-comment-dots"></i></span> その他</div>
+            <div class="field-item">
+                <div class="field-label">備考</div>
+                <div class="field-value" style="min-height: 100px; align-items: flex-start;">-</div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer style="text-align: center; padding: 40px; font-size: 11px; color: #95a5a6;">© 2026 Silica Link Portal</footer>
+
+</body>
+
+</html>
