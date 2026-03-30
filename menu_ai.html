@@ -610,15 +610,18 @@
             fill: currentColor;
         }
 
-        /* ===== AI Welcome Overlay ===== */
+        /* ===== AI Welcome Overlay (2.html style) ===== */
         .welcome-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, #1e2a3a 0%, #2d3a2e 100%);
+            background: #f8f9fa;
             z-index: 300;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+            padding: 16px 20px;
             transition: opacity 0.5s ease;
         }
 
@@ -627,202 +630,328 @@
             pointer-events: none;
         }
 
-        .welcome-card {
-            background: #fff;
-            border-radius: 20px;
-            padding: 32px 36px 28px;
-            width: 560px;
+        .welcome-bg-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(104,52,235,0.1), transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Status heading */
+        .welcome-status {
             text-align: center;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
         }
 
-        .welcome-ai-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3b82f6, #6366f1);
-            margin: 0 auto 16px;
-            display: flex;
+        .welcome-heading {
+            font-size: 18px;
+            font-weight: 800;
+            color: #2e3335;
+            letter-spacing: -0.3px;
+            margin-bottom: 4px;
+        }
+
+        .welcome-lang-badge {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 16px rgba(59,130,246,0.3);
-        }
-
-        .welcome-ai-icon svg {
-            width: 36px;
-            height: 36px;
-            fill: #fff;
-        }
-
-        .welcome-greeting {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 6px;
-        }
-
-        .welcome-sub {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 24px;
-        }
-
-        .welcome-question {
-            font-size: 15px;
+            gap: 5px;
+            font-size: 10px;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 14px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #5a6062;
+            opacity: 0.7;
+        }
+
+        /* Avatar */
+        .welcome-avatar-wrap {
+            position: relative;
+            margin-bottom: 10px;
+            z-index: 1;
+        }
+
+        .welcome-avatar-ring {
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            background: #6834eb;
+            opacity: 0.1;
+        }
+
+        .welcome-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glass panel */
+        .welcome-glass-panel {
+            background: rgba(248,249,250,0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(104,52,235,0.2);
+            border-radius: 14px;
+            padding: 14px 20px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 0 30px rgba(104,52,235,0.12), 0 4px 16px rgba(0,0,0,0.07);
+            margin-bottom: 10px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-panel-label {
+            display: block;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #6834eb;
+            margin-bottom: 8px;
         }
 
         .prompt-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 10px;
         }
 
         .prompt-chip {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 14px 16px;
-            background: #f8f7f4;
-            border: 1.5px solid #e0dcd4;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #333;
+            gap: 5px;
+            padding: 6px 12px;
+            background: rgba(104,52,235,0.08);
+            border: 1px solid rgba(104,52,235,0.2);
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #6834eb;
             cursor: pointer;
             transition: all 0.15s;
-            text-align: left;
         }
 
         .prompt-chip:hover {
-            border-color: #3b82f6;
-            background: #f0f7ff;
+            background: rgba(104,52,235,0.15);
+            border-color: #6834eb;
         }
 
         .prompt-chip.selected {
-            border-color: #3b82f6;
-            background: #eff6ff;
-            color: #1a5dc7;
+            background: #6834eb;
+            color: #fdf7ff;
+            border-color: #6834eb;
         }
 
         .prompt-chip .chip-icon {
-            font-size: 20px;
+            font-size: 13px;
             flex-shrink: 0;
         }
 
+        .welcome-divider {
+            border: none;
+            border-top: 1px solid #dee3e5;
+            margin: 8px 0;
+        }
+
+        .welcome-transcription-hint {
+            font-size: 10px;
+            color: #5a6062;
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        /* Free text input */
         .welcome-or {
-            font-size: 12px;
-            color: #999;
-            margin-bottom: 14px;
+            font-size: 10px;
+            color: #5a6062;
+            margin: 8px 0 6px;
+            opacity: 0.7;
         }
 
         .welcome-free-input {
             display: flex;
             gap: 8px;
-            margin-bottom: 20px;
         }
 
         .welcome-free-input input {
             flex: 1;
-            padding: 12px 14px;
-            border: 1.5px solid #ddd;
-            border-radius: 10px;
-            font-size: 14px;
+            padding: 8px 14px;
+            border: 1.5px solid #aeb3b5;
+            border-radius: 9999px;
+            font-size: 12px;
             outline: none;
-            color: #333;
+            color: #2e3335;
+            background: #fff;
         }
 
-        .welcome-free-input input::placeholder {
-            color: #aaa;
+        .welcome-free-input input::placeholder { color: #aeb3b5; }
+        .welcome-free-input input:focus { border-color: #6834eb; }
+
+        /* Action buttons */
+        .welcome-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 380px;
+            position: relative;
+            z-index: 1;
         }
 
-        .welcome-free-input input:focus {
-            border-color: #3b82f6;
-        }
-
-        .welcome-free-input button {
-            padding: 12px 18px;
-            background: #3b82f6;
-            color: #fff;
+        .welcome-primary-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 11px 24px;
+            background: #6834eb;
+            color: #fdf7ff;
             border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 700;
             cursor: pointer;
-            white-space: nowrap;
+            box-shadow: 0 6px 18px rgba(104,52,235,0.3);
+            transition: all 0.15s;
+        }
+
+        .welcome-primary-btn:hover { background: #5c20df; transform: scale(1.02); }
+        .welcome-primary-btn:active { transform: scale(0.97); }
+
+        .welcome-secondary-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .welcome-secondary-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: #dee3e5;
+            color: #2e3335;
+            border: none;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
             transition: background 0.15s;
         }
 
-        .welcome-free-input button:hover {
-            background: #2563eb;
+        .welcome-secondary-btn:hover { background: #d5dbdd; }
+
+        .welcome-footer-row {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
         }
 
-        .welcome-free-input button.has-mood {
-            background: #2d3a2e;
-        }
-
-        .welcome-free-input button.has-mood:hover {
-            background: #3a4a3b;
-        }
-
-        .welcome-skip {
-            font-size: 13px;
-            color: #999;
-            cursor: pointer;
-            border: none;
+        .welcome-text-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             background: none;
-            text-decoration: underline;
+            border: none;
+            font-size: 12px;
+            color: #5a6062;
+            cursor: pointer;
+            transition: color 0.15s;
         }
 
-        .welcome-skip:hover {
-            color: #666;
-        }
+        .welcome-text-btn:hover { color: #2e3335; }
     </style>
 </head>
 <body>
     <div class="ipad-frame" style="position:relative;">
 
-    <!-- AI Welcome Overlay -->
+    <!-- AI Welcome Overlay (2.html style) -->
     <div class="welcome-overlay" id="welcomeOverlay">
-        <div class="welcome-card">
-            <div class="welcome-ai-icon">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-            </div>
-            <div class="welcome-greeting">いらっしゃいませ！</div>
-            <div class="welcome-sub">AIアシスタントがご注文をお手伝いします</div>
+        <!-- Background gradient -->
+        <div class="welcome-bg-gradient"></div>
 
-            <div class="welcome-question">今日はどんな気分ですか？</div>
+        <!-- Status heading -->
+        <div class="welcome-status">
+            <h1 class="welcome-heading">いらっしゃいませ！</h1>
+            <div class="welcome-lang-badge">
+                <span>🌐</span>
+                <span id="welcomeLangLabel">日本語でご案内しています</span>
+            </div>
+        </div>
+
+        <!-- AI Avatar -->
+        <div class="welcome-avatar-wrap">
+            <div class="welcome-avatar-ring"></div>
+            <img class="welcome-avatar"
+                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjLC67gbJzpbn4YQRBfQCi_uESmUrSDrjIAMeZyH5MKbHwEHhW0JNRJSNtop2j-kYIHADzp_bxEhcPLez3N7kdHjR2oT68jVuDQJ23yJYugkNZkZlugtzmjolfx1ZBqKWpsR0kXonNMM0I367FjKNDCeRHfGJ_ftcid4TF3VZreY09tRbfX1IEX7JzlGMwTIUWkgMBFpn70Lj0Vki411KUgVv4BDdXVl1A0wcevYNVHvVxpBs5EhfzFY3avxDDWWUDw0hZD3C09wAY"
+                 alt="AI Sommelier Avatar"/>
+        </div>
+
+        <!-- Glass panel: mood chips -->
+        <div class="welcome-glass-panel">
+            <span class="welcome-panel-label">AIへの最初のご要望</span>
             <div class="prompt-grid">
                 <button class="prompt-chip" onclick="selectPrompt(this, 'さっぱりしたものが食べたい')">
                     <span class="chip-icon">🍃</span>さっぱりしたものが食べたい
                 </button>
                 <button class="prompt-chip" onclick="selectPrompt(this, 'がっつり食べたい気分です')">
-                    <span class="chip-icon">🥩</span>がっつり食べたい気分です
+                    <span class="chip-icon">🥩</span>がっつり食べたい
                 </button>
                 <button class="prompt-chip" onclick="selectPrompt(this, 'お酒に合うおつまみが欲しい')">
-                    <span class="chip-icon">🍺</span>お酒に合うおつまみが欲しい
+                    <span class="chip-icon">🍺</span>お酒に合うおつまみ
                 </button>
                 <button class="prompt-chip" onclick="selectPrompt(this, '初めてなのでおすすめを教えて')">
-                    <span class="chip-icon">⭐</span>初めてなのでおすすめを教えて
+                    <span class="chip-icon">⭐</span>初めてなのでおすすめを
                 </button>
                 <button class="prompt-chip" onclick="selectPrompt(this, '子供も楽しめるメニューは？')">
-                    <span class="chip-icon">👨‍👩‍👧</span>子供も楽しめるメニューは？
+                    <span class="chip-icon">👨‍👩‍👧</span>子供向けのメニュー
                 </button>
                 <button class="prompt-chip" onclick="selectPrompt(this, '辛いものが食べたいです')">
-                    <span class="chip-icon">🌶️</span>辛いものが食べたいです
+                    <span class="chip-icon">🌶️</span>辛いものが食べたい
                 </button>
             </div>
+            <hr class="welcome-divider"/>
+            <p class="welcome-transcription-hint">選択後に確認・修正できます</p>
+        </div>
 
-            <div class="welcome-or">― または自由に入力 ―</div>
+        <!-- Free text input -->
+        <div style="width:100%;max-width:520px;margin-bottom:10px;position:relative;z-index:1;">
+            <p class="welcome-or">― または自由に入力 ―</p>
             <div class="welcome-free-input">
                 <input type="text" id="welcomeFreeInput" placeholder="例: 今日は記念日なので特別なものを…">
-                <button id="welcomeSubmitBtn" onclick="submitFreeInput()">この気分で提案してもらう</button>
             </div>
+        </div>
 
-            <button class="welcome-skip" onclick="closeWelcome()">スキップしてメニューを見る →</button>
+        <!-- Action buttons -->
+        <div class="welcome-actions">
+            <button class="welcome-primary-btn" id="welcomeSubmitBtn" onclick="submitFreeInput()">
+                <span>✨</span> この気分で提案してもらう
+            </button>
+            <div class="welcome-secondary-row">
+                <button class="welcome-secondary-btn" onclick="openAiMode()">
+                    <span>🎙️</span> 音声で話す
+                </button>
+                <button class="welcome-secondary-btn" onclick="closeWelcome()">
+                    <span>📋</span> メニューから選ぶ
+                </button>
+            </div>
+            <div class="welcome-footer-row">
+                <button class="welcome-text-btn" onclick="closeWelcome()">
+                    <span>✕</span> スキップ
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1180,12 +1309,9 @@
         function selectPrompt(chip, text) {
             document.querySelectorAll('.prompt-chip').forEach(c => c.classList.remove('selected'));
             chip.classList.add('selected');
-            // Update submit button to contextual label
             const btn = document.getElementById('welcomeSubmitBtn');
             const shortLabel = text.replace(/が食べたい$|です$|が欲しい$|を教えて$|は？$/, '');
-            btn.textContent = '「' + shortLabel + '」で探す';
-            btn.classList.add('has-mood');
-            // Save mood to localStorage and close
+            btn.innerHTML = '<span>✨</span> 「' + shortLabel + '」で探す';
             localStorage.setItem('aiMood', text);
             setTimeout(() => closeWelcome(), 400);
         }
@@ -1197,20 +1323,16 @@
             closeWelcome();
         }
 
-        // Enter key on free input
         document.getElementById('welcomeFreeInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') submitFreeInput();
         });
 
-        // Update submit button when typing in free input
-        document.getElementById('welcomeFreeInput').addEventListener('input', function(e) {
+        document.getElementById('welcomeFreeInput').addEventListener('input', function() {
             const btn = document.getElementById('welcomeSubmitBtn');
             if (this.value.trim()) {
-                btn.textContent = 'この内容で提案してもらう';
-                btn.classList.add('has-mood');
+                btn.innerHTML = '<span>✨</span> この内容で提案してもらう';
             } else {
-                btn.textContent = 'この気分で提案してもらう';
-                btn.classList.remove('has-mood');
+                btn.innerHTML = '<span>✨</span> この気分で提案してもらう';
             }
         });
 
@@ -1224,8 +1346,16 @@
         (function initWelcome() {
             const showWelcome = sessionStorage.getItem('showAiWelcome');
             if (showWelcome === 'yes') {
-                // First entry from order.html — show welcome, then clear flag
                 sessionStorage.removeItem('showAiWelcome');
+                // Sync language label from session
+                try {
+                    const session = JSON.parse(localStorage.getItem('currentSession') || '{}');
+                    if (session.language) {
+                        const langMap = { '日本語': '日本語でご案内しています', 'English': 'Greeting you in English', '한국어': '한국어로 안내해 드립니다', '中文': '正在用中文为您服务' };
+                        const label = langMap[session.language] || session.language + 'でご案内しています';
+                        document.getElementById('welcomeLangLabel').textContent = label;
+                    }
+                } catch(e) {}
             } else {
                 // Returning from cart/detail/etc — skip welcome
                 document.getElementById('welcomeOverlay').style.display = 'none';

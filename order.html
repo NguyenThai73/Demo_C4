@@ -1,535 +1,454 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Start Ordering</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-            height: 100vh;
-            background: #1a1a1a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .ipad-frame {
-            width: 880px;
-            height: 640px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .main-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        /* --- Context info bar --- */
-        .context-bar {
-            background: #2d3a2e;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 36px;
-            font-size: 13px;
-            border-radius: 12px 12px 0 0;
-            flex-shrink: 0;
-        }
-
-        .context-left {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .context-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .context-label {
-            color: rgba(255,255,255,0.6);
-            font-weight: 400;
-        }
-
-        .context-value {
-            font-weight: 700;
-            letter-spacing: 0.3px;
-        }
-
-        .context-divider {
-            width: 1px;
-            height: 16px;
-            background: rgba(255,255,255,0.25);
-        }
-
-        .context-date {
-            color: rgba(255,255,255,0.6);
-            font-size: 12px;
-        }
-
-        .container {
-            background: #fff;
-            width: 100%;
-            flex: 1;
-            border-radius: 0 0 12px 12px;
-            padding: 16px 36px 20px;
-            border: 2px solid #e0e0e0;
-            border-top: none;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* --- Header --- */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2px;
-        }
-
-        .page-title {
-            font-size: 20px;
-            font-weight: 800;
-            color: #1a1a1a;
-        }
-
-        .page-subtitle {
-            font-size: 12px;
-            color: #555;
-            margin-bottom: 14px;
-        }
-
-        /* --- Section label --- */
-        .section-label {
-            font-size: 13px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-        }
-
-        /* --- Guest quick-select --- */
-        .guest-section {
-            margin-bottom: 50px;
-        }
-
-        .guest-row {
-            display: flex;
-            gap: 28px;
-            align-items: flex-end;
-        }
-
-        .guest-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .guest-group-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .guest-btns {
-            display: flex;
-            gap: 6px;
-        }
-
-        .guest-btn {
-            width: 42px;
-            height: 42px;
-            border: 1.5px solid #ccc;
-            border-radius: 8px;
-            background: #fff;
-            font-size: 15px;
-            font-weight: 700;
-            color: #333;
-            cursor: pointer;
-            transition: all 0.15s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .guest-btn:hover {
-            border-color: #333;
-            background: #f5f5f5;
-        }
-
-        .guest-btn.selected {
-            background: #2d3a2e;
-            color: #fff;
-            border-color: #2d3a2e;
-        }
-
-        .guest-btn-plus {
-            font-size: 12px;
-        }
-
-        .guest-custom {
-            display: none;
-            align-items: center;
-            gap: 5px;
-            margin-top: 5px;
-        }
-
-        .guest-custom.visible {
-            display: flex;
-        }
-
-        .guest-custom input {
-            width: 52px;
-            padding: 6px 8px;
-            border: 1.5px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
-            text-align: center;
-            outline: none;
-        }
-
-        .guest-custom input:focus {
-            border-color: #2d3a2e;
-        }
-
-        .guest-custom span {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .guest-summary {
-            font-size: 12px;
-            color: #2d3a2e;
-            font-weight: 600;
-            padding: 6px 12px;
-            background: #f0f4f0;
-            border-radius: 6px;
-            align-self: flex-end;
-            margin-bottom: 4px;
-            white-space: nowrap;
-        }
-
-        /* --- Middle: Language + Order Mode side by side --- */
-        .bottom-section {
-            display: flex;
-            gap: 32px;
-            margin-bottom: 16px;
-            flex: 1;
-            min-height: 0;
-        }
-
-        .language-section {
-            flex: 0 0 auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .order-mode-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .lang-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 4px;
-        }
-
-        .lang-btn {
-            padding: 10px 28px;
-            border: 1.5px solid #ccc;
-            border-radius: 8px;
-            background: #fff;
-            font-size: 13px;
-            font-weight: 600;
-            color: #333;
-            cursor: pointer;
-            transition: all 0.15s;
-            text-align: center;
-        }
-
-        .lang-btn:hover {
-            border-color: #333;
-        }
-
-        .lang-btn.selected {
-            background: #1a1a1a;
-            color: #fff;
-            border-color: #1a1a1a;
-        }
-
-        .mode-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 4px;
-        }
-
-        .mode-btn {
-            padding: 14px 20px;
-            border: 1.5px solid #ccc;
-            border-radius: 8px;
-            background: #fff;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            cursor: pointer;
-            transition: all 0.15s;
-            text-align: center;
-        }
-
-        .mode-btn:hover {
-            border-color: #333;
-        }
-
-        .mode-btn.selected {
-            background: #333;
-            color: #fff;
-            border-color: #333;
-        }
-
-        .mode-note {
-            font-size: 11px;
-            color: #777;
-            margin-top: 8px;
-            text-align: center;
-        }
-
-        /* --- Start button pinned at bottom --- */
-        .start-btn {
-            width: 100%;
-            padding: 14px;
-            background: #2d3a2e;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            flex-shrink: 0;
-        }
-
-        .start-btn:hover {
-            background: #3a4a3b;
-        }
-    </style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lumina Gastronomy - Start Ordering</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "tertiary": "#6834eb",
+          "on-background": "#2e3335",
+          "secondary-container": "#b1fbff",
+          "error": "#ac3434",
+          "on-primary": "#f3fafc",
+          "background": "#f8f9fa",
+          "primary-container": "#dde4e6",
+          "surface-container-high": "#e5e9eb",
+          "on-primary-fixed-variant": "#565d5f",
+          "on-secondary": "#e4feff",
+          "primary": "#596062",
+          "surface-dim": "#d5dbdd",
+          "surface": "#f8f9fa",
+          "on-primary-container": "#4c5355",
+          "tertiary-container": "#c0adff",
+          "on-tertiary-container": "#3e00a6",
+          "outline": "#767c7e",
+          "error-container": "#f56965",
+          "secondary-fixed": "#b1fbff",
+          "primary-fixed": "#dde4e6",
+          "surface-container-lowest": "#ffffff",
+          "surface-container-low": "#f2f4f5",
+          "primary-dim": "#4d5456",
+          "on-secondary-fixed-variant": "#1b6d71",
+          "tertiary-fixed-dim": "#b39cff",
+          "tertiary-dim": "#5c20df",
+          "on-surface-variant": "#5a6062",
+          "inverse-primary": "#f1f8fa",
+          "on-primary-fixed": "#394043",
+          "surface-variant": "#dee3e5",
+          "on-tertiary-fixed": "#25006c",
+          "on-secondary-fixed": "#004f52",
+          "on-error-container": "#65000b",
+          "on-tertiary": "#fdf7ff",
+          "surface-tint": "#596062",
+          "error-dim": "#70030f",
+          "surface-container": "#ebeef0",
+          "tertiary-fixed": "#c0adff",
+          "inverse-on-surface": "#9b9d9e",
+          "secondary-dim": "#005d61",
+          "outline-variant": "#aeb3b5",
+          "on-secondary-container": "#066266",
+          "primary-fixed-dim": "#cfd6d8",
+          "inverse-surface": "#0c0f10",
+          "on-surface": "#2e3335",
+          "surface-container-highest": "#dee3e5",
+          "secondary-fixed-dim": "#a3ecf0",
+          "on-error": "#fff7f6",
+          "on-tertiary-fixed-variant": "#4700bd",
+          "surface-bright": "#f8f9fa",
+          "secondary": "#15696d"
+        },
+        fontFamily: {
+          "headline": ["Manrope"],
+          "body": ["Manrope"],
+          "label": ["Plus Jakarta Sans"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Manrope', sans-serif;
+  }
+  .ipad-frame {
+    width: 880px;
+    height: 640px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 12px;
+    position: relative;
+  }
+  .context-bar {
+    background: #2d3a2e;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 28px;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .context-left { display: flex; gap: 16px; align-items: center; }
+  .context-item { display: flex; align-items: center; gap: 5px; }
+  .context-label { color: rgba(255,255,255,0.6); font-weight: 400; }
+  .context-value { font-weight: 700; letter-spacing: 0.3px; }
+  .context-divider { width: 1px; height: 14px; background: rgba(255,255,255,0.25); }
+  .context-date { color: rgba(255,255,255,0.55); font-size: 11px; }
+  .main-content {
+    flex: 1;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 16px 28px 14px;
+    position: relative;
+  }
+  /* Decorative bg */
+  .deco-bg {
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 45%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .deco-bg img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+    opacity: 0.18;
+  }
+  .content-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .ai-glow { box-shadow: 0 0 28px rgba(104,52,235,0.12); }
+  .card-selected {
+    border-color: #6834eb !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 28px rgba(104,52,235,0.15);
+  }
+  .card-normal-selected {
+    border-color: #15696d !important;
+    background-color: #ffffff !important;
+  }
+  .method-selected {
+    background-color: rgba(104,52,235,0.1) !important;
+    border-color: #6834eb !important;
+  }
+</style>
 </head>
 <body>
-    <div class="ipad-frame">
-    <div class="main-wrapper">
-        <div class="context-bar">
-            <div class="context-left">
-                <div class="context-item">
-                    <span class="context-label">卓番:</span>
-                    <span class="context-value" id="ctxTable">T-01, T-02</span>
-                </div>
-                <div class="context-divider"></div>
-                <div class="context-item">
-                    <span class="context-label">端末:</span>
-                    <span class="context-value" id="ctxTerminal">iPad-03</span>
-                </div>
-                <div class="context-divider"></div>
-                <div class="context-item">
-                    <span class="context-label">受付番号:</span>
-                    <span class="context-value" id="ctxReception">#0042</span>
-                </div>
-            </div>
-            <div class="context-date" id="ctxDate"></div>
-        </div>
-        <div class="container">
-            <div class="header">
-                <div class="page-title">テーブル起動 / Start Ordering</div>
-            </div>
-            <div class="page-subtitle">人数・言語・注文モードを選択してください</div>
+<div class="ipad-frame">
 
-            <div class="guest-section">
-                <div class="section-label">ご来店人数 / Number of Guests</div>
-                <div class="guest-row">
-                    <div class="guest-group">
-                        <div class="guest-group-label">大人 / Adults</div>
-                        <div class="guest-btns" id="adultBtns">
-                            <button class="guest-btn" onclick="selectGuest('adult', 1, this)">1</button>
-                            <button class="guest-btn selected" onclick="selectGuest('adult', 2, this)">2</button>
-                            <button class="guest-btn" onclick="selectGuest('adult', 3, this)">3</button>
-                            <button class="guest-btn" onclick="selectGuest('adult', 4, this)">4</button>
-                            <button class="guest-btn" onclick="selectGuest('adult', '5+', this)"><span class="guest-btn-plus">5+</span></button>
-                        </div>
-                        <div class="guest-custom" id="adultCustom">
-                            <input type="number" id="adultCustomInput" min="5" value="5" onchange="updateSummary()" oninput="updateSummary()">
-                            <span>名</span>
-                        </div>
-                    </div>
-                    <div class="guest-group">
-                        <div class="guest-group-label">子供 / Children</div>
-                        <div class="guest-btns" id="childBtns">
-                            <button class="guest-btn selected" onclick="selectGuest('child', 0, this)">0</button>
-                            <button class="guest-btn" onclick="selectGuest('child', 1, this)">1</button>
-                            <button class="guest-btn" onclick="selectGuest('child', 2, this)">2</button>
-                            <button class="guest-btn" onclick="selectGuest('child', 3, this)">3</button>
-                            <button class="guest-btn" onclick="selectGuest('child', '4+', this)"><span class="guest-btn-plus">4+</span></button>
-                        </div>
-                        <div class="guest-custom" id="childCustom">
-                            <input type="number" id="childCustomInput" min="4" value="4" onchange="updateSummary()" oninput="updateSummary()">
-                            <span>名</span>
-                        </div>
-                    </div>
-                    <div class="guest-summary" id="guestSummary">合計: 大人 2名 / 子供 0名 → 2名様</div>
-                </div>
-            </div>
-
-            <div class="bottom-section">
-                <div class="language-section">
-                    <div class="section-label">表示言語 / Language</div>
-                    <div class="lang-grid">
-                        <button class="lang-btn selected" onclick="selectLang(this)">日本語</button>
-                        <button class="lang-btn" onclick="selectLang(this)">English</button>
-                        <button class="lang-btn" onclick="selectLang(this)">한국어</button>
-                        <button class="lang-btn" onclick="selectLang(this)">中文</button>
-                    </div>
-                </div>
-                <div class="order-mode-section">
-                    <div class="section-label">注文モード / Order Mode</div>
-                    <div class="mode-list">
-                        <button class="mode-btn selected" onclick="selectMode(this)">AI会話で注文(音声)</button>
-                        <button class="mode-btn" onclick="selectMode(this)">タブレット操作で注文(音声なし)</button>
-                    </div>
-                    <div class="mode-note">※AI会話を使うと、メニュー一部紹介やおすすめを音声でご案内します。</div>
-                </div>
-            </div>
-
-            <button class="start-btn" onclick="startOrder()">この設定で注文開始</button>
-        </div>
+  <!-- Context Bar -->
+  <div class="context-bar">
+    <div class="context-left">
+      <div class="context-item">
+        <span class="context-label">卓番:</span>
+        <span class="context-value" id="ctxTable">T-01, T-02</span>
+      </div>
+      <div class="context-divider"></div>
+      <div class="context-item">
+        <span class="context-label">端末:</span>
+        <span class="context-value" id="ctxTerminal">iPad-03</span>
+      </div>
+      <div class="context-divider"></div>
+      <div class="context-item">
+        <span class="context-label">受付番号:</span>
+        <span class="context-value" id="ctxReception">#0042</span>
+      </div>
     </div>
+    <div class="context-date" id="ctxDate"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Decorative background -->
+    <div class="deco-bg">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuALInGmogw6vxpgBYwMiV3MlIwiLIYGFQRj11f0w0o4mTfjF3-As1dbFf21Qxq1pLfCqggN4se5JfUohKXmaOKA88JkGBHK_4TEOpLjxRNQ92xpA5oQtfbs7dKZlmKk15qitkFCtkJl96FvXWebmNuJLBpaF1uu6JUgWpzr-FAwKkJHo4Te6han9iqWBoJgcgCUjUNjoYu6UrpcadHTMz23bF19tNJjzUy1sIcCVtS0v4Jd1ZpDk9EOhundeCWeMOjdEpGnzx_8T5Qi" alt=""/>
     </div>
 
-    <script>
-        let adultCount = 2;
-        let childCount = 0;
-        let adultIsCustom = false;
-        let childIsCustom = false;
+    <div class="content-inner">
 
-        function selectGuest(type, value, btn) {
-            const isCustom = (value === '5+' || value === '4+');
-            const containerId = type === 'adult' ? 'adultBtns' : 'childBtns';
-            const customId = type === 'adult' ? 'adultCustom' : 'childCustom';
-            const customInputId = type === 'adult' ? 'adultCustomInput' : 'childCustomInput';
+      <!-- Hero -->
+      <section class="mb-3 flex items-start justify-between">
+        <div>
+          <h2 class="text-xl font-extrabold font-headline tracking-tight text-on-surface leading-tight mb-1">
+            話しかけるだけで、ご希望に合う料理をご提案します
+          </h2>
+          <p class="text-on-surface-variant text-xs leading-relaxed mb-1">
+            メニューを探さなくても、AIに相談しながらスムーズに注文いただけます。
+          </p>
+          <div class="flex items-center gap-1.5 text-tertiary/80 font-semibold text-[11px]">
+            <span class="material-symbols-outlined" style="font-size:13px;">translate</span>
+            <span>日本語・English・한국어・中文でAI注文をご利用いただけます</span>
+          </div>
+        </div>
+      </section>
 
-            document.querySelectorAll(`#${containerId} .guest-btn`).forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
+      <!-- Mode Cards -->
+      <div class="grid grid-cols-12 gap-3 mb-3" style="flex-shrink:0;">
 
-            const customEl = document.getElementById(customId);
-            if (isCustom) {
-                customEl.classList.add('visible');
-                document.getElementById(customInputId).focus();
-                if (type === 'adult') {
-                    adultIsCustom = true;
-                    adultCount = parseInt(document.getElementById(customInputId).value) || 5;
-                } else {
-                    childIsCustom = true;
-                    childCount = parseInt(document.getElementById(customInputId).value) || 4;
-                }
-            } else {
-                customEl.classList.remove('visible');
-                if (type === 'adult') {
-                    adultIsCustom = false;
-                    adultCount = value;
-                } else {
-                    childIsCustom = false;
-                    childCount = value;
-                }
-            }
+        <!-- AI Card -->
+        <div class="col-span-8 relative overflow-hidden rounded-xl bg-surface-container-lowest p-5 ai-glow border-2 border-tertiary transition-all cursor-pointer card-selected"
+             id="ai-card" onclick="selectMode('ai')">
+          <div class="flex flex-col gap-2.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-0.5 bg-tertiary text-on-tertiary rounded-full font-label text-[9px] font-bold uppercase tracking-widest">おすすめ</span>
+                <span class="text-tertiary text-[11px] font-bold font-label">まずはこちらがおすすめです</span>
+              </div>
+              <span class="material-symbols-outlined text-tertiary text-base" style="font-variation-settings:'FILL' 1;">auto_awesome</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold font-headline text-on-surface mb-0.5">AIで注文を始める</h3>
+              <p class="text-on-surface-variant text-xs">ご希望をお伺いして、最適な一皿をご案内します。</p>
+            </div>
+            <!-- Voice/Chat -->
+            <div class="grid grid-cols-2 gap-2">
+              <button class="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-tertiary/5 hover:bg-tertiary/10 rounded-lg border border-tertiary/20 transition-all method-selected text-sm"
+                      id="voice-btn" onclick="selectMethod('voice', event)">
+                <span class="material-symbols-outlined text-tertiary text-base">mic</span>
+                <span class="font-bold text-xs text-on-surface">音声で始める</span>
+              </button>
+              <button class="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-tertiary/5 hover:bg-tertiary/10 rounded-lg border border-tertiary/20 transition-all text-sm"
+                      id="chat-btn" onclick="selectMethod('chat', event)">
+                <span class="material-symbols-outlined text-tertiary text-base">chat_bubble</span>
+                <span class="font-bold text-xs text-on-surface">チャットで始める</span>
+              </button>
+            </div>
+            <!-- Bubbles -->
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2.5 py-1 bg-surface-container-low rounded-full border border-outline-variant/10 text-[11px] text-on-surface-variant">「さっぱりした料理」</span>
+              <span class="px-2.5 py-1 bg-surface-container-low rounded-full border border-outline-variant/10 text-[11px] text-on-surface-variant">「おすすめのワイン」</span>
+              <span class="px-2.5 py-1 bg-surface-container-low rounded-full border border-outline-variant/10 text-[11px] text-on-surface-variant">「子ども向けの料理はある？」</span>
+            </div>
+          </div>
+          <div class="absolute -bottom-8 -right-8 w-36 h-36 bg-tertiary/5 rounded-full blur-2xl"></div>
+        </div>
 
-            updateSummary();
-        }
+        <!-- Normal Card -->
+        <div class="col-span-4 rounded-xl bg-surface-container-low p-5 border-2 border-transparent hover:border-outline-variant/30 transition-all flex flex-col justify-between cursor-pointer"
+             id="normal-card" onclick="selectMode('normal')">
+          <div class="space-y-2">
+            <div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant">
+              <span class="material-symbols-outlined text-base">restaurant_menu</span>
+            </div>
+            <div>
+              <h3 class="text-base font-bold font-headline text-on-surface">通常メニューから注文</h3>
+              <p class="text-on-surface-variant text-xs mt-1 leading-relaxed">メニューを見ながら通常通り注文できます。</p>
+            </div>
+          </div>
+          <button class="w-full py-2 bg-white/50 border border-outline-variant/30 rounded-lg text-secondary font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-white transition-all mt-4">
+            通常注文で開始
+            <span class="material-symbols-outlined text-xs">arrow_forward</span>
+          </button>
+        </div>
 
-        function updateSummary() {
-            if (adultIsCustom) {
-                adultCount = parseInt(document.getElementById('adultCustomInput').value) || 0;
-            }
-            if (childIsCustom) {
-                childCount = parseInt(document.getElementById('childCustomInput').value) || 0;
-            }
-            const total = adultCount + childCount;
-            const summary = document.getElementById('guestSummary');
-            summary.textContent = `合計: 大人 ${adultCount}名 / 子供 ${childCount}名 → ${total}名様`;
-        }
+      </div>
 
-        function selectLang(btn) {
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-        }
+      <!-- Settings Row -->
+      <div class="grid grid-cols-2 gap-6 mb-3" style="flex-shrink:0;">
 
-        function selectMode(btn) {
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-        }
+        <!-- Guests -->
+        <div>
+          <h4 class="font-label text-[9px] font-bold uppercase tracking-[0.2em] text-on-surface-variant flex items-center gap-1.5 mb-2">
+            <span class="material-symbols-outlined text-sm">groups</span>
+            ご来店人数 / Number of Guests
+          </h4>
+          <div class="flex gap-3">
+            <div class="flex-1 flex items-center justify-between bg-surface-container-lowest rounded-lg px-1.5 py-1 border border-outline-variant/10 shadow-sm">
+              <button class="w-7 h-7 flex items-center justify-center rounded-md hover:bg-surface-variant" onclick="changeGuest('adult', -1)">
+                <span class="material-symbols-outlined text-base">remove</span>
+              </button>
+              <span class="text-xs font-bold" id="adultLabel">大人 2</span>
+              <button class="w-7 h-7 flex items-center justify-center rounded-md bg-primary text-on-primary" onclick="changeGuest('adult', 1)">
+                <span class="material-symbols-outlined text-base">add</span>
+              </button>
+            </div>
+            <div class="flex-1 flex items-center justify-between bg-surface-container-lowest rounded-lg px-1.5 py-1 border border-outline-variant/10 shadow-sm">
+              <button class="w-7 h-7 flex items-center justify-center rounded-md hover:bg-surface-variant" onclick="changeGuest('child', -1)">
+                <span class="material-symbols-outlined text-base">remove</span>
+              </button>
+              <span class="text-xs font-bold" id="childLabel">子供 0</span>
+              <button class="w-7 h-7 flex items-center justify-center rounded-md hover:bg-surface-variant" onclick="changeGuest('child', 1)">
+                <span class="material-symbols-outlined text-base">add</span>
+              </button>
+            </div>
+          </div>
+          <p class="text-[10px] text-on-surface-variant mt-1 pl-0.5" id="guestSummary">合計: 大人 2名 / 子供 0名 → 2名様</p>
+        </div>
 
-        function startOrder() {
-            const selectedMode = document.querySelector('.mode-btn.selected');
-            const isAI = selectedMode && selectedMode.textContent.includes('AI');
-            const selectedLang = document.querySelector('.lang-btn.selected');
+        <!-- Language -->
+        <div>
+          <h4 class="font-label text-[9px] font-bold uppercase tracking-[0.2em] text-on-surface-variant flex items-center gap-1.5 mb-2">
+            <span class="material-symbols-outlined text-sm">translate</span>
+            言語設定 / Language
+          </h4>
+          <div class="flex gap-1.5 flex-wrap">
+            <button class="lang-btn px-3 py-1 rounded-full bg-secondary text-on-secondary font-bold text-xs shadow-sm transition-all" onclick="selectLang(this)">日本語</button>
+            <button class="lang-btn px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/20 text-on-surface-variant text-xs shadow-sm transition-all" onclick="selectLang(this)">English</button>
+            <button class="lang-btn px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/20 text-on-surface-variant text-xs shadow-sm transition-all" onclick="selectLang(this)">한국어</button>
+            <button class="lang-btn px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/20 text-on-surface-variant text-xs shadow-sm transition-all" onclick="selectLang(this)">中文</button>
+          </div>
+        </div>
 
-            // Save session to localStorage
-            const session = {
-                tables: JSON.parse(localStorage.getItem('selectedTables') || '[]'),
-                adults: adultCount,
-                children: childCount,
-                totalGuests: adultCount + childCount,
-                language: selectedLang ? selectedLang.textContent : '日本語',
-                orderMode: isAI ? 'ai' : 'manual',
-                terminal: localStorage.getItem('terminalId') || 'iPad-03',
-                reception: localStorage.getItem('receptionNo') || '0042',
-                startedAt: new Date().toISOString()
-            };
-            localStorage.setItem('currentSession', JSON.stringify(session));
+      </div>
 
-            if (isAI) {
-                sessionStorage.setItem('showAiWelcome', 'yes');
-                window.location.href = 'menu_ai.html';
-            } else {
-                window.location.href = 'menu.html';
-            }
-        }
+      <!-- CTA Button -->
+      <div class="flex justify-center" style="margin-top:auto;padding-bottom:2px;">
+        <button class="group relative flex items-center gap-3 bg-tertiary text-on-tertiary px-10 py-3.5 rounded-full font-headline font-bold text-base shadow-xl shadow-tertiary/30 transition-all hover:scale-105 active:scale-95"
+                id="primary-cta" onclick="startOrder()">
+          <span class="material-symbols-outlined text-xl" id="cta-icon" style="font-variation-settings:'FILL' 1;">auto_awesome</span>
+          <span id="cta-text">AIで音声注文を始める</span>
+          <div class="absolute inset-0 rounded-full border-4 border-white/20 scale-100 group-hover:scale-110 transition-transform duration-500 opacity-0 group-hover:opacity-100"></div>
+        </button>
+      </div>
 
-        // --- Context bar: read from localStorage ---
-        (function initContext() {
-            // Date
-            const now = new Date();
-            const y = now.getFullYear();
-            const m = String(now.getMonth() + 1).padStart(2, '0');
-            const d = String(now.getDate()).padStart(2, '0');
-            const hh = String(now.getHours()).padStart(2, '0');
-            const mm = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('ctxDate').textContent = `${y}/${m}/${d} ${hh}:${mm}`;
+    </div><!-- /content-inner -->
+  </div><!-- /main-content -->
 
-            // Tables from localStorage (saved by dashboard)
-            const tables = JSON.parse(localStorage.getItem('selectedTables') || '[]');
-            if (tables.length > 0) {
-                document.getElementById('ctxTable').textContent = tables.join(', ');
-            }
+</div><!-- /ipad-frame -->
 
-            // Terminal / Reception from localStorage
-            const terminal = localStorage.getItem('terminalId') || 'iPad-03';
-            const reception = localStorage.getItem('receptionNo') || '0042';
-            document.getElementById('ctxTerminal').textContent = terminal;
-            document.getElementById('ctxReception').textContent = '#' + reception;
-        })();
-    </script>
+<script>
+  let currentMode = 'ai';
+  let currentMethod = 'voice';
+  let adultCount = 2;
+  let childCount = 0;
+
+  function selectMode(mode) {
+    currentMode = mode;
+    const aiCard = document.getElementById('ai-card');
+    const normalCard = document.getElementById('normal-card');
+    const cta = document.getElementById('primary-cta');
+    const ctaText = document.getElementById('cta-text');
+    const ctaIcon = document.getElementById('cta-icon');
+    if (mode === 'ai') {
+      aiCard.classList.add('card-selected', 'border-tertiary');
+      aiCard.classList.remove('border-transparent');
+      normalCard.classList.remove('card-normal-selected', 'border-secondary');
+      normalCard.classList.add('border-transparent');
+      cta.className = 'group relative flex items-center gap-3 bg-tertiary text-on-tertiary px-10 py-3.5 rounded-full font-headline font-bold text-base shadow-xl shadow-tertiary/30 transition-all hover:scale-105 active:scale-95';
+      ctaIcon.innerText = 'auto_awesome';
+      ctaIcon.style.fontVariationSettings = "'FILL' 1";
+      updateCtaText();
+    } else {
+      normalCard.classList.add('card-normal-selected', 'border-secondary');
+      normalCard.classList.remove('border-transparent');
+      aiCard.classList.remove('card-selected', 'border-tertiary');
+      aiCard.classList.add('border-transparent');
+      cta.className = 'group relative flex items-center gap-3 bg-secondary text-on-secondary px-10 py-3.5 rounded-full font-headline font-bold text-base shadow-xl shadow-secondary/30 transition-all hover:scale-105 active:scale-95';
+      ctaText.innerText = '通常注文で開始';
+      ctaIcon.innerText = 'restaurant_menu';
+      ctaIcon.style.fontVariationSettings = "'FILL' 0";
+    }
+  }
+
+  function selectMethod(method, event) {
+    event.stopPropagation();
+    currentMethod = method;
+    selectMode('ai');
+    const voiceBtn = document.getElementById('voice-btn');
+    const chatBtn = document.getElementById('chat-btn');
+    if (method === 'voice') {
+      voiceBtn.classList.add('method-selected');
+      chatBtn.classList.remove('method-selected');
+    } else {
+      chatBtn.classList.add('method-selected');
+      voiceBtn.classList.remove('method-selected');
+    }
+    updateCtaText();
+  }
+
+  function updateCtaText() {
+    if (currentMode === 'ai') {
+      const label = currentMethod === 'voice' ? '音声' : 'チャット';
+      document.getElementById('cta-text').innerText = `AIで${label}注文を始める`;
+    }
+  }
+
+  function changeGuest(type, delta) {
+    if (type === 'adult') {
+      adultCount = Math.max(1, adultCount + delta);
+      document.getElementById('adultLabel').textContent = `大人 ${adultCount}`;
+    } else {
+      childCount = Math.max(0, childCount + delta);
+      document.getElementById('childLabel').textContent = `子供 ${childCount}`;
+    }
+    const total = adultCount + childCount;
+    document.getElementById('guestSummary').textContent = `合計: 大人 ${adultCount}名 / 子供 ${childCount}名 → ${total}名様`;
+  }
+
+  function selectLang(btn) {
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.remove('bg-secondary', 'text-on-secondary');
+      b.classList.add('bg-surface-container-lowest', 'border', 'border-outline-variant/20', 'text-on-surface-variant');
+    });
+    btn.classList.remove('bg-surface-container-lowest', 'border', 'border-outline-variant/20', 'text-on-surface-variant');
+    btn.classList.add('bg-secondary', 'text-on-secondary');
+  }
+
+  function startOrder() {
+    const isAI = currentMode === 'ai';
+    const selectedLang = document.querySelector('.lang-btn.bg-secondary');
+    const session = {
+      tables: JSON.parse(localStorage.getItem('selectedTables') || '[]'),
+      adults: adultCount,
+      children: childCount,
+      totalGuests: adultCount + childCount,
+      language: selectedLang ? selectedLang.textContent : '日本語',
+      orderMode: isAI ? 'ai' : 'manual',
+      aiMethod: currentMethod,
+      terminal: localStorage.getItem('terminalId') || 'iPad-03',
+      reception: localStorage.getItem('receptionNo') || '0042',
+      startedAt: new Date().toISOString()
+    };
+    localStorage.setItem('currentSession', JSON.stringify(session));
+    if (isAI) {
+      sessionStorage.setItem('showAiWelcome', 'yes');
+      window.location.href = 'menu_ai.html';
+    } else {
+      window.location.href = 'menu.html';
+    }
+  }
+
+  (function initContext() {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    document.getElementById('ctxDate').textContent = `${y}/${m}/${d} ${hh}:${mm}`;
+    const tables = JSON.parse(localStorage.getItem('selectedTables') || '[]');
+    if (tables.length > 0) document.getElementById('ctxTable').textContent = tables.join(', ');
+    document.getElementById('ctxTerminal').textContent = localStorage.getItem('terminalId') || 'iPad-03';
+    document.getElementById('ctxReception').textContent = '#' + (localStorage.getItem('receptionNo') || '0042');
+  })();
+</script>
 </body>
 </html>

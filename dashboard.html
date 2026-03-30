@@ -547,7 +547,7 @@
             const occupiedSelected = Array.from(selectedTables).filter(t => occupiedTables.includes(t));
             if (occupiedSelected.length > 0) {
                 const msg = '以下のテーブルは現在利用中です:\n'
-                    + occupiedSelected.join(', ')
+                    + occupiedSelected.join(', ')  
                     + '\n\nテーブルを合席してもよろしいですか？';
                 if (!confirm(msg)) return;
             }
