@@ -403,6 +403,22 @@
             document.getElementById('return-input-area').style.display = 'none';
             document.getElementById('return-history-table').style.display = 'table';
             
+            // Check total returned vs shipped to hide "Add Return" button
+            let totalShippedAll = 0;
+            let totalReturnedAll = 0;
+            const productRows = document.querySelectorAll('#product-tbody tr');
+            productRows.forEach(pRow => {
+                totalShippedAll += parseInt(pRow.cells[3].textContent) || 0;
+                totalReturnedAll += parseInt(pRow.cells[4].textContent) || 0;
+            });
+            
+            if (totalReturnedAll + totalQty >= totalShippedAll) {
+                const addReturnBtn = document.querySelector('button[onclick="toggleReturnInput()"]');
+                if (addReturnBtn) {
+                    addReturnBtn.style.display = 'none';
+                }
+            }
+
             // Update next action area to show pending task notice
             const nextActionCard = document.getElementById('next-action-card');
             const nextActionContentArea = document.getElementById('next-action-content-area');
