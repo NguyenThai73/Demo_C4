@@ -123,11 +123,11 @@
         </div>
 
         <div class="next-action-card" id="next-action-card" style="border-left-color: var(--status-return-text); display: flex; justify-content: space-between; align-items: center; gap: 20px;">
-            <div class="next-action-content">
+            <div class="next-action-content" id="next-action-content-area">
                 <span style="font-size: 32px; color: var(--status-return-text);"><i class="fas fa-rotate-left"></i></span>
                 <div>
                     状況: <span style="color: var(--status-return-text); font-weight: 800;">一部返品完了</span><br>
-                    <span style="font-weight: normal; font-size: 11px; color: #666;">
+                    <span style="font-weight: normal; font-size: 11px; color: #666;" id="next-action-guide-text">
                         返品入庫が完了しました。続けて返品の登録を行うか、報酬の確定手続きを進めてください。
                     </span>
                 </div>
@@ -402,6 +402,23 @@
             const msg = document.getElementById('flash-message');
             document.getElementById('return-input-area').style.display = 'none';
             document.getElementById('return-history-table').style.display = 'table';
+            
+            // Update next action area to show pending task notice
+            const nextActionCard = document.getElementById('next-action-card');
+            const nextActionContentArea = document.getElementById('next-action-content-area');
+            if (nextActionCard && nextActionContentArea) {
+                nextActionCard.style.borderLeftColor = 'var(--kintone-blue)';
+                nextActionContentArea.innerHTML = `
+                    <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-barcode"></i></span>
+                    <div>
+                        次の対応:<br>
+                        <span style="font-weight: 800; font-size: 14px; color: var(--kintone-blue); display: block; margin: 4px 0;">返品入庫待ちのタスクがあります。</span>
+                        <span style="font-weight: normal; font-size: 11px; color: #666;">
+                            下の返品タスク一覧から対象を選択し、対応を進めてください。
+                        </span>
+                    </div>
+                `;
+            }
             
             const body = document.getElementById('return-history-body');
             const now = new Date().toISOString().split('T')[0];
