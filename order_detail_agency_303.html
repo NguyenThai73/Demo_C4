@@ -501,7 +501,7 @@
             } else if (orderState.status === 'FINISHED') {
                 guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span><div>状況: <span style="color: var(--kintone-success);">取引完了</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">全ての納品が完了しました。返品が必要な場合は返品ボタンから登録してください。</span></div></div><button class="btn-reject" onclick="showReturnInput()">返品をする</button>`;
             } else if (orderState.status === 'CANCELLED') {
-                guideHtml = `<div class="next-action-content" style="opacity: 0.6;"><span style="font-size: 30px; color: #999;"><i class="fas fa-circle-xmark"></i></span><div>状況: <span style="color: #666; font-weight: 800;">キャンセル済み</span><br><span style="font-weight: normal; font-size: 11px; color: #999;">この注文は却下またはキャンセルされました。</span></div></div>`;
+                guideHtml = `<div class="next-action-content" style="opacity: 0.6;"><span style="font-size: 30px; color: #999;"><i class="fas fa-circle-xmark"></i></span><div>状況: <span style="color: #666; font-weight: 800;">キャンセル済み</span><br><span style="font-weight: normal; font-size: 11px; color: #999;">この注文は却下 hoặc キャンセルされました。</span></div></div>`;
             }
             nextActionArea.innerHTML = guideHtml;
             nextActionArea.className = orderState.status === 'CONFIRM_WAIT' ? 'next-action-card accent-primary' : (orderState.status === 'FINISHED' ? 'next-action-card accent-success' : (orderState.status === 'CANCELLED' ? 'next-action-card' : 'next-action-card accent-warning'));
