@@ -117,7 +117,7 @@
         <div class="next-action-card" style="border-left-color: var(--status-return-text); display: flex; justify-content: space-between; align-items: center; gap: 20px;">
             <div class="next-action-content">
                 <span style="font-size: 32px; color: var(--status-return-text);"><i class="fas fa-rotate-left"></i></span>
-                <div>
+                <div id="next-action-text-area">
                     状況: <span style="color: var(--status-return-text); font-weight: 800;">一部返品完了</span><br>
                     <span style="font-weight: normal; font-size: 11px; color: #666;">
                         返品入庫が完了しました。売上の確定手続きを確認してください。
@@ -360,7 +360,39 @@
             document.getElementById('return-input-area').style.display = 'none';
             
             checkReturnButtonVisibility();
+            updateNextAction();
             setTimeout(() => { flash.style.display = 'none'; }, 3000);
+        }
+
+        function updateNextAction() {
+            const tbody = document.getElementById('return-history-tbody');
+            const hasUnprocessed = Array.from(tbody.querySelectorAll('.badge-status')).some(badge => badge.textContent.trim() === '未対応');
+            const textArea = document.getElementById('next-action-text-area');
+            const card = document.querySelector('.next-action-card');
+            const iconWrap = card.querySelector('.fa-rotate-left').parentElement;
+
+            if (hasUnprocessed) {
+                card.style.borderLeft = '6px solid var(--kintone-danger)';
+                card.style.backgroundColor = '#fff5f5';
+                iconWrap.style.color = 'var(--kintone-danger)';
+                textArea.innerHTML = `
+                    <div style="color: var(--kintone-danger); font-weight: 800; font-size: 15px; margin-bottom: 2px;">状況: 返品入庫待ち</div>
+                    <div style="font-weight: bold; font-size: 13px; color: #333; line-height: 1.4;">
+                        返品入庫待ちのタスクがあります。<br>
+                        下の返品タスク一覧から対象を選択し、対応を進めてください。
+                    </div>
+                `;
+            } else {
+                card.style.borderLeft = '5px solid var(--status-return-text)'; // matching original card border width if any, or default
+                card.style.backgroundColor = '#fffde7'; 
+                iconWrap.style.color = 'var(--status-return-text)';
+                textArea.innerHTML = `
+                    状況: <span style="color: var(--status-return-text); font-weight: 800;">一部返品完了</span><br>
+                    <span style="font-weight: normal; font-size: 11px; color: #666;">
+                        返品入庫が完了しました。売上の確定手続きを確認してください。
+                    </span>
+                `;
+            }
         }
 
         function cancelReturnTask(btn, q50, q300) {
@@ -374,6 +406,7 @@
             document.getElementById('del-qty-rc300').textContent = del300 + q300;
             
             checkReturnButtonVisibility();
+            updateNextAction();
             showToast('返品タスクを取り消しました。');
         }
 
@@ -408,6 +441,7 @@
         setTimeout(() => { document.getElementById('flash-message').style.display = 'none'; }, 3000);
         window.onload = function() {
             checkReturnButtonVisibility();
+            updateNextAction();
         };
     </script>
 </body>

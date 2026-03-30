@@ -335,7 +335,12 @@
                             <td>Rice Silica 50mL x 500, Rice Silica 300mL x 200</td>
                             <td>-</td>
                             <td class="col-mid">
-                                <button class="btn-blue" onclick="reportDeliveredTask(this)" style="padding: 6px 16px; font-size: 12px; border-radius: 4px; border: none; font-weight: bold; background: #7b1fa2; color: white; cursor: pointer;">配送完了を報告</button>
+                                <div style="display:flex; justify-content:center; gap:12px;">
+                                    <button class="btn-blue" onclick="reportDeliveredTask(this)" style="padding: 6px 16px; font-size: 12px; border-radius: 4px; border: none; font-weight: bold; background: #7b1fa2; color: white; cursor: pointer;">配送完了を報告</button>
+                                    <button class="icon-btn" onclick="deleteTask(this, '101')" title="取消" style="background:none; border:none; color:#888; cursor:pointer; font-size: 11px; font-weight: bold;">
+                                        <i class="fas fa-trash-can" style="margin-right: 4px;"></i>取消
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -539,9 +544,9 @@
                 <td>${summary.join(', ')}</td>
                 <td>-</td>
                 <td class="col-mid">
-                    <div style="display:flex; justify-content:center; gap:8px;">
+                    <div style="display:flex; justify-content:center; gap:12px;">
                         <button class="btn-blue" onclick="location.href='task_return_2482_detail.html'" style="padding: 6px 16px; font-size: 12px; border-radius: 4px; border: none; font-weight: bold; background: var(--kintone-blue); color: white; cursor: pointer;">入荷実行へ</button>
-                        <button class="btn-text" onclick="cancelReturnRow(this, ${qtyRC50}, ${qtyRC300})" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer; font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 4px; justify-content: center;">
+                        <button class="btn-text" onclick="cancelReturnRow(this, ${qtyRC50}, ${qtyRC300})" style="background:none; border:none; color:#888; cursor:pointer; font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 4px; justify-content: center;">
                             <i class="fas fa-trash-can"></i> 取消
                         </button>
                     </div>
