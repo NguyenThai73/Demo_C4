@@ -705,10 +705,8 @@
 
             if (shippedItems.length > 0) {
                 const summary = shippedItems.join(', ');
-                addLog('SHIP', summary, combinedNote || '-', shipDate);
-                orderState.hasShipmentTasks = true;
-                
-                // Update shipped (registered) qty in state
+
+                // Update shipped qty in state
                 orderState.items.forEach(i => {
                     const el = document.getElementById(`shp-qty-${i.id}`);
                     if (el && parseInt(el.value) > 0) {
@@ -716,8 +714,11 @@
                     }
                 });
 
-                hideShipmentInput(); 
-                showToast('配送タスクを登録しました。 (出荷状況は後ほど更新されます)'); 
+                orderState.status = 'OUTFINISH';
+                orderState.hasShipmentTasks = true;
+                addLog('SHIP', summary, combinedNote || '-', shipDate);
+                hideShipmentInput();
+                showToast('出荷タスクを登録しました。');
                 updateUI();
             } else {
                 showAlert('入力不足', '納品登録する商品の数量を1以上入力してください。');

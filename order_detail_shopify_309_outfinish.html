@@ -432,21 +432,34 @@
             document.getElementById('delivered-modal').style.display = 'none';
         }
         function executeDeliveredTask() {
-            if (!pendingDeliveredBtn) return;
-            const btn = pendingDeliveredBtn;
+            let tr;
+            if (pendingDeliveredBtn) {
+                tr = pendingDeliveredBtn.closest('tr');
+            } else {
+                // Default to the first pending task row if called from header
+                const taskRows = document.querySelectorAll('#shipment-history-container tbody tr');
+                for (let row of taskRows) {
+                    if (row.innerHTML.includes('配送完了を報告')) {
+                        tr = row;
+                        break;
+                    }
+                }
+            }
+            if (!tr) return;
+            
             closeDeliveredModal();
             
             // Update the task row
-            const tr = btn.closest('tr');
             const badge = tr.querySelector('.badge-status');
+            const btnCell = tr.querySelector('td:last-child');
             badge.innerText = '完了';
             badge.style.backgroundColor = '#ebfaf0';
             badge.style.color = '#008a3d';
-            btn.parentElement.innerHTML = '-'; 
+            btnCell.innerHTML = '-'; 
 
             // Update Header Status
             const summaryBadge = document.getElementById('summary-shipping');
-            summaryBadge.innerText = '完了';
+            summaryBadge.innerText = '配送完了';
             summaryBadge.style.color = '#008a3d';
             summaryBadge.style.fontSize = '18px';
             document.getElementById('summary-delivery-label').innerText = '配送日';
@@ -462,7 +475,7 @@
                 <div class="next-action-content">
                     <span style="font-size: 30px; color: #008a3d;"><i class="fas fa-check-double"></i></span>
                     <div>
-                        状況: <span style="color: #008a3d; font-weight: 800;">完了</span><br>
+                        状況: <span style="color: #008a3d; font-weight: 800;">配送完了</span><br>
                         <span style="font-weight: normal; font-size: 12px; color: #666;">全ての商品の配送が完了しました。返品が必要な場合は、こちら từ 返品登録をしてください。</span>
                     </div>
                 </div>
@@ -476,7 +489,7 @@
             totalDeliveredItems = 700; // Total 500+200
             const productBadges = document.querySelectorAll('#product-tbody .badge-status');
             productBadges.forEach(pb => {
-                pb.innerText = '完了';
+                pb.innerText = '配送完了';
                 pb.className = 'badge-status status-ok';
                 pb.style.backgroundColor = '#ebfaf0';
                 pb.style.color = '#008a3d';
