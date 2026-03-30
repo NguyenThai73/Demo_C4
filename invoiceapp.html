@@ -765,7 +765,7 @@
         const params = new URLSearchParams(window.location.search);
         const orderId = params.get('id');
         const proceedBtn = orderId === '303' ? `
-            <button class="btn-invoice-primary" onclick="location.href='order_detail_agency_303_paid.html'" style="padding: 10px 30px; border-radius:12px; font-weight:800; background: #e67e22; border: none; cursor: pointer;">
+            <button class="btn-invoice-primary" onclick="location.href='order_detail_agency_303_paid.html'" style="padding: 10px 30px; border-radius:12px; font-weight:800; background: #fff; color: #333; border: 1.5px solid #ddd; cursor: pointer;">
                 <i class="fas fa-arrow-right"></i> 注文確認へ進む
             </button>
         ` : '';
@@ -835,9 +835,17 @@
         if (orderId === '303' && draft === 'INV-76') {
             document.getElementById('breadcrumb-record').textContent = '76';
             const relatedLink = document.querySelector('.field-item a');
+            const backLink = document.querySelector('.back-link');
+            
             if (relatedLink) {
-                relatedLink.textContent = '303';
-                relatedLink.href = 'order_detail_agency_303.html';
+                // Change link to plain text
+                const parent = relatedLink.parentNode;
+                parent.textContent = '303';
+                parent.style.fontWeight = 'bold';
+            }
+            
+            if (backLink) {
+                backLink.style.display = 'none';
             }
         }
 
