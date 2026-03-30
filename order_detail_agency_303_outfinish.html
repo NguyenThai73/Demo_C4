@@ -256,7 +256,7 @@
                         <td class="col-num">0</td>
                         <td class="col-num" style="font-weight: bold; color: var(--kintone-danger);">500</td>
                         <td class="col-num">0</td>
-                        <td class="col-mid"><span class="badge-status" style="background-color: #ebfaf0; color: #008a3d; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;">出荷済</span></td>
+                        <td class="col-mid"><span class="badge-status" style="background-color: #f3e5f5; color: #7b1fa2; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;">配送中</span></td>
                     </tr>
                     <tr>
                         <td class="col-product-name">Rice Silica 300mL (RC300-V01)</td>
@@ -459,8 +459,9 @@
                 r.cells[4].style.color = '#ccc';
                 const statusBadge = r.querySelector('.badge-status');
                 if(statusBadge) {
-                   statusBadge.innerText = '出荷済';
-                   statusBadge.style.backgroundColor = '#ebfaf0'; // Same style previously defined
+                   statusBadge.innerText = '配送完了';
+                   statusBadge.style.backgroundColor = '#ebfaf0'; 
+                   statusBadge.style.color = '#008a3d';
                 }
             });
 
@@ -538,9 +539,12 @@
                 <td>${summary.join(', ')}</td>
                 <td>-</td>
                 <td class="col-mid">
-                    <button class="btn-text" onclick="cancelReturnRow(this, ${qtyRC50}, ${qtyRC300})" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer; font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 4px; justify-content: center; width: 100%;">
-                        <i class="fas fa-trash-can"></i> 取消
-                    </button>
+                    <div style="display:flex; justify-content:center; gap:8px;">
+                        <button class="btn-blue" onclick="location.href='task_return_2482_detail.html'" style="padding: 6px 16px; font-size: 12px; border-radius: 4px; border: none; font-weight: bold; background: var(--kintone-blue); color: white; cursor: pointer;">入荷実行へ</button>
+                        <button class="btn-text" onclick="cancelReturnRow(this, ${qtyRC50}, ${qtyRC300})" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer; font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 4px; justify-content: center;">
+                            <i class="fas fa-trash-can"></i> 取消
+                        </button>
+                    </div>
                 </td>
             </tr>`;
             
