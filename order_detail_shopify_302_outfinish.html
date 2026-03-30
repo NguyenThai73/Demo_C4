@@ -37,12 +37,14 @@
 
     <div class="kintone-header-top">
         <div class="header-content-inner">
-            <div class="header-logo"><a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;"><span class="k-icon">k</span> kintone</a></div>
+            <div class="header-logo">
+                <div class="k-icon-box">受</div>
+                受発注管理システム
+            </div>
             <div class="header-user">
-                <span>✉</span>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
-                        alt="User">
+                <div class="mail-icon"><i class="fas fa-envelope"></i></div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-left: 10px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
                     <span>Administrator</span>
                     <span style="font-size: 10px;">▼</span>
                 </div>
@@ -52,38 +54,57 @@
 
     <div class="kintone-header-sub">
         <div class="header-content-inner">
-            <div class="header-sub-left"><span>☰</span> <span onclick="location.href='index.html'" style="cursor:pointer">🏠</span> <span>🔔</span> <span>⭐</span></div>
+            <div class="header-sub-left">
+                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
+                <span><i class="fas fa-bell"></i></span>
+                <span><i class="fas fa-star"></i></span>
+            </div>
             <div class="header-sub-right">
-                <span>⚙</span> <span>❓</span>
+                <span><i class="fas fa-cog"></i></span>
+                <span><i class="fas fa-question-circle"></i></span>
                 <div class="search-container">
                     <input type="text" class="search-input" placeholder="アプリ内検索">
-                    <span class="search-icon">🔍</span>
+                    <div class="search-icon-btn"><i class="fas fa-search"></i></div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="kintone-app-title-bar">
-        <div class="header-content-inner" style="padding: 12px 10px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div class="app-icon">🛒</div>
-                <div class="app-title">注文管理 (Shopify)</div>
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px; justify-content: flex-start;">
+            <div class="app-icon-box" style="margin-left: -40px;">🛒</div>
+            <div class="app-title">注文一覧を見る</div>
+        </div>
+    </div>
+
+    <div class="kintone-sub-nav">
+        <div class="header-content-inner">
+            <div class="sub-nav-left">
+                <i class="fas fa-house" onclick="location.href='index.html'" style="cursor:pointer;"></i>
+                <i class="fas fa-chevron-right" style="font-size: 8px;"></i>
+                <span style="margin-left: 5px;">アプリ: 注文管理</span>
+                <i class="fas fa-chevron-right" style="font-size: 8px; margin-left: 5px;"></i>
+                <span style="margin-left: 5px;">レコード: #302</span>
+            </div>
+            <div class="sub-nav-right">
+                <i class="fas fa-thumbtack"></i>
+                <i class="fas fa-info-circle"></i>
             </div>
         </div>
     </div>
 
+    <div class="kintone-action-toolbar" style="max-width: 100%; padding: 10px 20px; background: white; border-bottom: 1px solid #eee; margin-bottom: 30px;">
+        <div class="header-content-inner" style="padding: 0; justify-content: flex-end; gap: 2px;">
+            <div class="action-icon-btn" style="border-radius: 4px 0 0 4px;"><i class="fas fa-chevron-up"></i></div>
+            <div class="action-icon-btn" style="border-right: 2px solid #ddd; border-radius: 0 4px 4px 0;"><i class="fas fa-chevron-down"></i></div>
+            <div class="action-icon-btn" style="margin-left: 10px;"><i class="fas fa-file-lines"></i></div>
+            <div class="action-icon-btn"><i class="fas fa-cog"></i> <span>▼</span></div>
+            <div class="action-icon-btn" style="border-radius: 4px;"><i class="fas fa-ellipsis"></i></div>
+        </div>
+    </div>
+
     <div class="main-container">
-        <div class="breadcrumb">
-            🏠 <span>/</span> <a href="index.html" style="color: inherit; text-decoration: none;">アプリ: 注文管理</a> <span>/</span> レコード: #302
-        </div>
-        <div class="kintone-action-toolbar">
-            <div class="action-icon-btn">︿</div>
-            <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
-            <div class="action-icon-btn">+</div>
-            <div class="action-icon-btn">📄</div>
-            <div class="action-icon-btn">⚙ <span>▼</span></div>
-            <div class="action-icon-btn">⋯</div>
-        </div>
 
         <div id="flash-message" class="sticky-flash" style="display: none;">🎉 操作を完了しました。</div>
 
@@ -130,13 +151,12 @@
             <div class="next-action-content">
                 <span style="font-size: 30px; color: #7b1fa2;"><i class="fas fa-truck-ramp-box"></i></span>
                 <div>
-                    次の対応: <span style="color: #7b1fa2; font-weight: 800;">配送完了を報告</span><br>
-                    <span style="font-weight: normal; font-size: 12px; color: #666;">商品が出荷されました。配送が完了したら報告を行ってください。</span>
+                    次の対応:<br>
+                    <span style="font-weight: 800; font-size: 14px; color: #7b1fa2; display: block; margin: 4px 0;">配送中のタスクが1件あります。</span>
+                    <span style="font-weight: normal; font-size: 12px; color: #666;">下の出荷タスク一覧から対象を選択し、配送完了を登録してください。</span>
                 </div>
             </div>
-            <div style="display: flex; gap: 12px;">
-                <button class="btn-blue" onclick="showDeliveredModal()" style="background-color: #7b1fa2; padding: 10px 40px; border-radius: 12px; border: none; font-weight: 800; color: white; cursor: pointer;">配送完了を報告</button>
-            </div>
+            <div style="display: flex; gap: 12px;"></div>
         </div>
 
 
@@ -264,7 +284,7 @@
                         <td class="col-num" id="del-qty-rc50">0</td>
                         <td class="col-num" id="rem-qty-rc50" style="font-weight: bold; color: var(--kintone-danger);">500</td>
                         <td class="col-num">0</td>
-                        <td class="col-mid"><span class="badge-status" style="background-color: #ebfaf0; color: #008a3d; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;">出荷済</span></td>
+                        <td class="col-mid"><span class="badge-status status-ok">完了</span></td>
                     </tr>
                     <tr>
                         <td class="col-product-name">Rice Silica 300mL (RC300-V01)</td>
@@ -273,7 +293,7 @@
                         <td class="col-num" id="del-qty-rc300">0</td>
                         <td class="col-num" id="rem-qty-rc300" style="font-weight: bold; color: var(--kintone-danger);">200</td>
                         <td class="col-num">0</td>
-                        <td class="col-mid"><span class="badge-status" style="background-color: #ebfaf0; color: #008a3d; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;">出荷済</span></td>
+                        <td class="col-mid"><span class="badge-status status-ok">完了</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -316,7 +336,7 @@
         </div>
 
         <div class="section-card section-hist">
-            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span><i class="fas fa-truck-ramp-box" style="margin-right: 12px;"></i></span> 出荷履歴</div>
+            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span><i class="fas fa-truck-ramp-box" style="margin-right: 12px;"></i></span> 出荷タスク一覧</div>
             <div id="shipment-history-container">
                 <table class="k-table" style="font-size: 11px;">
                     <thead>
@@ -344,7 +364,7 @@
         </div>
 
         <div class="section-card section-hist">
-            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span><i class="fas fa-rotate-left" style="margin-right: 12px;"></i></span> 返品履歴</div>
+            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span><i class="fas fa-rotate-left" style="margin-right: 12px;"></i></span> 返品タスク一覧</div>
             <div id="return-history-container">
                 <div class="empty-history-state" id="no-return-history">履歴はありません</div>
                 <table class="k-table" id="return-history-table" style="font-size: 11px; display: none;">
@@ -503,7 +523,7 @@
 
             const newRow = `<tr>
                 <td style="font-weight:bold;"><a href="task_return_2483_detail.html" style="color:var(--kintone-blue); text-decoration:none;">${taskId}</a></td>
-                <td class="col-mid"><span class="badge-status" style="background-color: #fffbe6; color: #bf4b00; border: 1px solid #ffe58f; padding: 2px 12px; border-radius: 20px; font-weight: bold;">待機中</span></td>
+                <td class="col-mid"><span class="badge-status status-warn">未対応</span></td>
                 <td>${now}</td>
                 <td>${summary.join(', ')}</td>
                 <td>-</td>
@@ -521,7 +541,7 @@
                     <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-barcode"></i></span>
                     <div>
                         次の対応: <span style="color: var(--kintone-blue); font-weight: 800;">返品商品の検品・入庫作業</span><br>
-                        <span style="font-weight: normal; font-size: 11px; color: #666;">返品タスク（待機中）があります。検品・入庫作業を完了させてください。</span>
+                        <span style="font-weight: normal; font-size: 11px; color: #666;">返品入庫待ちのタスクがあります。検品・入庫作業を完了させてください。</span>
                     </div>
                 </div>
                 <div style="display: flex; gap: 12px;">
