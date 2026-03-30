@@ -37,12 +37,14 @@
 
     <div class="kintone-header-top">
         <div class="header-content-inner">
-            <div class="header-logo"><a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;"><span class="k-icon">k</span> kintone</a></div>
+            <div class="header-logo">
+                <div class="k-icon-box">受</div>
+                受发注管理系统
+            </div>
             <div class="header-user">
-                <span>✉</span>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
-                        alt="User">
+                <div class="mail-icon"><i class="fas fa-envelope"></i></div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-left: 10px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
                     <span>Administrator</span>
                     <span style="font-size: 10px;">▼</span>
                 </div>
@@ -52,38 +54,55 @@
 
     <div class="kintone-header-sub">
         <div class="header-content-inner">
-            <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+            <div class="header-sub-left">
+                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
+                <span><i class="fas fa-bell"></i></span>
+                <span><i class="fas fa-star"></i></span>
+            </div>
             <div class="header-sub-right">
-                <span>⚙</span> <span>❓</span>
+                <span><i class="fas fa-cog"></i></span>
+                <span><i class="fas fa-question-circle"></i></span>
                 <div class="search-container">
                     <input type="text" class="search-input" placeholder="アプリ内検索">
-                    <span class="search-icon">🔍</span>
+                    <div class="search-icon-btn"><i class="fas fa-search"></i></div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="kintone-app-title-bar">
-        <div class="header-content-inner" style="padding: 12px 10px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div class="app-icon">🛒</div>
-                <div class="app-title">注文一覧を見る</div>
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px; justify-content: flex-start;">
+            <div class="app-icon-box" style="margin-left: -40px;">🛒</div>
+            <div class="app-title">注文一覧を見る</div>
+        </div>
+    </div>
+
+    <div class="kintone-sub-nav">
+        <div class="header-content-inner">
+            <div class="sub-nav-left">
+                <i class="fas fa-house" onclick="location.href='index.html'" style="cursor:pointer;"></i>
+                <i class="fas fa-chevron-right" style="font-size: 8px;"></i>
+                <span style="margin-left: 5px;">アプリ: 注文管理</span>
+                <i class="fas fa-chevron-right" style="font-size: 8px; margin-left: 5px;"></i>
+                <span style="margin-left: 5px;">レコード: #303</span>
+            </div>
+            <div class="sub-nav-right">
+                <i class="fas fa-thumbtack"></i>
+                <i class="fas fa-info-circle"></i>
             </div>
         </div>
     </div>
 
-    <div class="main-container">
-        <div class="breadcrumb">
-            🏠 <span>/</span> アプリ: 注文管理
+    <div class="kintone-action-toolbar" style="max-width: 100%; padding: 10px 20px; background: white; border-bottom: 1px solid #eee; margin-bottom: 30px;">
+        <div class="header-content-inner" style="padding: 0; justify-content: flex-end; gap: 2px;">
+            <div class="action-icon-btn" style="border-radius: 4px 0 0 4px;"><i class="fas fa-chevron-up"></i></div>
+            <div class="action-icon-btn" style="border-right: 2px solid #ddd; border-radius: 0 4px 4px 0;"><i class="fas fa-chevron-down"></i></div>
+            <div class="action-icon-btn" style="margin-left: 10px;"><i class="fas fa-file-lines"></i></div>
+            <div class="action-icon-btn"><i class="fas fa-cog"></i> <span>▼</span></div>
+            <div class="action-icon-btn" style="border-radius: 4px;"><i class="fas fa-ellipsis"></i></div>
         </div>
-        <div class="kintone-action-toolbar">
-            <div class="action-icon-btn">︿</div>
-            <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
-            <div class="action-icon-btn" onclick="alert('ここでは注文を直接作成できません。Agencyポータルから操作してください。')">+</div>
-            <div class="action-icon-btn">📄</div>
-            <div class="action-icon-btn">⚙ <span>▼</span></div>
-            <div class="action-icon-btn">⋯</div>
-        </div>
+    </div>
 
         <div id="flash-message" class="sticky-flash">🎉 操作を完了しました。</div>
 
