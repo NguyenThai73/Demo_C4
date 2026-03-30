@@ -361,7 +361,7 @@
                             <th class="col-mid" style="width: 110px;">出荷予定日</th>
                             <th>出荷サマリー</th>
                             <th style="width: 150px;">備考</th>
-                            <th class="col-mid" style="width: 180px;">操作</th>
+                            <th class="col-mid" style="width: 220px;">操作</th>
                         </tr>
                     </thead>
                     <tbody id="shipment-history-body"></tbody>
@@ -406,7 +406,8 @@
                 { id: 'RC300-V01', name: 'Rice Silica 300mL', orderQty: 200, deliveredQty: 0, shippedQty: 0, returnQty: 0, price: 92000, recordId: 43 }
             ],
             historyCount: 0,
-            hasShipmentTasks: false
+            hasShipmentTasks: false,
+            hasReturnTasks: false
         };
 
         function updateUI() {
@@ -419,6 +420,7 @@
 
             const totalOrdered = orderState.items.reduce((acc, item) => acc + item.orderQty, 0);
             const totalDelivered = orderState.items.reduce((acc, item) => acc + item.deliveredQty, 0);
+            const totalShipped = orderState.items.reduce((acc, item) => acc + item.shippedQty, 0);
             
             const isWaitPayment = orderState.isConfirmed && !orderState.isPaid && totalDelivered === 0;
             const isCancelled = orderState.status === 'CANCELLED';
@@ -457,6 +459,8 @@
             }
 
             let guideHtml = '';
+            const isShipping = orderState.status === 'OUTFINISH';
+
             if (orderState.status === 'CONFIRM_WAIT') {
                 guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-file-signature"></i></span><div>次の対応: <span style="color: var(--kintone-blue);">注文の確認</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">内容を確認し、受諾または却下を選択してください。</span></div></div><div style="display: flex; gap: 12px;"><button class="btn-reject" onclick="rejectOrder()">却下する</button><button class="btn-submit-ship" style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;" onclick="confirmOrder()">注文を確定する</button></div>`;
             } else if (orderState.status === 'CONFIRMED') {
@@ -474,21 +478,71 @@
                 <div style="display: flex; gap: 12px;">
                     <button class="btn-invoice-secondary" onclick="location.href='invoiceapp.html?id=303&draft=INV-76'"><i class="fas fa-file-invoice"></i> 請求書確認へ進む</button>
                 </div>`;
+            } else if (orderState.hasShipmentTasks && orderState.hasReturnTasks) {
+                guideHtml = `<div class="next-action-content">
+                    <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-barcode"></i></span>
+                    <div>
+                        次の対応:<br>
+                        <span style="font-weight: 800; font-size: 14px; color: var(--kintone-blue); display: block; margin: 4px 0;">返品入庫待ちのタスクが1件、配送中のタスクが1件あります。</span>
+                        <span style="font-weight: normal; font-size: 12px; color: #666;">下の入出荷タスク一覧 từ đối tượng đã chọn, hãy thực hiện xử lý.</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    ${(totalShipped + totalDelivered < totalOrdered) 
+                        ? `<button class="btn-blue" style="border-radius: 12px; font-weight: 800; background-color: var(--kintone-blue); color: white; border: none; padding: 10px 24px; cursor: pointer;" onclick="showShipmentInput()">追加の出荷登録</button>`
+                        : ''}
+                    <button class="btn-secondary" onclick="showReturnInput()" style="padding: 10px 24px; border-radius: 12px; font-weight: 800; border: 1px solid #bf4b00; background: white; color: #bf4b00; cursor: pointer;">追加の返品登録</button>
+                </div>`;
+            } else if (orderState.hasReturnTasks && !orderState.hasShipmentTasks) {
+                guideHtml = `<div class="next-action-content">
+                    <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-barcode"></i></span>
+                    <div>
+                        次の対応:<br>
+                        <span style="font-weight: 800; font-size: 14px; color: var(--kintone-blue); display: block; margin: 4px 0;">返品入庫待ちのタスクが1件あります。</span>
+                        <span style="font-weight: normal; font-size: 12px; color: #666;">下の入出荷タスク一覧 từ đối tượng đã chọn, hãy thực hiện xử lý.</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    ${(totalShipped + totalDelivered < totalOrdered) 
+                        ? `<button class="btn-blue" style="border-radius: 12px; font-weight: 800; background-color: var(--kintone-blue); color: white; border: none; padding: 10px 24px; cursor: pointer;" onclick="showShipmentInput()">追加の出荷登録</button>`
+                        : ''}
+                    <button class="btn-secondary" onclick="showReturnInput()" style="padding: 10px 24px; border-radius: 12px; font-weight: 800; border: 1px solid #bf4b00; background: white; color: #bf4b00; cursor: pointer;">追加の返品登録</button>
+                </div>`;
+            } else if (orderState.hasShipmentTasks && isShipping) {
+                guideHtml = `<div class="next-action-content">
+                    <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-truck-ramp-box"></i></span>
+                    <div>
+                        次の対応:<br>
+                        <span style="font-weight: 800; font-size: 14px; color: var(--kintone-blue); display: block; margin: 4px 0;">配送中のタスクが1件あります。</span>
+                        <span style="font-weight: normal; font-size: 12px; color: #666;">下の出荷タスク一覧 từ đối tượng đã chọn, hãy thực hiện xử lý hoàn tất giao hàng.</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    ${(totalShipped + totalDelivered < totalOrdered) 
+                        ? `<button class="btn-blue" style="border-radius: 12px; font-weight: 800; background-color: var(--kintone-blue); color: white; border: none; padding: 10px 24px; cursor: pointer;" onclick="showShipmentInput()">追加の出荷登録</button>`
+                        : ''}
+                    <button class="btn-secondary" onclick="showReturnInput()" style="padding: 10px 24px; border-radius: 12px; font-weight: 800; border: 1px solid #bf4b00; background: white; color: #bf4b00; cursor: pointer;">追加の返品登録</button>
+                </div>`;
             } else if (orderState.status === 'DELIVERY_READY' || (orderState.status === 'FINISHED' && totalDelivered < totalOrdered)) {
                 if (orderState.hasShipmentTasks) {
                     guideHtml = `<div class="next-action-content">
                         <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-barcode"></i></span>
                         <div>
-                            次の対応: <span style="color: var(--kintone-blue); font-weight:800;">ピッキング・出荷作業</span><br>
-                            <span style="font-weight: normal; font-size: 12px; color: #666;">配送タスク（未対応）があります。各タスク詳細に移動し、ピッキング・出荷作業を完了させてください。</span>
+                            次の対応:<br>
+                            <span style="font-weight: 800; font-size: 14px; color: var(--kintone-blue); display: block; margin: 4px 0;">未完了の出荷タスクがあります</span>
+                            <span style="font-weight: normal; font-size: 12px; color: #666;">下の「出荷タスク一覧」から対象タスクを選択してください</span>
                         </div>
                     </div>
-                    <div style="display: flex; gap: 12px;"></div>`;
+                    <div style="display: flex; gap: 12px;">
+                        ${(totalShipped + totalDelivered < totalOrdered) 
+                          ? `<button class="btn-blue" style="border-radius: 12px; font-weight: 800; background-color: var(--kintone-blue); color: white; border: none; padding: 10px 24px; cursor: pointer;" onclick="showShipmentInput()">追加の出荷登録</button>`
+                          : ''}
+                    </div>`;
                 } else {
                     const returnBtn = totalDelivered > 0
                         ? `<button class="btn-reject" onclick="showReturnInput()">返品をする</button>`
                         : '';
-                    guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-truck-fast"></i></span><div>次の対応: <span style="color: var(--kintone-blue); font-weight:800;">配送・納品登録</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">配送準備が整いました。下の出荷タスク一覧から対象を選択し、出荷を完了させてください。</span></div></div><div style="display: flex; gap: 12px;"></div>`;
+                    guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-truck-fast"></i></span><div>次の対応: <span style="color: var(--kintone-blue); font-weight:800;">配送・納品登録</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">配送準備が整いました。下の出荷タスク一覧から対象を選択し、出荷を完了させてください。</span></div></div><div style="display: flex; gap: 12px;">${returnBtn}<button class="btn-blue" onclick="showShipmentInput()" style="border-radius: 12px; font-weight: 800; background-color: var(--kintone-blue); color: white; border: none; padding: 10px 24px; cursor: pointer;">出荷する</button></div>`;
                 }
             } else if (orderState.status === 'OUTFINISH') {
                 guideHtml = `<div class="next-action-content">
@@ -496,17 +550,17 @@
                     <div>
                         次の対応:<br>
                         <span style="font-weight: 800; font-size: 14px; color: var(--kintone-blue); display: block; margin: 4px 0;">配送中のタスクが1件あります。</span>
-                        <span style="font-weight: normal; font-size: 12px; color: #666;">下の出荷タスク一覧から対象を選択し、配送完了を登録してください。</span>
+                        <span style="font-weight: normal; font-size: 12px; color: #666;">下の出荷タスク一覧 từ đối tượng đã chọn, hãy thực hiện xử lý hoàn tất giao hàng.</span>
                     </div>
                 </div>
                 <div style="display: flex; gap: 12px;"></div>`;
             } else if (orderState.status === 'FINISHED') {
                 guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span><div>状況: <span style="color: var(--kintone-success);">取引完了</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">全ての納品が完了しました。返品が必要な場合は返品ボタンから登録してください。</span></div></div><button class="btn-reject" onclick="showReturnInput()">返品をする</button>`;
             } else if (orderState.status === 'CANCELLED') {
-                guideHtml = `<div class="next-action-content" style="opacity: 0.6;"><span style="font-size: 30px; color: #999;"><i class="fas fa-circle-xmark"></i></span><div>状況: <span style="color: #666; font-weight: 800;">キャンセル済み</span><br><span style="font-weight: normal; font-size: 11px; color: #999;">この注文は却下 hoặc キャンセルされました。</span></div></div>`;
+                guideHtml = `<div class="next-action-content" style="opacity: 0.6;"><span style="font-size: 30px; color: #999;"><i class="fas fa-circle-xmark"></i></span><div>状況: <span style="color: #666; font-weight: 800;">キャンセル済み</span><br><span style="font-weight: normal; font-size: 11px; color: #999;">この注文は却下またはキャンセルされました。</span></div></div>`;
             }
             nextActionArea.innerHTML = guideHtml;
-            nextActionArea.className = orderState.status === 'CONFIRM_WAIT' ? 'next-action-card accent-primary' : (orderState.status === 'FINISHED' ? 'next-action-card accent-success' : (orderState.status === 'CANCELLED' ? 'next-action-card' : 'next-action-card accent-warning'));
+            nextActionArea.className = (orderState.status === 'CONFIRM_WAIT' || orderState.status === 'DELIVERY_READY' || isShipping || orderState.hasShipmentTasks || orderState.hasReturnTasks) ? 'next-action-card accent-primary' : (orderState.status === 'FINISHED' ? 'next-action-card accent-success' : (orderState.status === 'CANCELLED' ? 'next-action-card' : 'next-action-card accent-warning'));
             if (orderState.status === 'CANCELLED') nextActionArea.style.borderLeft = '6px solid #ccc';
 
             productTbody.innerHTML = orderState.items.map(item => {
@@ -521,7 +575,7 @@
             
             // Toggle cancellation guide
             const cancelGuide = document.getElementById('shipment-cancel-guide');
-            if (cancelGuide) cancelGuide.style.display = orderState.hasShipmentTasks ? 'flex' : 'none';
+            if (cancelGuide) cancelGuide.style.display = (orderState.hasShipmentTasks || orderState.hasReturnTasks) ? 'flex' : 'none';
         }
 
         function confirmOrder() {
@@ -674,6 +728,7 @@
             if (returnedItems.length > 0) {
                 const summary = returnedItems.join(', ');
                 addLog('RET', summary, combinedReason || '-');
+                orderState.hasReturnTasks = true;
                 if (orderState.status === 'FINISHED') orderState.status = 'DELIVERY_READY';
                 hideReturnInput(); 
                 showToast('返品を登録しました。'); 
@@ -697,7 +752,7 @@
                 actions = `
                     <div style="display:flex; justify-content:center; gap:8px;">
                         <button class="btn-blue" onclick="location.href='task_detail_101.html?id=${tId}'" style="padding: 6px 16px; font-size: 12px; border-radius: 4px; border: none; font-weight: bold; background: var(--kintone-blue); color: white; cursor: pointer;">出荷実行へ</button>
-                        <button class="icon-btn" onclick="deleteTask(this, '${tId}')" title="取消" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer; font-size: 11px; font-weight: bold;">
+                        <button class="icon-btn" onclick="deleteTask(this, '${tId}')" title="取消" style="background:none; border:none; color:#888; cursor:pointer; font-size: 11px; font-weight: bold;">
                             <i class="fas fa-trash-can" style="margin-right: 4px;"></i>取消
                         </button>
                     </div>
@@ -706,7 +761,7 @@
                 actions = `
                     <div style="display:flex; justify-content:center; gap:8px;">
                         <button class="btn-blue" onclick="location.href='task_return_2482_detail.html'" style="padding: 6px 16px; font-size: 12px; border-radius: 4px; border: none; font-weight: bold; background: var(--kintone-blue); color: white; cursor: pointer;">入荷実行へ</button>
-                        <button class="icon-btn" onclick="deleteTask(this, '${tId}')" title="取消" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer; font-size: 11px; font-weight: bold;">
+                        <button class="icon-btn" onclick="deleteTask(this, '${tId}')" title="取消" style="background:none; border:none; color:#888; cursor:pointer; font-size: 11px; font-weight: bold;">
                             <i class="fas fa-trash-can" style="margin-right: 4px;"></i>取消
                         </button>
                     </div>
@@ -748,6 +803,7 @@
                     const tableId = tbody.parentNode.id;
                     const type = tableId.split('-')[0];
                     if (type === 'shipment') orderState.hasShipmentTasks = false;
+                    if (type === 'return') orderState.hasReturnTasks = false;
                     const emptyId = type === 'shipment' ? 'no-shipment-history' : 'no-return-history';
                     document.getElementById(tableId).style.display = 'none';
                     document.getElementById(emptyId).style.display = 'block';
