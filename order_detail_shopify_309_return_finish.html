@@ -100,7 +100,7 @@
                     style="padding: 10px 24px; background: white; border: 1px solid #ccc; color: #666; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
                     <i class="fas fa-circle-check"></i> アフィリエイト報酬計上を確認
                 </button>
-                <button class="btn-blue" onclick="showReturnInput()" 
+                <button id="add-return-btn" class="btn-blue" onclick="showReturnInput()" 
                     style="padding: 10px 28px; background: var(--kintone-blue); color: white; border: none; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer; box-shadow: 0 2px 8px rgba(52,152,219,0.3);">
                     追加の返品登録
                 </button>
@@ -202,9 +202,10 @@
         </div>
 
         <!-- Section: Product List -->
-        <div class="section-card section-op" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
-            <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px;"><span><i
-                        class="fas fa-boxes" style="margin-right: 12px;"></i></span> 商品詳細</div>
+        <div class="section-card section-info">
+            <div class="section-title">
+                <span><i class="fas fa-boxes" style="margin-right: 12px;"></i></span> 商品詳細
+            </div>
             <table class="k-table">
                 <thead>
                     <tr>
@@ -289,14 +290,24 @@
 
 
         <div class="section-card section-hist">
-            <div class="section-title"><span><i class="fas fa-truck-ramp-box"></i></span> 出荷履歴</div>
+            <div class="section-title">
+                <span><i class="fas fa-truck-ramp-box" style="margin-right: 12px;"></i></span> 出荷タスク一覧
+            </div>
             <table class="k-table">
-                <thead><tr><th>ID</th><th>ステータス</th><th>出荷日</th><th>配送業者 / 追跡番号</th><th>サマリー</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">タスクID</th>
+                        <th class="col-mid" style="width: 140px;">ステータス</th>
+                        <th class="col-mid" style="width: 120px;">出荷日</th>
+                        <th style="width: 220px;">配送業者 / 追跡番号</th>
+                        <th style="width: 360px;">出荷サマリー</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr>
-                        <td style="font-weight: bold;"><a href="task_detail_103.html">103</a></td>
-                        <td><span class="badge-status status-ok">完了</span></td>
-                        <td>2026-03-24</td>
+                        <td style="font-weight: bold;"><a href="task_detail_103.html" style="color:var(--kintone-blue); text-decoration:none;">103</a></td>
+                        <td class="col-mid"><span class="badge-status status-ok">完了</span></td>
+                        <td class="col-mid">2026-03-24</td>
                         <td>ヤマト運輸: 9876-5432-1098</td>
                         <td>Rice Silica 50mL x 500, Rice Silica 300mL x 200</td>
                     </tr>
@@ -305,15 +316,28 @@
         </div>
 
         <div class="section-card section-hist">
-            <div class="section-title"><span><i class="fas fa-rotate-left" style="margin-right: 12px;"></i></span> 返品履歴</div>
-            <table class="k-table" style="font-size: 11px;">
-                <thead><tr><th>ID</th><th>ステータス</th><th>返品日</th><th>返品サマリー</th></tr></thead>
+            <div class="section-title">
+                <span><i class="fas fa-rotate-left" style="margin-right: 12px;"></i></span> 返品タスク一覧
+            </div>
+            <table class="k-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">タスクID</th>
+                        <th class="col-mid" style="width: 140px;">ステータス</th>
+                        <th class="col-mid" style="width: 120px;">返品日</th>
+                        <th style="width: 360px;">返品サマリー</th>
+                        <th style="width: 100px;">備考</th>
+                        <th class="col-mid" style="width: 200px;">操作</th>
+                    </tr>
+                </thead>
                 <tbody id="return-history-tbody">
                     <tr>
-                        <td style="font-weight:bold;"><a href="#">2483</a></td>
-                        <td><span class="badge-status status-ok">完了</span></td>
-                        <td>2026-03-29</td>
+                        <td style="font-weight:bold;"><a href="task_return_2484_detail.html" style="color:var(--kintone-blue); text-decoration:none;">2483</a></td>
+                        <td class="col-mid"><span class="badge-status status-ok">完了</span></td>
+                        <td class="col-mid">2026-03-29</td>
                         <td>Rice Silica 50mL x 250</td>
+                        <td>-</td>
+                        <td class="col-mid">-</td>
                     </tr>
                 </tbody>
             </table>
@@ -363,34 +387,64 @@
             if (q300 > 0) summary.push(`Rice Silica 300mL x ${q300}`);
 
             const newRow = `<tr>
-                <td style="font-weight:bold;"><a href="task_return_2484_detail.html" style="color:#003c96; text-decoration:none;">2484</a></td>
-                <td><span class="badge-status" style="background-color: #fffbe6; color: #bf4b00; border: 1px solid #ffe58f; padding: 2px 12px; border-radius: 20px; font-weight: bold;">待機中</span></td>
-                <td>${now}</td>
+                <td style="font-weight:bold;"><a href="task_return_2484_detail.html" style="color:var(--kintone-blue); text-decoration:none;">2484</a></td>
+                <td class="col-mid"><span class="badge-status" style="background-color: #fffbe6; color: #bf4b00; border: 1px solid #ffe58f; padding: 2px 12px; border-radius: 20px; font-weight: bold;">未対応</span></td>
+                <td class="col-mid">${now}</td>
                 <td>${summary.join(', ')}</td>
+                <td>-</td>
+                <td class="col-mid">
+                    <div style="display:flex; justify-content:center; gap:12px;">
+                        <button class="btn-blue" onclick="location.href='task_return_2484_detail.html'" style="padding: 6px 16px; font-size: 12px; border-radius: 4px; border: none; font-weight: bold; background: var(--kintone-blue); color: white; cursor: pointer;">入荷実行へ</button>
+                        <button onclick="cancelReturnTask(this, ${q50}, ${q300})" style="color:#888; border:none; background:none; cursor:pointer; font-size: 11px; font-weight: bold;"><i class="fas fa-trash-can" style="margin-right: 4px;"></i> 取消</button>
+                    </div>
+                </td>
             </tr>`;
             document.getElementById('return-history-tbody').insertAdjacentHTML('afterbegin', newRow);
 
-            // Update product counts
-            const currentRet50 = parseInt(document.getElementById('rc50-ret-qty').innerText) || 0;
-            const currentRet300 = parseInt(document.getElementById('rc300-ret-qty').innerText) || 0;
-            document.getElementById('rc50-ret-qty').innerText = currentRet50 + q50;
-            document.getElementById('rc300-ret-qty').innerText = currentRet300 + q300;
-            
-            if (currentRet300 + q300 > 0) {
-                document.getElementById('rc300-ret-qty').style.color = 'var(--status-return-text)';
-                document.getElementById('rc300-ret-qty').style.fontWeight = '800';
-                document.getElementById('rc300-status').innerHTML = '<span class="badge-status status-return">返品有</span>';
-            }
-
-            // Update available qty
-            document.getElementById('del-qty-rc50').innerText = del50 - q50;
-            document.getElementById('del-qty-rc300').innerText = del300 - q300;
+            // Update available qty (Decreasing available capacity but NOT adding to Returned Qty yet)
+            document.getElementById('del-qty-rc50').textContent = del50 - q50;
+            document.getElementById('del-qty-rc300').textContent = del300 - q300;
 
             const flash = document.getElementById('flash-message');
             flash.innerText = '🎉 返品を登録しました。';
             flash.style.display = 'block';
             document.getElementById('return-input-area').style.display = 'none';
             
+            checkReturnButtonVisibility();
+            setTimeout(() => { flash.style.display = 'none'; }, 3000);
+        }
+
+        function cancelReturnTask(btn, q50, q300) {
+            const tr = btn.closest('tr');
+            tr.remove();
+            
+            // Revert available qty (Restoring capacity)
+            let del50 = parseInt(document.getElementById('del-qty-rc50').textContent) || 0;
+            let del300 = parseInt(document.getElementById('del-qty-rc300').textContent) || 0;
+            document.getElementById('del-qty-rc50').textContent = del50 + q50;
+            document.getElementById('del-qty-rc300').textContent = del300 + q300;
+            
+            checkReturnButtonVisibility();
+            showToast('返品タスクを取り消しました。');
+        }
+
+        function checkReturnButtonVisibility() {
+            const del50 = parseInt(document.getElementById('del-qty-rc50').textContent) || 0;
+            const del300 = parseInt(document.getElementById('del-qty-rc300').textContent) || 0;
+            const btn = document.getElementById('add-return-btn');
+            if (btn) {
+                if (del50 <= 0 && del300 <= 0) {
+                    btn.style.display = 'none';
+                } else {
+                    btn.style.display = 'inline-flex';
+                }
+            }
+        }
+
+        function showToast(msg) {
+            const flash = document.getElementById('flash-message');
+            flash.innerText = '🎉 ' + msg;
+            flash.style.display = 'block';
             setTimeout(() => { flash.style.display = 'none'; }, 3000);
         }
 
@@ -401,7 +455,11 @@
         function closeErrorModal() {
             document.getElementById('error-modal').style.display = 'none';
         }
+
         setTimeout(() => { document.getElementById('flash-message').style.display = 'none'; }, 3000);
+        window.onload = function() {
+            checkReturnButtonVisibility();
+        };
     </script>
 </body>
 </html>

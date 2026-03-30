@@ -28,7 +28,7 @@
     /* ── Surface / Background Colors ───────────────────────── */
     --color-bg-page:           #f4f7f9;
     --color-bg-surface:        #ffffff;
-    --color-bg-table-head:     #f8f9fa;
+    --color-bg-table-head:     #f1f3f4;
     --color-bg-field:          #f1f3f4;
     --color-bg-op-section:     #fffaf0;   /* operational section tint */
     --color-bg-modal-overlay:  rgba(0, 0, 0, 0.5);
