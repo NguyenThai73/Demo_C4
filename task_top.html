@@ -7,9 +7,10 @@
     <title>入出庫・タスク管理 | Silica Link</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome 6.x CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script id="tailwind-config">
           tailwind.config = {
             darkMode: "class",
@@ -83,11 +84,47 @@
 </head>
 
 <body class="bg-surface text-on-surface min-h-screen flex flex-col antialiased">
+
+    <div class="kintone-header-top">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="header-logo">
+                <div class="k-icon-box">受</div>
+                受発注管理システム
+            </div>
+            <div class="header-user">
+                <div class="mail-icon"><i class="fas fa-envelope"></i></div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-left: 10px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                    <span>Administrator</span>
+                    <span style="font-size: 10px;">▼</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-header-sub">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="header-sub-left">
+                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
+                <span><i class="fas fa-bell"></i></span>
+                <span><i class="fas fa-star"></i></span>
+            </div>
+            <div class="header-sub-right">
+                <span><i class="fas fa-cog"></i></span>
+                <span><i class="fas fa-question-circle"></i></span>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="全体検索">
+                    <div class="search-icon-btn"><i class="fas fa-search"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- TopNavBar -->
     <nav class="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none font-['Inter'] antialiased text-sm font-medium tracking-tight docked full-width top-0 border-b-0 sticky z-50">
         <div class="flex justify-between items-center w-full px-6 h-16 max-w-[1920px] mx-auto">
             <div class="flex items-center gap-8">
-                <a href="index.html" class="text-xl font-bold text-[#00488d] dark:text-blue-400 tracking-tighter hover:opacity-80 transition-opacity">Kintone Dashboard</a>
+                
                 <div class="hidden md:flex gap-6 items-center">
                     <a class="text-on-surface-variant hover:text-primary transition-colors" href="index.html">受注業務</a>
                     <a class="text-on-surface-variant hover:text-primary transition-colors" href="purchase_index.html">発注業務</a>
