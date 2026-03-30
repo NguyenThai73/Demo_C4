@@ -190,76 +190,75 @@
 
 <body>
 
-    <header class="header-full">
-        <!-- Top Bar -->
-        <div class="kintone-header-top">
-            <div class="header-content-inner">
-                <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;">kintone</a>
-                </div>
-                <div class="header-user">
-                    <span>✉</span>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
-                            alt="User" class="user-avatar" style="width: 32px; height: 32px;">
-                        <span>Administrator</span>
-                        <span style="font-size: 10px;">▼</span>
-                    </div>
-                </div>
+    <div class="kintone-header-top">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="header-logo">
+                <div class="k-icon-box">受</div>
+                受発注管理システム
             </div>
-        </div>
-
-        <!-- Sub Bar -->
-        <div class="kintone-header-sub">
-            <div class="header-content-inner">
-                <div class="header-sub-left">
-                    <span>☰</span>
-                    <span>🏠</span>
-                    <span>🔔</span>
-                    <span>⭐</span>
-                </div>
-                <div class="search-container">
-                    <input type="text" class="search-input" placeholder="アプリ内検索" style="width: 250px;">
-                    <span
-                        style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #999;">🔍</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- App Bar -->
-        <div class="kintone-app-title-bar">
-            <div class="header-content-inner">
-                <div style="display: flex; align-items: center;">
-                    <div class="app-icon">📋</div>
-                    <div class="app-name" style="margin-left: 10px;">入出荷タスクを確認する</div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="main-wrapper">
-        <div class="breadcrumb">
-            🏠 <span>/</span> アプリ: 入出荷タスクを確認する
-        </div>
-
-        <!-- Toolbar -->
-        <div class="toolbar">
-            <div class="filter-left">
-                <div class="btn-filter-plus">
-                    <span style="font-size: 18px;">📋</span>
-                    <strong id="current-filter-label">すべてのタスク</strong>
+            <div class="header-user">
+                <div class="mail-icon"><i class="fas fa-envelope"></i></div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-left: 10px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                    <span>Administrator</span>
                     <span style="font-size: 10px;">▼</span>
                 </div>
-                <div class="btn-icon-sq btn-blue-sq">⚙</div>
-                <div class="btn-icon-sq">🔗</div>
-                <div class="btn-icon-sq">📊</div>
-            </div>
-
-            <div class="filter-right">
-                <div class="btn-action-add" onclick="location.href='task_create.html'" style="cursor: pointer;">+</div>
-                <div class="btn-icon-sq">⚙</div>
-                <div class="btn-icon-sq">⋯</div>
             </div>
         </div>
+    </div>
+
+    <div class="kintone-header-sub">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="header-sub-left">
+                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
+                <span><i class="fas fa-bell"></i></span>
+                <span><i class="fas fa-star"></i></span>
+            </div>
+            <div class="header-sub-right">
+                <span><i class="fas fa-cog"></i></span>
+                <span><i class="fas fa-question-circle"></i></span>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="アプリ内検索">
+                    <div class="search-icon-btn"><i class="fas fa-search"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-app-title-bar">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px; justify-content: flex-start;">
+            <div class="app-icon-box" style="margin-left: -40px;">📋</div>
+            <div class="app-title">入出荷タスクを確認する</div>
+        </div>
+    </div>
+
+    <div class="kintone-sub-nav">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="sub-nav-left">
+                <i class="fas fa-house" onclick="location.href='index.html'" style="cursor:pointer;"></i>
+                <i class="fas fa-chevron-right" style="font-size: 8px; margin: 0 8px;"></i>
+                <span>アプリ: 入出荷タスクを確認する</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-toolbar" style="margin-bottom: 20px;">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px; justify-content: flex-start; gap: 10px;">
+            <div class="view-selector">📋 すべてのタスク <span>▼</span></div>
+            <div class="toolbar-icon-btn">⚙</div>
+            <div class="toolbar-icon-btn">🔗</div>
+            <div class="toolbar-icon-btn">📊</div>
+            <div class="toolbar-right">
+                <div class="btn-add" onclick="location.href='task_create.html'">+</div>
+                <div class="toolbar-icon-btn" style="margin-left: 8px;">⚙</div>
+                <div class="toolbar-icon-btn">⋯</div>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-wrapper">
+
 
         <!-- Data Table -->
         <div class="table-container">

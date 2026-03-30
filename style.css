@@ -119,11 +119,17 @@ body {
 .breadcrumb { font-size: 11px; color: #666; margin-bottom: 5px; padding: 10px 0; display: flex; align-items: center; gap: 5px; }
 
 /* Navigation & Action Toolbar */
-.kintone-action-toolbar { display: flex; justify-content: flex-end; padding: 5px 0; gap: 2px; margin-bottom: 10px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+.kintone-action-toolbar { background: white; padding: 5px 0; border-bottom: 1px solid #e3e7e8; margin-bottom: 10px; }
+.action-btn-group { display: flex; gap: 8px; align-items: center; }
+.action-btn-group.record-nav { gap: 0; }
+.action-btn-group.record-nav .action-icon-btn { border-radius: 0; margin-left: -1px; width: 34px; }
+.action-btn-group.record-nav .action-icon-btn:first-child { border-radius: 2px 0 0 2px; margin-left: 0; }
+.action-btn-group.record-nav .action-icon-btn:last-child { border-radius: 0 2px 2px 0; }
+
 .action-icon-btn {
     background: #fff;
     border: 1px solid #e3e7e8;
-    width: 34px;
+    width: 38px;
     height: 32px;
     display: flex;
     align-items: center;
@@ -131,10 +137,9 @@ body {
     border-radius: 2px;
     cursor: pointer;
     color: #666;
-    font-size: 16px;
-    margin-left: -1px;
+    font-size: 14px;
 }
-.action-icon-btn:hover { background: #f7f9fa; }
+.action-icon-btn:hover { background: #f7f9fa; color: #3498db; }
 
 /* Summary & Status */
 .summary-header {

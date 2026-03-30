@@ -36,10 +36,10 @@
 <body>
 
     <div class="kintone-header-top">
-        <div class="header-content-inner">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
             <div class="header-logo">
                 <div class="k-icon-box">受</div>
-                受发注管理系统
+                受発注管理システム
             </div>
             <div class="header-user">
                 <div class="mail-icon"><i class="fas fa-envelope"></i></div>
@@ -52,8 +52,9 @@
         </div>
     </div>
 
+
     <div class="kintone-header-sub">
-        <div class="header-content-inner">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
             <div class="header-sub-left">
                 <span><i class="fas fa-bars"></i></span>
                 <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
@@ -71,6 +72,7 @@
         </div>
     </div>
 
+
     <div class="kintone-app-title-bar">
         <div class="header-content-inner" style="max-width: none; padding: 0 40px; justify-content: flex-start;">
             <div class="app-icon-box" style="margin-left: -40px;">🛒</div>
@@ -79,30 +81,34 @@
     </div>
 
     <div class="kintone-sub-nav">
-        <div class="header-content-inner">
-            <div class="sub-nav-left">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="sub-nav-left" style="display: flex; align-items: center; gap: 10px;">
                 <i class="fas fa-house" onclick="location.href='index.html'" style="cursor:pointer;"></i>
                 <i class="fas fa-chevron-right" style="font-size: 8px;"></i>
-                <span style="margin-left: 5px;">アプリ: 注文管理</span>
-                <i class="fas fa-chevron-right" style="font-size: 8px; margin-left: 5px;"></i>
-                <span style="margin-left: 5px;">レコード: #303</span>
-            </div>
-            <div class="sub-nav-right">
-                <i class="fas fa-thumbtack"></i>
-                <i class="fas fa-info-circle"></i>
+                <span>アプリ: 注文管理</span>
+                <i class="fas fa-chevron-right" style="font-size: 8px;"></i>
+                <span>レコード: #303</span>
             </div>
         </div>
     </div>
 
-    <div class="kintone-action-toolbar" style="max-width: 100%; padding: 10px 20px; background: white; border-bottom: 1px solid #eee; margin-bottom: 30px;">
-        <div class="header-content-inner" style="padding: 0; justify-content: flex-end; gap: 2px;">
-            <div class="action-icon-btn" style="border-radius: 4px 0 0 4px;"><i class="fas fa-chevron-up"></i></div>
-            <div class="action-icon-btn" style="border-right: 2px solid #ddd; border-radius: 0 4px 4px 0;"><i class="fas fa-chevron-down"></i></div>
-            <div class="action-icon-btn" style="margin-left: 10px;"><i class="fas fa-file-lines"></i></div>
-            <div class="action-icon-btn"><i class="fas fa-cog"></i> <span>▼</span></div>
-            <div class="action-icon-btn" style="border-radius: 4px;"><i class="fas fa-ellipsis"></i></div>
+    <div class="kintone-action-toolbar">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="action-btn-group record-nav">
+                <div class="action-icon-btn"><i class="fas fa-chevron-up"></i></div>
+                <div class="action-icon-btn"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="action-btn-group">
+                <div class="action-icon-btn"><i class="fas fa-plus"></i></div>
+                <div class="action-icon-btn"><i class="fas fa-file-export"></i></div>
+                <div class="action-icon-btn"><i class="fas fa-cog"></i> <span style="font-size: 8px; margin-left: 3px;">▼</span></div>
+                <div class="action-icon-btn"><i class="fas fa-ellipsis-v"></i></div>
+            </div>
         </div>
     </div>
+
+    <main class="main-container" style="padding: 20px 10px;">
+
 
         <div id="flash-message" class="sticky-flash">🎉 操作を完了しました。</div>
 
@@ -883,6 +889,9 @@
             location.href = 'order_detail_agency_303_outfinish.html';
         }
     </script>
-</body>
+</main>
 
+<footer style="text-align: center; padding: 40px; font-size: 12px; color: #999;">© 2026 Silica Link Portal</footer>
+
+</body>
 </html>

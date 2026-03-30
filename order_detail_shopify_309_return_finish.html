@@ -88,7 +88,7 @@
         <div class="next-action-card" style="border-left-color: var(--status-return-text); display: flex; justify-content: space-between; align-items: center; gap: 20px;">
             <div class="next-action-content">
                 <span style="font-size: 32px; color: var(--status-return-text);"><i class="fas fa-rotate-left"></i></span>
-                <div>
+                <div id="next-action-text-area">
                     状況: <span style="color: var(--status-return-text); font-weight: 800;">一部返品完了</span><br>
                     <span style="font-weight: normal; font-size: 11px; color: #666;">
                         返品入庫が完了しました。売上の確定手続きを確認してください。
@@ -100,8 +100,8 @@
                     style="padding: 10px 24px; background: white; border: 1px solid #ccc; color: #666; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
                     <i class="fas fa-circle-check"></i> アフィリエイト報酬計上を確認
                 </button>
-                <button id="add-return-btn" class="btn-blue" onclick="showReturnInput()" 
-                    style="padding: 10px 28px; background: var(--kintone-blue); color: white; border: none; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer; box-shadow: 0 2px 8px rgba(52,152,219,0.3);">
+                <button id="add-return-btn" class="btn-secondary" onclick="showReturnInput()" 
+                    style="padding: 10px 28px; background: white; color: #666; border: 1px solid #ccc; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer;">
                     追加の返品登録
                 </button>
             </div>
@@ -411,7 +411,37 @@
             document.getElementById('return-input-area').style.display = 'none';
             
             checkReturnButtonVisibility();
+            updateNextAction();
             setTimeout(() => { flash.style.display = 'none'; }, 3000);
+        }
+
+        function updateNextAction() {
+            const tbody = document.getElementById('return-history-tbody');
+            const hasUnprocessed = Array.from(tbody.querySelectorAll('.badge-status')).some(badge => badge.textContent.trim() === '未対応');
+            const textArea = document.getElementById('next-action-text-area');
+            const card = document.querySelector('.next-action-card');
+            const iconWrap = card.querySelector('.fa-rotate-left').parentElement;
+
+            if (hasUnprocessed) {
+                card.style.borderLeft = '6px solid var(--kintone-blue)';
+                card.style.backgroundColor = '#fff';
+                iconWrap.style.color = 'var(--kintone-blue)';
+                textArea.innerHTML = `
+                    次の対応:<br>
+                    <span style="font-weight: 800; font-size: 14px; color: var(--kintone-blue); display: block; margin: 4px 0;">返品入庫待ちのタスクがあります。</span>
+                    <span style="font-weight: normal; font-size: 12px; color: #666;">下の返品タスク一覧から対象を選択し、対応を進めてください。</span>
+                `;
+            } else {
+                card.style.borderLeft = '6px solid var(--status-return-text)';
+                card.style.backgroundColor = '#fff'; 
+                iconWrap.style.color = 'var(--status-return-text)';
+                textArea.innerHTML = `
+                    状況: <span style="color: var(--status-return-text); font-weight: 800;">一部返品完了</span><br>
+                    <span style="font-weight: normal; font-size: 11px; color: #666;">
+                        返品入庫が完了しました。売上の確定手続きを確認してください。
+                    </span>
+                `;
+            }
         }
 
         function cancelReturnTask(btn, q50, q300) {
@@ -425,6 +455,7 @@
             document.getElementById('del-qty-rc300').textContent = del300 + q300;
             
             checkReturnButtonVisibility();
+            updateNextAction();
             showToast('返品タスクを取り消しました。');
         }
 
@@ -459,6 +490,7 @@
         setTimeout(() => { document.getElementById('flash-message').style.display = 'none'; }, 3000);
         window.onload = function() {
             checkReturnButtonVisibility();
+            updateNextAction();
         };
     </script>
 </body>

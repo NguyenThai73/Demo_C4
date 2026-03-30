@@ -202,12 +202,18 @@
                 </h2>
 <p class="text-xs text-on-surface-variant mb-5">注文確認や請求確認など、受注に関する操作です</p>
 <div class="flex flex-col gap-2">
-<a href="order_list_progress_view.html" class="w-full flex items-center justify-between p-3.5 rounded-xl hover:bg-surface transition-all text-sm font-medium text-on-surface group border border-transparent hover:border-surface-container-high">
-<span>新しい注文を見る</span>
-<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+<a href="order_list_progress_view.html" class="w-full flex items-center justify-between p-4 rounded-xl bg-primary/5 hover:bg-primary/10 transition-all font-bold text-primary group border border-primary/20 shadow-sm">
+<div class="flex items-center gap-3">
+    <span class="material-symbols-outlined text-primary scale-110" data-icon="star">star</span>
+    <span class="text-sm">本日の注文を確認する</span>
+</div>
+<div class="flex items-center gap-2">
+    <span class="text-[10px] bg-primary text-white px-2 py-0.5 rounded-full">MUST DO</span>
+    <span class="material-symbols-outlined transition-transform group-hover:translate-x-1" data-icon="arrow_forward">arrow_forward</span>
+</div>
 </a>
 <a href="order_list_wait_view.html" class="w-full flex items-center justify-between p-3.5 rounded-xl hover:bg-surface transition-all text-sm font-medium text-on-surface group border border-transparent hover:border-surface-container-high">
-<span>未対応の注文を見る</span>
+<span>確認待ちの注文を見る</span>
 <span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="arrow_forward">arrow_forward</span>
 </a>
 <a href="invoice_list.html" class="w-full flex items-center justify-between p-3.5 rounded-xl hover:bg-surface transition-all text-sm font-medium text-on-surface group border border-transparent hover:border-surface-container-high">

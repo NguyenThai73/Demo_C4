@@ -325,49 +325,77 @@
 
 <body>
 
-    <!-- TopNavBar -->
-    <nav class="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none font-['Inter'] antialiased text-sm font-medium tracking-tight docked full-width top-0 border-b-0 sticky z-50">
-        <div class="flex justify-between items-center w-full px-6 h-16 max-w-[1920px] mx-auto">
-            <div class="flex items-center gap-8">
-                <a href="index.html" class="text-xl font-bold text-[#00488d] dark:text-blue-400 tracking-tighter hover:opacity-80 transition-opacity">Kintone Dashboard</a>
-                <div class="hidden md:flex gap-6 items-center">
-                    <a class="text-[#00488d] dark:text-blue-400 border-b-2 border-[#00488d] dark:border-blue-400 pb-1" href="index.html">受注業務</a>
-                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="purchase_index.html">発注業務</a>
-                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="production_index.html">製造業務</a>
-                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="task_top.html">入出庫・タスク</a>
-                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="commission_top.html">報酬管理</a>
-                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="payment_cashflow_index.html">入出金管理</a>
-                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="partner_top.html">パートナー管理</a>
-                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="master_index.html">マスタ管理</a>
-                </div>
+    <div class="kintone-header-top">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="header-logo">
+                <div class="k-icon-box">受</div>
+                受発注管理システム
             </div>
-            <div class="flex items-center gap-4">
-                <button class="p-2 text-on-surface-variant hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all duration-200 scale-95 active:opacity-80">
-                    <span class="material-symbols-outlined">notifications</span>
-                </button>
-                <div class="h-8 w-8 rounded-full bg-surface-container-highest overflow-hidden border border-surface-container-high">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5ojtP60fHbHvfrGuF9J-4sBUw7rQ55quXPL5EArZOUVuI-uaKnHiGd9XgLryiNM3MmyAVzRWxhK-eM9pkTHxvOgm9C8iCdc-MSgV5uuGNLbJvEyHJpQNttKgn_MSkrYX6Bpw3luyA9XgQqy67fVzJe1u6ClMJltbZcl4ipEBaMnSnochUBb1nKE1e_6SYEgToCb--ZxWWCOtmZUTU2D9KAf1pX_pSFvfJkX94qz58YyYApVKpy1oQ52ihHWbcMt95MsXemNpgbF70" alt="User">
+            <div class="header-user">
+                <div class="mail-icon"><i class="fas fa-envelope"></i></div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-left: 10px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                    <span>Administrator</span>
+                    <span style="font-size: 10px;">▼</span>
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
+
+    <div class="kintone-header-sub">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="header-sub-left">
+                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
+                <span><i class="fas fa-bell"></i></span>
+                <span><i class="fas fa-star"></i></span>
+            </div>
+            <div class="header-sub-right">
+                <span><i class="fas fa-cog"></i></span>
+                <span><i class="fas fa-question-circle"></i></span>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="アプリ内検索">
+                    <div class="search-icon-btn"><i class="fas fa-search"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-app-title-bar">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px; justify-content: flex-start;">
+            <div class="app-icon-box" style="margin-left: -40px;">🛒</div>
+            <div class="app-title">注文一覧を見る</div>
+        </div>
+    </div>
+
+    <div class="kintone-sub-nav">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="sub-nav-left">
+                <i class="fas fa-house" onclick="location.href='index.html'" style="cursor:pointer;"></i>
+                <i class="fas fa-chevron-right" style="font-size: 8px; margin: 0 8px;"></i>
+                <span>アプリ: 注文一覧を見る</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="kintone-toolbar" style="margin-bottom: 20px;">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px; justify-content: flex-start; gap: 10px;">
+            <div class="view-selector">🔥 今月受注 <span>▼</span></div>
+            <div class="toolbar-icon-btn">📊 <span>▼</span></div>
+            <div class="toolbar-icon-btn" style="margin-left: 10px;">🔍</div>
+            <div class="toolbar-icon-btn">📈</div>
+            <div class="toolbar-icon-btn">⚙ <span>▼</span></div>
+            <div class="toolbar-icon-btn">⋮</div>
+            <div class="toolbar-right">
+                <div class="btn-add">+</div>
+            </div>
+        </div>
+    </div>
 
     <div class="main-container">
-        <div class="breadcrumb">🏠 <span>/</span> アプリ: 注文一覧を見る</div>
 
-        <div class="app-title-section">
-            <div class="app-icon">🛒</div>
-            <div class="app-name">注文一覧を見る</div>
-        </div>
 
-        <div class="control-bar">
-            <button class="view-selector">🔥 今月受注 <span style="font-size: 10px;">▼</span></button>
-            <button class="graph-btn">📊 <span style="font-size: 10px;">▼</span></button>
-            <button class="icon-btn">🔍</button>
-            <button class="icon-btn">📈</button>
-            <button class="icon-btn">⚙ <span style="font-size: 10px;">▼</span></button>
-            <button class="icon-btn">⋮</button>
-        </div>
+
 
         <div class="list-card">
             <table class="k-table">

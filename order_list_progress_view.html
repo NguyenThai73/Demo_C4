@@ -112,7 +112,7 @@
         <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
             <div class="view-selector">
                 <i class="fas fa-table"></i>
-                🔥 今月受注
+                🔥 今日注文
                 <i class="fas fa-chevron-down" style="font-size: 10px; margin-left: 10px;"></i>
             </div>
             <div class="toolbar-icon-btn"><i class="fas fa-chart-line"></i></div>
@@ -190,7 +190,7 @@
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             
-            const currentStr = `${year}-${month}-${date} ${hours}:${minutes}`;
+            const currentStr = `${year}/${month}/${date} ${hours}:${minutes}`;
             
             document.querySelectorAll('.current-time').forEach(el => {
                 el.textContent = currentStr;
