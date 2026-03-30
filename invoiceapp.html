@@ -761,6 +761,15 @@
         // Final UI State
         const naa = document.getElementById('next-action-area');
         naa.className = 'next-action-card accent-primary';
+        
+        const params = new URLSearchParams(window.location.search);
+        const orderId = params.get('id');
+        const proceedBtn = orderId === '303' ? `
+            <button class="btn-invoice-primary" onclick="location.href='order_detail_agency_303_paid.html'" style="padding: 10px 30px; border-radius:12px; font-weight:800; background: #e67e22; border: none; cursor: pointer;">
+                <i class="fas fa-arrow-right"></i> 注文確認へ進む
+            </button>
+        ` : '';
+
         naa.innerHTML = `
             <div class="next-action-content">
                 <span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-award"></i></span>
@@ -773,6 +782,7 @@
                 <button class="btn-invoice-secondary" onclick="downloadPDF()" style="font-size: 12px; padding: 8px 15px;">
                     <i class="fas fa-download"></i> 請求書PDF
                 </button>
+                ${proceedBtn}
             </div>
         `;
         
@@ -819,7 +829,24 @@
         updateBackLink();
         const params = new URLSearchParams(window.location.search);
         const draft = params.get('draft');
-        if (draft) {
+        const orderId = params.get('id');
+        const status = params.get('status');
+        
+        if (orderId === '303' && draft === 'INV-76') {
+            document.getElementById('breadcrumb-record').textContent = '76';
+            const relatedLink = document.querySelector('.field-item a');
+            if (relatedLink) {
+                relatedLink.textContent = '303';
+                relatedLink.href = 'order_detail_agency_303.html';
+            }
+        }
+
+        if (status === 'paid') {
+            // Fake the process to reach paid state
+            document.getElementById('summary-pdf').textContent = '発行済';
+            document.getElementById('summary-pdf').style.color = 'var(--kintone-success)';
+            markAsPaid();
+        } else if (draft) {
             showToast(`ドラフト ${draft} を読み込みました。`);
         }
     };

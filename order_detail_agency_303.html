@@ -350,18 +350,18 @@
         </div>
 
         <div class="section-card section-hist">
-            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span><i class="fas fa-truck-ramp-box" style="margin-right: 12px;"></i></span> 出荷履歴</div>
+            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span><i class="fas fa-truck-ramp-box" style="margin-right: 12px;"></i></span> 出荷タスク一覧</div>
             <div id="shipment-history-container">
                 <div class="empty-history-state" id="no-shipment-history">履歴はありません</div>
                 <table class="k-table" id="shipment-history-table" style="font-size: 11px; display: none;">
                     <thead>
                         <tr>
                             <th style="width: 80px;">タスクID</th>
-                            <th class="col-mid" style="width: 80px;">ステータス</th>
-                            <th class="col-mid" style="width: 100px;">出荷予定日</th>
+                            <th class="col-mid" style="width: 120px;">ステータス</th>
+                            <th class="col-mid" style="width: 110px;">出荷予定日</th>
                             <th>出荷サマリー</th>
                             <th style="width: 150px;">備考</th>
-                            <th class="col-mid" style="width: 120px;">操作</th>
+                            <th class="col-mid" style="width: 180px;">操作</th>
                         </tr>
                     </thead>
                     <tbody id="shipment-history-body"></tbody>
@@ -374,17 +374,17 @@
         </div>
 
         <div class="section-card section-hist">
-            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span><i class="fas fa-rotate-left" style="margin-right: 12px;"></i></span> 返品履歴</div>
+            <div class="section-title" style="border-bottom: none; padding-bottom: 0;"><span><i class="fas fa-rotate-left" style="margin-right: 12px;"></i></span> 返品タスク一覧</div>
             <div id="return-history-container">
                 <div class="empty-history-state" id="no-return-history">履歴はありません</div>
                 <table class="k-table" id="return-history-table" style="font-size: 11px; display: none;">
                     <thead>
                         <tr>
-                            <th>タスクID</th>
-                            <th class="col-mid">ステータス</th>
-                            <th class="col-mid">返品日</th>
+                            <th style="width: 80px;">タスクID</th>
+                            <th class="col-mid" style="width: 120px;">ステータス</th>
+                            <th class="col-mid" style="width: 110px;">返品日</th>
                             <th>理由</th>
-                            <th>備考</th>
+                            <th style="width: 150px;">備考</th>
                         </tr>
                     </thead>
                     <tbody id="return-history-body"></tbody>
@@ -424,7 +424,7 @@
             if (isCancelled) summaryShipping.innerText = 'キャンセル';
             else if (orderState.status === 'FINISHED') summaryShipping.innerText = '配送完了';
             else if (orderState.status === 'OUTFINISH') summaryShipping.innerText = '配送中';
-            else summaryShipping.innerText = (totalDelivered >= totalOrdered ? '出荷中' : (totalDelivered > 0 ? '出荷中' : (orderState.isPaid ? '出荷中' : (orderState.isConfirmed ? '入金待ち' : '確定待ち'))));
+            else summaryShipping.innerText = (totalDelivered >= totalOrdered ? (orderState.status === 'FINISHED' ? '配送完了' : '配送中') : (totalDelivered > 0 ? '配送中' : (orderState.isPaid ? '配送中' : (orderState.isConfirmed ? '支払い済み' : '支払い待ち'))));
             
             if (isCancelled) {
                 summaryShipping.style.color = '#767676';
@@ -459,7 +459,7 @@
             if (orderState.status === 'CONFIRM_WAIT') {
                 guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-file-signature"></i></span><div>次の対応: <span style="color: var(--kintone-blue);">注文の確認</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">内容を確認し、受諾または却下を選択してください。</span></div></div><div style="display: flex; gap: 12px;"><button class="btn-reject" onclick="rejectOrder()">却下する</button><button class="btn-submit-ship" style="padding: 10px 30px; background: var(--kintone-blue); color: white; border: none;" onclick="confirmOrder()">注文を確定する</button></div>`;
             } else if (orderState.status === 'CONFIRMED') {
-                guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: #e67e22;"><i class="fas fa-file-invoice"></i></span><div>状況: <span style="color: #e67e22; font-weight: 800;">注文確定済み</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">注文が確定しました。請求管理アプリで請求書を作成してください。</span></div></div><div style="display: flex; gap: 12px;"><button class="btn-reject" onclick="rejectOrder()">却下する</button><button class="btn-blue" style="background-color: #e67e22; border: none; padding: 10px 30px;" onclick="location.href='invoiceapp.html?id=303'">請求発行へ進む</button></div>`;
+                guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: #e67e22;"><i class="fas fa-file-invoice"></i></span><div>状況: <span style="color: #e67e22; font-weight: 800;">注文確定済み</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">注文が確定しました。請求管理アプリで請求書を作成してください。</span></div></div><div style="display: flex; gap: 12px;"><button class="btn-reject" onclick="rejectOrder()">却下する</button><button class="btn-blue" style="background-color: #e67e22; border: none; padding: 10px 30px;" onclick="location.href='invoiceapp.html?id=303&draft=INV-76'">請求発行へ進む</button></div>`;
             } else if (orderState.status === 'INVOICE_WAIT') {
                 guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: #ab47bc;"><i class="fas fa-file-invoice"></i></span><div>次の対応: <span style="color: #ab47bc; font-weight: 800;">請求書を発行する</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">請求書ドラフトが作成されました。請求書アプリで発行後、こちらで発行済みとして確認してください。</span></div></div><div style="display: flex; gap: 12px; flex-wrap: wrap;"><button class="btn-secondary" onclick="rollbackToConfirm()"><i class="fas fa-rotate-left" style="margin-right: 6px;"></i>確認待ちに戻る</button><button onclick="markInvoiceIssued()" style="padding: 10px 24px; background: #6a1b9a; color: white; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px;"><i class="fas fa-check" style="margin-right: 8px;"></i>発行済みとして確認する</button></div>`;
             } else if (orderState.status === 'PAYMENT_WAIT') {
@@ -480,18 +480,15 @@
                         <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-barcode"></i></span>
                         <div>
                             次の対応: <span style="color: var(--kintone-blue); font-weight:800;">ピッキング・出荷作業</span><br>
-                            <span style="font-weight: normal; font-size: 12px; color: #666;">配送タスク（待機中）があります。各タスク詳細に移動し、ピッキング・出荷作業を完了させてください。</span>
+                            <span style="font-weight: normal; font-size: 12px; color: #666;">配送タスク（未対応）があります。各タスク詳細に移動し、ピッキング・出荷作業を完了させてください。</span>
                         </div>
                     </div>
-                    <div style="display: flex; gap: 12px;">
-                        <button class="btn-secondary" style="border-radius: 12px; font-weight: 800;" onclick="location.href='task_detail_101.html?id=101&type=sample'"><i class="fas fa-clipboard-list" style="margin-right: 8px;"></i>出荷タスク確認へ進む</button>
-                        <button class="btn-blue" style="border-radius: 12px; font-weight: 800;" onclick="showShipmentInput()"><i class="fas fa-plus" style="margin-right: 6px;"></i>追加の納品登録</button>
-                    </div>`;
+                    <div style="display: flex; gap: 12px;"></div>`;
                 } else {
                     const returnBtn = totalDelivered > 0
                         ? `<button class="btn-reject" onclick="showReturnInput()">返品をする</button>`
                         : '';
-                    guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-truck-fast"></i></span><div>次の対応: <span style="color: var(--kintone-blue); font-weight:800;">配送・納品登録</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">配送準備が整いました。納品登録を行ってください。</span></div></div><div style="display: flex; gap: 12px;">${returnBtn}<button class="btn-blue" onclick="showShipmentInput()">納品を登録する</button></div>`;
+                    guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-blue);"><i class="fas fa-truck-fast"></i></span><div>次の対応: <span style="color: var(--kintone-blue); font-weight:800;">配送・納品登録</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">配送準備が整いました。下の出荷タスク一覧から対象を選択し、出荷を完了させてください。</span></div></div><div style="display: flex; gap: 12px;"></div>`;
                 }
             } else if (orderState.status === 'OUTFINISH') {
                 guideHtml = `<div class="next-action-content">
@@ -501,10 +498,7 @@
                         <span style="font-weight: normal; font-size: 12px; color: #666;">商品が出荷されました。配送が完了したら報告を行ってください。</span>
                     </div>
                 </div>
-                <div style="display: flex; gap: 12px;">
-                    <button class="btn-reject" onclick="showReturnInput()" style="padding: 10px 24px; border-radius: 12px; font-weight: 800;">返品登録</button>
-                    <button class="btn-blue" onclick="reportDelivered()" style="padding: 10px 30px; border-radius: 12px; font-weight: 800;">配送完了を報告</button>
-                </div>`;
+                <div style="display: flex; gap: 12px;"></div>`;
             } else if (orderState.status === 'FINISHED') {
                 guideHtml = `<div class="next-action-content"><span style="font-size: 30px; color: var(--kintone-success);"><i class="fas fa-check-double"></i></span><div>状況: <span style="color: var(--kintone-success);">取引完了</span><br><span style="font-weight: normal; font-size: 12px; color: #666;">全ての納品が完了しました。返品が必要な場合は返品ボタンから登録してください。</span></div></div><button class="btn-reject" onclick="showReturnInput()">返品をする</button>`;
             } else if (orderState.status === 'CANCELLED') {
@@ -521,7 +515,7 @@
                 const shipBtn = (remaining > 0 && orderState.isConfirmed) 
                     ? `<button onclick="showShipmentInput()" class="btn-blue" style="padding: 4px 12px; font-size: 11px; border-radius: 4px;">出荷</button>` 
                     : '—';
-                return `<tr><td class="col-product-name"><a href="${recUrl}" target="_blank" style="color: var(--kintone-blue); text-decoration: none; font-weight: bold;">${item.name} (${item.id})</a></td><td class="col-num">${item.orderQty}</td><td class="col-mid">個</td><td class="col-num">${item.deliveredQty}</td><td class="col-num" style="background-color: ${remaining > 0 ? '#fffaf0' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--kintone-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td class="col-num" style="color: ${item.returnQty > 0 ? 'var(--kintone-danger)' : '#999'}">${item.returnQty}</td><td class="col-mid"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '出荷中' : (progress > 0 ? '出荷中' : '未出荷')}</span></td></tr>`;
+                return `<tr><td class="col-product-name"><a href="${recUrl}" target="_blank" style="color: var(--kintone-blue); text-decoration: none; font-weight: bold;">${item.name} (${item.id})</a></td><td class="col-num">${item.orderQty}</td><td class="col-mid">個</td><td class="col-num">${item.deliveredQty}</td><td class="col-num" style="background-color: ${remaining > 0 ? '#fffaf0' : '#f8f9fa'}; color: ${remaining > 0 ? 'var(--kintone-danger)' : '#666'}; font-weight: bold;">${remaining}</td><td class="col-num" style="color: ${item.returnQty > 0 ? 'var(--kintone-danger)' : '#999'}">${item.returnQty}</td><td class="col-mid"><span class="badge-status ${progress >= 100 ? 'status-ok' : (progress > 0 ? 'status-warn' : 'status-neutral')}">${progress >= 100 ? '配送完了' : (progress > 0 ? '出荷中' : '未対応')}</span></td></tr>`;
             }).join('');
             
             // Toggle cancellation guide
@@ -701,7 +695,10 @@
             if (type === 'SHIP') {
                 actions = `
                     <div style="display:flex; justify-content:center; gap:8px;">
-                        <button class="icon-btn" onclick="deleteTask(this, '${tId}')" title="取消" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer;"><i class="fas fa-trash-can"></i> 取消</button>
+                        <button class="btn-blue" onclick="location.href='task_detail_101.html?id=${tId}'" style="padding: 6px 16px; font-size: 12px; border-radius: 4px; border: none; font-weight: bold; background: var(--kintone-blue); color: white; cursor: pointer;">出荷実行へ</button>
+                        <button class="icon-btn" onclick="deleteTask(this, '${tId}')" title="取消" style="background:none; border:none; color:var(--kintone-danger); cursor:pointer; font-size: 11px; font-weight: bold;">
+                            <i class="fas fa-trash-can" style="margin-right: 4px;"></i>取消
+                        </button>
                     </div>
                 `;
             }
@@ -710,7 +707,7 @@
 
             const row = `<tr>
                 <td style="font-weight:bold;"><a href="${tId === '101' ? 'task_detail_101.html' : 'task_detail.html'}?id=${tId}" style="color:var(--kintone-blue); text-decoration:none;">${tId}</a></td>
-                <td><span class="badge-status ${type === 'SHIP' ? 'status-ok' : 'status-return'}">${type === 'SHIP' ? '待機中' : '返品'}</span></td>
+                <td><span class="badge-status ${type === 'SHIP' ? 'status-ok' : 'status-return'}">${type === 'SHIP' ? '未対応' : '返品'}</span></td>
                 <td class="col-mid">${displayDate}</td>
                 <td>${summary}</td>
                 <td>${note || '-'}</td>
