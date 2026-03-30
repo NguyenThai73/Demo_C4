@@ -45,24 +45,76 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    max-width: 1920px;
-    margin: 0 auto;
+    padding: 0 40px;
+    max-width: none;
+    margin: 0;
 }
 
-.kintone-header-top { background-color: #003a6c; height: 40px; display: flex; align-items: center; color: white; width: 100%; }
-.header-logo { font-size: 18px; font-weight: bold; }
-.header-user { display: flex; align-items: center; gap: 15px; font-size: 12px; }
-.header-user img { width: 32px; height: 32px; border-radius: 3px; background: #eee; border: 1px solid #fff; }
+.kintone-header-top { background-color: #1f314d; height: 48px; display: flex; align-items: center; color: white; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.header-logo { font-size: 18px; font-weight: bold; display: flex; align-items: center; gap: 4px; }
+.k-icon-box { background: white; color: #1f314d; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 2px; font-size: 16px; margin-right: 5px; }
 
-.kintone-header-sub { background-color: #444; height: 36px; display: flex; align-items: center; color: white; width: 100%; }
-.header-sub-left { display: flex; align-items: center; gap: 18px; font-size: 16px; }
-.search-container { position: relative; }
-.search-input { background: white; border: none; padding: 4px 10px; border-radius: 2px; font-size: 12px; width: 250px; }
+.header-user { display: flex; align-items: center; gap: 15px; font-size: 12px; margin-left: auto; }
+.header-user .mail-icon { color: white; background: #ea4335; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+.header-user img { width: 32px; height: 32px; border-radius: 3px; background: #eee; border: 1px solid rgba(255,255,255,0.3); }
 
-.kintone-app-title-bar { background-color: white; border-bottom: 1px solid #eee; width: 100%; padding: 10px 0; display: flex; align-items: center; }
-.app-icon { background-color: #5cb85c; color: white; width: 32px; height: 32px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-.app-title { font-size: 18px; font-weight: bold; color: #333; margin-left: 10px; }
+.kintone-header-sub { background-color: #4a4a4a; height: 44px; display: flex; align-items: center; color: #ddd; width: 100%; }
+.header-sub-left { display: flex; align-items: center; gap: 20px; font-size: 18px; }
+.header-sub-left span { cursor: pointer; padding: 5px; border-radius: 4px; }
+.header-sub-left span:hover { background: rgba(255,255,255,0.1); }
+
+.header-sub-right { display: flex; align-items: center; gap: 15px; margin-left: auto; }
+.search-container { position: relative; background: white; height: 28px; display: flex; align-items: center; border-radius: 2px; }
+.search-input { border: none; padding: 4px 10px; font-size: 12px; width: 200px; height: 100%; outline: none; }
+.search-icon-btn { color: #ccc; padding: 0 8px; border-left: 1px solid #eee; display: flex; align-items: center; justify-content: center; height: 100%; cursor: pointer; }
+
+.kintone-app-title-bar { background-color: #708d12; width: 100%; height: 48px; display: flex; align-items: center; color: white; box-shadow: inset 0 -2px rgba(0,0,0,0.1); }
+.app-icon-box { background-color: rgba(255,255,255,0.2); color: white; width: 48px; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 24px; border-right: 1px solid rgba(0,0,0,0.1); }
+.app-title { font-size: 16px; font-weight: bold; margin-left: 15px; text-shadow: 0 1px rgba(0,0,0,0.2); }
+
+.kintone-sub-nav { background-color: #f7f7f7; border-bottom: 1px solid #e3e7e8; height: 36px; display: flex; align-items: center; padding: 0 10px; }
+.sub-nav-left { display: flex; align-items: center; gap: 10px; color: #999; font-size: 11px; }
+.sub-nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; color: #ccc; }
+
+.kintone-toolbar { background: white; padding: 12px 10px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #eee; }
+.view-selector { border: 2px solid #3498db; height: 34px; padding: 0 15px; border-radius: 2px; display: flex; align-items: center; gap: 10px; color: #3498db; font-weight: bold; cursor: pointer; font-size: 13px; }
+.toolbar-icon-btn { border: 1px solid #e3e7e8; height: 34px; width: 34px; display: flex; align-items: center; justify-content: center; color: #999; border-radius: 2px; cursor: pointer; background: #fff; }
+.toolbar-icon-btn:hover { background: #f9f9f9; }
+.toolbar-right { margin-left: auto; display: flex; gap: 10px; }
+.btn-add { background: #f1f1f1; border: 1px solid #e3e7e8; color: #666; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; }
+
+/* Portal Nav (Dashboard Tabs) */
+.kintone-portal-nav {
+    background: white;
+    border-bottom: 1px solid #e3e7e8;
+    height: 48px;
+    display: flex;
+    align-items: center;
+}
+.portal-nav-inner {
+    display: flex;
+    gap: 0;
+    height: 100%;
+    padding: 0 40px;
+}
+.portal-nav-tab {
+    padding: 0 25px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #444;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+.portal-nav-tab:hover { background-color: #f7f9fa; color: #3498db; }
+.portal-nav-tab.active {
+    color: #3498db;
+    border-bottom-color: #3498db;
+    font-weight: bold;
+}
 
 .breadcrumb { font-size: 11px; color: #666; margin-bottom: 5px; padding: 10px 0; display: flex; align-items: center; gap: 5px; }
 

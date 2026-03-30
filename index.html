@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Kintone Dashboard - 注文管理</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+<html lang="ja"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kintone Dashboard - 注文管理</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="style.css">
     <!-- Font Awesome 6.x CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script id="tailwind-config">
+<script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
         theme: {
@@ -74,7 +74,7 @@
         },
       }
     </script>
-    <style>
+<style>
         body { font-family: 'Noto Sans JP', sans-serif; }
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -85,7 +85,7 @@
 <body class="bg-surface text-on-surface min-h-screen flex flex-col antialiased">
 
     <div class="kintone-header-top">
-        <div class="header-content-inner">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
             <div class="header-logo">
                 <div class="k-icon-box">受</div>
                 受発注管理システム
@@ -102,10 +102,10 @@
     </div>
 
     <div class="kintone-header-sub">
-        <div class="header-content-inner">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
             <div class="header-sub-left">
                 <span><i class="fas fa-bars"></i></span>
-                <span><i class="fas fa-house"></i></span>
+                <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
                 <span><i class="fas fa-bell"></i></span>
                 <span><i class="fas fa-star"></i></span>
             </div>
@@ -119,17 +119,36 @@
             </div>
         </div>
     </div>
-
-    <div class="kintone-portal-nav">
-        <div class="portal-nav-inner">
-            <a href="index.html" class="portal-nav-tab active">ホーム</a>
-            <a href="order_list_progress_view.html" class="portal-nav-tab">注文管理</a>
-            <a href="purchase_index.html" class="portal-nav-tab">発注管理</a>
-            <a href="task_top.html" class="portal-nav-tab">入出庫</a>
-            <a href="payment_cashflow_index.html" class="portal-nav-tab">財務/入出金</a>
-        </div>
-    </div>
-    <main class="flex-grow max-w-[1920px] mx-auto w-full px-6 py-8">
+<!-- TopNavBar -->
+<nav class="bg-white dark:bg-slate-900 shadow-sm dark:shadow-none font-['Inter'] antialiased text-sm font-medium tracking-tight docked full-width top-0 border-b-0 sticky z-50">
+<div class="flex justify-between items-center w-full px-6 h-16 max-w-[1920px] mx-auto">
+<div class="flex items-center gap-8">
+                    <a href="index.html" class="text-xl font-bold text-[#00488d] dark:text-blue-400 tracking-tighter hover:opacity-80 transition-opacity">受発注管理システム</a>
+<div class="hidden md:flex gap-6 items-center">
+                    <a class="text-[#00488d] dark:text-blue-400 border-b-2 border-[#00488d] dark:border-blue-400 pb-1" href="index.html">受注業務</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="purchase_index.html">発注業務</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="production_index.html">製造業務</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="task_top.html">入出庫・タスク</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="commission_top.html">報酬管理</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="payment_cashflow_index.html">入出金管理</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="partner_top.html">パートナー管理</a>
+                    <a class="text-[#424752] dark:text-slate-400 hover:text-[#00488d] dark:hover:text-blue-300 transition-colors" href="master_index.html">マスタ管理</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all duration-200 scale-95 active:opacity-80">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all duration-200 scale-95 active:opacity-80">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-highest overflow-hidden border border-surface-container-high">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Professional user profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5ojtP60fHbHvfrGuF9J-4sBUw7rQ55quXPL5EArZOUVuI-uaKnHiGd9XgLryiNM3MmyAVzRWxhK-eM9pkTHxvOgm9C8iCdc-MSgV5uuGNLbJvEyHJpQNttKgn_MSkrYX6Bpw3luyA9XgQqy67fVzJe1u6ClMJltbZcl4ipEBaMnSnochUBb1nKE1e_6SYEgToCb--ZxWWCOtmZUTU2D9KAf1pX_pSFvfJkX94qz58YyYApVKpy1oQ52ihHWbcMt95MsXemNpgbF70"/>
+</div>
+</div>
+</div>
+</nav>
+<main class="flex-grow max-w-[1920px] mx-auto w-full px-6 py-8">
 <!-- Page Header -->
 <header class="mb-8 flex justify-between items-start">
 <div>
