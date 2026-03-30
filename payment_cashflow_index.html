@@ -128,7 +128,7 @@
                     <a href="#" class="flex flex-col items-center gap-3 p-5 bg-white rounded-xl shadow-sm border border-transparent hover:border-primary transition-all group">
                         <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl group-hover:scale-110 transition-transform">12</div>
                         <span class="text-sm font-semibold text-on-surface text-center">入金消込待ち</span>
-                        <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">Invoice未入金あり</span>
+                        <span class="text-[10px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">Invoice未払いあり</span>
                     </a>
                     <a href="#" class="flex flex-col items-center gap-3 p-5 bg-white rounded-xl shadow-sm border border-transparent hover:border-tertiary transition-all group">
                         <div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary font-bold text-xl group-hover:scale-110 transition-transform">4</div>
@@ -226,10 +226,10 @@
 
             <!-- Right Column: Lists -->
             <div class="lg:col-span-8 flex flex-col gap-8">
-                <!-- 未入金Invoice一覧 -->
+                <!-- 未払いInvoice一覧 -->
                 <section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
                     <div class="px-6 py-5 border-b border-slate-50 flex justify-between items-center bg-white">
-                        <h2 class="text-lg font-bold text-on-surface">未入金Invoice一覧</h2>
+                        <h2 class="text-lg font-bold text-on-surface">未払いInvoice一覧</h2>
                         <button class="text-xs font-bold text-primary hover:underline">すべて表示</button>
                     </div>
                     <div class="overflow-x-auto">
@@ -290,8 +290,8 @@
                             <tbody>
                                 <tr class="hover:bg-slate-50 transition-colors cursor-pointer" onclick="location.href='payment_request_detail.html'">
                                     <td class="font-bold text-primary">株式会社ＴＯＲＩ</td>
-                                    <td><span class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-[10px] font-bold">報酬</span></td>
-                                    <td class="font-extrabold text-on-surface">¥ 27,000</td>
+                                    <td><span class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-[10px] font-bold">配当</span></td>
+                                    <td class="font-extrabold text-on-surface">¥ 29,250</td>
                                     <td><span class="px-2 py-0.5 bg-orange-100 text-orange-600 rounded text-[10px] font-bold">支払認可待ち</span></td>
                                     <td class="text-right font-medium text-slate-500">2026/03/31</td>
                                 </tr>
