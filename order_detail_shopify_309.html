@@ -698,12 +698,12 @@
             const shipStatusText = orderState.status === 'OUTFINISH' ? '配送中' : '未対応';
             const badgeStyle = (type === 'SHIP' && shipStatusText === '配送中') 
                 ? 'style="background-color: #f3e5f5; color: #7b1fa2; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;"'
-                : '';
+                : (type === 'RET' ? 'style="background-color: #fffbe6; color: #bf4b00; border: 1px solid #ffe58f; padding: 4px 16px; border-radius: 20px; font-weight: bold;"' : '');
             const badgeClass = badgeStyle ? '' : `badge-status ${type === 'SHIP' ? 'status-ok' : 'status-return'}`;
 
             const row = `<tr>
                 <td style="font-weight:bold;"><a href="${detailUrl}?id=${tId}" style="color:var(--kintone-blue); text-decoration:none;">${tId}</a></td>
-                <td class="col-mid"><span class="${badgeClass}" ${badgeStyle}>${type === 'SHIP' ? shipStatusText : '入荷待ち'}</span></td>
+                <td class="col-mid"><span class="${badgeClass}" ${badgeStyle}>${type === 'SHIP' ? shipStatusText : '未対応'}</span></td>
                 <td class="col-mid">${displayDate}</td>
                 <td>${summary}</td>
                 <td>${note || '-'}</td>

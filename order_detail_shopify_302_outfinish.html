@@ -379,14 +379,14 @@
                             <th style="width: 110px;">返品日</th>
                             <th>返品サマリー</th>
                             <th style="width: 150px;">備考</th>
-                            <th class="col-mid" style="width: 100px;">操作</th>
+                            <th class="col-mid" style="width: 150px;">操作</th>
                         </tr>
                     </thead>
                     <tbody id="return-history-body"></tbody>
                 </table>
                 <div id="return-pending-notice" style="display: none; margin-top: 15px; padding: 12px 18px; border-radius: 8px; background-color: #f4f6f8; border: 1px dashed #ced4da; font-size: 11px; color: #495057; line-height: 1.6;">
                     <i class="fas fa-circle-info" style="margin-right: 8px; color: var(--kintone-blue);"></i>
-                    ステータスが「待機中」のタスクは、「取消」ボタンを選択すると削除され、返品数を再度登録できる状態に戻ります。
+                    ステータスが「未対応」のタスクは、「取消」ボタンを選択すると削除され、返品数を再度登録できる状態に戻ります。
                 </div>
             </div>
         </div>
@@ -413,7 +413,7 @@
     <div class="modal-overlay" id="error-modal" style="display: none; align-items: center; justify-content: center;">
         <div class="modal-card">
             <div style="font-size: 40px; color: #e74c3c; margin-bottom: 20px;"><i class="fas fa-triangle-exclamation"></i></div>
-            <div style="font-size: 18px; font-weight: 800; margin-bottom: 12px;">入力内容の不備</div>
+            <div style="font-size: 18px; font-weight: 800; margin-bottom: 12px;">入力内容 de 不備</div>
             <div id="error-body" style="font-size: 14px; line-height: 1.6; color: #666; margin-bottom: 25px; text-align: center;"></div>
             <button onclick="closeErrorModal()" style="padding: 12px 40px; background: #333; color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer;">内容を修正する</button>
         </div>
@@ -456,7 +456,6 @@
                 const actionCell = selectedTaskRow.cells[selectedTaskRow.cells.length - 1];
                 if (actionCell) actionCell.innerHTML = '-';
             }
-            document.getElementById('summary-delivery-value').style.color = '#008a3d';
 
             // Update Next Action
             const nextActionArea = document.getElementById('next-action-area');
@@ -471,7 +470,7 @@
                     </div>
                 </div>
                 <div style="display: flex; gap: 12px;">
-                    <button class="btn-reject" onclick="showReturnInput()" style="padding: 10px 24px; border-radius: 12px; font-weight: 800; border: 1px solid #ddd; background: white; cursor: pointer;">返品する</button>
+                    <button class="btn-secondary" onclick="showReturnInput()" style="padding: 10px 24px; border-radius: 12px; font-weight: 800; border: 1px solid #bf4b00; background: white; color: #bf4b00; cursor: pointer;">返品する</button>
                 </div>
             `;
 
@@ -558,12 +557,17 @@
                 <td>${now}</td>
                 <td>${summary.join(', ')}</td>
                 <td>-</td>
-                <td class="col-mid"><button onclick="this.closest('tr').remove()" style="color:var(--kintone-danger); border:none; background:none; cursor:pointer; font-size: 11px; font-weight: bold;"><i class="fas fa-trash-can" style="margin-right: 4px;"></i> 取消</button></td>
+                <td class="col-mid">
+                    <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                        <button class="btn-blue" onclick="location.href='task_return_2483_detail.html'" style="padding: 6px 16px; font-size: 11px; border-radius: 4px; border: none; font-weight: bold; background: var(--kintone-blue); color: white; cursor: pointer;">入荷実行へ</button>
+                        <button onclick="cancelReturnTask(this, ${q50}, ${q300})" style="color:#888; border:none; background:none; cursor:pointer; font-size: 11px; font-weight: bold;"><i class="fas fa-trash-can" style="margin-right: 4px;"></i> 取消</button>
+                    </div>
+                </td>
             </tr>`;
             document.getElementById('return-history-body').insertAdjacentHTML('afterbegin', newRow);
             document.getElementById('return-pending-notice').style.display = 'block';
 
-            // Update Next Action area (like 303)
+            // Update Next Action area (like 309)
             const nextActionArea = document.getElementById('next-action-area');
             nextActionArea.className = 'next-action-card accent-primary';
             nextActionArea.style.borderLeftColor = 'var(--kintone-blue)';
@@ -571,17 +575,52 @@
                 <div class="next-action-content">
                     <span style="font-size: 32px; color: var(--kintone-blue);"><i class="fas fa-barcode"></i></span>
                     <div>
-                        次の対応: <span style="color: var(--kintone-blue); font-weight: 800;">返品商品の検品・入庫作業</span><br>
-                        <span style="font-weight: normal; font-size: 11px; color: #666;">返品入庫待ちのタスクがあります。検品・入庫作業を完了させてください。</span>
+                        次の対応:<br>
+                        <span style="font-weight: 800; font-size: 14px; color: var(--kintone-blue); display: block; margin: 4px 0;">返品入庫待ちのタスクがあります。</span>
+                        <span style="font-weight: normal; font-size: 12px; color: #666;">下の返品タスク一覧から対象を選択し、対応を進めてください。</span>
                     </div>
                 </div>
                 <div style="display: flex; gap: 12px;">
-                    <button class="btn-blue" onclick="showReturnInput()" style="padding: 10px 24px; border-radius: 12px; font-weight: 800; border: none; background-color: var(--kintone-blue); color: white; cursor: pointer; font-size: 14px;">追加の返品を登録</button>
-                    <button class="btn-reject" onclick="location.href='task_return_2483_detail.html'" style="padding: 10px 30px; font-weight: 800; border-radius: 12px; background: white; border: 1px solid #ddd; color: #666; cursor: pointer; font-size: 14px; box-shadow: none;">入荷タスク確認へ進む</button>
+                    <button class="btn-secondary" onclick="showReturnInput()" style="padding: 10px 24px; border-radius: 12px; font-weight: 800; border: 1px solid #bf4b00; background: white; color: #bf4b00; cursor: pointer;">追加の返品登録</button>
                 </div>
             `;
 
             setTimeout(() => { flash.style.display = 'none'; }, 3000);
+        }
+
+        function cancelReturnTask(btn, q50, q300) {
+            const tr = btn.closest('tr');
+            tr.remove();
+            
+            // Revert quantities in the table
+            const del50 = parseInt(document.getElementById('del-qty-rc50').innerText) || 0;
+            const del300 = parseInt(document.getElementById('del-qty-rc300').innerText) || 0;
+            document.getElementById('del-qty-rc50').innerText = del50 + q50;
+            document.getElementById('del-qty-rc300').innerText = del300 + q300;
+            
+            const tbody = document.getElementById('return-history-body');
+            if (tbody.children.length === 0) {
+                document.getElementById('return-history-table').style.display = 'none';
+                document.getElementById('no-return-history').style.display = 'block';
+                document.getElementById('return-pending-notice').style.display = 'none';
+                
+                // Revert Next Action to whatever it was (finished or transit)
+                const nextActionArea = document.getElementById('next-action-area');
+                nextActionArea.className = 'next-action-card accent-success';
+                nextActionArea.style.borderLeftColor = '#008a3d';
+                nextActionArea.innerHTML = `
+                    <div class="next-action-content">
+                        <span style="font-size: 30px; color: #008a3d;"><i class="fas fa-check-double"></i></span>
+                        <div>
+                            状況: <span style="color: #008a3d; font-weight: 800;">配送完了</span><br>
+                            <span style="font-weight: normal; font-size: 12px; color: #666;">全ての商品の配送が完了しました。返品が必要な場合は、こちらから返品登録をしてください。</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn-secondary" onclick="showReturnInput()" style="padding: 10px 24px; border-radius: 12px; font-weight: 800; border: 1px solid #bf4b00; background: white; color: #bf4b00; cursor: pointer;">返品する</button>
+                    </div>
+                `;
+            }
         }
 
         function showReturnError(msg) {
@@ -592,7 +631,7 @@
             document.getElementById('error-modal').style.display = 'none';
         }
         window.onload = function() {
-            setTimeout(() => { document.getElementById('flash-message').style.display = 'none'; }, 3000);
+            setTimeout(() => { if(document.getElementById('flash-message')) document.getElementById('flash-message').style.display = 'none'; }, 3000);
         };
     </script>
 </body>
