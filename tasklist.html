@@ -289,7 +289,7 @@
                         <td>700</td>
                         <td>商品</td>
                         <td><a href="order_detail_shopify_309.html" class="link-text">309</a></td>
-                        <td>2026-03-31</td>
+                        <td class="dynamic-deadline">2026-03-31</td>
                         <td>岐阜倉庫</td>
                         <td>
                             <div class="user-cell">
@@ -314,7 +314,7 @@
                         <td>700</td>
                         <td>商品</td>
                         <td><a href="order_detail_shopify_302.html" class="link-text">302</a></td>
-                        <td>2026-03-31</td>
+                        <td class="dynamic-deadline">2026-03-31</td>
                         <td>岐阜倉庫</td>
                         <td>
                             <div class="user-cell">
@@ -339,7 +339,7 @@
                         <td>700</td>
                         <td>商品</td>
                         <td><a href="order_detail_agency_303.html" class="link-text">303</a></td>
-                        <td>2026-03-20</td>
+                        <td class="dynamic-deadline">2026-03-20</td>
                         <td>岐阜倉庫</td>
                         <td>
                             <div class="user-cell">
@@ -364,7 +364,7 @@
                         <td>250</td>
                         <td>商品</td>
                         <td><a href="order_detail_shopify_309_return_finish.html" class="link-text">309</a></td>
-                        <td>2026-04-02</td>
+                        <td class="dynamic-deadline">2026-04-02</td>
                         <td>岐阜倉庫</td>
                         <td>
                             <div class="user-cell">
@@ -389,7 +389,7 @@
                         <td>250</td>
                         <td>商品</td>
                         <td><a href="order_detail_shopify_302_return_finish.html" class="link-text">302</a></td>
-                        <td>2026-04-01</td>
+                        <td class="dynamic-deadline">2026-04-01</td>
                         <td>岐阜倉庫</td>
                         <td>
                             <div class="user-cell">
@@ -414,7 +414,7 @@
                         <td>250</td>
                         <td>商品</td>
                         <td><a href="order_detail_agency_303.html" class="link-text">303</a></td>
-                        <td>2026-03-31</td>
+                        <td class="dynamic-deadline">2026-03-31</td>
                         <td>岐阜倉庫</td>
                         <td>
                             <div class="user-cell">
@@ -456,40 +456,43 @@
 
     <script>
         window.onload = function () {
+            // Task filter logic
             const params = new URLSearchParams(window.location.search);
             const filter = params.get('filter');
 
             if (filter === 'shipment') {
-                // Update label
                 const label = document.getElementById('current-filter-label');
                 if (label) label.textContent = '出荷 (販売)';
 
-                // Filter table rows
                 const rows = document.querySelectorAll('.task-table tbody tr');
                 rows.forEach(row => {
                     const taskType = row.cells[1].textContent.trim();
                     const statusText = row.cells[2].textContent.trim();
                     const warehouse = row.cells[7].textContent.trim();
-
-                    // Show only "出荷 (販売)" that are "待機中" AND are "岐阜倉庫"
                     if (taskType === '出荷 (販売)' && statusText === '待機中' && warehouse === '岐阜倉庫') {
                         row.style.display = '';
-
-                        // Update the link to pass type=sample
-                        const link = row.cells[0].querySelector('a');
-                        const taskId = link.textContent.trim();
-                        if (link) {
-                            if (taskId === '501') {
-                                link.href = 'task_detail.html?id=501&type=sample';
-                            } else if (!link.href.includes('type=')) {
-                                link.href = 'task_detail.html?type=sample';
-                            }
-                        }
                     } else {
                         row.style.display = 'none';
                     }
                 });
             }
+
+            // Dynamic date logic: Set all "dynamic-deadline" to Today + 7 days
+            const today = new Date();
+            const nextWeek = new Date(today);
+            nextWeek.setDate(today.getDate() + 7);
+            
+            const formatDate = (date) => {
+                const y = date.getFullYear();
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const d = String(date.getDate()).padStart(2, '0');
+                return `${y}-${m}-${d}`;
+            };
+
+            const formattedNextWeek = formatDate(nextWeek);
+            document.querySelectorAll('.dynamic-deadline').forEach(el => {
+                el.textContent = formattedNextWeek;
+            });
         };
     </script>
 </body>
