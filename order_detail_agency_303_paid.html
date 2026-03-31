@@ -36,8 +36,11 @@
 <body>
 
     <div class="kintone-header-top">
-        <div class="header-content-inner">
-            <div class="header-logo"><a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;"><span class="k-icon">k</span> kintone</a></div>
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="header-logo">
+                <div class="k-icon-box">受</div>
+                受発注管理システム
+            </div>
             <div class="header-user">
                 <span>✉</span>
                 <div style="display: flex; align-items: center; gap: 8px;">
@@ -51,13 +54,19 @@
     </div>
 
     <div class="kintone-header-sub">
-        <div class="header-content-inner">
-            <div class="header-sub-left"><span>☰</span> <span>🏠</span> <span>🔔</span> <span>⭐</span></div>
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="header-sub-left">
+                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-house" onclick="location.href='index.html'" style="cursor:pointer"></i></span>
+                <span><i class="fas fa-bell"></i></span>
+                <span><i class="fas fa-star"></i></span>
+            </div>
             <div class="header-sub-right">
-                <span>⚙</span> <span>❓</span>
+                <span><i class="fas fa-cog"></i></span>
+                <span><i class="fas fa-question-circle"></i></span>
                 <div class="search-container">
                     <input type="text" class="search-input" placeholder="アプリ内検索">
-                    <span class="search-icon">🔍</span>
+                    <div class="search-icon-btn"><i class="fas fa-search"></i></div>
                 </div>
             </div>
         </div>
@@ -77,12 +86,18 @@
             🏠 <span>/</span> アプリ: 注文管理
         </div>
         <div class="kintone-action-toolbar">
-            <div class="action-icon-btn">︿</div>
-            <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
-            <div class="action-icon-btn" onclick="alert('ここでは注文を直接作成できません。Agencyポータルから操作してください。')">+</div>
-            <div class="action-icon-btn">📄</div>
-            <div class="action-icon-btn">⚙ <span>▼</span></div>
-            <div class="action-icon-btn">⋯</div>
+            <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+                <div class="action-btn-group record-nav">
+                    <div class="action-icon-btn"><i class="fas fa-chevron-up"></i></div>
+                    <div class="action-icon-btn"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="action-btn-group">
+                    <div class="action-icon-btn" onclick="alert('ここでは注文を直接作成できません。Agency portalから操作してください。')"><i class="fas fa-plus"></i></div>
+                    <div class="action-icon-btn"><i class="fas fa-file-export"></i></div>
+                    <div class="action-icon-btn"><i class="fas fa-cog"></i> <span style="font-size: 8px; margin-left: 3px;">▼</span></div>
+                    <div class="action-icon-btn"><i class="fas fa-ellipsis-v"></i></div>
+                </div>
+            </div>
         </div>
 
         <div id="flash-message" class="sticky-flash">🎉 操作を完了しました。</div>
@@ -111,7 +126,7 @@
                     <div class="badge-type badge-agency"
                         style="font-size: 12px; background-color: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; font-weight: 800; padding: 4px 12px;">
                         Agency注文</div>
-                    <div id="order-title" style="font-size: 24px; font-weight: bold;">注文 #303</div>
+                    <div id="order-title" style="font-size: 24px; font-weight: bold;"></div>
                 </div>
             </div>
 
@@ -270,7 +285,7 @@
                         <td class="col-num">0</td>
                         <td class="col-num" style="background-color: #fffaf0; color: var(--kintone-danger); font-weight: bold;">500</td>
                         <td class="col-num" style="color: #999">0</td>
-                        <td class="col-mid"><span class="badge-status status-neutral">未対応</span></td>
+                        <td class="col-mid"><span class="badge-status status-warn">未対応</span></td>
                     </tr>
                     <tr>
                         <td class="col-product-name"><a href="#" style="color: var(--kintone-blue); text-decoration: none; font-weight: bold;">Rice Silica 300mL (RC300-V01)</a></td>
@@ -279,7 +294,7 @@
                         <td class="col-num">0</td>
                         <td class="col-num" style="background-color: #fffaf0; color: var(--kintone-danger); font-weight: bold;">200</td>
                         <td class="col-num" style="color: #999">0</td>
-                        <td class="col-mid"><span class="badge-status status-neutral">未対応</span></td>
+                        <td class="col-mid"><span class="badge-status status-warn">未対応</span></td>
                     </tr>
                 </tbody>
             </table>

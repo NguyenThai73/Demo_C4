@@ -36,24 +36,24 @@
     </div>
 </div>
 
-<div class="kintone-header-sub">
-    <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
-        <div class="header-sub-left">
-            <span><i class="fas fa-bars"></i></span>
-            <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
-            <span><i class="fas fa-bell"></i></span>
-            <span><i class="fas fa-star"></i></span>
-        </div>
-        <div class="header-sub-right">
-            <span><i class="fas fa-cog"></i></span>
-            <span><i class="fas fa-question-circle"></i></span>
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="アプリ内検索">
-                <div class="search-icon-btn"><i class="fas fa-search"></i></div>
+    <div class="kintone-header-sub">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="header-sub-left">
+                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-house" onclick="location.href='index.html'" style="cursor:pointer"></i></span>
+                <span><i class="fas fa-bell"></i></span>
+                <span><i class="fas fa-star"></i></span>
+            </div>
+            <div class="header-sub-right">
+                <span><i class="fas fa-cog"></i></span>
+                <span><i class="fas fa-question-circle"></i></span>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="アプリ内検索">
+                    <div class="search-icon-btn"><i class="fas fa-search"></i></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 <div class="kintone-app-title-bar">
     <div class="header-content-inner" style="max-width: none; padding: 0 40px; justify-content: flex-start;">
@@ -76,18 +76,20 @@
 
 <div class="main-container">
     
-    <div class="kintone-action-toolbar">
-        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
-            <div class="action-btn-group record-nav">
-                <div class="action-icon-btn">︿</div>
-                <div class="action-icon-btn">﹀</div>
-                <div class="action-icon-btn">+</div>
-                <div class="action-icon-btn">📄</div>
-                <div class="action-icon-btn">⚙ <span>▼</span></div>
-                <div class="action-icon-btn">⋯</div>
+        <div class="kintone-action-toolbar">
+            <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+                <div class="action-btn-group record-nav">
+                    <div class="action-icon-btn"><i class="fas fa-chevron-up"></i></div>
+                    <div class="action-icon-btn"><i class="fas fa-chevron-down"></i></div>
+                </div>
+                <div class="action-btn-group">
+                    <div class="action-icon-btn"><i class="fas fa-plus"></i></div>
+                    <div class="action-icon-btn"><i class="fas fa-file-export"></i></div>
+                    <div class="action-icon-btn"><i class="fas fa-cog"></i> <span style="font-size: 8px; margin-left: 3px;">▼</span></div>
+                    <div class="action-icon-btn"><i class="fas fa-ellipsis-v"></i></div>
+                </div>
             </div>
         </div>
-    </div>
 
     <!-- Summary Header Card -->
     <div class="summary-header">
@@ -96,7 +98,7 @@
         <div class="summary-grid">
             <div class="summary-item">
                 <div class="summary-label">現在のステータス</div>
-                <div class="summary-primary-value status-neutral">待機中</div>
+                <div class="summary-primary-value" style="color: #f39c12;">未対応</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">作業指示元</div>

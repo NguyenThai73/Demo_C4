@@ -452,7 +452,7 @@
             if (isCancelled) summaryShipping.innerText = 'キャンセル';
             else if (orderState.status === 'FINISHED') summaryShipping.innerText = '配送完了';
             else if (orderState.status === 'OUTFINISH') summaryShipping.innerText = '配送中';
-            else summaryShipping.innerText = (totalDelivered >= totalOrdered ? (orderState.status === 'FINISHED' ? '配送完了' : '配送中') : (totalDelivered > 0 ? '配送中' : (orderState.isPaid ? '配送中' : (orderState.isConfirmed ? '支払い済み' : '支払い待ち'))));
+            else summaryShipping.innerText = (totalDelivered >= totalOrdered ? (orderState.status === 'FINISHED' ? '配送完了' : '配送中') : (totalDelivered > 0 ? '配送中' : (orderState.isPaid ? '配送中' : (orderState.isConfirmed ? '入金待ち' : '確認待ち'))));
             
             if (isCancelled) {
                 summaryShipping.style.color = '#767676';

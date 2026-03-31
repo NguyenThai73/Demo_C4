@@ -4,691 +4,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>注文詳細 | CREDIE Order Portal</title>
+    <title>注文詳細 (350) | 受発注管理システム</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css">
     <!-- Font Awesome 6.x CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script id="tailwind-config">
+          tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                colors: {
+                  "primary": "#00488d",
+                  "on-surface": "#191c1d",
+                  "on-surface-variant": "#424752",
+                  "surface-container-highest": "#e1e3e4",
+                  "surface": "#f8f9fa",
+                },
+              },
+            },
+          }
+    </script>
     <style>
-        :root {
-            --primary-blue: #3498db;
-            --header-bg: #fff;
-            --body-bg: #f5f6f7;
-            --border-color: #e3e7e8;
-            --status-blue: #0081cc;
-            --status-bg: #e5f3ff;
-            --badge-green: #27ae60;
-            --badge-yellow: #f39c12;
-            --badge-gray: #95a5a6;
-            --badge-red: #e74c3c;
-            --card-bg: #fff;
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #f4f7f9; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Noto Sans JP', sans-serif;
-            background-color: var(--body-bg);
-            color: #333;
-            font-size: 14px;
-        }
-
-        /* Top Header */
-        .top-header {
-            background-color: #1a1a1a;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            color: white;
-        }
-
-        .site-title {
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 13px;
-        }
-
-        .logout-btn {
-            color: #ccc;
-            cursor: pointer;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .logout-btn:hover {
-            color: white;
-        }
-
-        /* Main Content */
-        .main-container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-
-        /* Breadcrumb */
-        .breadcrumb {
-            font-size: 12px;
-            color: var(--primary-blue);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .breadcrumb a {
-            color: var(--primary-blue);
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        /* Page Header */
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .page-title {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .back-btn, .print-btn, .invoice-btn {
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-size: 13px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .back-btn {
-            background-color: #f8f8f8;
-            color: #333;
-            border: 1px solid #ddd;
-        }
-
-        .print-btn {
-            background-color: #fff;
-            color: #333;
-            border: 1px solid #ddd;
-        }
-
-        .invoice-btn {
-            background-color: var(--primary-blue);
-            color: white;
-            border: none;
-        }
-
-        .back-btn:hover {
-            background-color: #eee;
-        }
-
-        .print-btn:hover {
-            background-color: #f9f9f9;
-        }
-
-        .invoice-btn:hover {
-            background-color: #2980b9;
-        }
-
-        /* Card */
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #333;
-            border-bottom: 2px solid var(--primary-blue);
-            padding-bottom: 8px;
-        }
-
-        /* Order Summary */
-        .order-summary {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        .summary-item {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .summary-label {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .summary-value {
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .order-amount {
-            color: #e67e22;
-            font-size: 20px;
-        }
-
-        /* Status Badges */
-        .status-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: bold;
-            text-align: center;
-            min-width: 60px;
-        }
-
-        .status-paid {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .status-unpaid {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        .status-awaiting {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        /* Address Card */
-        .address-content {
-            line-height: 1.6;
-        }
-
-        .address-line {
-            margin-bottom: 4px;
-        }
-
-        /* Order Items Table */
-        .order-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-
-        .order-table th {
-            background-color: #f7f9fa;
-            border-bottom: 2px solid var(--border-color);
-            padding: 12px 15px;
-            text-align: left;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .order-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .order-table tr:hover {
-            background-color: #f9f9f9;
-        }
-
-        /* Confirm Button */
-        .confirm-btn {
-            background-color: var(--primary-blue);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 20px;
-        }
-
-        .confirm-btn:hover {
-            background-color: #2980b9;
-        }
-
-        /* Notes Card */
-        .notes-content {
-            color: #666;
-            font-style: italic;
-        }
-
-        /* Responsive */
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-card {
-            background: white;
-            border-radius: 12px;
-            width: 450px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            text-align: center;
-        }
-
-        .modal-icon {
-            font-size: 48px;
-            color: #27ae60;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .modal-description {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 25px;
-            line-height: 1.6;
-            text-align: left;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-        .modal-footer {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        .modal-btn {
-            padding: 10px 24px;
-            border-radius: 6px;
-            font-weight: 800;
-            cursor: pointer;
-            border: none;
-        }
-
-        .modal-btn-secondary {
-            background: #eee;
-            color: #666;
-        }
-
-        .modal-btn-primary {
-            background: #27ae60;
-            color: white;
-        }
-
-        @media (max-width: 768px) {
-            .order-summary {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-            
-            .order-table {
-                display: block;
-                overflow-x: auto;
-            }
-        }
+        /* Custom history highlighting */
+        .history-row-new { background-color: #f0f7ff !important; border-left: 3px solid #3498db; }
+        .history-row-return { background-color: #fff5f5 !important; border-left: 3px solid #e74c3c; }
     </style>
 </head>
 
-<body>
-    <!-- Top Header -->
-    <div class="top-header">
-        <div class="site-title">CREDIE Order Portal</div>
-        <div class="user-info">
-            <span>test_agency@yopmail.com</span>
-            <span class="logout-btn">
-                <span class="material-symbols-outlined" style="font-size: 16px;">logout</span>
-                ログアウト
-            </span>
-        </div>
-    </div>
-
-    <div class="main-container">
-        <!-- Breadcrumb -->
-        <div class="breadcrumb">
-            <a href="agency_orderlist.html">注文履歴</a>
-            <span>></span>
-            <span>注文詳細</span>
-        </div>
-
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1 class="page-title">注文詳細</h1>
-            <div class="action-buttons">
-                <button class="back-btn" onclick="history.back()">
-                    <span class="material-symbols-outlined">arrow_back</span>
-                    戻る
-                </button>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col antialiased">
+    <!-- Header Section -->
+    <div class="kintone-header-top">
+        <div class="header-content-inner">
+            <div class="header-logo">
+                <div class="k-icon-box">受</div>
+                受発注管理システム
             </div>
-        </div>
-
-        <!-- Order Summary Card -->
-        <div class="card">
-            <div class="order-summary">
-                <div class="summary-item">
-                    <div class="summary-label">注文番号</div>
-                    <div class="summary-value">350</div>
+            <div class="header-user">
+                <div class="mail-icon"><i class="fas fa-envelope"></i></div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-left: 10px;">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
+                    <span>Administrator</span>
+                    <span style="font-size: 10px;">▼</span>
                 </div>
-                <div class="summary-item">
-                    <div class="summary-label">注文日</div>
-                    <div class="summary-value">2026-03-24</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">注文金額</div>
-                    <div class="summary-value order-amount">¥320,000</div>
-                </div>
-                <!-- Added Overall Order Status -->
-                <div class="summary-item">
-                    <div class="summary-label">注文ステータス</div>
-                    <div>
-                        <span style="background-color: #ffebee; color: #c62828; padding: 4px 12px; border-radius: 12px; font-weight: bold; font-size: 11px;">一部返品完了</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Next Action Area -->
-        <div id="next-action-area" class="next-action-card" style="background: #fff; border: 1px solid #eee; border-left: 6px solid #e74c3c; border-radius: 8px; padding: 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; background-color: #fffaf0;">
-            <div style="display: flex; align-items: center; gap: 20px;">
-                <span style="font-size: 32px; color: #e74c3c;"><i class="fas fa-rotate-left"></i></span>
-                <div>
-                    <div style="font-weight: 800; font-size: 15px; color: #333;">
-                        状況: <span style="color: #e74c3c;">一部返品完了</span>
-                    </div>
-                    <div style="font-weight: normal; font-size: 12px; color: #666; margin-top: 4px;">
-                        一部商品の返品手続きが完了しました。返金または相殺処理につきましては別途ご連絡いたします。
-                    </div>
-                </div>
-            </div>
-            
-            <div style="display: flex; gap: 12px; align-items: center;">
-                <button onclick="viewInvoice()" style="padding: 8px 16px; background: white; border: 1px solid #3498db; color: #3498db; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                    <i class="fas fa-eye"></i>表示
-                </button>
-                <button onclick="downloadInvoice()" style="padding: 8px 16px; background: white; border: 1px solid #6c757d; color: #6c757d; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                    <i class="fas fa-download"></i>DL
-                </button>
-            </div>
-        </div>
-
-
-        <!-- Order Items Card -->
-        <div class="card">
-            <div class="card-header">
-                <span class="material-symbols-outlined">list</span>
-                注文内容
-            </div>
-            <table class="order-table">
-                <thead>
-                    <tr>
-                        <th style="width: 120px;">商品SKU</th>
-                        <th>商品名</th>
-                        <th style="width: 80px; text-align: right;">注文数</th>
-                        <th style="width: 80px; text-align: right;">出荷済</th>
-                        <th style="width: 80px; text-align: right;">返品数</th>
-                        <th style="width: 120px; text-align: center;">ステータス</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="color: #666; font-size: 11px;">RC50-V01</td>
-                        <td style="font-weight: bold;">Rice Silica 50mL</td>
-                        <td style="text-align: right; font-weight: bold;">600</td>
-                        <td style="text-align: right;">600</td>
-                        <td style="text-align: right; font-weight: bold; color: #e74c3c;">250</td>
-                        <td style="text-align: center;"><span style="background-color: #ffebee; color: #c62828; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">一部返品</span></td>
-                    </tr>
-                    <tr>
-                        <td style="color: #666; font-size: 11px;">RC300-V01</td>
-                        <td style="font-weight: bold;">Rice Silica 300mL</td>
-                        <td style="text-align: right; font-weight: bold;">200</td>
-                        <td style="text-align: right;">200</td>
-                        <td style="text-align: right; font-weight: bold; color: #e74c3c;">0</td>
-                        <td style="text-align: center;"><span class="status-badge status-paid" style="background-color: #e8f5e9; color: #2e7d32; border: none;">納品完了</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Delivery Information Card -->
-        <div class="card">
-            <div class="card-header">
-                <span class="material-symbols-outlined">location_on</span>
-                配送先情報
-            </div>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-                <div class="summary-item">
-                    <div class="summary-label">会社名</div>
-                    <div class="summary-value" style="font-weight: bold;">株式会社東京グリーン</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">担当者名</div>
-                    <div class="summary-value" style="font-weight: bold;">山田 太郎</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">メールアドレス</div>
-                    <div class="summary-value">test_agency@yopmail.com</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">電話番号</div>
-                    <div class="summary-value">03-1234-5678</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">都道府県</div>
-                    <div class="summary-value">東京都</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">郵便番号</div>
-                    <div class="summary-value">150-0001</div>
-                </div>
-                <div class="summary-item" style="grid-column: span 2;">
-                    <div class="summary-label">住所</div>
-                    <div class="summary-value">東京都渋谷区代々木1-2-3</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">建物名・部署番号</div>
-                    <div class="summary-value">代々木ビル 5F</div>
-                </div>
-                <div class="summary-item" style="grid-column: span 3; margin-top: 10px;">
-                    <div class="summary-label">配送に関する特記事項</div>
-                    <div class="summary-value" style="color: #888; font-style: italic;">ヤマト運輸希望</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Delivery History Card -->
-        <div class="card">
-            <div class="card-header">
-                <span class="material-symbols-outlined">local_shipping</span>
-                出荷履歴
-            </div>
-            <table class="order-table" style="font-size: 12px;">
-                <thead>
-                    <tr>
-                        <th style="width: 120px;">商品SKU</th>
-                        <th>商品名</th>
-                        <th style="width: 80px; text-align: right;">配送数</th>
-                        <th style="width: 140px; text-align: center;">出荷予定日</th>
-                        <th style="width: 120px; text-align: center;">ステータス</th>
-                        <th style="width: 120px;">備考</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Lần 2 (Newest) -->
-                    <tr style="border-top: 2px solid #3498db; background-color: #f0f7ff;">
-                        <td style="color: #666;">RC50-V01</td>
-                        <td style="font-weight: bold;">Rice Silica 50mL</td>
-                        <td style="text-align: right; font-weight: bold;">400</td>
-                        <td style="text-align: center; color: #666;">2026-03-31</td>
-                        <td style="text-align: center;">
-                            <span class="history-status-badge" style="background-color: #e8f5e9; color: #2e7d32; padding: 4px 12px; border-radius: 12px; font-weight: bold; font-size: 11px;">完了</span>
-                        </td>
-                        <td style="color: #999;">第二次分</td>
-                    </tr>
-                    <tr style="background-color: #f0f7ff;">
-                        <td style="color: #666;">RC300-V01</td>
-                        <td style="font-weight: bold;">Rice Silica 300mL</td>
-                        <td style="text-align: right; font-weight: bold;">100</td>
-                        <td style="text-align: center; color: #666;">2026-03-31</td>
-                        <td style="text-align: center;">
-                            <span class="history-status-badge" style="background-color: #e8f5e9; color: #2e7d32; padding: 4px 12px; border-radius: 12px; font-weight: bold; font-size: 11px;">完了</span>
-                        </td>
-                        <td style="color: #999;">第二次分</td>
-                    </tr>
-                    <!-- Lần 1 -->
-                    <tr style="border-top: 1px dotted #ccc;">
-                        <td style="color: #999;">RC50-V01</td>
-                        <td style="font-weight: bold; color: #777;">Rice Silica 50mL</td>
-                        <td style="text-align: right; font-weight: bold; color: #777;">200</td>
-                        <td style="text-align: center; color: #999;">2026-03-29</td>
-                        <td style="text-align: center;">
-                            <span style="background-color: #e8f5e9; color: #2e7d32; padding: 4px 12px; border-radius: 12px; font-weight: bold; font-size: 11px;">完了</span>
-                        </td>
-                        <td style="color: #999;">完了済</td>
-                    </tr>
-                    <tr>
-                        <td style="color: #999;">RC300-V01</td>
-                        <td style="font-weight: bold; color: #777;">Rice Silica 300mL</td>
-                        <td style="text-align: right; font-weight: bold; color: #777;">100</td>
-                        <td style="text-align: center; color: #999;">2026-03-29</td>
-                        <td style="text-align: center;">
-                            <span style="background-color: #e8f5e9; color: #2e7d32; padding: 4px 12px; border-radius: 12px; font-weight: bold; font-size: 11px;">完了</span>
-                        </td>
-                        <td style="color: #999;">完了済</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Return History Card -->
-        <div class="card">
-            <div class="card-header" style="border-bottom: 2px solid #e74c3c;">
-                <span class="material-symbols-outlined">keyboard_return</span>
-                返品履歴
-            </div>
-            <table class="order-table" style="font-size: 12px;">
-                <thead>
-                    <tr>
-                        <th style="width: 120px;">商品SKU</th>
-                        <th>商品名</th>
-                        <th style="width: 80px; text-align: right;">返品数</th>
-                        <th style="width: 140px; text-align: center;">返品日</th>
-                        <th style="width: 120px; text-align: center;">ステータス</th>
-                        <th style="width: 120px;">理由</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="background-color: #fff5f5;">
-                        <td style="color: #666;">RC50-V01</td>
-                        <td style="font-weight: bold;">Rice Silica 50mL</td>
-                        <td style="text-align: right; font-weight: bold; color: #e74c3c;">250</td>
-                        <td style="text-align: center; color: #666;">2026-04-01</td>
-                        <td style="text-align: center;">
-                            <span style="background-color: #ffebee; color: #c62828; padding: 4px 12px; border-radius: 12px; font-weight: bold; font-size: 11px;">返品完了</span>
-                        </td>
-                        <td style="color: #666;">破損のため</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-
-
-    </div>
-
-    <!-- Confirmation Modal -->
-    <div id="transfer-modal" class="modal-overlay">
-        <div class="modal-card">
-            <div class="modal-icon">
-                <i class="fas fa-check-double"></i>
-            </div>
-            <div class="modal-title">振込完了を報告しますか？</div>
-            <div class="modal-description">
-                以下の事項を確認してください：<br>
-                1. 請求書の内容に従い、振込が完了している。<br>
-                2. 振込名義が正しく入力されている。<br>
-                3. 明細書の送付を希望する場合は備考に記載した。<br><br>
-                <span style="color: #e74c3c; font-weight: bold;">※この操作は取り消せません。</span>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">キャンセル</button>
-                <button class="modal-btn modal-btn-primary" onclick="confirmTransfer()">報告を実行する</button>
             </div>
         </div>
     </div>
+
+    <div class="kintone-header-sub">
+        <div class="header-content-inner">
+            <div class="header-sub-left">
+                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
+                <span><i class="fas fa-bell"></i></span>
+                <span><i class="fas fa-star"></i></span>
+            </div>
+            <div class="header-sub-right">
+                <span><i class="fas fa-cog"></i></span>
+                <span><i class="fas fa-question-circle"></i></span>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="全体検索">
+                    <div class="search-icon-btn"><i class="fas fa-search"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Title Bar -->
+    <div class="kintone-app-title-bar">
+        <div class="app-icon-box"><i class="fas fa-inbox"></i></div>
+        <div class="app-title">受注業務</div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Breadcrumb & Toolbar -->
+        <div class="kintone-sub-nav">
+            <div class="sub-nav-left">
+                <a href="agency_orderlist.html" style="color: #3498db; text-decoration: none;">注文履歴</a>
+                <span>&gt;</span>
+                <span>注文詳細 (350)</span>
+            </div>
+            <div class="sub-nav-right">
+                <span>レコード番号: 350</span>
+            </div>
+        </div>
+
+        <div class="kintone-toolbar">
+            <div class="action-btn-group">
+                <button class="toolbar-icon-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i></button>
+            </div>
+            <div class="action-btn-group record-nav">
+                <button class="toolbar-icon-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="toolbar-icon-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="toolbar-right">
+                <button class="toolbar-icon-btn"><i class="fas fa-edit"></i></button>
+                <button class="toolbar-icon-btn"><i class="fas fa-comment"></i></button>
+                <button class="toolbar-icon-btn"><i class="fas fa-history"></i></button>
+                <button class="toolbar-icon-btn"><i class="fas fa-ellipsis-v"></i></button>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <!-- Order ID & Status Summary -->
+            <div class="summary-header">
+                <div style="display: flex; align-items: center;">
+                    <span class="badge-type badge-agency">代理店注文</span>
+                    <span class="order-id-title">注文番号: 350</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span class="badge-status status-alert">一部返品完了</span>
+                </div>
+            </div>
+
+            <!-- Next Action Card -->
+            <div class="next-action-card">
+                <div class="next-action-content">
+                    <span style="font-size: 20px; color: #e74c3c;"><i class="fas fa-rotate-left"></i></span>
+                    <span>状況: 一部商品の返品手続き đã được xử lý xong. Vui lòng kiểm tra lại hóa đơn cập nhật.</span>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="next-action-btn" onclick="alert('請求書を表示します')"><i class="fas fa-eye"></i> 請求書表示</button>
+                    <button class="next-action-btn" onclick="alert('請求書をダウンロードします')"><i class="fas fa-download"></i> DL</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6">
+                
+                <!-- Order Basics Card -->
+                <div class="section-card section-info">
+                    <div class="section-title">
+                        <span class="material-symbols-outlined">info</span>
+                        基本情報
+                    </div>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="summary-label">注文日</div>
+                            <div class="summary-value">2026-03-24</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">注文金額 (税込)</div>
+                            <div class="summary-primary-value">¥320,000</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">支払い方法</div>
+                            <div class="summary-value">Paidy (後払い)</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">納品日</div>
+                            <div class="summary-value">2026-03-31</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-label">配送予定日</div>
+                            <div class="summary-value">完了</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Items Card -->
+                <div class="section-card">
+                    <div class="section-title">
+                        <span class="material-symbols-outlined">list_alt</span>
+                        注文内容
+                    </div>
+                    <table class="k-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 120px;">商品SKU</th>
+                                <th>商品名</th>
+                                <th style="width: 80px; text-align: right;">注文数</th>
+                                <th style="width: 80px; text-align: right;">出荷済</th>
+                                <th style="width: 80px; text-align: right;">返品数</th>
+                                <th style="width: 120px; text-align: center;">ステータス</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-highlight">RC50-V01</td>
+                                <td class="col-highlight">Rice Silica 50mL</td>
+                                <td style="text-align: right; font-weight: bold;">600</td>
+                                <td style="text-align: right;">600</td>
+                                <td style="text-align: right; color: #e74c3c; font-weight: bold;">250</td>
+                                <td style="text-align: center;">
+                                    <span class="badge-status status-alert" style="padding: 2px 10px; font-size: 11px;">一部返品</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-highlight">RC300-V01</td>
+                                <td class="col-highlight">Rice Silica 300mL</td>
+                                <td style="text-align: right; font-weight: bold;">200</td>
+                                <td style="text-align: right;">200</td>
+                                <td style="text-align: right; font-weight: bold;">0</td>
+                                <td style="text-align: center;">
+                                    <span class="badge-status status-ok" style="padding: 2px 10px; font-size: 11px;">納品完了</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Shipping History Card -->
+                <div class="section-card">
+                    <div class="section-title">
+                        <span class="material-symbols-outlined">local_shipping</span>
+                        出荷履歴
+                    </div>
+                    <table class="k-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 120px;">商品SKU</th>
+                                <th>商品名</th>
+                                <th style="width: 80px; text-align: right;">配送数</th>
+                                <th style="width: 140px; text-align: center;">出荷完了日</th>
+                                <th style="width: 120px; text-align: center;">ステータス</th>
+                                <th>備考</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="history-row-new">
+                                <td class="col-highlight">RC50-V01</td>
+                                <td class="col-highlight">Rice Silica 50mL</td>
+                                <td style="text-align: right;">400</td>
+                                <td style="text-align: center;">2026-03-31</td>
+                                <td style="text-align: center;"><span class="badge-status status-ok" style="font-size: 11px;">完了</span></td>
+                                <td style="color: #666;">第二次分</td>
+                            </tr>
+                            <tr class="history-row-new">
+                                <td class="col-highlight">RC300-V01</td>
+                                <td class="col-highlight">Rice Silica 300mL</td>
+                                <td style="text-align: right;">100</td>
+                                <td style="text-align: center;">2026-03-31</td>
+                                <td style="text-align: center;"><span class="badge-status status-ok" style="font-size: 11px;">完了</span></td>
+                                <td style="color: #666;">第二次分</td>
+                            </tr>
+                            <tr>
+                                <td style="color: #999;">RC50-V01</td>
+                                <td style="color: #999;">Rice Silica 50mL</td>
+                                <td style="text-align: right; color: #999;">200</td>
+                                <td style="text-align: center; color: #999;">2026-03-29</td>
+                                <td style="text-align: center;"><span class="badge-status status-neutral" style="font-size: 11px;">完了済</span></td>
+                                <td style="color: #999;">完了済</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Return History Card -->
+                <div class="section-card">
+                    <div class="section-title" style="color: #c62828;">
+                        <span class="material-symbols-outlined">keyboard_return</span>
+                        返品履歴
+                    </div>
+                    <table class="k-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 120px;">商品SKU</th>
+                                <th>商品名</th>
+                                <th style="width: 80px; text-align: right;">返品数</th>
+                                <th style="width: 140px; text-align: center;">返品受付日</th>
+                                <th style="width: 120px; text-align: center;">ステータス</th>
+                                <th>理由</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="history-row-return">
+                                <td class="col-highlight">RC50-V01</td>
+                                <td class="col-highlight">Rice Silica 50mL</td>
+                                <td style="text-align: right; color: #e74c3c; font-weight: bold;">250</td>
+                                <td style="text-align: center;">2026-04-01</td>
+                                <td style="text-align: center;"><span class="badge-status status-alert" style="font-size: 11px;">返品完了</span></td>
+                                <td style="color: #666;">破損のため (Lần 2)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Delivery Info Card -->
+                <div class="section-card">
+                    <div class="section-title">
+                        <span class="material-symbols-outlined">location_on</span>
+                        配送先情報
+                    </div>
+                    <div class="field-grid">
+                        <div class="field-item">
+                            <div class="field-label">会社名</div>
+                            <div class="field-value">株式会社東京グリーン</div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-label">担当者名</div>
+                            <div class="field-value">山田 太郎</div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-label">電話番号</div>
+                            <div class="field-value">03-1234-5678</div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-label">郵便番号</div>
+                            <div class="field-value">150-0001</div>
+                        </div>
+                        <div class="field-item" style="grid-column: span 2;">
+                            <div class="field-label">住所</div>
+                            <div class="field-value">東京都渋谷区代々木1-2-3 代々木ビル 5F</div>
+                        </div>
+                        <div class="field-item" style="grid-column: span 2;">
+                            <div class="field-label">配送に関する特記事項</div>
+                            <div class="field-value" style="color: #999; font-style: italic;">ヤマト運輸希望</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-surface-container-highest w-full py-6 mt-10 font-['Inter'] text-xs uppercase tracking-widest text-center">
+        <div class="px-8 flex justify-between items-center text-[#424752]">
+            <span>© 2024 Silica Link Order Management</span>
+            <div class="flex gap-6">
+                <a class="hover:text-primary transition-colors" href="#">Help Center</a>
+                <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+                <a class="hover:text-primary transition-colors" href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
 
     <script>
-
         // Logout button
-        document.querySelector('.logout-btn').addEventListener('click', function() {
-            if (confirm('ログアウトしますか？')) {
-                alert('ログアウトしました');
-                // In real implementation: window.location.href = 'logout.html';
-            }
+        document.querySelector('.mail-icon').addEventListener('click', function() {
+            alert('通知はありません');
         });
-
-        // Next Action Screen Logic
-        function viewInvoice() {
-            window.open('invoice_350.pdf', '_blank');
-        }
-
-        function downloadInvoice() {
-            alert('請求書をダウンロードします。');
-        }
-
-        function reportTransfer() {
-            // Already paid for order 350
-        }
-
     </script>
 </body>
 

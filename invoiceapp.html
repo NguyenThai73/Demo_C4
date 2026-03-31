@@ -192,16 +192,22 @@
 
 <div class="main-container">
     <div class="breadcrumb">
-        🏠 <span>/</span> <a href="index.html" style="color: var(--kintone-blue); text-decoration: none;">アプリ: 請求書を確認する</a> <span>/</span> レコード: <span id="breadcrumb-record">76</span>
+        🏠 <span>/</span> <a href="index.html" style="color: var(--kintone-blue); text-decoration: none;">アプリ: 請求書を確認する</a> <span>/</span> 請求ID: <span id="breadcrumb-record">76</span>
     </div>
 
     <div class="kintone-action-toolbar">
-        <div class="action-icon-btn">︿</div>
-        <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
-        <div class="action-icon-btn">+</div>
-        <div class="action-icon-btn">📄</div>
-        <div class="action-icon-btn">⚙ <span>▼</span></div>
-        <div class="action-icon-btn">⋯</div>
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="action-btn-group record-nav">
+                <div class="action-icon-btn"><i class="fas fa-chevron-up"></i></div>
+                <div class="action-icon-btn"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="action-btn-group">
+                <div class="action-icon-btn"><i class="fas fa-plus"></i></div>
+                <div class="action-icon-btn"><i class="fas fa-file-export"></i></div>
+                <div class="action-icon-btn"><i class="fas fa-cog"></i> <span style="font-size: 8px; margin-left: 3px;">▼</span></div>
+                <div class="action-icon-btn"><i class="fas fa-ellipsis-v"></i></div>
+            </div>
+        </div>
     </div>
 
     <div id="flash-message" class="sticky-flash" style="display:none;"></div>
@@ -261,8 +267,12 @@
         </div>
         <div class="field-grid">
             <div class="field-item">
-                <div class="field-label">レコード番号</div>
+                <div class="field-label">請求ID</div>
                 <div class="field-box-readonly">76</div>
+            </div>
+            <div class="field-item">
+                <div class="field-label">請求番号</div>
+                <div class="field-box-readonly" style="font-weight: bold;">INV-76</div>
             </div>
             <div class="field-item">
                 <div class="field-label">請求日</div>
@@ -386,7 +396,7 @@
         </div>
         <h2 style="font-size: 20px; font-weight: 900; margin-bottom: 12px; color: #333;">請求書の発行が完了しました</h2>
         <p style="font-size: 14px; color: #666; margin-bottom: 30px; line-height: 1.6;">
-            レコード番号: #76<br>
+            請求ID: #76<br>
             請求書PDF作成、および売上確定処理が正常に完了しました。
         </p>
         

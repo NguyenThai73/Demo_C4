@@ -47,7 +47,10 @@
 
 <div class="kintone-header-top">
     <div class="header-content-inner">
-        <div class="header-logo"><a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;"><span class="k-icon">k</span> kintone</a></div>
+        <div class="header-logo">
+            <div class="k-icon-box">受</div>
+            受発注管理システム
+        </div>
         <div class="header-user">
             <span>✉</span>
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -59,12 +62,24 @@
     </div>
 </div>
 
-<div class="kintone-header-sub">
-    <div class="header-content-inner">
-        <div class="header-sub-left"><span>☰</span> <span onclick="location.href='index.html'" style="cursor:pointer">🏠</span> <span>🔔</span> <span>⭐</span></div>
-        <div class="header-sub-right"><span>⚙</span> <span>❓</span><div class="search-container"><input type="text" class="search-input" placeholder="アプリ内検索"><span class="search-icon">🔍</span></div></div>
+    <div class="kintone-header-sub">
+        <div class="header-content-inner">
+            <div class="header-sub-left">
+                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-house" onclick="location.href='index.html'" style="cursor:pointer"></i></span>
+                <span><i class="fas fa-bell"></i></span>
+                <span><i class="fas fa-star"></i></span>
+            </div>
+            <div class="header-sub-right">
+                <span><i class="fas fa-cog"></i></span>
+                <span><i class="fas fa-question-circle"></i></span>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="アプリ内検索">
+                    <div class="search-icon-btn"><i class="fas fa-search"></i></div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
 <div class="kintone-app-title-bar">
     <div class="header-content-inner" style="padding: 12px 10px;">
@@ -81,12 +96,18 @@
     </div>
 
     <div class="kintone-action-toolbar">
-        <div class="action-icon-btn">︿</div>
-        <div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div>
-        <div class="action-icon-btn">+</div>
-        <div class="action-icon-btn">📄</div>
-        <div class="action-icon-btn">⚙ <span>▼</span></div>
-        <div class="action-icon-btn">⋯</div>
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="action-btn-group record-nav">
+                <div class="action-icon-btn"><i class="fas fa-chevron-up"></i></div>
+                <div class="action-icon-btn"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="action-btn-group">
+                <div class="action-icon-btn"><i class="fas fa-plus"></i></div>
+                <div class="action-icon-btn"><i class="fas fa-file-export"></i></div>
+                <div class="action-icon-btn"><i class="fas fa-cog"></i> <span style="font-size: 8px; margin-left: 3px;">▼</span></div>
+                <div class="action-icon-btn"><i class="fas fa-ellipsis-v"></i></div>
+            </div>
+        </div>
     </div>
 
     <!-- Summary Header -->
