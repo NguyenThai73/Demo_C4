@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>返品受入タスク詳細 [#2483] | Silica Link</title>
+    <title>返品受入タスク詳細 | Silica Link</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="detail-style.css">
     <!-- Font Awesome 6.x CDN -->
@@ -20,11 +20,14 @@
 <body>
 
 <div class="kintone-header-top">
-    <div class="header-content-inner">
-        <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;"><span class="k-icon">k</span> kintone</a></div>
+    <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+        <div class="header-logo">
+            <div class="k-icon-box">受</div>
+            受発注管理システム
+        </div>
         <div class="header-user">
-            <span>✉</span>
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="mail-icon"><i class="fas fa-envelope"></i></div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-left: 10px;">
                 <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
                 <span>Administrator</span>
                 <span style="font-size: 10px;">▼</span>
@@ -34,69 +37,88 @@
 </div>
 
 <div class="kintone-header-sub">
-    <div class="header-content-inner">
+    <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
         <div class="header-sub-left">
-            <span>☰</span> <span onclick="location.href='index.html'" style="cursor:pointer">🏠</span> <span>🔔</span> <span>⭐</span>
-            <div style="display: inline-flex; margin-left: 25px; gap: 15px; font-size: 11px; font-weight: bold; align-items: center;">
-                <a href="index.html" style="color: inherit; text-decoration: none;">受注</a>
-                <a href="purchase_index.html" style="color: inherit; text-decoration: none;">発注</a>
-                <a href="production_index.html" style="color: inherit; text-decoration: none;">製造</a>
-                <a href="task_top.html" style="color: inherit; text-decoration: none;">入出庫</a>
-                <a href="commission_top.html" style="color: inherit; text-decoration: none;">報酬</a>
-                <a href="payment_cashflow_index.html" style="color: inherit; text-decoration: none;">入出金</a>
-                <a href="partner_top.html" style="color: inherit; text-decoration: none;">パートナー</a>
-                <a href="master_index.html" style="color: inherit; text-decoration: none;">マスタ</a>
+            <span><i class="fas fa-bars"></i></span>
+            <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
+            <span><i class="fas fa-bell"></i></span>
+            <span><i class="fas fa-star"></i></span>
+        </div>
+        <div class="header-sub-right">
+            <span><i class="fas fa-cog"></i></span>
+            <span><i class="fas fa-question-circle"></i></span>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="アプリ内検索">
+                <div class="search-icon-btn"><i class="fas fa-search"></i></div>
             </div>
         </div>
-        <div class="header-sub-right"><span>⚙</span> <span>❓</span><div class="search-container"><input type="text" class="search-input" placeholder="アプリ内検索"><span class="search-icon">🔍</span></div></div>
     </div>
 </div>
 
 <div class="kintone-app-title-bar">
-    <div class="header-content-inner" style="padding: 12px 10px;"><div style="display: flex; align-items: center; gap: 10px;"><div class="app-icon" style="background-color: #d81b60; color: white; padding: 5px; border-radius: 4px; font-size: 14px;">🔄</div><div class="app-title" style="font-weight: bold; font-size: 14px;">入出荷タスク詳細</div></div></div>
+    <div class="header-content-inner" style="max-width: none; padding: 0 40px; justify-content: flex-start;">
+        <div class="app-icon-box" style="margin-left: -40px;">🔄</div>
+        <div class="app-title">返品受入タスク詳細</div>
+    </div>
 </div>
 
-<div class="main-container" style="padding: 20px 10px;">
-    <div class="breadcrumb" style="font-size: 12px; color: #3498db; margin-bottom: 20px;">
-        🏠 <span>/</span> <a href="task_top.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a> <span>/</span> レコード: <span id="record-id">2483</span>
+<div class="kintone-sub-nav">
+    <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+        <div class="sub-nav-left">
+            <i class="fas fa-house" onclick="location.href='index.html'" style="cursor:pointer;"></i>
+            <i class="fas fa-chevron-right" style="font-size: 8px;"></i>
+            <span>アプリ: 入出荷タスク</span>
+            <i class="fas fa-chevron-right" style="font-size: 8px;"></i>
+            <span>レコード: 2483</span>
+        </div>
     </div>
+</div>
+
+<div class="main-container">
     
-    <div class="kintone-action-toolbar" style="margin-bottom: 20px;"><div class="action-icon-btn">︿</div><div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div><div class="action-icon-btn">+</div><div class="action-icon-btn">📄</div><div class="action-icon-btn">⚙ <span>▼</span></div><div class="action-icon-btn">⋯</div></div>
+    <div class="kintone-action-toolbar">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="action-btn-group record-nav">
+                <div class="action-icon-btn">︿</div>
+                <div class="action-icon-btn">﹀</div>
+                <div class="action-icon-btn">+</div>
+                <div class="action-icon-btn">📄</div>
+                <div class="action-icon-btn">⚙ <span>▼</span></div>
+                <div class="action-icon-btn">⋯</div>
+            </div>
+        </div>
+    </div>
 
     <!-- Summary Header Card -->
     <div class="summary-header">
-        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div class="badge-type-return">返品入庫</div>
-            </div>
-        </div>
+        <div class="badge-type-return">返品入庫</div>
         
         <div class="summary-grid">
             <div class="summary-item">
                 <div class="summary-label">現在のステータス</div>
-                <div class="summary-primary-value" style="color: #9e9e9e; font-size: 20px;">待機中</div>
+                <div class="summary-primary-value status-neutral">待機中</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">作業指示元</div>
-                <div class="summary-value" style="font-size: 18px; color: var(--kintone-blue);">302</div>
+                <div class="summary-value">302</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">返品タスク登録日</div>
-                <div class="summary-value" style="font-size: 15px;">2026-03-29</div>
+                <div class="summary-value">2026-03-29</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">倉庫</div>
-                <div class="summary-value" style="font-size: 15px;">岐阜倉庫</div>
+                <div class="summary-value">岐阜倉庫</div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">担当者</div>
-                <div class="summary-value" style="font-size: 15px;">未割り当て</div>
+                <div class="summary-value">未割り当て</div>
             </div>
         </div>
     </div>
 
     <!-- Next Action Area -->
-    <div class="next-action-card" style="border-left-color: #d81b60 !important;">
+    <div class="next-action-card accent-warning">
         <div class="next-action-content">
             <span style="font-size: 32px; color: #d81b60;"><i class="fas fa-barcode"></i></span>
             <div>
@@ -104,51 +126,52 @@
                 <span style="font-weight: normal; font-size: 11px; color: #666;">返品された商品が届きました. 内容を確認し、バーコードをスキャンして入庫処理を開始してください.</span>
             </div>
         </div>
-        <button class="btn-blue" onclick="location.href='task_2483_scan_barcode.html'" style="padding: 10px 30px; font-weight: 800; background-color: #d81b60; border: none; color: white;">
+        <button class="btn-blue" onclick="location.href='task_2483_scan_barcode.html'">
             スキャンを開始して入庫する
         </button>
     </div>
 
     <!-- A. Task Overview -->
-    <div class="section-card">
-        <div class="section-title" style="color: var(--kintone-blue); font-size: 15px; font-weight: 800;">
-            <span><i class="fas fa-info-circle" style="margin-right: 12px;"></i></span> タスク概要
+    <div class="section-card section-info">
+        <div class="section-title">
+            <span><i class="fas fa-info-circle"></i></span> タスク概要
         </div>
-        <div class="field-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="field-grid">
             <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">タスクID</div>
-                <div class="field-value" style="font-size: 14px; font-weight: bold;">2483</div>
+                <div class="field-label">タスクID</div>
+                <div class="field-value">2483</div>
             </div>
             <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">作業指示元ID</div>
-                <div class="field-value" style="font-size: 14px; font-weight: bold;"><a href="order_detail_shopify_302.html" style="color: var(--kintone-blue);">302</a></div>
+                <div class="field-label">作業指示元ID</div>
+                <div class="field-value"><a href="order_detail_shopify_302.html">302</a></div>
             </div>
             <div class="field-item">
-                <div class="field-label" style="font-size: 11px; color: #888;">SKU種別</div>
-                <div class="field-value" style="font-size: 14px; font-weight: bold;">商品</div>
+                <div class="field-label">SKU種別</div>
+                <div class="field-value">商品</div>
             </div>
         </div>
     </div>
 
     <!-- B. Product Details -->
-    <div class="section-card" style="border: 1px solid #ffedcc; background-color: #fffaf0;">
-        <div class="section-title" style="color: #856404; font-weight: 800; font-size: 15px; margin-bottom: 15px;">
-            <span><i class="fas fa-boxes-stacked" style="margin-right: 12px;"></i></span>
-            商品明細</div>
+    <div class="section-card section-op">
+        <div class="section-title">
+            <span><i class="fas fa-boxes-stacked"></i></span>
+            商品明細
+        </div>
         <table class="k-table">
             <thead>
                 <tr>
-                    <th style="width: 150px;">商品SKU</th>
-                    <th style="min-width: 250px;">商品・資材SKU</th>
-                    <th class="col-num" style="width: 100px;">数量</th>
-                    <th class="col-mid" style="width: 100px;">単位</th>
+                    <th class="col-text">商品SKU</th>
+                    <th class="col-text">商品・資材SKU</th>
+                    <th class="col-num">数量</th>
+                    <th class="col-mid">単位</th>
                 </tr>
             </thead>
             <tbody id="product-tbody">
                 <tr>
-                    <td style="font-weight: bold; color: var(--kintone-blue);">RC50-V01</td>
+                    <td>RC50-V01</td>
                     <td class="col-product-name">Rice Silica 50mL</td>
-                    <td class="col-num" style="font-weight: bold;">250</td>
+                    <td class="col-num">250</td>
                     <td class="col-mid">個</td>
                 </tr>
             </tbody>

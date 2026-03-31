@@ -173,6 +173,20 @@
     line-height: 1.2;
 }
 
+/* Status in summary header - text only, no background */
+.summary-primary-value.status-neutral,
+.summary-primary-value.status-warn,
+.summary-primary-value.status-active,
+.summary-primary-value.status-delivery,
+.summary-primary-value.status-ok,
+.summary-primary-value.status-return,
+.summary-primary-value.status-done {
+    background-color: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    display: inline;
+}
+
 /* Secondary value */
 .summary-value {
     font-size: var(--text-size-base);
@@ -456,42 +470,63 @@ td.col-product-name {
 
 /* gray — 未着手 / 未出荷 / 未入金 */
 .status-neutral {
+    color: var(--status-neutral-text);
+}
+.badge-status.status-neutral {
     background-color: var(--status-neutral-bg);
     color: var(--status-neutral-text);
 }
 
 /* orange — 確定待ち / 入金待ち / 準備中 */
 .status-warn {
+    color: var(--status-warn-text);
+}
+.badge-status.status-warn {
     background-color: var(--status-warn-bg);
     color: var(--status-warn-text);
 }
 
 /* blue — 出荷中 / 作業中 / 分納中 */
 .status-active {
+    color: var(--status-active-text);
+}
+.badge-status.status-active {
     background-color: var(--status-active-bg);
     color: var(--status-active-text);
 }
 
 /* purple — 配送中 */
 .status-delivery {
+    color: var(--status-delivery-text);
+}
+.badge-status.status-delivery {
     background-color: var(--status-delivery-bg);
     color: var(--status-delivery-text);
 }
 
 /* green — 完納 / 完了 / 入金済み */
 .status-ok {
+    color: var(--status-ok-text);
+}
+.badge-status.status-ok {
     background-color: var(--status-ok-bg);
     color: var(--status-ok-text);
 }
 
 /* pink-red — 返品処理中 */
 .status-return {
+    color: var(--status-return-text);
+}
+.badge-status.status-return {
     background-color: var(--status-return-bg);
     color: var(--status-return-text);
 }
 
 /* blue-gray — 返品完了 / 取引完了 */
 .status-done {
+    color: var(--status-done-text);
+}
+.badge-status.status-done {
     background-color: var(--status-done-bg);
     color: var(--status-done-text);
 }

@@ -21,11 +21,14 @@
 <body>
 
 <div class="kintone-header-top">
-    <div class="header-content-inner">
-        <div class="header-logo"><a href="index.html" style="color: inherit; text-decoration: none;"><span class="k-icon">k</span> kintone</a></div>
+    <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+        <div class="header-logo">
+            <div class="k-icon-box">受</div>
+            受発注管理システム
+        </div>
         <div class="header-user">
-            <span>✉</span>
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="mail-icon"><i class="fas fa-envelope"></i></div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-left: 10px;">
                 <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="User">
                 <span>Administrator</span>
                 <span style="font-size: 10px;">▼</span>
@@ -35,34 +38,57 @@
 </div>
 
 <div class="kintone-header-sub">
-    <div class="header-content-inner">
+    <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
         <div class="header-sub-left">
-            <span>☰</span> <span onclick="location.href='index.html'" style="cursor:pointer">🏠</span> <span>🔔</span> <span>⭐</span>
-            <div style="display: inline-flex; margin-left: 25px; gap: 15px; font-size: 11px; font-weight: bold; align-items: center;">
-                <a href="index.html" style="color: inherit; text-decoration: none;">受注</a>
-                <a href="purchase_index.html" style="color: inherit; text-decoration: none;">発注</a>
-                <a href="production_index.html" style="color: inherit; text-decoration: none;">製造</a>
-                <a href="task_top.html" style="color: inherit; text-decoration: none;">入出庫</a>
-                <a href="commission_top.html" style="color: inherit; text-decoration: none;">報酬</a>
-                <a href="payment_cashflow_index.html" style="color: inherit; text-decoration: none;">入出金</a>
-                <a href="partner_top.html" style="color: inherit; text-decoration: none;">パートナー</a>
-                <a href="master_index.html" style="color: inherit; text-decoration: none;">マスタ</a>
+            <span><i class="fas fa-bars"></i></span>
+            <span><i class="fas fa-house" onclick="location.href='index.html'"></i></span>
+            <span><i class="fas fa-bell"></i></span>
+            <span><i class="fas fa-star"></i></span>
+        </div>
+        <div class="header-sub-right">
+            <span><i class="fas fa-cog"></i></span>
+            <span><i class="fas fa-question-circle"></i></span>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="アプリ内検索">
+                <div class="search-icon-btn"><i class="fas fa-search"></i></div>
             </div>
         </div>
-        <div class="header-sub-right"><span>⚙</span> <span>❓</span><div class="search-container"><input type="text" class="search-input" placeholder="アプリ内検索"><span class="search-icon">🔍</span></div></div>
     </div>
 </div>
 
 <div class="kintone-app-title-bar">
-    <div class="header-content-inner" style="padding: 12px 10px;"><div style="display: flex; align-items: center; gap: 10px;"><div class="app-icon" style="background-color: #d81b60; color: white; padding: 5px; border-radius: 4px; font-size: 14px;">🔄</div><div class="app-title" style="font-weight: bold; font-size: 14px;">入出荷タスク詳細</div></div></div>
+    <div class="header-content-inner" style="max-width: none; padding: 0 40px; justify-content: flex-start;">
+        <div class="app-icon-box" style="margin-left: -40px;">🔄</div>
+        <div class="app-title">返品受入タスク完了</div>
+    </div>
 </div>
 
-<div class="main-container" style="padding: 20px 10px;">
-    <div class="breadcrumb" style="font-size: 12px; color: #3498db; margin-bottom: 20px;">
-        🏠 <span>/</span> <a href="task_top.html" style="color: #3498db; text-decoration: none;">アプリ: 入出荷タスク</a> <span>/</span> レコード: <span id="record-id">2482</span>
+<div class="kintone-sub-nav">
+    <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+        <div class="sub-nav-left">
+            <i class="fas fa-house" onclick="location.href='index.html'" style="cursor:pointer;"></i>
+            <i class="fas fa-chevron-right" style="font-size: 8px;"></i>
+            <span>アプリ: 入出荷タスク</span>
+            <i class="fas fa-chevron-right" style="font-size: 8px;"></i>
+            <span>レコード: 2482</span>
+        </div>
     </div>
+</div>
+
+<div class="main-container">
     
-    <div class="kintone-action-toolbar" style="margin-bottom: 20px;"><div class="action-icon-btn">︿</div><div class="action-icon-btn" style="border-right: 2px solid #ddd;">﹀</div><div class="action-icon-btn">+</div><div class="action-icon-btn">📄</div><div class="action-icon-btn">⚙ <span>▼</span></div><div class="action-icon-btn">⋯</div></div>
+    <div class="kintone-action-toolbar">
+        <div class="header-content-inner" style="max-width: none; padding: 0 40px;">
+            <div class="action-btn-group record-nav">
+                <div class="action-icon-btn">︿</div>
+                <div class="action-icon-btn">﹀</div>
+                <div class="action-icon-btn">+</div>
+                <div class="action-icon-btn">📄</div>
+                <div class="action-icon-btn">⚙ <span>▼</span></div>
+                <div class="action-icon-btn">⋯</div>
+            </div>
+        </div>
+    </div>
 
     <!-- Summary Header Card -->
     <div class="summary-header">
@@ -153,7 +179,7 @@
                     <td style="font-weight: bold; color: var(--kintone-blue);">RC50-V01</td>
                     <td class="col-product-name">Rice Silica 50mL</td>
                     <td class="col-num">250</td>
-                    <td class="col-num" style="font-weight: bold; color: var(--kintone-success);">250</td>
+                    <td class="col-num"><span class="badge-status status-ok">250</span></td>
                     <td class="col-mid">個</td>
                 </tr>
             </tbody>
