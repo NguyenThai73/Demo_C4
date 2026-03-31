@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>posSpeak - AI提案詳細</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-sand: #f9f7f2;
+            --primary: #2d3a2e;
+            --footer-bg: #f2eee4;
+            --card-bg: #fff;
+            --border: #f0eee8;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .ipad-frame {
+            width: 1280px;
+            height: 800px;
+            background: var(--bg-sand);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 0 80px rgba(0,0,0,0.5);
+        }
+
+        /* AI Banner - Giống menu_ai.html */
+        .ai-banner {
+            background: var(--primary);
+            color: #fff;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        /* Speaker icon với pulse animation */
+        .banner-speaker {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.13);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .banner-speaker::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255,255,255,0.22);
+            animation: spk-pulse 2.2s ease-out infinite;
+        }
+
+        @keyframes spk-pulse {
+            0%   { transform: scale(1);   opacity: 0.7; }
+            100% { transform: scale(1.6); opacity: 0;   }
+        }
+
+        .banner-speaker i {
+            font-size: 18px;
+            color: #fff;
+        }
+
+        /* Staff identity */
+        .banner-staff {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .banner-avatar-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .banner-staff-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.28);
+            display: block;
+        }
+
+        .banner-avatar-dot {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #7ecb8f;
+            border: 2px solid var(--primary);
+            animation: dot-blink 1.4s ease-in-out infinite;
+        }
+
+        @keyframes dot-blink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.35; }
+        }
+
+        .banner-staff-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .banner-staff-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .banner-staff-label {
+            font-size: 10px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.48);
+            letter-spacing: 0.03em;
+        }
+
+        /* Divider */
+        .banner-divider {
+            width: 1px;
+            height: 26px;
+            background: rgba(255,255,255,0.15);
+            flex-shrink: 0;
+        }
+
+        /* Streaming text area */
+        .banner-ticker {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            min-width: 0;
+        }
+
+        .ticker-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #fff;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+        }
+
+        .ticker-text.fading { opacity: 0; }
+
+        /* blinking cursor while streaming */
+        .ticker-text.streaming::after {
+            content: '▋';
+            display: inline-block;
+            font-size: 13px;
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: cur-blink 0.6s step-end infinite;
+        }
+
+        @keyframes cur-blink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0; }
+        }
+
+
+
+        .back-btn {
+            padding: 10px 24px;
+            border-radius: 30px;
+            background: #fff;
+            border: 1.5px solid #333;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+
+
+        /* Main Content - Màn hình to hơn */
+        .main-content {
+            flex: 1;
+            display: flex;
+            padding: 30px 40px;
+            gap: 40px;
+            overflow-y: auto;
+        }
+
+        /* Left: Image Section - Ảnh vuông lớn hơn */
+        .image-section {
+            width: 600px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .main-image-container {
+            width: 100%;
+            height: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+            position: relative;
+            background: #f5f5f5;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        .main-image-container:hover .main-image {
+            transform: scale(1.02);
+        }
+
+        .image-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .thumbnail-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .thumbnail-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .thumbnail-grid {
+            display: flex;
+            gap: 12px;
+        }
+
+        .thumbnail {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 3px solid transparent;
+            opacity: 0.8;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .thumbnail.active {
+            border-color: var(--primary);
+            opacity: 1;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(45, 58, 46, 0.2);
+        }
+
+        .thumbnail:hover:not(.active) {
+            opacity: 1;
+            border-color: rgba(45, 58, 46, 0.3);
+        }
+
+        /* Right: Info Panel */
+        .info-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            min-width: 400px;
+        }
+
+        /* Dish Header */
+        .dish-header {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        .dish-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: #2e3335;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .dish-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .dish-price {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .dish-price::before {
+            content: '¥';
+            font-size: 24px;
+            margin-right: 4px;
+        }
+
+        .add-cart-btn {
+            padding: 14px 32px;
+            border-radius: 30px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(45, 58, 46, 0.2);
+        }
+
+        .add-cart-btn:hover {
+            background: #3a4a3b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(45, 58, 46, 0.3);
+        }
+
+        .dish-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            padding: 20px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        /* Quick Info */
+        .quick-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #2e3335;
+        }
+
+        /* Critical Tags */
+        .critical-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .critical-tag {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .critical-tag.warning {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .critical-tag.success {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #dcfce7;
+        }
+
+        /* Accordion Section */
+        .accordion-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            color: #2e3335;
+            border: none;
+            width: 100%;
+            text-align: left;
+            transition: background 0.2s;
+        }
+
+        .accordion-header:hover {
+            background: #f9f9f7;
+        }
+
+        .accordion-header i {
+            transition: transform 0.2s;
+            color: #666;
+        }
+
+        .accordion-header.open i {
+            transform: rotate(180deg);
+        }
+
+        .accordion-body {
+            padding: 0 24px 24px;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .accordion-body.show {
+            display: block;
+        }
+
+        /* Customize Options */
+        .customize-group {
+            margin-bottom: 20px;
+        }
+
+        .customize-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #444;
+            margin-bottom: 12px;
+        }
+
+        .customize-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .customize-chip {
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            background: #fff;
+            color: #666;
+            border: 1.5px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .customize-chip.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .customize-chip:hover:not(.active) {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        /* Nutrition Grid */
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        /* Allergy Chips */
+        .allergy-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .allergy-chip {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .allergy-chip.contains {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .allergy-chip.may-contain {
+            background: #fffbeb;
+            color: #d97706;
+            border: 1px solid #fde68a;
+        }
+
+        /* Candidate Navigation */
+        .candidate-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 40px;
+            background: #fff;
+            border-top: 1px solid var(--border);
+        }
+
+        .nav-btn {
+            padding: 10px 24px;
+            border-radius: 30px;
+            background: #fff;
+            border: 1.5px solid #333;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 6px;
+            color: #fff;
+            padding: 6px 14px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .nav-counter {
+            font-size: 16px;
+            font-weight: 800;
+            color: #666;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            background: var(--footer-bg);
+            border-top: 1px solid #e8e2d8;
+            display: flex;
+            padding: 12px 0 24px;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #666;
+            font-weight: 700;
+            font-size: 11px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-item.active { 
+            color: #000; 
+        }
+
+        .nav-item i { 
+            font-size: 22px; 
+        }
+
+        /* Voice Guide Microphone */
+        .voice-guide-micro {
+            position: absolute;
+            bottom: 110px;
+            right: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            z-index: 150;
+            cursor: pointer;
+        }
+
+        .micro-btn {
+            width: 72px;
+            height: 72px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(45, 58, 46, 0.4);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .micro-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 36px rgba(45, 58, 46, 0.5);
+        }
+
+        .micro-btn::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: micro-pulse 2s ease-out infinite;
+        }
+
+        @keyframes micro-pulse {
+            0%   { transform: scale(1);   opacity: 0.7; }
+            100% { transform: scale(1.4); opacity: 0;   }
+        }
+
+        .voice-guide-text {
+            background: rgba(45, 58, 46, 0.9);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 200px;
+        }
+
+        /* Overlay */
+        .ai-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: flex-end;
+        }
+
+        .ai-chat-sheet {
+            width: 100%;
+            background: #fff;
+            border-radius: 24px 24px 0 0;
+            padding: 32px 40px;
+            animation: slide-up 0.3s ease-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slide-up {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .chat-sheet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .chat-context-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .chat-context-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #166534;
+            margin-bottom: 8px;
+        }
+
+        .context-tag {
+            background: #fff;
+            border: 1px solid #dcfce7;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #166534;
+            margin-right: 8px;
+            font-weight: 600;
+        }
+
+        .chat-message {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #2e3335;
+        }
+
+        .quick-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .chip {
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: #f3f4f6;
+            border: 1.5px solid #e5e7eb;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip:hover {
+            background: #e5e7eb;
+        }
+
+        .chat-input-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #f9fafb;
+            padding: 12px 24px;
+            border-radius: 30px;
+            border: 1.5px solid #e5e7eb;
+        }
+
+        .chat-input-row input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 16px;
+            color: #2e3335;
+        }
+
+        .chat-mic-btn {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ipad-frame">
+        <!-- Voice Guide Microphone -->
+        <div class="voice-guide-micro" onclick="startVoiceInput()">
+            <button class="micro-btn">
+                <i class="fa-solid fa-microphone"></i>
+            </button>
+            <div class="voice-guide-text">
+                タップして<br>ご希望をお話しください
+            </div>
+        </div>
+
+        <!-- AI Banner - Giống menu_ai.html -->
+        <div class="ai-banner">
+            <div class="banner-speaker">
+                <i class="fa-solid fa-volume-high"></i>
+            </div>
+
+            <div class="banner-staff">
+                <div class="banner-avatar-wrap">
+                    <img src="https://api.dicebear.com/7.x/personas/svg?seed=sakura&backgroundColor=b6e3f4" class="banner-staff-avatar">
+                    <div class="banner-avatar-dot"></div>
+                </div>
+                <div class="banner-staff-text">
+                    <span class="banner-staff-name">さくら</span>
+                    <span class="banner-staff-label">AIスタッフ</span>
+                </div>
+            </div>
+
+            <div class="banner-divider"></div>
+
+            <div class="banner-ticker">
+                <div class="ticker-text" id="aiTickerText">
+                    ご希望の「さっぱりしたもの」「白ワインに合う」「軽めのメイン」にぴったりの一品です。白身魚の軽やかな味わいと香草の風味が、白ワインとの相性抜群。前菜としてもメインとしてもお楽しみいただけます。
+                </div>
+            </div>
+            
+            <!-- Back button in banner -->
+            <div class="banner-divider"></div>
+            <button class="back-btn" onclick="window.location.href='menu_ai.html'" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
+                <i class="fa-solid fa-chevron-left"></i>
+                戻る
+            </button>
+        </div>
+
+
+
+
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left: Image Section -->
+            <div class="image-section">
+                <div class="main-image-container">
+                    <div class="image-badge">
+                        <i class="fa-solid fa-camera"></i>
+                        AI推奨写真
+                    </div>
+                    <img id="mainImg" src="https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=600&q=80" alt="Main" class="main-image">
+                </div>
+                
+                <div class="thumbnail-section">
+                    <div class="thumbnail-label">
+                        <i class="fa-solid fa-images"></i>
+                        他の写真を見る
+                    </div>
+                    <div class="thumbnail-grid">
+                        <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=200&q=80" class="thumbnail active" onclick="changeImg(this)">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=200&q=80" class="thumbnail" onclick="changeImg(this)">
+                        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=200&q=80" class="thumbnail" onclick="changeImg(this)">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&q=80" class="thumbnail" onclick="changeImg(this)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Info Panel -->
+            <div class="info-panel">
+                <!-- Dish Header -->
+                <div class="dish-header">
+                    <h2 id="itemTitle" class="dish-title">白身魚のグリル 〜香草ソース〜</h2>
+                    
+                    <div class="dish-price-row">
+                        <span id="itemPrice" class="dish-price">980</span>
+                        <button class="add-cart-btn" onclick="addToCart()">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            カートに入れる
+                        </button>
+                    </div>
+
+                    <p id="itemDesc" class="dish-description">
+                        白身魚をハーブでさっぱりと仕上げました。香草の豊かな香りが白ワインとの相性抜群。軽やかな味わいで前菜にもメインにも。
+                    </p>
+
+                    <!-- Quick Info -->
+                    <div class="quick-info-grid">
+                        <div class="info-card">
+                            <div class="info-label"><i class="fa-solid fa-fire"></i> エネルギー</div>
+                            <div class="info-value">320 kcal</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label"><i class="fa-solid fa-clock"></i> 調理時間</div>
+                            <div class="info-value">約15分</div>
+                        </div>
+                    </div>
+
+                    <!-- Critical Tags -->
+                    <div class="critical-tags">
+                        <span class="critical-tag warning">
+                            <i class="fa-solid fa-exclamation-triangle"></i>
+                            乳製品・小麦を含む
+                        </span>
+                        <span class="critical-tag success">
+                            <i class="fa-solid fa-check-circle"></i>
+                            カスタマイズ可能
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Accordion Section -->
+                <div class="accordion-section">
+                    <!-- Customize Accordion -->
+                    <div class="accordion-item">
+                        <button class="accordion-header" onclick="toggleAccordion(this)">
+                            <span><i class="fa-solid fa-gear"></i> カスタマイズ</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-body">
+                            <div class="customize-group">
+                                <div class="customize-label">辛さの選択 (必須)</div>
+                                <div class="customize-chips">
+                                    <span class="customize-chip active">普通</span>
+                                    <span class="customize-chip">中辛</span>
+                                    <span class="customize-chip">大辛</span>
+                                </div>
+                            </div>
+                            <div class="customize-group">
+                                <div class="customize-label">ソースの選択</div>
+                                <div class="customize-chips">
+                                    <span class="customize-chip active">香草ソース</span>
+                                    <span class="customize-chip">トマトベリーソース</span>
+                                    <span class="customize-chip">ガーリックオイル</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nutrition & Allergy Accordion -->
+                    <div class="accordion-item">
+                        <button class="accordion-header" onclick="toggleAccordion(this)">
+                            <span><i class="fa-solid fa-chart-pie"></i> 栄養情報・アレルギー</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="accordion-body">
+                            <div class="nutrition-grid">
+                                <div class="info-card">
+                                    <div class="info-label"><i class="fa-solid fa-dumbbell"></i> タンパク質</div>
+                                    <div class="info-value">28.5 g</div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-label"><i class="fa-solid fa-bread-slice"></i> 炭水化物</div>
+                                    <div class="info-value">12.3 g</div>
+                                </div>
+                            </div>
+                            <div class="customize-group">
+                                <div class="customize-label">アレルギー情報</div>
+                                <div class="allergy-chips">
+                                    <span class="allergy-chip contains">乳製品</span>
+                                    <span class="allergy-chip contains">小麦</span>
+                                    <span class="allergy-chip may-contain">卵</span>
+                                    <span class="allergy-chip may-contain">甲殻類</span>
+                                </div>
+                                <p style="font-size: 13px; color: #666; margin-top: 12px;">
+                                    ※「乳製品」「小麦」を含みます。「卵」「甲殻類」は製造工程で混入する可能性があります。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Candidate Navigation -->
+        <div class="candidate-nav">
+            <button class="nav-btn" id="prevBtn" onclick="navigateCandidate(-1)" disabled>
+                <i class="fa-solid fa-chevron-left"></i>
+                前の候補
+            </button>
+            <span class="nav-counter" id="navInfo">1/3</span>
+            <button class="nav-btn" id="nextBtn" onclick="navigateCandidate(1)">
+                次の候補
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Bottom Nav -->
+        <div class="bottom-nav">
+            <button class="nav-item" onclick="window.location.href='menu_ai.html'">
+                <i class="fa-solid fa-utensils"></i>
+                メニュー
+            </button>
+            <button class="nav-item active">
+                <i class="fa-solid fa-cart-shopping"></i>
+                カート
+            </button>
+            <button class="nav-item" onclick="window.location.href='chat_ai.html'">
+                <i class="fa-solid fa-comment-dots"></i>
+                会話履歴
+            </button>
+            <button class="nav-item" onclick="window.location.href='order_status.html'">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                注文履歴
+            </button>
+        </div>
+
+        <!-- Overlay -->
+        <div class="ai-overlay" id="aiOverlay">
+            <div class="ai-chat-sheet">
+                <div class="chat-sheet-header">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <img src="https://api.dicebear.com/7.x/personas/svg?seed=sakura" style="width:48px; border-radius:50%;">
+                        <span style="font-size:20px; font-weight:800;">さくら (AIスタッフ)</span>
+                    </div>
+                    <button onclick="closeAiChat()" style="border:none; background:none; font-size:24px; color:#666;">×</button>
+                </div>
+                <div class="chat-context-box">
+                    <div class="chat-context-title">ご希望</div>
+                    <div class="chat-context-tags">
+                        <span class="context-tag">さっぱりしたもの</span>
+                        <span class="context-tag">白ワインに合う</span>
+                        <span class="context-tag">軽めのメイン</span>
+                    </div>
+                </div>
+                <div class="chat-message">ご希望を教えてください。</div>
+                <div class="quick-chips">
+                    <div class="chip" onclick="addText('肉料理がいい')">肉料理がいい</div>
+                    <div class="chip" onclick="addText('もう少し軽いもの')">もう少し軽いもの</div>
+                    <div class="chip" onclick="addText('辛いものが食べたい')">辛いものが食べたい</div>
+                </div>
+                <div class="chat-input-row">
+                    <input type="text" id="chatInput" placeholder="例：お肉料理でもっと探して">
+                    <button class="chat-mic-btn"><i class="fa-solid fa-microphone"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const candidates = [
+            { 
+                title: '白身魚のグリル 〜香草ソース〜', 
+                price: '980', 
+                desc: '白身魚をハーブでさっぱりと仕上げました。香草の豊かな香りが白ワインとの相性抜群。軽やかな味わいで前菜にもメインにも。', 
+                img: 'https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=600&q=80'
+            },
+            { 
+                title: '完熟トマトのカプレーゼ', 
+                price: '720', 
+                desc: '完熟トマトとモッツァレラのフレッシュな組み合わせ。バジルとオリーブオイルのハーモニー。', 
+                img: 'https://images.unsplash.com/photo-1510629954389-c1e0da47d214?w=600&q=80'
+            },
+            { 
+                title: '旬野菜のバーニャカウダ', 
+                price: '880', 
+                desc: '採れたて旬野菜を濃厚ソースで。温かいソースと冷たい野菜のコントラスト。', 
+                img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=80'
+            }
+        ];
+
+        let currentIndex = 0;
+
+        function updateUI() {
+            const item = candidates[currentIndex];
+            document.getElementById('itemTitle').innerText = item.title;
+            document.getElementById('itemPrice').innerText = item.price;
+            document.getElementById('itemDesc').innerText = item.desc;
+            document.getElementById('mainImg').src = item.img;
+            document.getElementById('navInfo').innerText = `${currentIndex + 1}/${candidates.length}`;
+            document.getElementById('prevBtn').disabled = currentIndex === 0;
+            document.getElementById('nextBtn').disabled = currentIndex === candidates.length - 1;
+        }
+
+        function navigateCandidate(dir) {
+            currentIndex += dir;
+            updateUI();
+        }
+
+        function toggleAccordion(btn) {
+            const body = btn.nextElementSibling;
+            body.classList.toggle('show');
+            btn.classList.toggle('open');
+        }
+
+        function changeImg(el) { 
+            document.getElementById('mainImg').src = el.src; 
+            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function addToCart() {
+            alert('カートに追加しました！');
+            // In real app: Add to cart logic
+        }
+
+        function openAiChat() { 
+            document.getElementById('aiOverlay').style.display = 'flex'; 
+        }
+        
+        function closeAiChat() { 
+            document.getElementById('aiOverlay').style.display = 'none'; 
+        }
+        
+        function addText(t) { 
+            document.getElementById('chatInput').value = t; 
+        }
+
+        function startVoiceInput() {
+            const microBtn = document.querySelector('.micro-btn');
+            const guideText = document.querySelector('.voice-guide-text');
+            
+            // Visual feedback
+            microBtn.style.background = '#22c55e';
+            microBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+            guideText.textContent = '聞き取り中...';
+            guideText.style.background = 'rgba(34, 197, 94, 0.9)';
+            
+            // Simulate voice input (in real app, this would use Web Speech API)
+            setTimeout(() => {
+                microBtn.style.background = 'var(--primary)';
+                microBtn.innerHTML = '<i class="fa-solid fa-microphone"></i>';
+                guideText.textContent = 'タップして\nご希望をお話しください';
+                guideText.style.background = 'rgba(45, 58, 46, 0.9)';
+                
+                // Show voice input result in chat overlay
+                openAiChat();
+                addText('もっと辛いものが食べたい');
+            }, 2000);
+        }
+
+        // Add click handlers for customize chips
+        document.querySelectorAll('.customize-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                const parent = this.parentElement;
+                // For radio-like behavior (only one active in group)
+                if (parent.classList.contains('customize-chips')) {
+                    // Check if this group should have single selection
+                    const isRequired = this.textContent.includes('普通') || 
+                                      this.textContent.includes('中辛') || 
+                                      this.textContent.includes('大辛');
+                    if (isRequired) {
+                        parent.querySelectorAll('.customize-chip').forEach(c => c.classList.remove('active'));
+                    }
+                }
+                this.classList.add('active');
+            });
+        });
+
+        // AI Ticker Text Streaming Effect
+        function startAiTicker() {
+            const tickerText = document.getElementById('aiTickerText');
+            const fullText = tickerText.textContent;
+            tickerText.textContent = '';
+            tickerText.classList.add('streaming');
+            
+            let i = 0;
+            const speed = 30; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < fullText.length) {
+                    tickerText.textContent += fullText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, speed);
+                } else {
+                    tickerText.classList.remove('streaming');
+                    // Start blinking cursor animation after completion
+                    setTimeout(() => {
+                        tickerText.classList.add('streaming');
+                        setTimeout(() => {
+                            tickerText.classList.remove('streaming');
+                        }, 2000);
+                    }, 3000);
+                }
+            }
+            
+            // Start typing after a short delay
+            setTimeout(typeWriter, 800);
+        }
+
+        // Initialize
+        updateUI();
+        
+        // Start AI ticker on page load
+        window.addEventListener('load', function() {
+            startAiTicker();
+        });
+    </script>
+</body>
+</html>
