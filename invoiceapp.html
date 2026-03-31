@@ -775,7 +775,7 @@
         const params = new URLSearchParams(window.location.search);
         const orderId = params.get('id');
         const proceedBtn = orderId === '303' ? `
-            <button class="btn-invoice-primary" onclick="location.href='order_detail_agency_303_paid.html'" style="padding: 10px 30px; border-radius:12px; font-weight:800; background: #fff; color: #333; border: 1.5px solid #ddd; cursor: pointer;">
+            <button class="btn-invoice-primary" onclick="location.href='order_detail_agency_303_paid.html'" style="padding: 10px 30px; border-radius:12px; font-weight:800; background: var(--color-primary); color: #fff; border: none; cursor: pointer;">
                 <i class="fas fa-arrow-right"></i> 注文確認へ進む
             </button>
         ` : '';

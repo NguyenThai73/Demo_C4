@@ -213,9 +213,28 @@
     gap: var(--space-xl);
 }
 
-/* Modifier: warning accent (task_detail) */
+/* Modifier: warning accent (commission/task pending) */
 .next-action-card.accent-warning {
     border-left-color: var(--color-warning);
+    background-color: #fff8f0;
+}
+
+/* Modifier: success accent (completed/confirmed) */
+.next-action-card.accent-success {
+    border-left-color: var(--color-success);
+    background-color: #f0fff4;
+}
+
+/* Modifier: primary accent (operational action) */
+.next-action-card.accent-primary {
+    border-left-color: var(--color-primary);
+    background-color: #f0f7ff;
+}
+
+/* Modifier: danger accent (cancelled/rejected) */
+.next-action-card.accent-danger {
+    border-left-color: var(--color-danger, #e74c3c);
+    background-color: #fff0f0;
 }
 
 .next-action-content {

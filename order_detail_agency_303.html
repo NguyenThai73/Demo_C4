@@ -585,8 +585,8 @@
                 guideHtml = `<div class="next-action-content" style="opacity: 0.6;"><span style="font-size: 30px; color: #999;"><i class="fas fa-circle-xmark"></i></span><div>状況: <span style="color: #666; font-weight: 800;">キャンセル済み</span><br><span style="font-weight: normal; font-size: 11px; color: #999;">この注文は却下またはキャンセルされました。</span></div></div>`;
             }
             nextActionArea.innerHTML = guideHtml;
-            nextActionArea.className = (orderState.status === 'CONFIRM_WAIT' || orderState.status === 'DELIVERY_READY' || isShipping || orderState.hasShipmentTasks || orderState.hasReturnTasks) ? 'next-action-card accent-primary' : (orderState.status === 'FINISHED' ? 'next-action-card accent-success' : (orderState.status === 'CANCELLED' ? 'next-action-card' : 'next-action-card accent-warning'));
-            if (orderState.status === 'CANCELLED') nextActionArea.style.borderLeft = '6px solid #ccc';
+            nextActionArea.className = (orderState.status === 'CONFIRM_WAIT' || orderState.status === 'DELIVERY_READY' || isShipping || orderState.hasShipmentTasks || orderState.hasReturnTasks) ? 'next-action-card accent-primary' : (orderState.status === 'FINISHED' ? 'next-action-card accent-success' : (orderState.status === 'CANCELLED' ? 'next-action-card accent-danger' : 'next-action-card accent-warning'));
+            
 
             productTbody.innerHTML = orderState.items.map(item => {
                 const remaining = item.orderQty - item.deliveredQty;
