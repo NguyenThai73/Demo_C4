@@ -601,7 +601,7 @@
             <i class="fa-solid fa-microphone"></i>
         </button>
         <div class="voice-guide-text">
-            タップして<br>ご希望をお話しください
+            タップして<br>ご希望を話してください。
         </div>
     </div>
 
@@ -790,18 +790,11 @@
                     // Swap to cool suggested items (still blurred)
                     renderCards(coolMenuItems);
 
-                    // Show voice guide BEFORE the last AI message
-                    setTimeout(showVoiceGuide, 300);
-
-                    // ── Phase 3: Suggest dishes + reveal one by one ──
-                    const msg3 = 'ありがとうございます！ では、本日の暑さにぴったりな涼やかメニュー 6 品をご紹介します 🍃  お好みの一品をお選びください。';
-                    streamText(msg3, 45, 2000);
-
-                    setTimeout(() => {
-                        document.getElementById('sectionLabel').classList.add('visible');
-                    }, 700);
-
-                    setTimeout(revealCardsSequentially, 1200);
+                    // ── Show voice guide FIRST, wait for user to click ──
+                    showVoiceGuide();
+                    
+                    // We'll wait for user to click the microphone
+                    // The voice input will trigger the final AI message
                 }, 700);
             });
         });
@@ -822,48 +815,73 @@
         // placeholder
     }
 
-        /* ─── VOICE GUIDE FUNCTIONS ───────────────────────────── */
-        function showVoiceGuide() {
-            const voiceGuide = document.getElementById('voiceGuide');
-            if (voiceGuide) {
-                voiceGuide.classList.add('show');
+    /* ─── VOICE GUIDE FUNCTIONS ───────────────────────────── */
+    function showVoiceGuide() {
+        const voiceGuide = document.getElementById('voiceGuide');
+        const microBtn = document.querySelector('.micro-btn');
+        const guideText = document.querySelector('.voice-guide-text');
+        
+        if (voiceGuide) {
+            // Reset micro button to default state
+            if (microBtn) {
+                microBtn.style.background = 'var(--primary)';
+                microBtn.innerHTML = '<i class="fa-solid fa-microphone"></i>';
             }
+            
+            // Reset guide text to default
+            if (guideText) {
+                guideText.innerHTML = 'タップして<br>ご希望を話してください。';
+                guideText.style.background = 'rgba(45, 58, 46, 0.9)';
+            }
+            
+            voiceGuide.classList.add('show');
         }
+    }
 
-        function startVoiceInput() {
+    function startVoiceInput() {
             const microBtn = document.querySelector('.micro-btn');
             const guideText = document.querySelector('.voice-guide-text');
+            const voiceGuide = document.getElementById('voiceGuide');
             
             // Visual feedback
             microBtn.style.background = '#22c55e';
             microBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-            guideText.textContent = '聞き取り中...';
+            guideText.innerHTML = '聞き取り中...';
             guideText.style.background = 'rgba(34, 197, 94, 0.9)';
             
-            // Simulate voice input
+            // Simulate voice input (2 seconds)
             setTimeout(() => {
                 microBtn.style.background = 'var(--primary)';
                 microBtn.innerHTML = '<i class="fa-solid fa-microphone"></i>';
-                guideText.textContent = 'タップして\nご希望をお話しください';
+                guideText.innerHTML = 'タップして<br>ご希望を話してください。';
                 guideText.style.background = 'rgba(45, 58, 46, 0.9)';
                 
-                // Trigger AI response after voice input
+                // Hide the voice guide after voice input
+                voiceGuide.classList.remove('show');
+                
+                // ── Phase 3: Suggest dishes + reveal one by one ──
+                const msg3 = 'ありがとうございます！ では、本日の暑さにぴったりな涼やかメニュー 6 品をご紹介します 🍃  お好みの一品をお選びください。';
+                streamText(msg3, 45, 2000, () => {
+                    // After showing the Japanese text and revealing cards,
+                    // show microphone AGAIN for user to respond
+                    setTimeout(() => {
+                        showVoiceGuide();
+                    }, 1000);
+                });
+
                 setTimeout(() => {
-                    // AI responds to voice input
-                    const response = 'かしこまりました！「辛いものが食べたい」ですね。辛さで汗を流せるメニューをご紹介します！';
-                    streamText(response, 45, 3000, () => {
-                        // Show new recommendations based on voice input
-                        // This would filter/update menu items in real app
-                    });
-                }, 500);
+                    document.getElementById('sectionLabel').classList.add('visible');
+                }, 700);
+
+                setTimeout(revealCardsSequentially, 1200);
             }, 2000);
         }
 
-        /* ─── INIT ──────────────────────────────────────────────────── */
-        window.onload = () => {
-            renderCards(regularMenuItems);
-            setTimeout(runDemo, 400);
-        };
-    </script>
+    /* ─── INIT ──────────────────────────────────────────────────── */
+    window.onload = () => {
+        renderCards(regularMenuItems);
+        setTimeout(runDemo, 400);
+    };
+</script>
 </body>
 </html>
