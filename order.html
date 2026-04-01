@@ -300,24 +300,37 @@
     border-radius: 8px;
     padding: 4px 6px;
   }
-  .counter-btn {
-    width: 26px;
-    height: 26px;
-    border-radius: 6px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
+  .counter-label { font-size: 11.5px; font-weight: 700; color: #1a1a1a; text-align: center; }
+
+  /* Number Buttons */
+  .number-btns {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+  }
+  .num-btn {
+    flex: 1;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.12s;
+    background: #fff;
+    border: 1.5px solid #e0dcd4;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
     color: #444;
+    cursor: pointer;
+    transition: all 0.1s;
   }
-  .counter-btn:hover { background: #e5e2dc; }
-  .counter-btn.plus { background: #2d3a2e; color: #fff; }
-  .counter-btn.plus:hover { background: #3a4d3b; }
-  .counter-btn .material-symbols-outlined { font-size: 15px; }
-  .counter-label { font-size: 11.5px; font-weight: 700; color: #1a1a1a; text-align: center; }
+  .num-btn:hover {
+    border-color: #2d3a2e;
+  }
+  .num-btn.active {
+    background: #2d3a2e;
+    border-color: #2d3a2e;
+    color: #fff;
+  }
 
   /* CTA lang highlight */
   .cta-lang-badge {
@@ -469,29 +482,32 @@
       <div class="settings-panel">
 
         <!-- Guests -->
-        <div>
-          <div class="setting-row-label">
-            <span class="material-symbols-outlined">group</span>
-            人数
-          </div>
-          <div class="guest-row">
-            <div class="guest-counter">
-              <button class="counter-btn" onclick="changeGuest('adult', -1)">
-                <span class="material-symbols-outlined">remove</span>
-              </button>
-              <span class="counter-label" id="adultLabel">大人 2</span>
-              <button class="counter-btn plus" onclick="changeGuest('adult', 1)">
-                <span class="material-symbols-outlined">add</span>
-              </button>
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div>
+            <div class="setting-row-label">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+              大人
             </div>
-            <div class="guest-counter">
-              <button class="counter-btn" onclick="changeGuest('child', -1)">
-                <span class="material-symbols-outlined">remove</span>
-              </button>
-              <span class="counter-label" id="childLabel">子供 0</span>
-              <button class="counter-btn plus" onclick="changeGuest('child', 1)">
-                <span class="material-symbols-outlined">add</span>
-              </button>
+            <div class="number-btns" id="adultBtns">
+              <button class="num-btn" onclick="setGuest('adult', 1)">1</button>
+              <button class="num-btn active" onclick="setGuest('adult', 2)">2</button>
+              <button class="num-btn" onclick="setGuest('adult', 3)">3</button>
+              <button class="num-btn" onclick="setGuest('adult', 4)">4</button>
+              <button class="num-btn" onclick="setGuest('adult', 5)">5+</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="setting-row-label">
+              <span class="material-symbols-outlined">child_care</span>
+              子供
+            </div>
+            <div class="number-btns" id="childBtns">
+              <button class="num-btn active" onclick="setGuest('child', 0)">0</button>
+              <button class="num-btn" onclick="setGuest('child', 1)">1</button>
+              <button class="num-btn" onclick="setGuest('child', 2)">2</button>
+              <button class="num-btn" onclick="setGuest('child', 3)">3</button>
+              <button class="num-btn" onclick="setGuest('child', 4)">4+</button>
             </div>
           </div>
         </div>
@@ -505,7 +521,7 @@
   <div class="cta-wrap">
     <button class="cta-btn" id="primary-cta" onclick="startOrder()">
       <span class="material-symbols-outlined" id="cta-icon">mic</span>
-      <span id="cta-text">音声で注文を始める</span>
+      <span id="cta-text">この設定で音声注文を開始</span>
       <span class="cta-lang-badge" id="cta-lang-badge">🇯🇵 日本語</span>
     </button>
   </div>
@@ -546,13 +562,42 @@
     document.getElementById('chat-btn').classList.toggle('active', method === 'chat');
   }
 
-  function changeGuest(type, delta) {
+  function setGuest(type, val) {
+    let finalVal = val;
+    // Handle "5+" or "4+" click
+    if ((type === 'adult' && val === 5) || (type === 'child' && val === 4)) {
+      const label = type === 'adult' ? '大人' : '子供';
+      const promptVal = prompt(`${label}の正確な人数を入力してください（${val}名以上）`, val);
+      if (promptVal !== null) {
+        const num = parseInt(promptVal, 10);
+        if (!isNaN(num) && num >= val) {
+          finalVal = num;
+        } else if (promptVal === '') {
+          finalVal = val;
+        } else {
+          return; // Invalid or cancelled
+        }
+      } else {
+        return; // Cancelled
+      }
+    }
+
     if (type === 'adult') {
-      adultCount = Math.max(1, adultCount + delta);
-      document.getElementById('adultLabel').textContent = '大人 ' + adultCount;
+      adultCount = finalVal;
+      const btns = document.getElementById('adultBtns').querySelectorAll('.num-btn');
+      btns.forEach((b, i) => {
+        const isActive = (i < 4 && (i + 1) === finalVal) || (i === 4 && finalVal >= 5);
+        b.classList.toggle('active', isActive);
+        if (i === 4) b.textContent = finalVal >= 5 ? finalVal + '+' : '5+';
+      });
     } else {
-      childCount = Math.max(0, childCount + delta);
-      document.getElementById('childLabel').textContent = '子供 ' + childCount;
+      childCount = finalVal;
+      const btns = document.getElementById('childBtns').querySelectorAll('.num-btn');
+      btns.forEach((b, i) => {
+        const isActive = (i < 4 && i === finalVal) || (i === 4 && finalVal >= 4);
+        b.classList.toggle('active', isActive);
+        if (i === 4) b.textContent = finalVal >= 4 ? finalVal + '+' : '4+';
+      });
     }
   }
 
