@@ -261,6 +261,34 @@
             z-index: 10;
         }
 
+        /* AI reason badge (giống menu_ai.html) */
+        .ai-reason-badge {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(20,28,20,0.85) 0%, rgba(20,28,20,0) 100%);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 28px 20px 12px;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            line-height: 1.4;
+            z-index: 5;
+        }
+
+        .ai-reason-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #7ecb8f;
+            flex-shrink: 0;
+            margin-bottom: 3px;
+            animation: dot-blink 1.4s infinite;
+        }
+
         .thumbnail-section {
             display: flex;
             flex-direction: column;
@@ -862,7 +890,7 @@
                 <i class="fa-solid fa-microphone"></i>
             </button>
             <div class="voice-guide-text">
-                タップして<br>ご希望をお話しください
+                タップして<br>ご希望を話してください。
             </div>
         </div>
 
@@ -913,6 +941,11 @@
                         AI推奨写真
                     </div>
                     <img id="mainImg" src="https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=600&q=80" alt="Main" class="main-image">
+                    <!-- AI reason badge -->
+                    <div class="ai-reason-badge" id="aiReasonBadge">
+                        <div class="ai-reason-dot"></div>
+                        <span id="aiReasonText">🌡️ 暑い日に体を冷やす</span>
+                    </div>
                 </div>
                 
                 <div class="thumbnail-section">
@@ -1106,19 +1139,22 @@
                 title: '白身魚のグリル 〜香草ソース〜', 
                 price: '980', 
                 desc: '白身魚をハーブでさっぱりと仕上げました。香草の豊かな香りが白ワインとの相性抜群。軽やかな味わいで前菜にもメインにも。', 
-                img: 'https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=600&q=80'
+                img: 'https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=600&q=80',
+                reason: '🌡️ 暑い日に体を冷やす'
             },
             { 
                 title: '完熟トマトのカプレーゼ', 
                 price: '720', 
                 desc: '完熟トマトとモッツァレラのフレッシュな組み合わせ。バジルとオリーブオイルのハーモニー。', 
-                img: 'https://images.unsplash.com/photo-1510629954389-c1e0da47d214?w=600&q=80'
+                img: 'https://images.unsplash.com/photo-1510629954389-c1e0da47d214?w=600&q=80',
+                reason: '🍅 さっぱり軽めのランチに'
             },
             { 
                 title: '旬野菜のバーニャカウダ', 
                 price: '880', 
                 desc: '採れたて旬野菜を濃厚ソースで。温かいソースと冷たい野菜のコントラスト。', 
-                img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=80'
+                img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=80',
+                reason: '💪 低カロリーで栄養満点'
             }
         ];
 
@@ -1133,6 +1169,14 @@
             document.getElementById('navInfo').innerText = `${currentIndex + 1}/${candidates.length}`;
             document.getElementById('prevBtn').disabled = currentIndex === 0;
             document.getElementById('nextBtn').disabled = currentIndex === candidates.length - 1;
+            
+            // Update AI reason badge
+            if (item.reason) {
+                document.getElementById('aiReasonText').innerText = item.reason;
+                document.getElementById('aiReasonBadge').style.display = 'flex';
+            } else {
+                document.getElementById('aiReasonBadge').style.display = 'none';
+            }
         }
 
         function navigateCandidate(dir) {
@@ -1176,14 +1220,14 @@
             // Visual feedback
             microBtn.style.background = '#22c55e';
             microBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-            guideText.textContent = '聞き取り中...';
+            guideText.innerHTML = '聞き取り中...';
             guideText.style.background = 'rgba(34, 197, 94, 0.9)';
             
             // Simulate voice input (in real app, this would use Web Speech API)
             setTimeout(() => {
                 microBtn.style.background = 'var(--primary)';
                 microBtn.innerHTML = '<i class="fa-solid fa-microphone"></i>';
-                guideText.textContent = 'タップして\nご希望をお話しください';
+                guideText.innerHTML = 'タップして<br>ご希望を話してください。';
                 guideText.style.background = 'rgba(45, 58, 46, 0.9)';
                 
                 // Show voice input result in chat overlay
