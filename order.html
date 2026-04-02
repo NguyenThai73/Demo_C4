@@ -441,37 +441,149 @@
 
     .num-btn {
       flex: 1;
-      <<<<<<< HEAD height: 48px;
-      =======height: 36px;
-      >>>>>>>7c07b9fdc337edf9e1c3fc66599ecda508724822 display: flex;
+      height: 64px;
+      display: flex;
       align-items: center;
       justify-content: center;
       background: #fff;
       border: 1.5px solid #e0dcd4;
-      <<<<<<< HEAD border-radius: 10px;
-      font-size: 16px;
+      border-radius: 12px;
+      font-size: 20px;
       font-weight: 800;
       color: #444;
       cursor: pointer;
       transition: all 0.15s;
-      =======border-radius: 6px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #444;
-      cursor: pointer;
-      transition: all 0.1s;
-      >>>>>>>7c07b9fdc337edf9e1c3fc66599ecda508724822
     }
 
     .num-btn:hover {
       border-color: #2d3a2e;
+      background: #fdfdfd;
     }
 
     .num-btn.active {
       background: #2d3a2e;
       border-color: #2d3a2e;
       color: #fff;
+      box-shadow: 0 4px 12px rgba(45, 58, 46, 0.25);
     }
+
+    /* Visit Frequency */
+    .visit-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .visit-btn {
+      flex: 1;
+      height: 52px;
+      border-radius: 10px;
+      border: 1.5px solid #e0dcd4;
+      background: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .visit-btn.active {
+      background: #2d3a2e;
+      border-color: #2d3a2e;
+      color: #fff;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: #fff;
+      width: 420px;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      transform: translateY(20px);
+      animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes slideUp {
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #2d3a2e;
+      margin-bottom: 8px;
+    }
+
+    .modal-sub {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 24px;
+    }
+
+    .modal-input-wrap {
+      margin-bottom: 24px;
+    }
+
+    .modal-input {
+      width: 100%;
+      height: 80px;
+      border-radius: 16px;
+      border: 2.5px solid #2d3a2e;
+      font-size: 42px;
+      font-weight: 800;
+      text-align: center;
+      color: #2d3a2e;
+      background: #f9f8f4;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .modal-btn {
+      flex: 1;
+      height: 56px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+
+    .modal-btn-cancel {
+      background: #f0ece4;
+      color: #666;
+    }
+
+    .modal-btn-confirm {
+      background: #2d3a2e;
+      color: #fff;
+    }
+
+    .modal-btn-confirm:hover { background: #3a4d3b; }
 
     /* CTA lang highlight */
     .cta-lang-badge {
@@ -638,32 +750,44 @@
         <div class="settings-panel">
 
           <!-- Guests -->
-          <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; flex-direction: column; gap: 24px;">
             <div>
               <div class="setting-row-label">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
-                大人
+                大人 (Adult)
               </div>
               <div class="number-btns" id="adultBtns">
                 <button class="num-btn" onclick="setGuest('adult', 1)">1</button>
                 <button class="num-btn active" onclick="setGuest('adult', 2)">2</button>
                 <button class="num-btn" onclick="setGuest('adult', 3)">3</button>
                 <button class="num-btn" onclick="setGuest('adult', 4)">4</button>
-                <button class="num-btn" onclick="setGuest('adult', 5)">5+</button>
+                <button class="num-btn" onclick="openGuestModal('adult')">5+</button>
               </div>
             </div>
 
             <div>
               <div class="setting-row-label">
                 <span class="material-symbols-outlined">child_care</span>
-                子供
+                子供 (Child)
               </div>
               <div class="number-btns" id="childBtns">
                 <button class="num-btn active" onclick="setGuest('child', 0)">0</button>
                 <button class="num-btn" onclick="setGuest('child', 1)">1</button>
                 <button class="num-btn" onclick="setGuest('child', 2)">2</button>
                 <button class="num-btn" onclick="setGuest('child', 3)">3</button>
-                <button class="num-btn" onclick="setGuest('child', 4)">4+</button>
+                <button class="num-btn" onclick="openGuestModal('child')">4+</button>
+              </div>
+            </div>
+
+            <!-- Visit Frequency -->
+            <div>
+              <div class="setting-row-label">
+                <span class="material-symbols-outlined">history</span>
+                ご来店状況 (Visit Frequency)
+              </div>
+              <div class="visit-row">
+                <button class="visit-btn active" id="visit-1st" onclick="setVisit(1)">初めて (1st Time)</button>
+                <button class="visit-btn" id="visit-2nd" onclick="setVisit(2)">2回目以降 (2nd+ Time)</button>
               </div>
             </div>
           </div>
@@ -682,6 +806,21 @@
       </button>
     </div>
 
+    <!-- Guest Modal -->
+    <div class="modal-overlay" id="guestModal">
+      <div class="modal-content">
+        <p class="modal-title" id="modalTitle">大人数の入力</p>
+        <p class="modal-sub" id="modalSub">正確な人数を半角数字で入力してください</p>
+        <div class="modal-input-wrap">
+          <input type="number" class="modal-input" id="guestInput" placeholder="0" min="1">
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn modal-btn-cancel" onclick="closeGuestModal()">キャンセル</button>
+          <button class="modal-btn modal-btn-confirm" onclick="confirmGuestModal()">確定</button>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /ipad-frame -->
 
   <script>
@@ -689,6 +828,8 @@
     let currentMethod = 'voice';
     let adultCount = 2;
     let childCount = 0;
+    let visitFrequency = 1; // 1: 1st time, 2: 2nd+ time
+    let activeModalType = 'adult';
 
     function selectMode(mode) {
       currentMode = mode;
@@ -719,45 +860,58 @@
     }
 
     function setGuest(type, val) {
-      let finalVal = val;
-      // Handle "5+" or "4+" click
-      if ((type === 'adult' && val === 5) || (type === 'child' && val === 4)) {
-        const label = type === 'adult' ? '大人' : '子供';
-        const promptVal = prompt(`${label}の正確な人数を入力してください（${val}名以上）`, val);
-        if (promptVal !== null) {
-          const num = parseInt(promptVal, 10);
-          if (!isNaN(num) && num >= val) {
-            finalVal = num;
-          } else if (promptVal === '') {
-            finalVal = val;
-          } else {
-            return; // Invalid or cancelled
-          }
-        } else {
-          return; // Cancelled
-        }
-      }
-
       if (type === 'adult') {
-        adultCount = finalVal;
+        adultCount = val;
         const btns = document.getElementById('adultBtns').querySelectorAll('.num-btn');
         btns.forEach((b, i) => {
-          const isActive = (i < 4 && (i + 1) === finalVal) || (i === 4 && finalVal >= 5);
+          const isActive = (i < 4 && (i + 1) === val) || (i === 4 && val >= 5);
           b.classList.toggle('active', isActive);
-          if (i === 4) b.textContent = finalVal >= 5 ? finalVal + '+' : '5+';
+          if (i === 4) b.textContent = val >= 5 ? val + '+' : '5+';
         });
       } else {
-        childCount = finalVal;
+        childCount = val;
         const btns = document.getElementById('childBtns').querySelectorAll('.num-btn');
         btns.forEach((b, i) => {
-          const isActive = (i < 4 && i === finalVal) || (i === 4 && finalVal >= 4);
+          const isActive = (i < 4 && i === val) || (i === 4 && val >= 4);
           b.classList.toggle('active', isActive);
-          if (i === 4) b.textContent = finalVal >= 4 ? finalVal + '+' : '4+';
+          if (i === 4) b.textContent = val >= 4 ? val + '+' : '4+';
         });
       }
     }
 
+    function setVisit(val) {
+      visitFrequency = val;
+      document.getElementById('visit-1st').classList.toggle('active', val === 1);
+      document.getElementById('visit-2nd').classList.toggle('active', val === 2);
+    }
+
+    function openGuestModal(type) {
+      activeModalType = type;
+      const modal = document.getElementById('guestModal');
+      const title = document.getElementById('modalTitle');
+      const input = document.getElementById('guestInput');
+      
+      title.innerText = type === 'adult' ? '大人数の入力 (大人)' : '大人数の入力 (子供)';
+      input.value = type === 'adult' ? (adultCount >= 5 ? adultCount : 5) : (childCount >= 4 ? childCount : 4);
+      
+      modal.style.display = 'flex';
+      setTimeout(() => input.focus(), 100);
+    }
+
+    function closeGuestModal() {
+      document.getElementById('guestModal').style.display = 'none';
+    }
+
+    function confirmGuestModal() {
+      const val = parseInt(document.getElementById('guestInput').value, 10);
+      if (!isNaN(val) && val > 0) {
+        setGuest(activeModalType, val);
+        closeGuestModal();
+      }
+    }
+
     const langFlags = { '日本語': '🇯🇵', 'English': '🇺🇸', '한국어': '🇰🇷', '中文': '🇨🇳' };
+    let currentLang = '日本語';
 
     function selectLang(btn, event) {
       if (event) event.stopPropagation();
@@ -765,14 +919,10 @@
       btn.classList.add('active');
       const lang = btn.dataset.lang;
       currentLang = lang;
-      // Update CTA badge
       const badge = document.getElementById('cta-lang-badge');
       if (badge) badge.textContent = (langFlags[lang] || '') + ' ' + lang;
-      // Keep AI mode selected
       selectMode('ai');
     }
-
-    let currentLang = '日本語';
 
     function startOrder() {
       const isAI = currentMode === 'ai';
@@ -780,6 +930,7 @@
         tables: JSON.parse(localStorage.getItem('selectedTables') || '[]'),
         adults: adultCount,
         children: childCount,
+        visitFrequency: visitFrequency === 1 ? '1st' : '2nd+',
         totalGuests: adultCount + childCount,
         language: currentLang,
         orderMode: isAI ? 'ai' : 'manual',
@@ -796,19 +947,29 @@
         window.location.href = 'menu.html';
       }
     }
-
     (function initContext() {
-      const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, '0');
-      const d = String(now.getDate()).padStart(2, '0');
-      const hh = String(now.getHours()).padStart(2, '0');
-      const mm = String(now.getMinutes()).padStart(2, '0');
-      document.getElementById('ctxDate').textContent = y + '/' + m + '/' + d + ' ' + hh + ':' + mm;
-      const tables = JSON.parse(localStorage.getItem('selectedTables') || '[]');
-      if (tables.length > 0) document.getElementById('ctxTable').textContent = tables.join(', ');
-      document.getElementById('ctxTerminal').textContent = localStorage.getItem('terminalId') || 'iPad-03';
-      document.getElementById('ctxReception').textContent = '#' + (localStorage.getItem('receptionNo') || '0042');
+      const update = () => {
+        const now = new Date();
+        const y = now.getFullYear();
+        const mo = String(now.getMonth() + 1).padStart(2, '0');
+        const da = String(now.getDate()).padStart(2, '0');
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        const dateEl = document.getElementById('ctxDate');
+        if (dateEl) dateEl.innerText = `${y}/${mo}/${da} ${hh}:${mm}`;
+        
+        const tables = JSON.parse(localStorage.getItem('selectedTables') || '[]');
+        const tableEl = document.getElementById('ctxTable');
+        if (tableEl && tables.length > 0) tableEl.innerText = tables.join(', ');
+        
+        const termEl = document.getElementById('ctxTerminal');
+        if (termEl) termEl.innerText = localStorage.getItem('terminalId') || 'iPad-03';
+        
+        const recepEl = document.getElementById('ctxReception');
+        if (recepEl) recepEl.innerText = '#' + (localStorage.getItem('receptionNo') || '0042');
+      };
+      update();
+      setInterval(update, 1000);
     })();
   </script>
 </body>
