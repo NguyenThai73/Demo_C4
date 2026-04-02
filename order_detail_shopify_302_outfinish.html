@@ -345,6 +345,7 @@
                             <th class="col-mid" style="width: 120px;">ステータス</th>
                             <th class="col-mid" style="width: 110px;">出荷日</th>
                             <th class="col-mid" style="width: 180px;">配送業者 / 追跡番号</th>
+                            <th class="col-mid" style="width: 110px;">出荷状況</th>
                             <th>出荷サマリー</th>
                             <th style="width: 150px;">備考</th>
                             <th class="col-mid" style="width: 180px;">操作</th>
@@ -356,6 +357,7 @@
                             <td class="col-mid"><span class="badge-status" style="background-color: #f3e5f5; color: #7b1fa2; border: none; padding: 4px 16px; border-radius: 20px; font-weight: bold;">配送中</span></td>
                             <td class="col-mid">2026-03-24</td>
                             <td class="col-mid" style="font-family: monospace; font-weight: bold; color: #444;">ヤマト運輸: 1234-5678-9012</td>
+                            <td class="col-mid" id="shipment-status-cell"><span id="shipment-status-badge" class="badge-status" style="background-color: #f3e5f5; color: #7b1fa2; border: none; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 11px;">配送中</span></td>
                             <td>Rice Silica 50mL x 500, Rice Silica 300mL x 200</td>
                             <td>-</td>
                             <td class="col-mid">
@@ -455,6 +457,14 @@
                 statusBadge.style.color = '#008a3d';
                 const actionCell = selectedTaskRow.cells[selectedTaskRow.cells.length - 1];
                 if (actionCell) actionCell.innerHTML = '-';
+            }
+
+            // Update 出荷状況 badge → 配送済み
+            const shipStatusBadge = document.getElementById('shipment-status-badge');
+            if (shipStatusBadge) {
+                shipStatusBadge.innerText = '配送済み';
+                shipStatusBadge.style.backgroundColor = '#ebfaf0';
+                shipStatusBadge.style.color = '#008a3d';
             }
 
             // Update Next Action
