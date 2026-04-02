@@ -179,7 +179,7 @@
         .nav-item.active { color: var(--primary); }
         .nav-item i { font-size: 22px; }
 
-        /* Voice Guide Container - Replicating menu_ai_detail style */
+        /* Voice Guide Container - REPLICATED FROM menu_ai_detail.html */
         .voice-guide-container {
             position: absolute;
             bottom: 76px;
@@ -189,7 +189,17 @@
             align-items: center;
             gap: 16px;
             z-index: 150;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
+
+        .voice-guide-container.hidden {
+            opacity: 0;
+            transform: translateY(12px);
+            pointer-events: none;
+        }
+
         .voice-order-btn {
             width: 100px;
             height: 100px;
@@ -197,46 +207,84 @@
             background: var(--primary);
             border: none;
             cursor: pointer;
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 4px;
             box-shadow: 0 6px 24px rgba(45, 58, 46, 0.38);
-            transition: transform 0.2s, background-color 0.4s;
-        }
-        .voice-mic-circle {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: #fff;
-            position: relative;
-        }
-        .voice-mic-circle::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(255,255,255,0.3);
-            animation: pulse-ring 2s infinite;
-        }
-        @keyframes pulse-ring {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-        .voice-order-label {
-            font-size: 13px;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 0.05em;
+            transition: transform 0.15s, box-shadow 0.15s;
+            font-family: inherit;
         }
 
-        .nav-badge {
+        .voice-order-btn::before {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.28);
+            pointer-events: none;
+        }
+
+        .voice-order-btn::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px solid rgba(45, 58, 46, 0.28);
+            animation: voice-pulse 2.2s ease-out infinite;
+        }
+
+        .voice-order-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 32px rgba(45, 58, 46, 0.48);
+        }
+
+        .voice-order-btn svg {
+            width: 36px;
+            height: 36px;
+            fill: rgba(255, 255, 255, 0.88);
+        }
+
+        .voice-order-text {
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.82);
+            letter-spacing: 0.06em;
+            line-height: 1.25;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        @keyframes voice-pulse {
+            0% { transform: scale(1); opacity: 0.55; }
+            100% { transform: scale(1.45); opacity: 0; }
+        }
+
+        /* Chat switch link */
+        .chat-switch-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            cursor: pointer;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1.5px solid #d8d4cc;
+            background: rgba(255, 255, 255, 0.85);
+            transition: color 0.15s, border-color 0.15s, background 0.15s;
+            text-decoration: none;
+        }
+
+        .chat-switch-link:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            background: #fff;
+        }
+    </style>
             position: absolute;
             top: -4px;
             right: calc(50% - 18px);
@@ -324,14 +372,17 @@
             </div>
         </div>
 
-        <!-- Voice Guide Container (Microphone) - ADDED FOR VOICE INPUT -->
+        <!-- Voice Guide Container — bottom right — REPLICATED -->
         <div class="voice-guide-container" id="voiceGuideContainer">
-            <button class="voice-order-btn" id="voiceOrderBtn" onclick="startVoiceInput()">
-                <div class="voice-mic-circle">
-                    <i class="fa-solid fa-microphone"></i>
-                </div>
-                <div class="voice-order-label" id="voiceOrderLabel">注文する</div>
+            <button class="voice-order-btn" id="voiceOrderBtn" onclick="startVoice()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                </svg>
+                <span class="voice-order-text" id="voiceOrderText">ボイス<br>オーダー</span>
             </button>
+            <a class="chat-switch-link" id="chatLink" onclick="window.location.href='chat_ai.html'">
+                <i class="fa-regular fa-comment-dots"></i>チャットに切替
+            </a>
         </div>
 
         <div class="bottom-nav">
@@ -361,18 +412,23 @@
             if(n+d > 0) val.innerText = n+d;
         }
 
-        function startVoiceInput() {
+        function startVoice() {
             const btn = document.getElementById('voiceOrderBtn');
-            const lbl = document.getElementById('voiceOrderLabel');
+            const lbl = document.getElementById('voiceOrderText');
+            const chat = document.getElementById('chatLink');
 
-            // Listening state - Gray per standardization
-            btn.style.backgroundColor = '#a0a0a0';
+            // Listening state - Hide Chat Switch
+            btn.style.background = '#a0a0a0';
             lbl.innerHTML = '聞き取り中';
+            chat.style.display = 'none';
 
             setTimeout(() => {
-                btn.style.backgroundColor = '';
-                lbl.innerHTML = '注文する';
-                alert('音声を認識しました。「注文を送信して」と聞き取りました。');
+                // Restore button & Show Chat Switch
+                btn.style.background = '';
+                lbl.innerHTML = 'ボイス<br>オーダー';
+                chat.style.display = 'inline-flex';
+                alert('注文を送信しました');
+                window.location.href = 'order_status.html';
             }, 3000);
         }
 
