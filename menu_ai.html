@@ -1,14 +1,9 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>posSpeak – AI Sushi Menu</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
-        rel="stylesheet">
+    <title>posSpeak – AI Menu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -21,14 +16,10 @@
             --border: #e0dcd4;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Noto Sans JP', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
             background: #1a1a1a;
             display: flex;
             justify-content: center;
@@ -43,7 +34,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 0 80px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 80px rgba(0,0,0,0.7);
             border-radius: 12px;
             position: relative;
         }
@@ -66,39 +57,29 @@
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.13);
+            background: rgba(255,255,255,0.13);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             position: relative;
         }
-
         .banner-speaker::after {
             content: '';
             position: absolute;
             inset: -4px;
             border-radius: 50%;
-            border: 1.5px solid rgba(255, 255, 255, 0.22);
+            border: 1.5px solid rgba(255,255,255,0.22);
             animation: spk-pulse 2.2s ease-out infinite;
         }
-
         .banner-speaker svg {
             width: 20px;
             height: 20px;
             fill: #fff;
         }
-
         @keyframes spk-pulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-
-            100% {
-                transform: scale(1.6);
-                opacity: 0;
-            }
+            0%   { transform: scale(1);   opacity: 0.7; }
+            100% { transform: scale(1.6); opacity: 0;   }
         }
 
         /* Banner staff identity */
@@ -108,21 +89,18 @@
             gap: 10px;
             flex-shrink: 0;
         }
-
         .banner-avatar-wrap {
             position: relative;
             flex-shrink: 0;
         }
-
         .banner-staff-avatar {
             width: 36px;
             height: 36px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.28);
+            border: 2px solid rgba(255,255,255,0.28);
             display: block;
         }
-
         .banner-avatar-dot {
             position: absolute;
             bottom: 0;
@@ -134,36 +112,25 @@
             border: 2px solid var(--primary);
             animation: dot-blink 1.4s ease-in-out infinite;
         }
-
         @keyframes dot-blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.35;
-            }
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.35; }
         }
-
         .banner-staff-text {
             display: flex;
             flex-direction: column;
             gap: 1px;
         }
-
         .banner-staff-name {
             font-size: 15px;
             font-weight: 700;
             color: #fff;
             line-height: 1;
         }
-
         .banner-staff-label {
             font-size: 10px;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.48);
+            color: rgba(255,255,255,0.48);
             letter-spacing: 0.03em;
         }
 
@@ -171,7 +138,7 @@
         .banner-divider {
             width: 1px;
             height: 26px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255,255,255,0.15);
             flex-shrink: 0;
         }
 
@@ -182,7 +149,6 @@
             align-items: center;
             min-width: 0;
         }
-
         .ticker-text {
             font-size: 16px;
             font-weight: 500;
@@ -193,11 +159,7 @@
             opacity: 1;
             transition: opacity 0.4s ease;
         }
-
-        .ticker-text.fading {
-            opacity: 0;
-        }
-
+        .ticker-text.fading { opacity: 0; }
         /* blinking cursor while streaming */
         .ticker-text.streaming::after {
             content: '▋';
@@ -207,17 +169,9 @@
             vertical-align: middle;
             animation: cur-blink 0.6s step-end infinite;
         }
-
         @keyframes cur-blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0;
-            }
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0; }
         }
 
         /* ─── CATEGORY TABS ───────────────────────────────────── */
@@ -243,11 +197,7 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-
-        .cat-tab:hover {
-            color: var(--primary);
-        }
-
+        .cat-tab:hover { color: var(--primary); }
         .cat-tab.active {
             background: var(--primary);
             color: #fff;
@@ -262,18 +212,12 @@
             transform: translateY(6px);
             transition: opacity 0.5s, transform 0.5s;
         }
-
-        .section-label.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        .section-label.visible { opacity: 1; transform: translateY(0); }
         .section-label-inner {
             display: flex;
             align-items: center;
             gap: 8px;
         }
-
         .section-label-badge {
             background: var(--primary);
             color: #fff;
@@ -283,7 +227,6 @@
             border-radius: 20px;
             letter-spacing: 0.04em;
         }
-
         .section-label-text {
             font-size: 13px;
             font-weight: 600;
@@ -296,19 +239,9 @@
             overflow-y: auto;
             padding: 12px 28px 20px;
         }
-
-        .menu-grid-wrapper::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .menu-grid-wrapper::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .menu-grid-wrapper::-webkit-scrollbar-thumb {
-            background: #d0ccc4;
-            border-radius: 4px;
-        }
+        .menu-grid-wrapper::-webkit-scrollbar { width: 4px; }
+        .menu-grid-wrapper::-webkit-scrollbar-track { background: transparent; }
+        .menu-grid-wrapper::-webkit-scrollbar-thumb { background: #d0ccc4; border-radius: 4px; }
 
         .menu-grid {
             display: grid;
@@ -322,7 +255,7 @@
             background: #fff;
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             cursor: pointer;
             display: flex;
             flex-direction: column;
@@ -331,35 +264,19 @@
             filter: none;
             transition: opacity 0.6s ease, filter 0.6s ease, transform 0.18s, box-shadow 0.18s;
         }
-
         /* blur triggered just before suggest phase */
         .menu-card.blurring {
             opacity: 0.18;
             filter: blur(3px);
         }
-
         .menu-card.revealed {
             animation: card-pop 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
-
         @keyframes card-pop {
-            from {
-                opacity: 0.18;
-                filter: blur(3px);
-                transform: translateY(10px) scale(0.97);
-            }
-
-            to {
-                opacity: 1;
-                filter: blur(0px);
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0.18; filter: blur(3px); transform: translateY(10px) scale(0.97); }
+            to   { opacity: 1;    filter: blur(0px); transform: translateY(0)   scale(1); }
         }
-
-        .menu-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
-        }
+        .menu-card:hover { transform: translateY(-4px); box-shadow: 0 8px 22px rgba(0,0,0,0.1); }
 
         .menu-card-img-wrap {
             position: relative;
@@ -367,7 +284,6 @@
             padding-top: 72%;
             overflow: hidden;
         }
-
         .menu-card-img {
             position: absolute;
             inset: 0;
@@ -376,14 +292,13 @@
             object-fit: cover;
             background: #f5f3ef;
         }
-
         /* AI reason badge */
         .ai-badge {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(20, 28, 20, 0.78) 0%, rgba(20, 28, 20, 0) 100%);
+            background: linear-gradient(to top, rgba(20,28,20,0.78) 0%, rgba(20,28,20,0) 100%);
             color: #fff;
             font-size: 11.5px;
             font-weight: 600;
@@ -395,14 +310,9 @@
             transition: opacity 0.4s 0.2s;
             line-height: 1.3;
         }
-
-        .menu-card.revealed .ai-badge {
-            opacity: 1;
-        }
-
+        .menu-card.revealed .ai-badge { opacity: 1; }
         .ai-badge-dot {
-            width: 5px;
-            height: 5px;
+            width: 5px; height: 5px;
             border-radius: 50%;
             background: #7ecb8f;
             flex-shrink: 0;
@@ -416,7 +326,6 @@
             display: flex;
             flex-direction: column;
         }
-
         .menu-card-name {
             font-size: 14px;
             font-weight: 700;
@@ -424,7 +333,6 @@
             margin-bottom: 6px;
             line-height: 1.3;
         }
-
         .menu-card-desc {
             font-size: 11px;
             color: #888;
@@ -432,24 +340,17 @@
             margin-bottom: 10px;
             flex: 1;
         }
-
         .menu-card-footer {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-
         .menu-card-price {
             font-size: 18px;
             font-weight: 700;
             color: #2e3335;
         }
-
-        .menu-card-price::before {
-            content: '¥';
-            font-size: 12px;
-            margin-right: 1px;
-        }
+        .menu-card-price::before { content: '¥'; font-size: 12px; margin-right: 1px; }
 
         .add-btn {
             display: inline-flex;
@@ -466,16 +367,8 @@
             transition: border-color 0.15s, background 0.15s;
             white-space: nowrap;
         }
-
-        .add-btn:hover {
-            border-color: var(--primary);
-            background: #f5f3ef;
-        }
-
-        .add-btn i {
-            font-size: 13px;
-            color: #555;
-        }
+        .add-btn:hover { border-color: var(--primary); background: #f5f3ef; }
+        .add-btn i { font-size: 13px; color: #555; }
 
         /* ─── BOTTOM NAV ──────────────────────────────────────── */
         .bottom-nav {
@@ -486,7 +379,6 @@
             width: 100%;
             flex-shrink: 0;
         }
-
         .nav-item {
             flex: 1;
             display: flex;
@@ -498,29 +390,23 @@
             font-weight: 700;
             cursor: pointer;
         }
-
-        .nav-item.active {
-            color: var(--primary);
-        }
-
-        .nav-item i {
-            font-size: 22px;
-        }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 22px; }
 
         /* ─── VOICE GUIDE MICROPHONE ──────────────────────────── */
-        /* ─── VOICE GUIDE MICROPHONE (Standardized with detail) ── */
         .voice-guide-micro {
             position: absolute;
-            bottom: 76px;
-            right: 28px;
+            bottom: 200px; /* Inside iPad frame */
+            right: 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             z-index: 150;
+            cursor: pointer;
             opacity: 0;
-            transform: translateY(12px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
         .voice-guide-micro.show {
@@ -528,81 +414,40 @@
             transform: translateY(0);
         }
 
-        .voice-order-btn {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
+        .micro-btn {
+            width: 72px;
+            height: 72px;
             background: var(--primary);
-            border: none;
-            cursor: pointer;
-            position: relative;
+            color: #fff;
+            border-radius: 50%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            box-shadow: 0 6px 24px rgba(45, 58, 46, 0.38);
-            transition: transform 0.15s, box-shadow 0.15s;
+            font-size: 30px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(45, 58, 46, 0.4);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
         }
 
-        .voice-order-btn::before {
-            content: '';
-            position: absolute;
-            inset: 6px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(255, 255, 255, 0.28);
-            pointer-events: none;
-        }
-
-        .voice-order-btn::after {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 2px solid rgba(45, 58, 46, 0.28);
-            animation: voice-pulse 2.2s ease-out infinite;
-        }
-
-        @keyframes voice-pulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-
-            100% {
-                transform: scale(1.3);
-                opacity: 0;
-            }
-        }
-
-        .voice-order-btn:hover {
+        .micro-btn:hover {
             transform: scale(1.05);
+            box-shadow: 0 12px 36px rgba(45, 58, 46, 0.5);
         }
 
-        .voice-order-btn.recording {
-            background: #a0a0a0 !important;
-            pointer-events: none;
-            box-shadow: none;
+        .micro-btn::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: micro-pulse 2s ease-out infinite;
         }
 
-        .voice-order-btn.recording::after {
-            animation: none;
-            border-color: rgba(0, 0, 0, 0.1);
-        }
-
-        .voice-order-btn svg {
-            width: 36px;
-            height: 36px;
-            fill: rgba(255, 255, 255, 0.9);
-        }
-
-        .voice-order-text {
-            font-size: 11px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.85);
-            letter-spacing: 0.06em;
-            line-height: 1.2;
-            text-align: center;
+        @keyframes micro-pulse {
+            0%   { transform: scale(1);   opacity: 0.7; }
+            100% { transform: scale(1.4); opacity: 0;   }
         }
 
         .voice-guide-text {
@@ -610,39 +455,12 @@
             color: #fff;
             padding: 10px 20px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             text-align: center;
             max-width: 200px;
-        }
-
-        /* Chat switch link */
-        .chat-switch-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #888;
-            cursor: pointer;
-            padding: 5px 12px;
-            border-radius: 20px;
-            border: 1.5px solid #d8d4cc;
-            background: rgba(255, 255, 255, 0.85);
-            transition: color 0.15s, border-color 0.15s, background 0.15s;
-            text-decoration: none;
-        }
-
-        .chat-switch-link:hover {
-            color: var(--primary);
-            border-color: var(--primary);
-            background: #fff;
-        }
-
-        .chat-switch-link i {
-            font-size: 11px;
         }
 
         /* ─── AI TALK PILL BUTTON ─────────────────────────────── */
@@ -658,82 +476,36 @@
             border: none;
             border-radius: 9999px;
             cursor: pointer;
-            box-shadow: 0 4px 18px rgba(45, 58, 46, 0.35);
+            box-shadow: 0 4px 18px rgba(45,58,46,0.35);
             z-index: 10;
             transition: transform 0.15s, box-shadow 0.15s;
             font-family: inherit;
         }
-
-        .ai-talk-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 22px rgba(45, 58, 46, 0.42);
-        }
-
+        .ai-talk-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 22px rgba(45,58,46,0.42); }
         .ai-staff-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.25);
+            width: 36px; height: 36px; border-radius: 50%;
+            object-fit: cover; border: 2px solid rgba(255,255,255,0.25);
             flex-shrink: 0;
         }
-
-        .ai-talk-text {
-            text-align: left;
-        }
-
-        .ai-talk-label {
-            display: block;
-            font-size: 9.5px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .ai-talk-name {
-            display: block;
-            font-size: 12.5px;
-            font-weight: 700;
-            color: #fff;
-        }
-
+        .ai-talk-text { text-align: left; }
+        .ai-talk-label { display: block; font-size: 9.5px; font-weight: 600; color: rgba(255,255,255,0.6); }
+        .ai-talk-name  { display: block; font-size: 12.5px; font-weight: 700; color: #fff; }
         .ai-talk-mic {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            position: relative;
+            width: 30px; height: 30px; border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; position: relative;
         }
-
         .ai-talk-mic::after {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            content: ''; position: absolute; inset: -3px;
+            border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
             animation: mic-ring 1.8s ease-out infinite;
         }
-
         @keyframes mic-ring {
-            0% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-
-            100% {
-                transform: scale(1.6);
-                opacity: 0;
-            }
+            0%   { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.6); opacity: 0; }
         }
-
-        .ai-talk-mic svg {
-            width: 15px;
-            height: 15px;
-            fill: #fff;
-        }
+        .ai-talk-mic svg { width: 15px; height: 15px; fill: #fff; }
 
         /* ─── REPLAY BUTTON ───────────────────────────────────── */
         .replay-btn {
@@ -744,7 +516,7 @@
             align-items: center;
             gap: 6px;
             padding: 6px 14px;
-            background: rgba(45, 58, 46, 0.08);
+            background: rgba(45,58,46,0.08);
             border: 1.5px solid var(--primary);
             border-radius: 9999px;
             font-size: 12px;
@@ -755,231 +527,213 @@
             transition: background 0.15s;
             z-index: 5;
         }
-
-        .replay-btn:hover {
-            background: rgba(45, 58, 46, 0.14);
-        }
+        .replay-btn:hover { background: rgba(45,58,46,0.14); }
     </style>
 </head>
-
 <body>
-    <div class="ipad-frame">
+<div class="ipad-frame">
 
-        <!-- AI Speech Banner -->
-        <div class="ai-banner">
-            <div class="banner-speaker">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                </svg>
+    <!-- AI Speech Banner -->
+    <div class="ai-banner">
+        <div class="banner-speaker">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        </div>
+        <div class="banner-staff">
+            <div class="banner-avatar-wrap">
+                <img class="banner-staff-avatar"
+                     src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&q=80"
+                     alt="さくら">
+                <div class="banner-avatar-dot"></div>
             </div>
-            <div class="banner-staff">
-                <div class="banner-avatar-wrap">
-                    <img class="banner-staff-avatar"
-                        src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&q=80"
-                        alt="さくら">
-                    <div class="banner-avatar-dot"></div>
-                </div>
-                <div class="banner-staff-text">
-                    <span class="banner-staff-name">さくら</span>
-                    <span class="banner-staff-label">AIスタッフ</span>
-                </div>
-            </div>
-            <div class="banner-divider"></div>
-            <div class="banner-ticker">
-                <span class="ticker-text" id="tickerText"></span>
+            <div class="banner-staff-text">
+                <span class="banner-staff-name">さくら</span>
+                <span class="banner-staff-label">AIスタッフ</span>
             </div>
         </div>
-
-        <!-- Category Tabs -->
-        <div class="category-tabs">
-            <button class="cat-tab active">おすすめ</button>
-            <button class="cat-tab">前菜</button>
-            <button class="cat-tab">麺類</button>
-            <button class="cat-tab">ドリンク</button>
-            <button class="cat-tab">サラダ</button>
+        <div class="banner-divider"></div>
+        <div class="banner-ticker">
+            <span class="ticker-text" id="tickerText"></span>
         </div>
-
-        <!-- AI Section Label -->
-        <div class="section-label" id="sectionLabel">
-            <div class="section-label-inner">
-                <span class="section-label-badge">
-                    <span style="margin-right:4px;">✦</span>AIがご提案
-                </span>
-                <span class="section-label-text">本日の暑さにぴったりな涼しいメニュー 6 選</span>
-            </div>
-        </div>
-
-        <!-- Menu Grid -->
-        <div class="menu-grid-wrapper">
-            <div class="menu-grid" id="menuGrid"></div>
-        </div>
-
-        <!-- Bottom Nav -->
-        <div class="bottom-nav">
-            <div class="nav-item active"><i class="fa-solid fa-utensils"></i><span>メニュー</span></div>
-            <div class="nav-item" onclick="window.location.href='cart.html'"><i
-                    class="fa-solid fa-cart-shopping"></i><span>カート</span></div>
-            <div class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></div>
-            <div class="nav-item" onclick="window.location.href='chat_ai.html'"><i
-                    class="fa-solid fa-comment-dots"></i><span>会話</span></div>
-            <div class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></div>
-        </div>
-
-
-        <!-- Replay button -->
-        <button class="replay-btn" onclick="runDemo()">
-            <i class="fa-solid fa-rotate-right"></i> デモ再生
-        </button>
-
-        <!-- Voice Guide Microphone -->
-        <div class="voice-guide-micro" id="voiceGuide">
-            <button class="voice-order-btn" id="voiceOrderBtn" onclick="startVoiceInput()">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
-                </svg>
-                <span class="voice-order-text" id="voiceOrderText">ボイス<br>オーダー</span>
-            </button>
-            <<<<<<< HEAD <a class="chat-switch-link" id="chatLink" onclick="window.location.href='chat_ai.html'">
-                <i class="fa-regular fa-comment-dots"></i>チャットに切替
-                </a>
-                =======
-                <div class="voice-guide-text">
-                    タップして<br>ご希望を話してください。
-                </div>
-                >>>>>>> 7c07b9fdc337edf9e1c3fc66599ecda508724822
-        </div>
-
     </div>
 
-    <script>
-        /* ─── MENU DATA ────────────────────────────────────────────── */
+    <!-- Category Tabs -->
+    <div class="category-tabs">
+        <button class="cat-tab active">おすすめ</button>
+        <button class="cat-tab">前菜</button>
+        <button class="cat-tab">麺類</button>
+        <button class="cat-tab">ドリンク</button>
+        <button class="cat-tab">サラダ</button>
+    </div>
 
-        // Regular menu shown on arrival
-        const regularMenuItems = [
-            {
-                name: '牛カルビ焼き',
-                desc: '厳選和牛カルビをじっくり炭火で焼き上げた看板メニュー',
-                price: '1680',
-                img: 'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=600&q=80'
-            },
-            {
-                name: '海鮮天ぷら盛り合わせ',
-                desc: 'エビ・イカ・白身魚の揚げたて天ぷら。サクサク食感',
-                price: '1380',
-                img: 'https://images.unsplash.com/photo-1514190051997-0f6f39ca5cde?w=600&q=80'
-            },
-            {
-                name: '特製ラーメン',
-                desc: '12時間煮込んだ濃厚とんこつスープ。自家製麺使用',
-                price: '980',
-                img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&q=80'
-            },
-            {
-                name: '鶏の唐揚げ定食',
-                desc: '国産鶏もも肉をサクジュワに揚げた人気定食。ご飯大盛り無料',
-                price: '1080',
-                img: 'https://images.unsplash.com/photo-1562802378-063ec186a863?w=600&q=80'
-            },
-            {
-                name: '季節の刺身盛り',
-                desc: '市場直送の鮮魚を職人が丁寧に盛り付け。本日のおすすめ',
-                price: '1580',
-                img: 'https://images.unsplash.com/photo-1534482421-64566f976cfa?w=600&q=80'
-            },
-            {
-                name: 'マルゲリータピザ',
-                desc: '石窯焼きのもちもち生地にフレッシュトマトとモッツァレラ',
-                price: '1280',
-                img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=80'
-            }
-        ];
+    <!-- AI Section Label -->
+    <div class="section-label" id="sectionLabel">
+        <div class="section-label-inner">
+            <span class="section-label-badge">
+                <span style="margin-right:4px;">✦</span>AIがご提案
+            </span>
+            <span class="section-label-text">本日の暑さにぴったりな涼しいメニュー 6 選</span>
+        </div>
+    </div>
 
-        // AI-suggested cool/refreshing items (shown in phase 3)
-        const coolMenuItems = [
-            {
-                name: '冷やしラーメン',
-                desc: '濃厚なゴマだれに冷たい麺。夏の定番の一品',
-                price: '950',
-                img: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=600&q=80',
-                reason: '🌡️ 暑い日に体を冷やす'
-            },
-            {
-                name: 'レモンソーダ',
-                desc: '国産レモンをたっぷり使った爽やかな炭酸飲料',
-                price: '480',
-                img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&q=80',
-                reason: '✨ 今日のNo.1人気ドリンク'
-            },
-            {
-                name: '冷製トマトパスタ',
-                desc: 'フレッシュトマトとバジルの冷たいカッペリーニ',
-                price: '1080',
-                img: 'https://images.unsplash.com/photo-1473093226795-af9932fe5856?w=600&q=80',
-                reason: '🍅 さっぱり軽めのランチに'
-            },
-            {
-                name: '蒸し鶏サラダ',
-                desc: 'さっぱりポン酢ドレッシングで食欲そそる冷製サラダ',
-                price: '780',
-                img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80',
-                reason: '💪 低カロリーで栄養満点'
-            },
-            {
-                name: 'グリーンスムージー',
-                desc: '旬のフルーツと野菜をたっぷり使った自家製スムージー',
-                price: '620',
-                img: 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=600&q=80',
-                reason: '🥝 ビタミン補給に最適'
-            },
-            {
-                name: '冷やし中華',
-                desc: 'コシのある細麺に彩り豊かな具材と酸味のきいたタレ',
-                price: '950',
-                img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&q=80',
-                reason: '🔥 辛さで汗を流してスッキリ'
-            }
-        ];
+    <!-- Menu Grid -->
+    <div class="menu-grid-wrapper">
+        <div class="menu-grid" id="menuGrid"></div>
+    </div>
 
-        /* ─── STREAMING TEXT ENGINE ─────────────────────────────────── */
-        let streamInterval = null;
-        let streamTimer = null;
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <div class="nav-item active"><i class="fa-solid fa-utensils"></i><span>メニュー</span></div>
+        <div class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>カート</span></div>
+        <div class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></div>
+        <div class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>会話</span></div>
+        <div class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></div>
+    </div>
 
-        function streamText(text, charDelay, pauseAfter, onDone) {
-            const el = document.getElementById('tickerText');
 
-            // Fade out previous text, then start new stream
-            el.classList.add('fading');
-            clearInterval(streamInterval);
-            clearTimeout(streamTimer);
+    <!-- Replay button -->
+    <button class="replay-btn" onclick="runDemo()">
+        <i class="fa-solid fa-rotate-right"></i> デモ再生
+    </button>
 
-            setTimeout(() => {
-                el.textContent = '';
-                el.classList.remove('fading');
-                el.classList.add('streaming');
+    <!-- Voice Guide Microphone -->
+    <div class="voice-guide-micro" id="voiceGuide" onclick="startVoiceInput()">
+        <button class="micro-btn">
+            <i class="fa-solid fa-microphone"></i>
+        </button>
+        <div class="voice-guide-text">
+            タップして<br>ご希望を話してください。
+        </div>
+    </div>
 
-                let i = 0;
-                streamInterval = setInterval(() => {
-                    if (i < text.length) {
-                        el.textContent += text[i++];
-                    } else {
-                        clearInterval(streamInterval);
-                        el.classList.remove('streaming');
-                        if (onDone) {
-                            streamTimer = setTimeout(() => {
-                                onDone();
-                            }, pauseAfter);
-                        }
-                    }
-                }, charDelay);
-            }, 420); // wait for fade-out
+</div>
+
+<script>
+    /* ─── MENU DATA ────────────────────────────────────────────── */
+
+    // Regular menu shown on arrival
+    const regularMenuItems = [
+        {
+            name: '牛カルビ焼き',
+            desc: '厳選和牛カルビをじっくり炭火で焼き上げた看板メニュー',
+            price: '1680',
+            img: 'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=600&q=80'
+        },
+        {
+            name: '海鮮天ぷら盛り合わせ',
+            desc: 'エビ・イカ・白身魚の揚げたて天ぷら。サクサク食感',
+            price: '1380',
+            img: 'https://images.unsplash.com/photo-1514190051997-0f6f39ca5cde?w=600&q=80'
+        },
+        {
+            name: '特製ラーメン',
+            desc: '12時間煮込んだ濃厚とんこつスープ。自家製麺使用',
+            price: '980',
+            img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&q=80'
+        },
+        {
+            name: '鶏の唐揚げ定食',
+            desc: '国産鶏もも肉をサクジュワに揚げた人気定食。ご飯大盛り無料',
+            price: '1080',
+            img: 'https://images.unsplash.com/photo-1562802378-063ec186a863?w=600&q=80'
+        },
+        {
+            name: '季節の刺身盛り',
+            desc: '市場直送の鮮魚を職人が丁寧に盛り付け。本日のおすすめ',
+            price: '1580',
+            img: 'https://images.unsplash.com/photo-1534482421-64566f976cfa?w=600&q=80'
+        },
+        {
+            name: 'マルゲリータピザ',
+            desc: '石窯焼きのもちもち生地にフレッシュトマトとモッツァレラ',
+            price: '1280',
+            img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=80'
         }
+    ];
 
-        /* ─── CARD RENDERING ────────────────────────────────────────── */
-        function renderCards(items) {
-            const grid = document.getElementById('menuGrid');
-            grid.innerHTML = items.map((item, i) => `
+    // AI-suggested cool/refreshing items (shown in phase 3)
+    const coolMenuItems = [
+        {
+            name: '冷やしラーメン',
+            desc: '濃厚なゴマだれに冷たい麺。夏の定番の一品',
+            price: '950',
+            img: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=600&q=80',
+            reason: '🌡️ 暑い日に体を冷やす'
+        },
+        {
+            name: 'レモンソーダ',
+            desc: '国産レモンをたっぷり使った爽やかな炭酸飲料',
+            price: '480',
+            img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&q=80',
+            reason: '✨ 今日のNo.1人気ドリンク'
+        },
+        {
+            name: '冷製トマトパスタ',
+            desc: 'フレッシュトマトとバジルの冷たいカッペリーニ',
+            price: '1080',
+            img: 'https://images.unsplash.com/photo-1473093226795-af9932fe5856?w=600&q=80',
+            reason: '🍅 さっぱり軽めのランチに'
+        },
+        {
+            name: '蒸し鶏サラダ',
+            desc: 'さっぱりポン酢ドレッシングで食欲そそる冷製サラダ',
+            price: '780',
+            img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80',
+            reason: '💪 低カロリーで栄養満点'
+        },
+        {
+            name: 'グリーンスムージー',
+            desc: '旬のフルーツと野菜をたっぷり使った自家製スムージー',
+            price: '620',
+            img: 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=600&q=80',
+            reason: '🥝 ビタミン補給に最適'
+        },
+        {
+            name: '冷やし中華',
+            desc: 'コシのある細麺に彩り豊かな具材と酸味のきいたタレ',
+            price: '950',
+            img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&q=80',
+            reason: '🔥 辛さで汗を流してスッキリ'
+        }
+    ];
+
+    /* ─── STREAMING TEXT ENGINE ─────────────────────────────────── */
+    let streamInterval = null;
+    let streamTimer    = null;
+
+    function streamText(text, charDelay, pauseAfter, onDone) {
+        const el = document.getElementById('tickerText');
+
+        // Fade out previous text, then start new stream
+        el.classList.add('fading');
+        clearInterval(streamInterval);
+        clearTimeout(streamTimer);
+
+        setTimeout(() => {
+            el.textContent = '';
+            el.classList.remove('fading');
+            el.classList.add('streaming');
+
+            let i = 0;
+            streamInterval = setInterval(() => {
+                if (i < text.length) {
+                    el.textContent += text[i++];
+                } else {
+                    clearInterval(streamInterval);
+                    el.classList.remove('streaming');
+                    if (onDone) {
+                        streamTimer = setTimeout(() => {
+                            onDone();
+                        }, pauseAfter);
+                    }
+                }
+            }, charDelay);
+        }, 420); // wait for fade-out
+    }
+
+    /* ─── CARD RENDERING ────────────────────────────────────────── */
+    function renderCards(items) {
+        const grid = document.getElementById('menuGrid');
+        grid.innerHTML = items.map((item, i) => `
             <div class="menu-card" id="card${i}" onclick="handleCardClick(this)">
                 <div class="menu-card-img-wrap">
                     <img class="menu-card-img" src="${item.img}" alt="${item.name}" loading="lazy">
@@ -997,178 +751,114 @@
                 </div>
             </div>
         `).join('');
-        }
+    }
 
-        function blurAllCards() {
-            document.querySelectorAll('.menu-card').forEach(card => card.classList.add('blurring'));
-        }
+    function blurAllCards() {
+        document.querySelectorAll('.menu-card').forEach(card => card.classList.add('blurring'));
+    }
 
-        function revealCardsSequentially() {
-            coolMenuItems.forEach((_, i) => {
-                setTimeout(() => {
-                    const card = document.getElementById('card' + i);
-                    if (card) {
-                        card.classList.remove('blurring');
-                        card.classList.add('revealed');
-                    }
-                }, i * 420);
-            });
-        }
-
-        /* ─── DEMO SEQUENCE ─────────────────────────────────────────── */
-        function runDemo() {
-            // Reset — show regular menu on arrival
-            document.getElementById('sectionLabel').classList.remove('visible');
-            renderCards(regularMenuItems);
-
-            // ── Phase 1: Welcome ──
-            const msg1 = 'ようこそいらっしゃいませ！ 当店へのご来店ありがとうございます。ごゆっくりお楽しみください。';
-            streamText(msg1, 45, 3000, () => {
-
-                // ── Phase 2: Ask about preference ──
-                const msg2 = '本日は暑い日が続いておりますね 🌞  体を冷やす爽やかなお料理はいかがでしょうか？ 当店おすすめの涼しいメニューをご紹介いたします！';
-                streamText(msg2, 45, 3000, () => {
-
-                    // ── Transition: blur current menu, swap to suggested items ──
-                    blurAllCards();
-
-                    setTimeout(() => {
-                        // Swap to cool suggested items (still blurred)
-                        renderCards(coolMenuItems);
-
-                        // ── Show voice guide FIRST, wait for user to click ──
-                        showVoiceGuide();
-
-                        // We'll wait for user to click the microphone
-                        // The voice input will trigger the final AI message
-                    }, 700);
-                });
-            });
-        }
-
-        function handleCardClick(card) {
-            // Simple pulse feedback
-            card.style.transform = 'scale(0.97)';
-            setTimeout(() => { card.style.transform = ''; }, 120);
-
-            // Navigate to menu_ai_detail.html
+    function revealCardsSequentially() {
+        coolMenuItems.forEach((_, i) => {
             setTimeout(() => {
-                window.location.href = 'menu_ai_detail.html';
-            }, 200);
-        }
-
-        function openAiMode() {
-            // placeholder
-        }
-
-        /* ─── VOICE GUIDE FUNCTIONS ───────────────────────────── */
-        function showVoiceGuide() {
-            const voiceGuide = document.getElementById('voiceGuide');
-<<<<<<< HEAD
-            const btn = document.getElementById('voiceOrderBtn');
-            const innerText = document.getElementById('voiceOrderText');
-            const chatLink = document.getElementById('chatLink');
-
-            if (voiceGuide) {
-                // Reset micro button to default state
-                if (btn) {
-                    btn.classList.remove('recording');
-                    btn.style.background = '';
-                    innerText.innerHTML = 'ボイス<br>オーダー';
+                const card = document.getElementById('card' + i);
+                if (card) {
+                    card.classList.remove('blurring');
+                    card.classList.add('revealed');
                 }
+            }, i * 420);
+        });
+    }
 
-                // Show Chat Switch
-                if (chatLink) {
-                    chatLink.style.display = 'inline-flex';
-=======
+    /* ─── DEMO SEQUENCE ─────────────────────────────────────────── */
+    function runDemo() {
+        // Reset — show regular menu on arrival
+        document.getElementById('sectionLabel').classList.remove('visible');
+        renderCards(regularMenuItems);
+
+        // ── Phase 1: Welcome ──
+        const msg1 = 'ようこそいらっしゃいませ！ 当店へのご来店ありがとうございます。ごゆっくりお楽しみください。';
+        streamText(msg1, 45, 3000, () => {
+
+            // ── Phase 2: Ask about preference ──
+            const msg2 = '本日は暑い日が続いておりますね 🌞  体を冷やす爽やかなお料理はいかがでしょうか？ 当店おすすめの涼しいメニューをご紹介いたします！';
+            streamText(msg2, 45, 3000, () => {
+
+                // ── Transition: blur current menu, swap to suggested items ──
+                blurAllCards();
+
+                setTimeout(() => {
+                    // Swap to cool suggested items (still blurred)
+                    renderCards(coolMenuItems);
+
+                    // ── Show voice guide FIRST, wait for user to click ──
+                    showVoiceGuide();
+                    
+                    // We'll wait for user to click the microphone
+                    // The voice input will trigger the final AI message
+                }, 700);
+            });
+        });
+    }
+
+    function handleCardClick(card) {
+        // Simple pulse feedback
+        card.style.transform = 'scale(0.97)';
+        setTimeout(() => { card.style.transform = ''; }, 120);
+        
+        // Navigate to menu_ai_detail.html
+        setTimeout(() => {
+            window.location.href = 'menu_ai_detail.html';
+        }, 200);
+    }
+
+    function openAiMode() {
+        // placeholder
+    }
+
+    /* ─── VOICE GUIDE FUNCTIONS ───────────────────────────── */
+    function showVoiceGuide() {
+        const voiceGuide = document.getElementById('voiceGuide');
         const microBtn = document.querySelector('.micro-btn');
         const guideText = document.querySelector('.voice-guide-text');
-
+        
         if (voiceGuide) {
             // Reset micro button to default state
             if (microBtn) {
                 microBtn.style.background = 'var(--primary)';
                 microBtn.innerHTML = '<i class="fa-solid fa-microphone"></i>';
             }
-
+            
             // Reset guide text to default
             if (guideText) {
                 guideText.innerHTML = 'タップして<br>ご希望を話してください。';
                 guideText.style.background = 'rgba(45, 58, 46, 0.9)';
->>>>>>> 7c07b9fdc337edf9e1c3fc66599ecda508724822
-                }
-
-                voiceGuide.classList.add('show');
             }
+            
+            voiceGuide.classList.add('show');
         }
+    }
 
-        function startVoiceInput() {
-<<<<<<< HEAD
-            const btn = document.getElementById('voiceOrderBtn');
-            const innerText = document.getElementById('voiceOrderText');
-            const chatLink = document.getElementById('chatLink');
-
-            // Visual feedback - "Listening" State
-            btn.classList.add('recording');
-            btn.style.background = '#a0a0a0';
-            innerText.innerText = "聞き取り中";
-
-            // Hide Chat Switch while listening
-            if (chatLink) {
-                chatLink.style.display = 'none';
-            }
-
-            // Simulate voice input (2.5 seconds)
-            setTimeout(() => {
-                btn.classList.remove('recording');
-                btn.style.background = '';
-                innerText.innerHTML = 'ボイス<br>オーダー';
-
-                // Show Chat Switch again
-                if (chatLink) {
-                    chatLink.style.display = 'inline-flex';
-                }
-
-                // Hide the voice guide
-                document.getElementById('voiceGuide').classList.remove('show');
-
-                // ── Phase 3: Suggest dishes + reveal one by one ──
-                const msg3 = 'ありがとうございます！ では、本日の暑さにぴったりな涼やかメニュー 6 品をご紹介します 🍃  お好みの一品をお選びください。';
-                streamText(msg3, 45, 2000, () => {
-                    setTimeout(() => {
-                        showVoiceGuide();
-                    }, 1000);
-                });
-
-                setTimeout(() => {
-                    document.getElementById('sectionLabel').classList.add('visible');
-                }, 700);
-
-                setTimeout(revealCardsSequentially, 1200);
-            }, 2500);
-        }
-
-=======
+    function startVoiceInput() {
             const microBtn = document.querySelector('.micro-btn');
             const guideText = document.querySelector('.voice-guide-text');
             const voiceGuide = document.getElementById('voiceGuide');
-
+            
             // Visual feedback
             microBtn.style.background = '#22c55e';
             microBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
             guideText.innerHTML = '聞き取り中...';
             guideText.style.background = 'rgba(34, 197, 94, 0.9)';
-
+            
             // Simulate voice input (2 seconds)
             setTimeout(() => {
                 microBtn.style.background = 'var(--primary)';
                 microBtn.innerHTML = '<i class="fa-solid fa-microphone"></i>';
                 guideText.innerHTML = 'タップして<br>ご希望を話してください。';
                 guideText.style.background = 'rgba(45, 58, 46, 0.9)';
-
+                
                 // Hide the voice guide after voice input
                 voiceGuide.classList.remove('show');
-
+                
                 // ── Phase 3: Suggest dishes + reveal one by one ──
                 const msg3 = 'ありがとうございます！ では、本日の暑さにぴったりな涼やかメニュー 6 品をご紹介します 🍃  お好みの一品をお選びください。';
                 streamText(msg3, 45, 2000, () => {
@@ -1187,13 +877,11 @@
             }, 2000);
         }
 
->>>>>>> 7c07b9fdc337edf9e1c3fc66599ecda508724822
-        /* ─── INIT ──────────────────────────────────────────────────── */
-        window.onload = () => {
-            renderCards(regularMenuItems);
-            setTimeout(runDemo, 400);
-        };
-    </script>
+    /* ─── INIT ──────────────────────────────────────────────────── */
+    window.onload = () => {
+        renderCards(regularMenuItems);
+        setTimeout(runDemo, 400);
+    };
+</script>
 </body>
-
 </html>
