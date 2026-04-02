@@ -848,17 +848,36 @@
             setTimeout(() => { sub.style.opacity = '0'; sub.style.transition = 'opacity 0.5s'; setTimeout(() => sub.remove(), 500); }, 3000);
         }
 
+        let voiceStep = 0;
+
         function startVoiceInput() {
             const btn = document.getElementById('voiceOrderBtn');
             const lbl = document.getElementById('voiceOrderText');
             btn.style.background = '#a0a0a0';
             lbl.innerHTML = '聞き取り中';
-            setTimeout(() => {
-                btn.style.background = '';
-                lbl.innerHTML = 'ボイス<br>オーダー';
-                showUserSpeechBubble('季節のフルーツタルトを1つお願いします');
-                streamText('かしこまりました！ 季節のフルーツタルトを 1 つ追加いたします。ほかにご注文はございますか？', 45, 0, showCartAlert);
-            }, 2000);
+            
+            if (voiceStep === 0) {
+                // Step 1: Order Tart
+                setTimeout(() => {
+                    btn.style.background = '';
+                    lbl.innerHTML = 'ボイス<br>オーダー';
+                    showUserSpeechBubble('季節のフルーツタルトを1つお願いします');
+                    streamText('かしこまりました！ 季節のフルーツタルトを 1 つ追加いたします。ほかにご注文はございますか？', 45, 0, () => {
+                        showCartAlert();
+                        voiceStep = 1; // Move to next step
+                    });
+                }, 2000);
+            } else {
+                // Step 2: Finalize
+                setTimeout(() => {
+                    btn.style.background = '';
+                    lbl.innerHTML = 'ボイス<br>オーダー';
+                    showUserSpeechBubble('以上でこれでお願いします。');
+                    streamText('承知いたしました。注文内容を確認いたします。カード画面へ移動します。', 45, 2000, () => {
+                        window.location.href = 'cart.html?confirm=true';
+                    });
+                }, 2000);
+            }
         }
 
         window.onload = () => {

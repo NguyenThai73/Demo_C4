@@ -695,31 +695,16 @@
                 </div>
                 <div class="cart-items" id="cartItems">
                     <div class="cart-item">
-                        <img class="item-img" src="wagyu_steak_seared_1775109027703.png">
+                        <img class="item-img" src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=400&q=80">
                         <div class="item-info">
-                            <div class="item-name">和牛ステーキ 特選</div>
-                            <div class="item-option">ミディアムレア / ガーリック醤油</div>
+                            <div class="item-name">季節のフルーツタルト</div>
+                            <div class="item-option">AIスタッフおすすめ / 1個</div>
                         </div>
-                        <div class="item-price">2,800</div>
+                        <div class="item-price">850</div>
                         <div class="qty-ctrl">
-                            <button class="qty-btn" onclick="updateQty(0, -1)"><i
-                                    class="fa-solid fa-minus"></i></button>
+                            <button class="qty-btn"><i class="fa-solid fa-minus"></i></button>
                             <span class="qty-val">1</span>
-                            <button class="qty-btn" onclick="updateQty(0, 1)"><i class="fa-solid fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="cart-item">
-                        <img class="item-img" src="premium_sushi_platter_1775109009124.png">
-                        <div class="item-info">
-                            <div class="item-name">特選 握り寿司盛り合わせ</div>
-                            <div class="item-option">旬の鮮魚12貫 / 煮切り醤油</div>
-                        </div>
-                        <div class="item-price">3,500</div>
-                        <div class="qty-ctrl">
-                            <button class="qty-btn" onclick="updateQty(1, -1)"><i
-                                    class="fa-solid fa-minus"></i></button>
-                            <span class="qty-val">1</span>
-                            <button class="qty-btn" onclick="updateQty(1, 1)"><i class="fa-solid fa-plus"></i></button>
+                            <button class="qty-btn"><i class="fa-solid fa-plus"></i></button>
                         </div>
                     </div>
                 </div>
@@ -728,18 +713,18 @@
             <div class="summary-panel">
                 <div class="summary-card">
                     <div class="summary-row">
-                        <span class="summary-label">小計 (2品)</span>
-                        <span class="summary-value">¥6,300</span>
+                        <span class="summary-label">小計 (1品)</span>
+                        <span class="summary-value">¥850</span>
                     </div>
                     <div class="summary-row summary-total">
                         <span class="total-label">合計金額</span>
-                        <span class="total-price">6,300</span>
+                        <span class="total-price">850</span>
                     </div>
                 </div>
 
-                <button class="order-btn" onclick="sendOrder()">
+                <button class="order-btn" id="confirmBtn" onclick="sendOrder()">
                     <i class="fa-solid fa-bell"></i>
-                    <span>この内容で注文を送信</span>
+                    <span>注文を確認する</span>
                 </button>
                 <button class="cancel-btn" onclick="history.back()">メニューに戻る</button>
             </div>
@@ -820,15 +805,35 @@
             }, 2000);
         }
 
-        setInterval(() => {
-            const now = new Date();
-            const y = now.getFullYear();
-            const mo = String(now.getMonth() + 1).padStart(2, '0');
-            const da = String(now.getDate()).padStart(2, '0');
-            const hh = String(now.getHours()).padStart(2, '0');
-            const mm = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('ctxDate').innerText = `${y}/${mo}/${da} ${hh}:${mm}`;
-        }, 1000);
+        window.onload = () => {
+            setInterval(() => {
+                const now = new Date();
+                const ctxDate = document.getElementById('ctxDate');
+                if (ctxDate) ctxDate.innerText = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            }, 1000);
+
+            // AI Confirmation Flow
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('confirm') === 'true') {
+                const aiBanner = document.getElementById('aiBanner');
+                const contextBar = document.querySelector('.context-bar');
+                const aiTickerText = document.getElementById('aiTickerText');
+                
+                if (aiBanner) aiBanner.style.display = 'flex';
+                if (contextBar) contextBar.style.display = 'none';
+
+                if (aiTickerText) {
+                    aiTickerText.innerText = '';
+                    aiTickerText.classList.add('streaming');
+                    const msg = 'ご注文内容を確認してください。こちらの「注文を確認する」ボタンを押すと、注文が確定します。';
+                    let i = 0;
+                    const tid = setInterval(() => {
+                        if (i < msg.length) { aiTickerText.innerText += msg[i++]; }
+                        else { clearInterval(tid); aiTickerText.classList.remove('streaming'); }
+                    }, 45);
+                }
+            }
+        };
     </script>
 </body>
 
