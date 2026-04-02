@@ -3,650 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>メニュー詳細</title>
+    <title>posSpeak – Menu Detail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #2d3a2e;
+            --primary-light: #3f5240;
+            --accent: #d4a373;
+            --bg: #f0ece4;
+            --card-bg: #ffffff;
+            --footer-bg: #e8e4dc;
+            --border: #e0dcd4;
+            --text-main: #1a1a1a;
+            --text-sub: #666;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            font-family: 'Noto Sans JP', sans-serif;
             height: 100vh;
             background: #1a1a1a;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .ipad-frame {
-            width: 880px;
-            height: 640px;
+            width: 1280px;
+            height: 800px;
+            background: var(--bg);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-        }
-
-        .top-bar {
-            padding: 8px 24px;
-            font-size: 13px;
-            color: #aaa;
-            flex-shrink: 0;
-        }
-
-        .main-wrapper {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .container {
-            background: #f0ece4;
-            width: 100%;
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            flex: 1;
-        }
-
-        /* Category Tabs */
-        .category-tabs {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 16px 20px 12px;
-            overflow-x: auto;
-            flex-shrink: 0;
-        }
-
-        .cat-tab {
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .cat-tab.active {
-            background: #333;
-            color: #fff;
-        }
-
-        .filter-btn {
-            margin-left: auto;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: 1px solid #ccc;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .filter-btn svg {
-            width: 18px;
-            height: 18px;
-            fill: #555;
-        }
-
-        /* Detail Content */
-        .detail-content {
-            flex: 1;
-            display: flex;
-            gap: 0;
-            padding: 8px 20px 20px;
-            overflow-y: auto;
-        }
-
-        /* Left: Image Area */
-        .image-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-right: 20px;
-        }
-
-        .main-image {
-            width: 100%;
-            flex: 1;
-            border-radius: 10px;
-            object-fit: cover;
-            display: block;
-            min-height: 300px;
-        }
-
-        .thumbnail-row {
-            display: flex;
-            gap: 8px;
-        }
-
-        .thumbnail {
-            width: 72px;
-            height: 54px;
-            border-radius: 6px;
-            object-fit: cover;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: border-color 0.15s;
-            opacity: 0.7;
-        }
-
-        .thumbnail.active {
-            border-color: #2d3a2e;
-            opacity: 1;
-        }
-
-        .thumbnail:hover {
-            opacity: 1;
-        }
-
-        /* Right: Info Panel */
-        .info-panel {
-            width: 320px;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            background: #fff;
+            box-shadow: 0 0 80px rgba(0,0,0,0.7);
             border-radius: 12px;
-            padding: 24px;
+            position: relative;
         }
 
-        .item-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a1a1a;
-            line-height: 1.3;
+        /* ─── HEADER: CONTEXT BAR ───────────────────────── */
+        .context-bar {
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            height: 52px;
+            font-size: 13px;
+            flex-shrink: 0;
+            z-index: 10;
         }
 
-        .item-desc {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.5;
-        }
+        .context-left { display: flex; gap: 24px; align-items: center; }
+        .context-item { display: flex; align-items: center; gap: 8px; }
+        .context-label { color: rgba(255, 255, 255, 0.4); font-weight: 500; }
+        .context-value { font-weight: 700; letter-spacing: 0.02em; }
+        .context-divider { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); }
+        .context-date { color: rgba(255, 255, 255, 0.35); font-size: 12px; }
 
-        /* Accordion */
-        .accordion {
-            border: 1px solid #ddd;
-            border-radius: 8px;
+        /* ─── MAIN CONTENT ────────────────────────────────── */
+        .main-content {
+            flex: 1;
+            display: flex;
+            padding: 40px 64px;
+            gap: 64px;
             overflow: hidden;
         }
 
-        .accordion-header {
+        /* Left: Image Showcase */
+        .image-showcase {
+            flex: 1.2;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 14px;
-            background: #fff;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            color: #1a1a1a;
-            border: none;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .main-image-container {
             width: 100%;
-            text-align: left;
+            height: 500px;
+            border-radius: 32px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            border: 1.5px solid var(--border);
         }
-
-        .accordion-header svg {
-            width: 16px;
-            height: 16px;
-            fill: #666;
-            transition: transform 0.2s;
+        .main-image { width: 100%; height: 100%; object-fit: cover; }
+        
+        .thumb-strip { display: flex; gap: 16px; }
+        .thumb {
+            width: 90px; height: 90px; border-radius: 16px; object-fit: cover; cursor: pointer; border: 3px solid transparent; transition: 0.2s; opacity: 0.6;
         }
+        .thumb.active { border-color: var(--primary); opacity: 1; transform: translateY(-4px); }
 
-        .accordion-header.open svg {
-            transform: rotate(180deg);
-        }
-
-        .accordion-body {
-            padding: 0 14px 12px;
-            font-size: 13px;
-            color: #555;
-            line-height: 1.6;
-            display: none;
-        }
-
-        .accordion-body.show {
-            display: block;
-        }
-
-        .accordion-body ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .accordion-body ul li::before {
-            content: "・";
-        }
-
-        /* Customize & Price */
-        .customize-row {
+        /* Right: Product Info */
+        .product-info {
+            flex: 1;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 32px;
         }
+        .product-header { display: flex; flex-direction: column; gap: 8px; }
+        .badge-premium { align-self: flex-start; background: #fff; border: 1.5px solid var(--accent); color: var(--accent); padding: 4px 12px; border-radius: 30px; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 8px; }
+        .product-title { font-size: 36px; font-weight: 900; color: var(--text-main); line-height: 1.2; }
+        .product-desc { font-size: 16px; color: var(--text-sub); line-height: 1.6; }
 
-        .customize-label {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1a1a1a;
-            background: #f0f0f0;
-            padding: 6px 14px;
-            border-radius: 6px;
+        .price-section { display: flex; align-items: flex-end; gap: 12px; }
+        .price-main { font-size: 40px; font-weight: 950; color: var(--primary); }
+        .price-main::before { content: '¥'; font-size: 24px; margin-right: 4px; }
+        .tax-info { font-size: 13px; color: #888; font-weight: 600; margin-bottom: 8px; }
+
+        .spec-list { display: flex; flex-direction: column; gap: 16px; background: #fff; padding: 24px; border-radius: 20px; border: 1.5px solid var(--border); }
+        .spec-item { display: flex; justify-content: space-between; align-items: center; }
+        .spec-label { font-size: 14px; font-weight: 700; color: #888; display: flex; align-items: center; gap: 8px; }
+        .spec-val { font-size: 14px; font-weight: 800; color: var(--text-main); }
+
+        .action-area { margin-top: auto; display: flex; gap: 16px; padding-bottom: 20px; }
+        .btn-add-cart {
+            flex: 1; height: 72px; background: var(--primary); color: #fff; border: none; border-radius: 20px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 30px rgba(45, 58, 46, 0.2);
+            display: flex; align-items: center; justify-content: center; gap: 12px;
         }
+        .btn-add-cart:hover { background: var(--primary-light); transform: translateY(-2px); }
+        
+        .btn-back { width: 72px; height: 72px; border: 2px solid var(--border); background: #fff; border-radius: 20px; color: #888; cursor: pointer; font-size: 20px; transition: 0.2s; }
+        .btn-back:hover { color: var(--text-main); border-color: #999; }
 
-        .item-price {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a1a1a;
+        /* ─── MODAL ─────────────────────────────────────── */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center;
         }
-
-        /* Buttons */
-        .add-cart-btn {
-            width: 100%;
-            padding: 16px;
-            background: #2d3a2e;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.15s;
+        .modal-overlay.show { display: flex; }
+        .customize-modal {
+            background: #fff; width: 480px; border-radius: 32px; padding: 40px; box-shadow: 0 40px 100px rgba(0,0,0,0.25);
         }
+        .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 24px; text-align: center; }
+        
+        .opt-group { margin-bottom: 24px; }
+        .opt-title { font-size: 13px; font-weight: 800; color: #bbb; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+        .opt-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #f8f8f8; border-radius: 12px; margin-bottom: 8px; cursor: pointer; border: 1.5px solid transparent; transition: 0.2s; }
+        .opt-row.selected { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
+        .opt-row input { display: none; }
+        .opt-name { font-size: 15px; font-weight: 700; }
+        .opt-price { font-size: 13px; font-weight: 600; opacity: 0.7; }
 
-        .add-cart-btn:hover {
-            background: #3a4a3b;
-        }
+        .qty-control { display: flex; justify-content: center; align-items: center; gap: 24px; margin: 32px 0; }
+        .qty-btn { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #eee; background: #fff; font-size: 20px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #333; transition: 0.2s; }
+        .qty-btn:hover { border-color: #333; }
+        .qty-num { font-size: 28px; font-weight: 900; color: var(--text-main); min-width: 32px; text-align: center; }
 
-        .remove-cart-btn {
-            width: 100%;
-            padding: 16px;
-            background: #fff;
-            color: #333;
-            border: 1.5px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
+        .modal-confirm { width: 100%; height: 60px; background: var(--primary); color: #fff; border: none; border-radius: 16px; font-size: 16px; font-weight: 700; cursor: pointer; }
 
-        .remove-cart-btn:hover {
-            border-color: #999;
-        }
-
-        /* Bottom Navigation */
+        /* ─── BOTTOM NAV ──────────────────────────────────── */
         .bottom-nav {
             display: flex;
-            background: #fff;
-            border-top: 1px solid #e0e0e0;
+            background: var(--footer-bg);
+            border-top: 1px solid var(--border);
+            padding: 12px 0 20px;
             flex-shrink: 0;
+            width: 100%;
         }
-
         .nav-item {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px 0 8px;
-            gap: 3px;
+            gap: 6px;
             color: #888;
-            font-size: 10px;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: 700;
             cursor: pointer;
-            position: relative;
             border: none;
             background: transparent;
+            font-family: inherit;
         }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 22px; }
 
-        .nav-item.active {
-            color: #fff;
-            background: #2d3a2e;
-            border-radius: 8px;
-            margin: 4px;
-        }
-
-        .nav-item svg {
-            width: 22px;
-            height: 22px;
-            fill: currentColor;
-        }
-
-        .nav-badge {
-            position: absolute;
-            top: 4px;
-            right: calc(50% - 18px);
-            background: #ef4444;
-            color: #fff;
-            font-size: 9px;
-            font-weight: 700;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-overlay.show { display: flex; }
-        .modal {
-            background: #fff;
-            width: 460px;
-            max-height: 520px;
-            border-radius: 12px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .modal-scroll { flex: 1; overflow-y: auto; padding: 24px 28px 0; }
-        .modal-footer { padding: 0 28px 24px; flex-shrink: 0; }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-        }
-        .modal-title { font-size: 16px; font-weight: 700; color: #1a1a1a; }
-        .modal-close {
-            width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #999;
-            background: #fff; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 14px; color: #666;
-        }
-        .modal-close:hover { border-color: #333; color: #333; }
-        .modal-section-label { font-size: 13px; color: #555; margin-bottom: 8px; margin-top: 14px; }
-        .modal-option {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 12px; border-bottom: 1px solid #eee;
-        }
-        .modal-option:last-child { border-bottom: none; }
-        .modal-option label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; color: #1a1a1a; }
-        .modal-option input[type="radio"], .modal-option input[type="checkbox"] { width: 18px; height: 18px; accent-color: #2d3a2e; cursor: pointer; }
-        .modal-option .option-price { font-size: 13px; color: #555; }
-        .quantity-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 20px; margin-bottom: 18px; }
-        .qty-btn {
-            width: 34px; height: 34px; border-radius: 50%; border: 2px solid #333;
-            background: #fff; font-size: 18px; font-weight: 700; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; color: #333;
-        }
-        .qty-btn:hover { background: #f0f0f0; }
-        .qty-value { font-size: 22px; font-weight: 700; color: #1a1a1a; min-width: 24px; text-align: center; }
-        .modal-btns { display: flex; gap: 12px; }
-        .modal-cancel-btn {
-            flex: 1; padding: 14px; background: #fff; color: #333; border: 1.5px solid #ddd;
-            border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer;
-        }
-        .modal-cancel-btn:hover { border-color: #999; }
-        .modal-confirm-btn {
-            flex: 1; padding: 14px; background: #2d3a2e; color: #fff; border: none;
-            border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer;
-        }
-        .modal-confirm-btn:hover { background: #3a4a3b; }
-
-        .lang-overlay { display:none; position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:center; justify-content:center; }
-        .lang-overlay.show { display:flex; }
-        .lang-popup { background:#f0ece4; border-radius:14px; padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:14px; min-width:320px; }
-        .lang-popup-btn { display:flex; align-items:center; justify-content:center; gap:10px; padding:18px 24px; background:#fff; border:1.5px solid #ddd; border-radius:10px; font-size:16px; font-weight:600; color:#1a1a1a; cursor:pointer; }
-        .lang-popup-btn:hover { border-color:#2d3a2e; }
-        .lang-popup-btn .flag { font-size:22px; }
-
-        .staff-overlay { display:none; position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:center; justify-content:center; }
-        .staff-overlay.show { display:flex; }
-        .staff-popup { background:#f5f3f0; border-radius:16px; padding:28px 28px 24px; width:480px; position:relative; }
-        .staff-popup-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
-        .staff-popup-title { font-size:17px; font-weight:700; color:#1a1a1a; }
-        .staff-popup-close { width:28px; height:28px; border:none; background:none; font-size:20px; color:#999; cursor:pointer; }
-        .staff-popup-close:hover { color:#333; }
-        .staff-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
-        .staff-option { display:flex; align-items:center; gap:10px; padding:16px 18px; background:#fff; border:1.5px solid #e0e0e0; border-radius:10px; font-size:14px; font-weight:600; color:#333; cursor:pointer; }
-        .staff-option:hover { border-color:#3b82f6; background:#f8faff; }
-        .staff-option.selected { border-color:#3b82f6; background:#eff6ff; }
-        .staff-option .s-icon { font-size:20px; }
-        .staff-note { text-align:center; font-size:12px; color:#999; margin-bottom:14px; }
-        .staff-call-btn { width:100%; padding:16px; background:#ef4444; color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
-        .staff-call-btn:hover { background:#dc2626; }
-        .staff-call-btn .s-icon { font-size:20px; }
     </style>
 </head>
 <body>
-    <div class="ipad-frame" style="position:relative;">
-
-    <!-- Language Popup -->
-    <div class="lang-overlay" id="langPopup" onclick="if(event.target===this)closeLang()">
-        <div class="lang-popup">
-            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇯🇵</span>日本語</button>
-            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇺🇸</span>英語</button>
-            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇨🇳</span>中国語</button>
-            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇰🇷</span>韓国語</button>
+    <div class="ipad-frame">
+        <!-- Context Bar -->
+        <div class="context-bar">
+            <div class="context-left">
+                <div class="context-item"><span class="context-label">卓番</span><span class="context-value">T-01, T-02</span></div>
+                <div class="context-divider"></div>
+                <div class="context-item"><span class="context-label">端末</span><span class="context-value">iPad-03</span></div>
+                <div class="context-divider"></div>
+                <div class="context-item"><span class="context-label">受付番号</span><span class="context-value">#0042</span></div>
+            </div>
+            <div class="context-date" id="ctxDate">2026/04/02 11:24</div>
         </div>
-    </div>
 
-    <!-- Staff Popup -->
-    <div class="staff-overlay" id="staffPopup" onclick="if(event.target===this)closeStaff()">
-        <div class="staff-popup">
-            <div class="staff-popup-header">
-                <span class="staff-popup-title">何かお手伝いできることはありますか？</span>
-                <button class="staff-popup-close" onclick="closeStaff()">&times;</button>
+        <div class="main-content">
+            <!-- Left: Image Showcase -->
+            <div class="image-showcase">
+                <div class="main-image-container">
+                    <img class="main-image" id="mainImg" src="https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=1000&q=80">
+                </div>
+                <div class="thumb-strip">
+                    <img class="thumb active" src="https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=200&q=80" onclick="switchImg(this, 'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=1000&q=80')">
+                    <img class="thumb" src="https://images.unsplash.com/photo-1558030006-450675393462?w=200&q=80" onclick="switchImg(this, 'https://images.unsplash.com/photo-1558030006-450675393462?w=1000&q=80')">
+                    <img class="thumb" src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=200&q=80" onclick="switchImg(this, 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=1000&q=80')">
+                </div>
             </div>
-            <div class="staff-grid">
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">💧</span>水を追加</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🚻</span>トイレの場所</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🍽</span>お皿を片付ける</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">❓</span>その他ご質問</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">👶🍴</span>子ども用食器</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🪑</span>ベビーチェア</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🥢🍴</span>箸・フォークを追加</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🧹</span>テーブルの清掃</button>
+
+            <!-- Right: Product Info -->
+            <div class="product-info">
+                <div class="product-header">
+                    <span class="badge-premium">CHEF'S SPECIAL</span>
+                    <h1 class="product-title">和牛ステーキ プレミアム</h1>
+                    <p class="product-desc">厳選された最高級の和牛を使用した贅沢なステーキ。一口食べれば口の中に広がる芳醇な香りと、とろけるような食感をお楽しみいただけます。</p>
+                </div>
+
+                <div class="price-section">
+                    <span class="price-main">4,800</span>
+                    <span class="tax-info">(税込 ¥5,280)</span>
+                </div>
+
+                <div class="spec-list">
+                    <div class="spec-item">
+                        <span class="spec-label"><i class="fa-solid fa-fire"></i> 熱量</span>
+                        <span class="spec-val">842 kcal</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label"><i class="fa-solid fa-wheat-awn"></i> アレルゲン</span>
+                        <span class="spec-val">牛肉、小麦、大豆</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label"><i class="fa-solid fa-clock"></i> 準備時間</span>
+                        <span class="spec-val">約15分</span>
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="btn-back" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
+                    <button class="btn-add-cart" onclick="openCustomize()">
+                        <i class="fa-solid fa-cart-plus"></i>
+                        <span>カートに追加する</span>
+                    </button>
+                </div>
             </div>
-            <div class="staff-note">複数選択できます。選択後、下のボタンでスタッフを呼び出します。</div>
-            <button class="staff-call-btn" onclick="closeStaff()"><span class="s-icon">🔔</span>スタッフ呼び出し</button>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-item active" onclick="history.back()"><i class="fa-solid fa-utensils"></i><span>メニュー</span></button>
+            <button class="nav-item" onclick="window.location.href='cart.html'"><i class="fa-solid fa-cart-shopping"></i><span>カート</span></button>
+            <button class="nav-item" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></button>
+            <button class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>AI相談</span></button>
+            <button class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></button>
         </div>
     </div>
 
     <!-- Customize Modal -->
-    <div class="modal-overlay" id="customizeModal">
-        <div class="modal">
-            <div class="modal-scroll">
-                <div class="modal-header">
-                    <span class="modal-title">カスタマイズ</span>
-                    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-overlay" id="customizeOverlay">
+        <div class="customize-modal">
+            <h3 class="modal-title">焼き加減を選択</h3>
+            <div class="opt-group">
+                <div class="opt-row selected" onclick="selectOpt(this)">
+                    <span class="opt-name">ミディアム・レア</span>
+                    <span class="opt-price">標準</span>
                 </div>
-                <div class="modal-section-label">辛さの選択(必須)</div>
-                <div class="modal-option"><label><input type="radio" name="spice" checked> 普通</label></div>
-                <div class="modal-option"><label><input type="radio" name="spice"> 中辛</label></div>
-                <div class="modal-option"><label><input type="radio" name="spice"> 大辛</label></div>
-                <div class="modal-section-label">トッピングの追加(任意、複数選択可)</div>
-                <div class="modal-option"><label><input type="checkbox"> チーズ</label><span class="option-price">+100円</span></div>
-                <div class="modal-option"><label><input type="checkbox"> アボカド</label><span class="option-price">+150円</span></div>
-                <div class="modal-option"><label><input type="checkbox"> フライドオニオン</label><span class="option-price">+50円</span></div>
-                <div class="modal-section-label">抜く食材(任意)</div>
-                <div class="modal-option"><label><input type="checkbox"> 玉ねぎ</label></div>
-                <div class="modal-option"><label><input type="checkbox"> パクチー</label></div>
-            </div>
-            <div class="modal-footer">
-                <div class="quantity-row">
-                    <button class="qty-btn" onclick="changeQty(-1)">−</button>
-                    <span class="qty-value" id="qtyValue">2</span>
-                    <button class="qty-btn" onclick="changeQty(1)">+</button>
+                <div class="opt-row" onclick="selectOpt(this)">
+                    <span class="opt-name">ミディアム</span>
+                    <span class="opt-price">標準</span>
                 </div>
-                <div class="modal-btns">
-                    <button class="modal-cancel-btn" onclick="closeModal()">キャンセル</button>
-                    <button class="modal-confirm-btn" onclick="confirmAdd()">この内容でカートに入れる</button>
+                <div class="opt-row" onclick="selectOpt(this)">
+                    <span class="opt-name">ウェルダン</span>
+                    <span class="opt-price">標準</span>
                 </div>
             </div>
+
+            <div class="qty-control">
+                <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                <span class="qty-num" id="qty">1</span>
+                <button class="qty-btn" onclick="changeQty(1)">+</button>
+            </div>
+
+            <button class="modal-confirm" onclick="addToCart()">確定してカートに追加</button>
         </div>
-    </div>
-
-    <div class="main-wrapper">
-        <div class="container">
-            <!-- Category Tabs -->
-            <div class="category-tabs">
-                <button class="cat-tab active">おすすめ</button>
-                <button class="cat-tab">会話履歴</button>
-                <button class="cat-tab">店員</button>
-                <button class="cat-tab">前菜</button>
-                <button class="cat-tab">焼き物</button>
-                <button class="cat-tab">サラダ</button>
-                <button class="filter-btn">
-                    <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm3 5h12v2H6v-2zm4 5h4v2h-4v-2z"/></svg>
-                </button>
-            </div>
-
-            <!-- Detail Content -->
-            <div class="detail-content">
-                <!-- Left: Images -->
-                <div class="image-area">
-                    <img class="main-image" id="mainImage" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80" alt="menu item">
-                    <div class="thumbnail-row">
-                        <img class="thumbnail active" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&q=80" alt="thumb1" onclick="switchImage(this, 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80')">
-                        <img class="thumbnail" src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=200&q=80" alt="thumb2" onclick="switchImage(this, 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80')">
-                        <img class="thumbnail" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&q=80" alt="thumb3" onclick="switchImage(this, 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80')">
-                        <img class="thumbnail" src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=200&q=80" alt="thumb4" onclick="switchImage(this, 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&q=80')">
-                    </div>
-                </div>
-
-                <!-- Right: Info -->
-                <div class="info-panel">
-                    <div class="item-title">炙り醤油風 トリプル肉厚 ビーフセット</div>
-                    <div class="item-desc">炙り醤油風 トリプル肉厚 ビーフセット</div>
-
-                    <!-- 材料 Accordion -->
-                    <div class="accordion">
-                        <button class="accordion-header open" onclick="toggleAccordion(this)">
-                            材料
-                            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                        </button>
-                        <div class="accordion-body show">
-                            <ul>
-                                <li>牛肉</li>
-                                <li>大豆</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- 栄養成分 Accordion -->
-                    <div class="accordion">
-                        <button class="accordion-header" onclick="toggleAccordion(this)">
-                            栄養成分
-                            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
-                        </button>
-                        <div class="accordion-body">
-                            <ul>
-                                <li>カロリー: 650kcal</li>
-                                <li>タンパク質: 35g</li>
-                                <li>脂質: 28g</li>
-                                <li>炭水化物: 45g</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="customize-row">
-                        <span class="customize-label">カスタマイズ</span>
-                        <span class="item-price">¥600</span>
-                    </div>
-
-                    <button class="add-cart-btn" onclick="openModal()">カートに入れる</button>
-                    <button class="remove-cart-btn" onclick="goToMenu()">カートから外す</button>
-                </div>
-            </div>
-
-            <!-- Bottom Navigation -->
-            <div class="bottom-nav">
-                <button class="nav-item active">
-                    <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-                    メニュー
-                </button>
-                <button class="nav-item" onclick="window.location.href='cart.html'">
-                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>
-                    <span class="nav-badge">1</span>
-                    カート
-                </button>
-                <button class="nav-item" onclick="window.location.href='chat_ai.html'">
-                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
-                    会話履歴
-                </button>
-                <button class="nav-item" onclick="window.location.href='order_status.html'">
-                    <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 00-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21a9 9 0 000-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
-                    注文履歴
-                </button>
-                <button class="nav-item" onclick="openStaff()">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
-                    サポート
-                </button>
-                <button class="nav-item" onclick="openLang()">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                    言語
-                </button>
-            </div>
-        </div>
-    </div>
     </div>
 
     <script>
-        function goToMenu() {
-            const session = JSON.parse(localStorage.getItem('currentSession') || '{}');
-            window.location.href = session.orderMode === 'ai' ? 'menu_ai.html' : 'menu.html';
-        }
-
-        let qty = 2;
-
-        function switchImage(thumb, src) {
-            document.getElementById('mainImage').src = src;
-            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+        function switchImg(thumb, src) {
+            document.getElementById('mainImg').src = src;
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
             thumb.classList.add('active');
         }
 
-        function toggleAccordion(header) {
-            header.classList.toggle('open');
-            const body = header.nextElementSibling;
-            body.classList.toggle('show');
+        function openCustomize() {
+            document.getElementById('customizeOverlay').classList.add('show');
         }
 
-        function openModal() {
-            qty = 1;
-            document.getElementById('qtyValue').textContent = qty;
-            document.getElementById('customizeModal').classList.add('show');
+        function selectOpt(row) {
+            document.querySelectorAll('.opt-row').forEach(r => r.classList.remove('selected'));
+            row.classList.add('selected');
         }
 
-        function closeModal() {
-            document.getElementById('customizeModal').classList.remove('show');
-        }
-
+        let qty = 1;
         function changeQty(delta) {
             qty = Math.max(1, qty + delta);
-            document.getElementById('qtyValue').textContent = qty;
+            document.getElementById('qty').innerText = qty;
         }
 
-        function confirmAdd() {
-            closeModal();
+        function addToCart() {
+            document.getElementById('customizeOverlay').classList.remove('show');
             window.location.href = 'cart.html';
         }
 
-        function openLang() { document.getElementById('langPopup').classList.add('show'); }
-        function closeLang() { document.getElementById('langPopup').classList.remove('show'); }
-        function openStaff() { document.getElementById('staffPopup').classList.add('show'); }
-        function closeStaff() { document.getElementById('staffPopup').classList.remove('show'); }
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('ctxDate').innerText = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+        }, 1000);
     </script>
 </body>
 </html>

@@ -3,364 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>お支払い</title>
+    <title>posSpeak – Checkout</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #2d3a2e;
+            --primary-light: #3f5240;
+            --accent: #d4a373;
+            --bg: #f0ece4;
+            --card-bg: #ffffff;
+            --footer-bg: #e8e4dc;
+            --border: #e0dcd4;
+            --text-main: #1a1a1a;
+            --text-sub: #666;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            font-family: 'Noto Sans JP', sans-serif;
             height: 100vh;
             background: #1a1a1a;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .ipad-frame {
-            width: 880px;
-            height: 640px;
+            width: 1280px;
+            height: 800px;
+            background: var(--bg);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: #f5f3ef;
+            box-shadow: 0 0 80px rgba(0,0,0,0.7);
             border-radius: 12px;
             position: relative;
         }
 
-        /* Header */
-        .page-header {
-            background: #f5f3ef;
-            text-align: center;
-            padding: 20px 0;
-            flex-shrink: 0;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .page-header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #2d3a2e;
-        }
-
-        /* Content */
-        .payment-content {
-            flex: 1;
-            padding: 24px 120px;
-            overflow-y: auto;
-            background: #fff;
-        }
-
-        .bill-label {
-            text-align: center;
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 6px;
-        }
-
-        .bill-total {
-            text-align: center;
-            font-size: 32px;
-            font-weight: 800;
-            color: #1a1a1a;
-            margin-bottom: 24px;
-        }
-
-        /* Summary Box */
-        .summary-box {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            font-size: 14px;
-            color: #555;
-        }
-
-        .summary-row.bold {
-            font-weight: 700;
-            color: #1a1a1a;
-        }
-
-        /* Items Table */
-        .items-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 24px;
-        }
-
-        .items-table thead th {
-            text-align: left;
-            font-size: 13px;
-            font-weight: 700;
-            color: #1a1a1a;
-            padding: 10px 12px;
-            border-bottom: 2px solid #333;
-        }
-
-        .items-table thead th:nth-child(2) {
-            text-align: center;
-        }
-
-        .items-table thead th:nth-child(3) {
-            text-align: right;
-        }
-
-        .items-table tbody td {
-            font-size: 14px;
-            color: #333;
-            padding: 12px 12px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .items-table tbody td:nth-child(2) {
-            text-align: center;
-        }
-
-        .items-table tbody td:nth-child(3) {
-            text-align: right;
-        }
-
-        .item-sub {
-            font-size: 12px;
-            color: #999;
-            margin-top: 2px;
-        }
-
-        /* Pay Button */
-        .pay-btn {
-            width: 100%;
-            padding: 16px;
-            background: #2d3a2e;
+        /* ─── HEADER: CONTEXT BAR ───────────────────────── */
+        .context-bar {
+            background: var(--primary);
             color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .pay-btn:hover {
-            background: #3a4a3b;
-        }
-
-        /* Payment Popup */
-        .pay-overlay { display:none; position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:center; justify-content:center; }
-        .pay-overlay.show { display:flex; }
-        .pay-popup { background:#fff; border-radius:14px; padding:32px 36px; width:380px; text-align:center; }
-        .pay-popup-title { font-size:20px; font-weight:700; color:#1a1a1a; margin-bottom:16px; }
-        .pay-popup-desc { font-size:14px; color:#555; line-height:1.7; margin-bottom:24px; }
-        .pay-popup-confirm { width:100%; padding:14px; background:#2d3a2e; color:#fff; border:none; border-radius:8px; font-size:15px; font-weight:600; cursor:pointer; margin-bottom:10px; }
-        .pay-popup-confirm:hover { background:#3a4a3b; }
-        .pay-popup-cancel { width:100%; padding:14px; background:#fff; color:#333; border:1.5px solid #ddd; border-radius:8px; font-size:15px; font-weight:600; cursor:pointer; }
-        .pay-popup-cancel:hover { border-color:#999; }
-
-        /* Bottom Navigation */
-        .bottom-nav {
             display: flex;
-            background: #fff;
-            border-top: 1px solid #e0e0e0;
-            flex-shrink: 0;
-        }
-
-        .nav-item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            padding: 10px 0 8px;
-            gap: 3px;
-            color: #888;
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            position: relative;
-            border: none;
-            background: transparent;
+            justify-content: space-between;
+            padding: 0 32px;
+            height: 52px;
+            font-size: 13px;
+            flex-shrink: 0;
+            z-index: 10;
         }
 
-        .nav-item.active {
-            color: #fff;
-            background: #2d3a2e;
-            border-radius: 8px;
-            margin: 4px;
-        }
+        .context-left { display: flex; gap: 24px; align-items: center; }
+        .context-item { display: flex; align-items: center; gap: 8px; }
+        .context-label { color: rgba(255, 255, 255, 0.4); font-weight: 500; }
+        .context-value { font-weight: 700; letter-spacing: 0.02em; }
+        .context-divider { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); }
+        .context-date { color: rgba(255, 255, 255, 0.35); font-size: 12px; }
 
-        .nav-item svg {
-            width: 22px;
-            height: 22px;
-            fill: currentColor;
-        }
-
-        .nav-badge {
-            position: absolute;
-            top: 4px;
-            right: calc(50% - 18px);
-            background: #ef4444;
-            color: #fff;
-            font-size: 9px;
-            font-weight: 700;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
+        /* ─── MAIN CONTENT ────────────────────────────────── */
+        .main-content {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 40px 64px;
+            background: var(--bg);
         }
 
-        .lang-overlay { display:none; position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:center; justify-content:center; }
-        .lang-overlay.show { display:flex; }
-        .lang-popup { background:#f0ece4; border-radius:14px; padding:24px; display:grid; grid-template-columns:1fr 1fr; gap:14px; min-width:320px; }
-        .lang-popup-btn { display:flex; align-items:center; justify-content:center; gap:10px; padding:18px 24px; background:#fff; border:1.5px solid #ddd; border-radius:10px; font-size:16px; font-weight:600; color:#1a1a1a; cursor:pointer; }
-        .lang-popup-btn:hover { border-color:#2d3a2e; }
-        .lang-popup-btn .flag { font-size:22px; }
+        .receipt-card {
+            width: 500px;
+            background: #fff;
+            border-radius: 32px;
+            padding: 48px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+            border: 1.5px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
 
-        .staff-overlay { display:none; position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:center; justify-content:center; }
-        .staff-overlay.show { display:flex; }
-        .staff-popup { background:#f5f3f0; border-radius:16px; padding:28px 28px 24px; width:480px; position:relative; }
-        .staff-popup-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
-        .staff-popup-title { font-size:17px; font-weight:700; color:#1a1a1a; }
-        .staff-popup-close { width:28px; height:28px; border:none; background:none; font-size:20px; color:#999; cursor:pointer; }
-        .staff-popup-close:hover { color:#333; }
-        .staff-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
-        .staff-option { display:flex; align-items:center; gap:10px; padding:16px 18px; background:#fff; border:1.5px solid #e0e0e0; border-radius:10px; font-size:14px; font-weight:600; color:#333; cursor:pointer; }
-        .staff-option:hover { border-color:#3b82f6; background:#f8faff; }
-        .staff-option.selected { border-color:#3b82f6; background:#eff6ff; }
-        .staff-option .s-icon { font-size:20px; }
-        .staff-note { text-align:center; font-size:12px; color:#999; margin-bottom:14px; }
-        .staff-call-btn { width:100%; padding:16px; background:#ef4444; color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
-        .staff-call-btn:hover { background:#dc2626; }
-        .staff-call-btn .s-icon { font-size:20px; }
+        .receipt-brand { text-align: center; margin-bottom: 32px; }
+        .receipt-brand h2 { font-size: 24px; font-weight: 900; letter-spacing: -0.02em; color: var(--primary); }
+        .receipt-brand p { font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+
+        .bill-amount { text-align: center; margin-bottom: 40px; }
+        .bill-amount .label { font-size: 13px; font-weight: 700; color: #888; margin-bottom: 8px; }
+        .bill-amount .value { font-size: 56px; font-weight: 900; color: var(--text-main); letter-spacing: -0.03em; }
+        .bill-amount .value::before { content: '¥'; font-size: 32px; margin-right: 4px; vertical-align: baseline; }
+
+        .bill-details { border-top: 1px dashed #ddd; border-bottom: 1px dashed #ddd; padding: 24px 0; margin-bottom: 40px; }
+        .detail-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; }
+        .detail-label { color: #888; font-weight: 500; }
+        .detail-val { color: var(--text-main); font-weight: 700; }
+        .detail-row.tax { font-size: 12px; margin-top: -6px; margin-bottom: 18px; }
+
+        .item-list { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .item-line { display: flex; justify-content: space-between; font-size: 13px; color: #555; }
+
+        .pay-cta {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .staff-pay-btn {
+            height: 64px; background: var(--primary); color: #fff; border: none; border-radius: 16px; font-size: 17px; font-weight: 800; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+        }
+        .staff-pay-btn:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(45, 58, 46, 0.15); }
+
+        .back-btn {
+            background: none; border: none; color: #888; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 4px;
+        }
+
+        /* ─── MODAL ─────────────────────────────────────── */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center;
+        }
+        .modal-overlay.show { display: flex; }
+        .msg-modal {
+            background: #fff; width: 440px; border-radius: 24px; padding: 48px; text-align: center; box-shadow: 0 30px 90px rgba(0,0,0,0.3);
+        }
+        .modal-icon { width: 80px; height: 80px; background: #f0fdf4; color: #166534; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 24px; }
+        .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 12px; }
+        .modal-desc { font-size: 15px; color: #666; line-height: 1.6; margin-bottom: 32px; }
+        .modal-btn { width: 100%; height: 56px; background: var(--primary); color: #fff; border: none; border-radius: 16px; font-size: 16px; font-weight: 700; cursor: pointer; }
+
     </style>
 </head>
 <body>
     <div class="ipad-frame">
-
-    <!-- Payment Popup -->
-    <div class="pay-overlay" id="payPopup" onclick="if(event.target===this)closePayPopup()">
-        <div class="pay-popup">
-            <div class="pay-popup-title">お会計</div>
-            <div class="pay-popup-desc">
-                レジまたはテーブルにて、<br>お会計を承ります。<br><br>
-                会計依頼ボタンを押したら<br>スタッフがご案内に参ります。
+        <!-- Context Bar -->
+        <div class="context-bar">
+            <div class="context-left">
+                <div class="context-item"><span class="context-label">卓番</span><span class="context-value">T-01, T-02</span></div>
+                <div class="context-divider"></div>
+                <div class="context-item"><span class="context-label">端末</span><span class="context-value">iPad-03</span></div>
+                <div class="context-divider"></div>
+                <div class="context-item"><span class="context-label">受付番号</span><span class="context-value">#0042</span></div>
             </div>
-            <button class="pay-popup-confirm" onclick="alert('スタッフを呼び出しました。'); closePayPopup();">スタッフに会計を依頼する</button>
-            <button class="pay-popup-cancel" onclick="closePayPopup()">キャンセル</button>
+            <div class="context-date" id="ctxDate">2026/04/02 11:24</div>
         </div>
-    </div>
 
-    <!-- Staff Popup -->
-    <div class="staff-overlay" id="staffPopup" onclick="if(event.target===this)closeStaff()">
-        <div class="staff-popup">
-            <div class="staff-popup-header">
-                <span class="staff-popup-title">何かお手伝いできることはありますか？</span>
-                <button class="staff-popup-close" onclick="closeStaff()">&times;</button>
+        <div class="main-content">
+            <div class="receipt-card">
+                <div class="receipt-brand">
+                    <h2>posSpeak DINING</h2>
+                    <p>Bill Summary</p>
+                </div>
+
+                <div class="bill-amount">
+                    <div class="label">お支払い総額</div>
+                    <div class="value">6,926</div>
+                </div>
+
+                <div class="bill-details">
+                    <div class="detail-row">
+                        <span class="detail-label">小計 (3品)</span>
+                        <span class="detail-val">¥6,296</span>
+                    </div>
+                    <div class="detail-row tax">
+                        <span class="detail-label">消費税等 (10%)</span>
+                        <span class="detail-val">¥630</span>
+                    </div>
+                    <div class="item-list">
+                        <div class="item-line"><span>和牛ステーキ 特選</span><span>¥2,800</span></div>
+                        <div class="item-line"><span>特選 海鮮丼</span><span>¥1,980</span></div>
+                        <div class="item-line"><span>天ぷら盛り合わせ</span><span>¥1,580</span></div>
+                    </div>
+                </div>
+
+                <div class="pay-cta">
+                    <button class="staff-pay-btn" onclick="requestStaff()">
+                        <i class="fa-solid fa-bell"></i>
+                        <span>店員を呼んで会計する</span>
+                    </button>
+                    <button class="back-btn" onclick="history.back()">注文履歴に戻る</button>
+                </div>
             </div>
-            <div class="staff-grid">
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">💧</span>水を追加</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🚻</span>トイレの場所</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🍽</span>お皿を片付ける</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">❓</span>その他ご質問</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">👶🍴</span>子ども用食器</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🪑</span>ベビーチェア</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🥢🍴</span>箸・フォークを追加</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🧹</span>テーブルの清掃</button>
-            </div>
-            <div class="staff-note">複数選択できます。選択後、下のボタンでスタッフを呼び出します。</div>
-            <button class="staff-call-btn" onclick="closeStaff()"><span class="s-icon">🔔</span>スタッフ呼び出し</button>
         </div>
     </div>
 
-    <!-- Language Popup -->
-    <div class="lang-overlay" id="langPopup" onclick="if(event.target===this)closeLang()">
-        <div class="lang-popup">
-            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇯🇵</span>日本語</button>
-            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇺🇸</span>英語</button>
-            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇨🇳</span>中国語</button>
-            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇰🇷</span>韓国語</button>
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="msg-modal">
+            <div class="modal-icon"><i class="fa-solid fa-check"></i></div>
+            <div class="modal-title">呼び出し中</div>
+            <div class="modal-desc">スタッフがお会計に参りますので、<br>そのまま少々お待ちください。</div>
+            <button class="modal-btn" onclick="closeModal()">了解しました</button>
         </div>
     </div>
 
-    <!-- Header -->
-    <div class="page-header">
-        <h1>お支払い</h1>
-    </div>
-
-    <!-- Content -->
-    <div class="payment-content">
-        <div class="bill-label">ご請求額</div>
-        <div class="bill-total">¥26,116(税込)</div>
-
-        <div class="summary-box">
-            <div class="summary-row"><span>小計</span><span>¥24,950</span></div>
-            <div class="summary-row"><span>外税計</span><span>¥1,166</span></div>
-            <div class="summary-row bold"><span>合計</span><span>¥26,116</span></div>
-            <div class="summary-row"><span>(消費税等)</span><span>(¥2,374)</span></div>
-        </div>
-
-        <table class="items-table">
-            <thead>
-                <tr>
-                    <th>商品名</th>
-                    <th>数</th>
-                    <th>金額</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>塩昆布</td>
-                    <td>4</td>
-                    <td>1,592</td>
-                </tr>
-                <tr>
-                    <td>メンチカツ</td>
-                    <td>1</td>
-                    <td>¥698(税抜)</td>
-                </tr>
-                <tr>
-                    <td>若鶏の唐揚げ</td>
-                    <td>1</td>
-                    <td>¥698 (税抜)</td>
-                </tr>
-                <tr>
-                    <td>
-                        特選牛ステーキ
-                        <div class="item-sub">和食セット</div>
-                    </td>
-                    <td>1</td>
-                    <td>0円</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <button class="pay-btn" onclick="openPayPopup()">スタッフを呼んでお会計</button>
-    </div>
-
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <button class="nav-item" onclick="goToMenu()">
-            <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-            メニュー
-        </button>
-        <button class="nav-item" onclick="window.location.href='cart.html'">
-            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>
-            <span class="nav-badge">4</span>
-            カート
-        </button>
-        <button class="nav-item" onclick="window.location.href='chat_ai.html'">
-            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
-            会話履歴
-        </button>
-        <button class="nav-item active" onclick="window.location.href='order_status.html'">
-            <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 00-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21a9 9 0 000-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
-            注文履歴
-        </button>
-        <button class="nav-item" onclick="openStaff()">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+    <script>
+        function requestStaff() {
+            document.getElementById('confirmModal').classList.add('show');
+        }
+        function closeModal() {
+            document.getElementById('confirmModal').classList.remove('show');
+        }
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('ctxDate').innerText = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+        }, 1000);
+    </script>
+</body>
+</html>
+1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
             サポート
         </button>
         <button class="nav-item" onclick="openLang()">

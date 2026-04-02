@@ -3,820 +3,469 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>メニュー</title>
+    <title>posSpeak – Menu Catalog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #2d3a2e;
+            --primary-light: #3f5240;
+            --accent: #d4a373;
+            --bg: #f0ece4;
+            --card-bg: #ffffff;
+            --footer-bg: #e8e4dc;
+            --border: #e0dcd4;
+            --text-main: #1a1a1a;
+            --text-sub: #666;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            font-family: 'Noto Sans JP', sans-serif;
             height: 100vh;
             background: #1a1a1a;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .ipad-frame {
-            width: 880px;
-            height: 640px;
+            width: 1280px;
+            height: 800px;
+            background: var(--bg);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            box-shadow: 0 0 80px rgba(0,0,0,0.7);
+            border-radius: 12px;
+            position: relative;
         }
 
-        .top-bar {
-            padding: 8px 24px;
+        /* ─── HEADER: CONTEXT BAR ───────────────────────── */
+        .context-bar {
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            height: 52px;
             font-size: 13px;
-            color: #aaa;
             flex-shrink: 0;
+            z-index: 10;
         }
 
-        .main-wrapper {
-            flex: 1;
+        .context-left {
             display: flex;
-            justify-content: center;
-            overflow: hidden;
+            gap: 24px;
+            align-items: center;
         }
 
-        .container {
-            background: #f0ece4;
-            width: 100%;
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            flex: 1;
-        }
-
-        /* Category Tabs */
-        .category-tabs {
+        .context-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 16px 20px 12px;
-            overflow-x: auto;
-            flex-shrink: 0;
         }
 
-        .cat-tab {
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.15s;
+        .context-label {
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 500;
         }
 
-        .cat-tab:hover {
-            background: #e0dcd4;
+        .context-value {
+            font-weight: 700;
+            letter-spacing: 0.02em;
         }
 
-        .cat-tab.active {
-            background: #333;
-            color: #fff;
+        .context-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
         }
 
-        .filter-btn {
-            margin-left: auto;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: 1px solid #ccc;
-            background: #fff;
+        .context-date {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 12px;
+        }
+
+        /* ─── CATEGORY TABS ───────────────────────────────────── */
+        .category-tabs {
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
+            gap: 12px;
+            padding: 16px 32px;
             flex-shrink: 0;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+        .category-tabs::-webkit-scrollbar { display: none; }
+
+        .cat-tab {
+            padding: 8px 24px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #666;
+            background: transparent;
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .cat-tab:hover { color: var(--primary); background: rgba(0,0,0,0.03); }
+        .cat-tab.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
         }
 
-        .filter-btn svg {
-            width: 18px;
-            height: 18px;
-            fill: #555;
+        /* ─── MENU CONTENT ───────────────────────────────────── */
+        .menu-grid-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 32px;
         }
+        .menu-grid-wrapper::-webkit-scrollbar { width: 5px; }
+        .menu-grid-wrapper::-webkit-scrollbar-track { background: transparent; }
+        .menu-grid-wrapper::-webkit-scrollbar-thumb { background: #d0ccc4; border-radius: 10px; }
 
-        /* Menu Grid */
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            padding: 8px 20px 20px;
-            overflow-y: auto;
-            flex: 1;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .menu-card {
             background: #fff;
-            border-radius: 10px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
             cursor: pointer;
-            transition: box-shadow 0.15s;
+            display: flex;
+            flex-direction: column;
+            border: 1.5px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+        .menu-card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            border-color: #bbb;
         }
 
-        .menu-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-        }
-
-        .menu-card-img {
+        .menu-card-img-wrap {
+            position: relative;
             width: 100%;
-            height: 120px;
-            object-fit: cover;
-            display: block;
+            padding-top: 75%;
+            overflow: hidden;
         }
+        .menu-card-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #f5f3ef;
+            transition: transform 0.4s;
+        }
+        .menu-card:hover .menu-card-img { transform: scale(1.05); }
 
         .menu-card-body {
-            padding: 6px 14px 16px 14px;
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
-
         .menu-card-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #1a1a1a;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
             line-height: 1.4;
-            margin-bottom: 6px;
-            min-height: 36px;
         }
-
         .menu-card-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 4px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
-
         .menu-tag {
-            display: inline-block;
             font-size: 10px;
-            font-weight: 600;
-            padding: 2px 7px;
+            font-weight: 700;
+            padding: 2px 8px;
             border-radius: 4px;
-            line-height: 1.5;
+            text-transform: uppercase;
         }
-
-        .menu-tag.reason  { background: #eff6ff; color: #2563eb; }
-        .menu-tag.taste   { background: #f0fdf4; color: #16a34a; }
-        .menu-tag.popular { background: #fef3c7; color: #b45309; }
-        .menu-tag.healthy { background: #fdf2f8; color: #db2777; }
+        .menu-tag.popular { background: #fef3c7; color: #92400e; }
+        .menu-tag.taste   { background: #eff6ff; color: #1e40af; }
+        .menu-tag.healthy { background: #f0fdf4; color: #166534; }
+        .menu-tag.reason  { background: #f5f3ef; color: #666; }
 
         .menu-card-footer {
+            margin-top: auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-
         .menu-card-price {
-            font-size: 15px;
-            font-weight: 700;
-            color: #1a1a1a;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
         }
+        .menu-card-price::before { content: '¥'; font-size: 13px; margin-right: 2px; }
 
         .add-btn {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 8px 14px;
-            background: #333;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
             color: #fff;
             border: none;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
             cursor: pointer;
-            transition: background 0.15s;
+            transition: all 0.2s;
         }
+        .add-btn:hover { background: var(--primary-light); transform: scale(1.1); }
 
-        .add-btn:hover {
-            background: #555;
-        }
-
-        .add-btn svg {
-            width: 14px;
-            height: 14px;
-            fill: #fff;
-        }
-
-        /* Bottom Navigation */
+        /* ─── BOTTOM NAVIGATION ────────────────────────────── */
         .bottom-nav {
             display: flex;
-            background: #fff;
-            border-top: 1px solid #e0e0e0;
+            background: var(--footer-bg);
+            border-top: 1px solid var(--border);
+            padding: 12px 0 20px;
             flex-shrink: 0;
+            width: 100%;
         }
-
         .nav-item {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px 0 8px;
-            gap: 3px;
-            text-decoration: none;
+            gap: 6px;
             color: #888;
-            font-size: 10px;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: 700;
             cursor: pointer;
-            position: relative;
             border: none;
             background: transparent;
+            font-family: inherit;
         }
-
-        .nav-item.active {
-            color: #fff;
-            background: #2d3a2e;
-            border-radius: 8px;
-            margin: 4px;
-        }
-
-        .nav-item svg {
-            width: 22px;
-            height: 22px;
-            fill: currentColor;
-        }
-
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 22px; }
         .nav-badge {
             position: absolute;
-            top: 4px;
-            right: calc(50% - 18px);
+            top: -4px;
+            right: -8px;
             background: #ef4444;
             color: #fff;
-            font-size: 9px;
-            font-weight: 700;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Modal Overlay */
-        .modal-overlay {
-            display: none;
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-overlay.show {
-            display: flex;
-        }
-
-        .modal {
-            background: #fff;
-            width: 460px;
-            max-height: 520px;
-            border-radius: 12px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .modal-scroll {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px 28px 0;
-        }
-
-        .modal-footer {
-            padding: 0 28px 24px;
-            flex-shrink: 0;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-        }
-
-        .modal-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #1a1a1a;
-        }
-
-        .modal-close {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 1.5px solid #999;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .modal-close:hover {
-            border-color: #333;
-            color: #333;
-        }
-
-        .modal-section-label {
-            font-size: 13px;
-            color: #555;
-            margin-bottom: 8px;
-            margin-top: 14px;
-        }
-
-        .modal-option {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 12px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .modal-option:last-child {
-            border-bottom: none;
-        }
-
-        .modal-option label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #1a1a1a;
-        }
-
-        .modal-option input[type="radio"],
-        .modal-option input[type="checkbox"] {
+            font-size: 10px;
             width: 18px;
             height: 18px;
-            accent-color: #2d3a2e;
-            cursor: pointer;
-        }
-
-        .modal-option .option-price {
-            font-size: 13px;
-            color: #555;
-        }
-
-        /* Quantity */
-        .quantity-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 20px;
-            margin-bottom: 18px;
-        }
-
-        .qty-btn {
-            width: 34px;
-            height: 34px;
             border-radius: 50%;
-            border: 2px solid #333;
-            background: #fff;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #333;
+            border: 2px solid var(--footer-bg);
         }
 
-        .qty-btn:hover {
-            background: #f0f0f0;
+        /* ─── MODALS ─────────────────────────────────────── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
         }
-
-        .qty-value {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a1a1a;
-            min-width: 24px;
-            text-align: center;
-        }
-
-        /* Modal Buttons */
-        .modal-btns {
-            display: flex;
-            gap: 12px;
-        }
-
-        .modal-cancel-btn {
-            flex: 1;
-            padding: 14px;
+        .modal-overlay.show { display: flex; }
+        .modal {
             background: #fff;
-            color: #333;
-            border: 1.5px solid #ddd;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
+            width: 600px;
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
+        .modal-header { padding: 24px 32px; border-bottom: 1px solid #efefef; display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 20px; font-weight: 800; }
+        .modal-body { padding: 32px; max-height: 500px; overflow-y: auto; }
+        .modal-footer { padding: 24px 32px; background: #f9f9f9; display: flex; flex-direction: column; gap: 20px; }
 
-        .modal-cancel-btn:hover {
-            border-color: #999;
+        .modal-section-label { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 16px; margin-top: 24px; }
+        .modal-section-label:first-child { margin-top: 0; }
+
+        .modal-option {
+            display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: 12px; border: 1.5px solid #eee; margin-bottom: 8px; cursor: pointer; transition: 0.2s;
         }
+        .modal-option:hover { border-color: var(--primary); background: #f9fbf9; }
+        .modal-option label { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 15px; font-weight: 600; flex: 1; }
+        .modal-option input { width: 20px; height: 20px; accent-color: var(--primary); }
+
+        .qty-row { display: flex; align-items: center; justify-content: center; gap: 24px; }
+        .qty-btn { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--primary); background: #fff; color: var(--primary); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .qty-btn:hover { background: var(--primary); color: #fff; }
+        .qty-val { font-size: 28px; font-weight: 800; min-width: 40px; text-align: center; }
 
         .modal-confirm-btn {
-            flex: 1;
-            padding: 14px;
-            background: #2d3a2e;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
+            height: 60px; background: var(--primary); color: #fff; border: none; border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer; transition: 0.2s; 
         }
+        .modal-confirm-btn:hover { background: var(--primary-light); transform: translateY(-2px); }
 
-        .modal-confirm-btn:hover {
-            background: #3a4a3b;
-        }
-
-        /* Language Popup */
-        .lang-overlay {
-            display: none;
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-        }
-        .lang-overlay.show { display: flex; }
-        .lang-popup {
-            background: #f0ece4;
-            border-radius: 14px;
-            padding: 24px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            min-width: 320px;
-        }
-        .lang-popup-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 18px 24px;
-            background: #fff;
-            border: 1.5px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #1a1a1a;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .lang-popup-btn:hover { border-color: #2d3a2e; background: #f9f9f6; }
-        .lang-popup-btn .flag { font-size: 22px; }
-
-        /* Staff Popup */
-        .staff-overlay { display:none; position:absolute; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:center; justify-content:center; }
-        .staff-overlay.show { display:flex; }
-        .staff-popup { background:#f5f3f0; border-radius:16px; padding:28px 28px 24px; width:480px; position:relative; }
-        .staff-popup-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
-        .staff-popup-title { font-size:17px; font-weight:700; color:#1a1a1a; }
-        .staff-popup-close { width:28px; height:28px; border:none; background:none; font-size:20px; color:#999; cursor:pointer; }
-        .staff-popup-close:hover { color:#333; }
-        .staff-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
-        .staff-option { display:flex; align-items:center; gap:10px; padding:16px 18px; background:#fff; border:1.5px solid #e0e0e0; border-radius:10px; font-size:14px; font-weight:600; color:#333; cursor:pointer; transition:all 0.15s; }
-        .staff-option:hover { border-color:#3b82f6; background:#f8faff; }
-        .staff-option.selected { border-color:#3b82f6; background:#eff6ff; }
-        .staff-option .s-icon { font-size:20px; }
-        .staff-note { text-align:center; font-size:12px; color:#999; margin-bottom:14px; }
-        .staff-call-btn { width:100%; padding:16px; background:#ef4444; color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
-        .staff-call-btn:hover { background:#dc2626; }
-        .staff-call-btn .s-icon { font-size:20px; }
     </style>
 </head>
 <body>
-    <div class="ipad-frame" style="position:relative;">
-
-    <!-- Language Popup -->
-    <div class="lang-overlay" id="langPopup" onclick="if(event.target===this)closeLang()">
-        <div class="lang-popup">
-            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇯🇵</span>日本語</button>
-            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇺🇸</span>英語</button>
-            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇨🇳</span>中国語</button>
-            <button class="lang-popup-btn" onclick="closeLang()"><span class="flag">🇰🇷</span>韓国語</button>
+    <div class="ipad-frame">
+        <!-- Context Bar -->
+        <div class="context-bar">
+            <div class="context-left">
+                <div class="context-item"><span class="context-label">卓番</span><span class="context-value">T-01, T-02</span></div>
+                <div class="context-divider"></div>
+                <div class="context-item"><span class="context-label">端末</span><span class="context-value">iPad-03</span></div>
+                <div class="context-divider"></div>
+                <div class="context-item"><span class="context-label">受付番号</span><span class="context-value">#0042</span></div>
+            </div>
+            <div class="context-date" id="ctxDate">2026/04/02 09:56</div>
         </div>
-    </div>
 
-    <!-- Staff Popup -->
-    <div class="staff-overlay" id="staffPopup" onclick="if(event.target===this)closeStaff()">
-        <div class="staff-popup">
-            <div class="staff-popup-header">
-                <span class="staff-popup-title">何かお手伝いできることはありますか？</span>
-                <button class="staff-popup-close" onclick="closeStaff()">&times;</button>
-            </div>
-            <div class="staff-grid">
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">💧</span>水を追加</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🚻</span>トイレの場所</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🍽</span>お皿を片付ける</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">❓</span>その他ご質問</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">👶🍴</span>子ども用食器</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🪑</span>ベビーチェア</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🥢🍴</span>箸・フォークを追加</button>
-                <button class="staff-option" onclick="this.classList.toggle('selected')"><span class="s-icon">🧹</span>テーブルの清掃</button>
-            </div>
-            <div class="staff-note">複数選択できます。選択後、下のボタンでスタッフを呼び出します。</div>
-            <button class="staff-call-btn" onclick="closeStaff()"><span class="s-icon">🔔</span>スタッフ呼び出し</button>
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <button class="cat-tab active" onclick="switchCategory('osusume', this)">おすすめ</button>
+            <button class="cat-tab" onclick="switchCategory('zensai', this)">前菜</button>
+            <button class="cat-tab" onclick="switchCategory('yakimono', this)">焼き物</button>
+            <button class="cat-tab" onclick="switchCategory('salad', this)">サラダ</button>
+            <button class="cat-tab" onclick="switchCategory('drink', this)">ドリンク</button>
+            <button class="cat-tab" onclick="switchCategory('dessert', this)">デザート</button>
+        </div>
+
+        <!-- Menu Grid -->
+        <div class="menu-grid-wrapper">
+            <div class="menu-grid" id="menuGrid"></div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <button class="nav-item active"><i class="fa-solid fa-utensils"></i><span>メニュー</span></button>
+            <button class="nav-item" onclick="window.location.href='cart.html'"><div style="position:relative;"><i class="fa-solid fa-cart-shopping"></i><span class="nav-badge" id="cartBadge" style="display:none;">0</span></div><span>カート</span></button>
+            <button class="nav-item" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></button>
+            <button class="nav-item" onclick="window.location.href='menu_ai.html'"><i class="fa-solid fa-comment-dots"></i><span>AI相談</span></button>
+            <button class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></button>
         </div>
     </div>
 
     <!-- Customize Modal -->
     <div class="modal-overlay" id="customizeModal">
         <div class="modal">
-            <div class="modal-scroll">
-                <div class="modal-header">
-                    <span class="modal-title">カスタマイズ</span>
-                    <button class="modal-close" onclick="closeModal()">&times;</button>
-                </div>
-
-                <div class="modal-section-label">辛さの選択(必須)</div>
-                <div class="modal-option">
-                    <label><input type="radio" name="spice" value="normal" checked> 普通</label>
-                </div>
-                <div class="modal-option">
-                    <label><input type="radio" name="spice" value="medium"> 中辛</label>
-                </div>
-                <div class="modal-option">
-                    <label><input type="radio" name="spice" value="hot"> 大辛</label>
-                </div>
-
-                <div class="modal-section-label">トッピングの追加(任意、複数選択可)</div>
-                <div class="modal-option">
-                    <label><input type="checkbox" value="cheese"> チーズ</label>
-                    <span class="option-price">+100円</span>
-                </div>
-                <div class="modal-option">
-                    <label><input type="checkbox" value="avocado"> アボカド</label>
-                    <span class="option-price">+150円</span>
-                </div>
-                <div class="modal-option">
-                    <label><input type="checkbox" value="onion"> フライドオニオン</label>
-                    <span class="option-price">+50円</span>
-                </div>
-
-                <div class="modal-section-label">抜く食材(任意)</div>
-                <div class="modal-option">
-                    <label><input type="checkbox" value="no-onion"> 玉ねぎ</label>
-                </div>
-                <div class="modal-option">
-                    <label><input type="checkbox" value="no-coriander"> パクチー</label>
-                </div>
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">カスタマイズ</span>
+                <i class="fa-solid fa-xmark" onclick="closeModal()" style="cursor:pointer; font-size: 20px; color: #999;"></i>
             </div>
+            <div class="modal-body">
+                <div class="modal-section-label">辛さの選択 (必須)</div>
+                <div class="modal-option"><label><input type="radio" name="spice" checked> 普通</label></div>
+                <div class="modal-option"><label><input type="radio" name="spice"> 中辛</label></div>
+                <div class="modal-option"><label><input type="radio" name="spice"> 大辛</label></div>
 
+                <div class="modal-section-label">トッピングの追加 (任意)</div>
+                <div class="modal-option"><label><input type="checkbox"> チーズ <span style="font-weight:400; color:#888; font-size:13px; margin-left:auto;">+¥100</span></label></div>
+                <div class="modal-option"><label><input type="checkbox"> アボカド <span style="font-weight:400; color:#888; font-size:13px; margin-left:auto;">+¥150</span></label></div>
+            </div>
             <div class="modal-footer">
-                <div class="quantity-row">
-                    <button class="qty-btn" onclick="changeQty(-1)">−</button>
-                    <span class="qty-value" id="qtyValue">2</span>
-                    <button class="qty-btn" onclick="changeQty(1)">+</button>
+                <div class="qty-row">
+                    <button class="qty-btn" onclick="changeQty(-1)"><i class="fa-solid fa-minus"></i></button>
+                    <span class="qty-val" id="qtyVal">1</span>
+                    <button class="qty-btn" onclick="changeQty(1)"><i class="fa-solid fa-plus"></i></button>
                 </div>
-
-                <div class="modal-btns">
-                    <button class="modal-cancel-btn" onclick="closeModal()">キャンセル</button>
-                    <button class="modal-confirm-btn" onclick="confirmAdd()">この内容でカートに入れる</button>
-                </div>
+                <button class="modal-confirm-btn" onclick="confirmAdd()">カートに入れる</button>
             </div>
         </div>
-    </div>
-
-    <div class="main-wrapper">
-        <div class="container">
-            <!-- Category Tabs -->
-            <div class="category-tabs">
-                <button class="cat-tab active" onclick="switchCategory('osusume', this)">おすすめ</button>
-                <button class="cat-tab" onclick="switchCategory('zensai', this)">前菜</button>
-                <button class="cat-tab" onclick="switchCategory('yakimono', this)">焼き物</button>
-                <button class="cat-tab" onclick="switchCategory('salad', this)">サラダ</button>
-                <button class="cat-tab" onclick="switchCategory('drink', this)">ドリンク</button>
-                <button class="cat-tab" onclick="switchCategory('dessert', this)">デザート</button>
-                <button class="filter-btn">
-                    <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm3 5h12v2H6v-2zm4 5h4v2h-4v-2z"/></svg>
-                </button>
-            </div>
-
-            <!-- Menu Grid -->
-            <div class="menu-grid" id="menuGrid">
-                <!-- Items rendered by JS -->
-            </div>
-
-            <!-- Bottom Navigation -->
-            <div class="bottom-nav">
-                <button class="nav-item active">
-                    <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-                    メニュー
-                </button>
-                <button class="nav-item" onclick="window.location.href='cart.html'">
-                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>
-                    <span class="nav-badge" id="cartBadge" style="display:none;">0</span>
-                    カート
-                </button>
-                <button class="nav-item" onclick="window.location.href='chat_ai.html'">
-                    <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
-                    会話履歴
-                </button>
-                <button class="nav-item" onclick="window.location.href='order_status.html'">
-                    <svg viewBox="0 0 24 24"><path d="M13 3a9 9 0 00-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21a9 9 0 000-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
-                    注文履歴
-                </button>
-                <button class="nav-item" onclick="openStaff()">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
-                    サポート
-                </button>
-                <button class="nav-item" onclick="openLang()">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                    言語
-                </button>
-            </div>
-        </div>
-    </div>
     </div>
 
     <script>
-        let cartCount = 0;
-        let qty = 2;
-
         const menuData = {
             osusume: [
-                { name: '和牛ステーキ 特選', price: '¥2,800', img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80', tags: [{text:'がっつり',type:'taste'},{text:'人気No.1',type:'popular'}] },
-                { name: '海鮮丼 スペシャル', price: '¥1,200', img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&q=80', tags: [{text:'あっさり',type:'taste'},{text:'揚げ物不使用',type:'healthy'}] },
-                { name: '天ぷら盛り合わせ', price: '¥980', img: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400&q=80', tags: [{text:'サクサク食感',type:'taste'},{text:'お酒に合う',type:'reason'}] },
-                { name: '鯛の塩焼き定食', price: '¥1,400', img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80', tags: [{text:'あっさり',type:'taste'},{text:'ヘルシー',type:'healthy'}] },
-                { name: 'すき焼き御膳', price: '¥2,200', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80', tags: [{text:'がっつり',type:'taste'},{text:'寒い日におすすめ',type:'reason'}] },
-                { name: '抹茶パフェ', price: '¥650', img: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80', tags: [{text:'食後にぴったり',type:'reason'},{text:'SNS映え',type:'popular'}] },
+                { name: '和牛ステーキ 特選', price: '2800', img: 'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=600&q=80', tags: [{text:'人気',type:'popular'}, {text:'がっつり',type:'taste'}] },
+                { name: '特選 海鮮丼', price: '1980', img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&q=80', tags: [{text:'新鮮',type:'taste'}, {text:'おすすめ',type:'reason'}] },
+                { name: '黒豚のすき焼き御膳', price: '2400', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80', tags: [{text:'贅沢',type:'taste'}] },
+                { name: '季節の天ぷら盛り', price: '1580', img: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=600&q=80', tags: [{text:'サクサク',type:'taste'}] },
+                { name: '本マグロ大トロ刺し', price: '2200', img: 'https://images.unsplash.com/photo-1534482421-64566f976cfa?w=600&q=80', tags: [{text:'限定',type:'popular'}] },
+                { name: '自家製ハンバーグ', price: '1480', img: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=600&q=80', tags: [{text:'肉汁',type:'taste'}] },
             ],
-            zensai: [
-                { name: '枝豆', price: '¥380', img: 'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=400&q=80', tags: [{text:'お酒に合う',type:'reason'},{text:'あっさり',type:'taste'}] },
-                { name: '冷奴 ネギ生姜のせ', price: '¥350', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80', tags: [{text:'暑い日におすすめ',type:'reason'},{text:'ヘルシー',type:'healthy'}] },
-                { name: 'たこわさび', price: '¥450', img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=80', tags: [{text:'お酒に合う',type:'reason'},{text:'ピリ辛',type:'taste'}] },
-                { name: '出汁巻き玉子', price: '¥480', img: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=400&q=80', tags: [{text:'やさしい味',type:'taste'},{text:'お子様にも',type:'reason'}] },
-                { name: '刺身三種盛り', price: '¥1,200', img: 'https://images.unsplash.com/photo-1535007813616-4f5e2d19b20c?w=400&q=80', tags: [{text:'あっさり',type:'taste'},{text:'人気',type:'popular'}] },
-                { name: 'もずく酢', price: '¥320', img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80', tags: [{text:'さっぱり',type:'taste'},{text:'揚げ物不使用',type:'healthy'}] },
-            ],
-            yakimono: [
-                { name: '焼き鳥盛り合わせ (5本)', price: '¥780', img: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400&q=80', tags: [{text:'お酒に合う',type:'reason'},{text:'シェアにぴったり',type:'reason'}] },
-                { name: 'サーモンの西京焼き', price: '¥980', img: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&q=80', tags: [{text:'香ばしい',type:'taste'},{text:'ヘルシー',type:'healthy'}] },
-                { name: '牛タン塩焼き', price: '¥1,200', img: 'https://images.unsplash.com/photo-1558030006-450675393462?w=400&q=80', tags: [{text:'がっつり',type:'taste'},{text:'人気',type:'popular'}] },
-                { name: 'ホタテのバター焼き', price: '¥880', img: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=400&q=80', tags: [{text:'濃厚',type:'taste'},{text:'お酒に合う',type:'reason'}] },
-                { name: '豚バラ串焼き', price: '¥580', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&q=80', tags: [{text:'がっつり',type:'taste'},{text:'コスパ良し',type:'popular'}] },
-                { name: '鶏もも肉の照り焼き', price: '¥750', img: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400&q=80', tags: [{text:'甘辛',type:'taste'},{text:'お子様にも',type:'reason'}] },
-            ],
-            salad: [
-                { name: 'シーザーサラダ', price: '¥580', img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80', tags: [{text:'定番',type:'popular'},{text:'揚げ物不使用',type:'healthy'}] },
-                { name: '海藻サラダ', price: '¥480', img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80', tags: [{text:'ヘルシー',type:'healthy'},{text:'さっぱり',type:'taste'}] },
-                { name: '大根サラダ 和風ドレッシング', price: '¥420', img: 'https://images.unsplash.com/photo-1607532941433-304659e8198a?w=400&q=80', tags: [{text:'あっさり',type:'taste'},{text:'和風',type:'reason'}] },
-                { name: 'トマトとモッツァレラ', price: '¥650', img: 'https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=400&q=80', tags: [{text:'暑い日におすすめ',type:'reason'},{text:'さっぱり',type:'taste'}] },
-                { name: 'アボカドサラダ', price: '¥550', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80', tags: [{text:'クリーミー',type:'taste'},{text:'ヘルシー',type:'healthy'}] },
-                { name: '豆腐サラダ', price: '¥480', img: 'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=400&q=80', tags: [{text:'あっさり',type:'taste'},{text:'低カロリー',type:'healthy'}] },
-            ],
-            drink: [
-                { name: '生ビール (中)', price: '¥550', img: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=400&q=80', tags: [{text:'乾杯に',type:'reason'},{text:'定番',type:'popular'}] },
-                { name: '日本酒 純米吟醸', price: '¥780', img: 'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=400&q=80', tags: [{text:'和食に合う',type:'reason'},{text:'フルーティー',type:'taste'}] },
-                { name: 'ハイボール', price: '¥480', img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400&q=80', tags: [{text:'揚げ物に合う',type:'reason'},{text:'さっぱり',type:'taste'}] },
-                { name: '梅酒ソーダ', price: '¥520', img: 'https://images.unsplash.com/photo-1536935338788-846bb9981813?w=400&q=80', tags: [{text:'甘口で飲みやすい',type:'taste'},{text:'女性に人気',type:'popular'}] },
-                { name: '緑茶', price: '¥250', img: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=400&q=80', tags: [{text:'ノンアルコール',type:'healthy'},{text:'食事に合う',type:'reason'}] },
-                { name: 'ウーロン茶', price: '¥250', img: 'https://images.unsplash.com/photo-1558160074-4d93e8e073a1?w=400&q=80', tags: [{text:'ノンアルコール',type:'healthy'},{text:'さっぱり',type:'taste'}] },
-            ],
-            dessert: [
-                { name: '抹茶アイスクリーム', price: '¥450', img: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80', tags: [{text:'食後にぴったり',type:'reason'},{text:'定番',type:'popular'}] },
-                { name: 'わらび餅', price: '¥380', img: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80', tags: [{text:'もちもち食感',type:'taste'},{text:'和スイーツ',type:'reason'}] },
-                { name: 'あんみつ', price: '¥520', img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80', tags: [{text:'やさしい甘さ',type:'taste'},{text:'ヘルシー',type:'healthy'}] },
-                { name: 'ゆずシャーベット', price: '¥400', img: 'https://images.unsplash.com/photo-1570197788417-0e82375c9be7?w=400&q=80', tags: [{text:'さっぱり',type:'taste'},{text:'暑い日におすすめ',type:'reason'}] },
-                { name: '黒ごまプリン', price: '¥420', img: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=400&q=80', tags: [{text:'濃厚',type:'taste'},{text:'SNS映え',type:'popular'}] },
-                { name: 'フルーツ盛り合わせ', price: '¥600', img: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&q=80', tags: [{text:'ヘルシー',type:'healthy'},{text:'シェアにぴったり',type:'reason'}] },
-            ],
+            zensai: [], yakimono: [], salad: [], drink: [], dessert: []
         };
 
-        const cartSvg = '<svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12.94-1.7h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020.04 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-.13 0-.25-.07-.26-.18z"/></svg>';
-
-        let currentItemImg = '';
-
-        function renderMenu(category) {
+        function renderMenu(cat) {
             const grid = document.getElementById('menuGrid');
-            const items = menuData[category] || menuData.osusume;
-            grid.innerHTML = items.map(item => {
-                const tagsHtml = (item.tags || []).map(t =>
-                    `<span class="menu-tag ${t.type}">${t.text}</span>`
-                ).join('');
-                return `
-                <div class="menu-card" onclick="window.location.href='menu_detail.html'">
-                    <img class="menu-card-img" src="${item.img}" alt="${item.name}">
+            const items = menuData[cat] || menuData.osusume;
+            if (items.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:100px; color:#888;">準備中...</div>';
+                return;
+            }
+            grid.innerHTML = items.map(item => `
+                <div class="menu-card" onclick="openModal('${item.name}')">
+                    <div class="menu-card-img-wrap">
+                        <img class="menu-card-img" src="${item.img}" alt="${item.name}">
+                    </div>
                     <div class="menu-card-body">
                         <div class="menu-card-name">${item.name}</div>
-                        ${tagsHtml ? `<div class="menu-card-tags">${tagsHtml}</div>` : ''}
+                        <div class="menu-card-tags">
+                            ${(item.tags||[]).map(t => `<span class="menu-tag ${t.type}">${t.text}</span>`).join('')}
+                        </div>
                         <div class="menu-card-footer">
                             <span class="menu-card-price">${item.price}</span>
-                            <button class="add-btn" onclick="event.stopPropagation();addToCart('${item.img}', this)">
-                                ${cartSvg}
-                                追加
+                            <button class="add-btn" onclick="event.stopPropagation();openModal('${item.name}')">
+                                <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
                     </div>
-                </div>`;
-            }).join('');
+                </div>
+            `).join('');
         }
 
-        function switchCategory(category, btn) {
+        function switchCategory(cat, el) {
             document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-            renderMenu(category);
+            el.classList.add('active');
+            renderMenu(cat);
         }
 
-        // Initial render
-        renderMenu('osusume');
-
-        function addToCart(imgSrc, btnEl) {
-            currentItemImg = imgSrc;
-            qty = 1;
-            document.getElementById('qtyValue').textContent = qty;
+        let currentQty = 1;
+        function openModal(name) {
+            document.getElementById('modalTitle').innerText = name;
+            currentQty = 1;
+            document.getElementById('qtyVal').innerText = currentQty;
             document.getElementById('customizeModal').classList.add('show');
         }
-
-        function closeModal() {
-            document.getElementById('customizeModal').classList.remove('show');
+        function closeModal() { document.getElementById('customizeModal').classList.remove('show'); }
+        function changeQty(d) {
+            currentQty = Math.max(1, currentQty + d);
+            document.getElementById('qtyVal').innerText = currentQty;
         }
-
-        function changeQty(delta) {
-            qty = Math.max(1, qty + delta);
-            document.getElementById('qtyValue').textContent = qty;
-        }
-
-        function flyToCart(imgSrc) {
-            const frame = document.querySelector('.ipad-frame');
-            const frameRect = frame.getBoundingClientRect();
-            const cartBtn = document.getElementById('cartBadge').parentElement;
-            const cartRect = cartBtn.getBoundingClientRect();
-
-            const flyImg = document.createElement('img');
-            flyImg.src = imgSrc;
-            flyImg.style.cssText = `
-                position: fixed;
-                width: 80px;
-                height: 80px;
-                object-fit: cover;
-                border-radius: 12px;
-                z-index: 9999;
-                pointer-events: none;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-                left: ${frameRect.left + frameRect.width / 2 - 40}px;
-                top: ${frameRect.top + frameRect.height / 2 - 40}px;
-                transition: all 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-                opacity: 1;
-            `;
-            document.body.appendChild(flyImg);
-
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    flyImg.style.left = (cartRect.left + cartRect.width / 2 - 16) + 'px';
-                    flyImg.style.top = (cartRect.top + cartRect.height / 2 - 16) + 'px';
-                    flyImg.style.width = '32px';
-                    flyImg.style.height = '32px';
-                    flyImg.style.opacity = '0.4';
-                    flyImg.style.borderRadius = '50%';
-                });
-            });
-
-            setTimeout(() => {
-                flyImg.remove();
-                // Bounce effect on cart badge
-                const badge = document.getElementById('cartBadge');
-                badge.style.transition = 'transform 0.15s';
-                badge.style.transform = 'scale(1.5)';
-                setTimeout(() => {
-                    badge.style.transform = 'scale(1)';
-                }, 150);
-            }, 700);
-        }
-
         function confirmAdd() {
-            cartCount += qty;
+            alert('カートに追加しました');
+            closeModal();
             const badge = document.getElementById('cartBadge');
             badge.style.display = 'flex';
-            badge.textContent = cartCount;
-            closeModal();
-            if (currentItemImg) {
-                flyToCart(currentItemImg);
-            }
+            badge.innerText = parseInt(badge.innerText || '0') + currentQty;
         }
 
-        function openLang() { document.getElementById('langPopup').classList.add('show'); }
-        function closeLang() { document.getElementById('langPopup').classList.remove('show'); }
-        function openStaff() { document.getElementById('staffPopup').classList.add('show'); }
-        function closeStaff() { document.getElementById('staffPopup').classList.remove('show'); }
+        // Initial
+        renderMenu('osusume');
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('ctxDate').innerText = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+        }, 1000);
     </script>
 </body>
 </html>

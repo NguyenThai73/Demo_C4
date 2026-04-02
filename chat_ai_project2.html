@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>posSpeak – AI Concierge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2d3a2e;
+            --primary-light: #3f5240;
+            --accent: #d4a373;
+            --bg: #f0ece4;
+            --card-bg: #ffffff;
+            --footer-bg: #e8e4dc;
+            --border: #e0dcd4;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .ipad-frame {
+            width: 1280px;
+            height: 800px;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0,0,0,0.7);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        /* ─── AI SPEECH BANNER ─────────────────────────────────── */
+        .ai-banner {
+            background: var(--primary);
+            padding: 0 20px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+        .banner-speaker {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .banner-speaker svg { width: 18px; height: 18px; fill: #fff; }
+
+        .banner-sidebar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .banner-staff {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .banner-avatar-wrap { position: relative; flex-shrink: 0; }
+        .banner-staff-avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid rgba(255,255,255,0.3);
+        }
+        .banner-avatar-dot {
+            position: absolute; bottom: 0; right: 0;
+            width: 10px; height: 10px;
+            border-radius: 50%; background: #7ecb8f;
+            border: 2px solid var(--primary);
+        }
+        .banner-staff-text { display: flex; flex-direction: column; line-height: 1; }
+        .banner-staff-name { font-size: 14px; font-weight: 700; color: #fff; }
+        .banner-staff-label { font-size: 9px; font-weight: 500; color: rgba(255,255,255,0.5); }
+
+        .banner-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.15); }
+        
+        .banner-ticker {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-left: 10px;
+        }
+
+        /* ─── CHAT MAIN AREA ───────────────────────────────────── */
+        .chat-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chat-window {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 32px 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .chat-window::-webkit-scrollbar { width: 6px; }
+        .chat-window::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+
+        .msg-row { display: flex; gap: 12px; max-width: 80%; }
+        .msg-row.received { align-self: flex-start; }
+        .msg-row.sent { align-self: flex-end; flex-direction: row-reverse; }
+
+        .bubble {
+            padding: 14px 20px;
+            border-radius: 18px;
+            font-size: 15px;
+            line-height: 1.5;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.02);
+            color: var(--primary);
+        }
+        .sent .bubble { background: var(--primary); color: #fff; font-weight: 500; border: none; }
+
+        .product-suggestions {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        .product-suggestions::-webkit-scrollbar { display: none; }
+
+        .p-card {
+            min-width: 200px;
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .p-img { width: 100%; height: 120px; object-fit: cover; }
+        .p-info { padding: 10px; display:flex; flex-direction:column; flex:1; }
+        .p-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+        .p-desc { font-size: 10px; color: #777; line-height: 1.4; margin-bottom: 8px; flex:1; }
+        .p-footer { display: flex; justify-content: space-between; align-items: center; }
+        .p-price { font-size: 15px; font-weight: 800; color: var(--primary); }
+        .p-add {
+            padding: 4px 10px; background: var(--primary); color: #fff;
+            border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
+        }
+
+        /* ─── INPUT AREA ───────────────────────────────────────── */
+        .chat-input-area {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 20px 32px 30px;
+            background: linear-gradient(transparent, var(--bg) 20%);
+        }
+
+        .suggestions-container { display: flex; gap: 10px; margin-bottom: 12px; overflow-x: auto; }
+        .suggestions-container::-webkit-scrollbar { display: none; }
+
+        .chip {
+            padding: 8px 18px;
+            background: #fff;
+            border: 1.5px solid var(--border);
+            border-radius: 20px; font-size: 13px; font-weight: 700;
+            color: var(--primary); white-space: nowrap; cursor: pointer;
+        }
+        .chip.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+        .input-bar {
+            background: #fff; height: 60px; border-radius: 30px;
+            display: flex; align-items: center; padding: 0 8px 0 20px;
+            border: 1.5px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .chat-input { flex: 1; border: none; outline: none; font-size: 15px; background: transparent; }
+        .btn-voice { width: 44px; height: 44px; border: none; background: #f5f5f5; border-radius: 50%; color: var(--primary); font-size: 16px; cursor: pointer; margin-right: 8px; }
+        .btn-send {
+            height: 44px; padding: 0 20px; background: var(--primary);
+            color: #fff; border: none; border-radius: 22px; font-weight: 700;
+            display: flex; align-items: center; gap: 8px; cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* ─── BOTTOM NAV ──────────────────────────────────────── */
+        .bottom-nav {
+            display: flex;
+            background: var(--footer-bg);
+            border-top: 1px solid var(--border);
+            padding: 10px 0 20px;
+            width: 100%;
+            flex-shrink: 0;
+        }
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #888;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 22px; }
+
+        .ai-badge {
+            position: absolute; top: 6px; right: 6px;
+            background: rgba(45,58,46,0.9); color: #fff;
+            padding: 3px 8px; border-radius: 6px; font-size: 9px; font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="ipad-frame">
+        <!-- AI Banner (Exactly as menu_ai) -->
+        <div class="ai-banner">
+            <div class="banner-speaker">
+                <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            </div>
+            <div class="banner-staff">
+                <div class="banner-avatar-wrap">
+                    <img class="banner-staff-avatar" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&q=80">
+                    <div class="banner-avatar-dot"></div>
+                </div>
+                <div class="banner-staff-text">
+                    <div class="banner-staff-name">SAKURA</div>
+                    <div class="banner-staff-label">AI Concierge</div>
+                </div>
+            </div>
+            <div class="banner-divider"></div>
+            <div class="banner-ticker" id="aiTicker">こんにちは！さくらです。🌸 お好みのメニューをご提案します。</div>
+        </div>
+
+        <!-- Chat Content -->
+        <div class="chat-content">
+            <div class="chat-window" id="chatMessages">
+                <div class="msg-row received" id="welcomeMsg">
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        <div class="bubble">
+                            こんにちは！さくらです。🌸<br>
+                            本日の気分やご予算に合わせて、最適なメニューをご提案します。
+                        </div>
+                        <div class="product-suggestions">
+                            <div class="p-card">
+                                <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400&q=80" class="p-img">
+                                <div class="ai-badge">イチオシ</div>
+                                <div class="p-info">
+                                    <div class="p-name">豊後牛ハンバーグ</div>
+                                    <div class="p-desc">肉汁溢れるジューシーな一品です。</div>
+                                    <div class="p-footer">
+                                        <span class="p-price">¥1,850</span>
+                                        <button class="p-add" onclick="quickSend('ハンバーグ追加')">追加</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-card">
+                                <img src="https://images.unsplash.com/photo-1562802378-063ec186a863?w=400&q=80" class="p-img">
+                                <div class="ai-badge">本日入荷</div>
+                                <div class="p-info">
+                                    <div class="p-name">旬の海鮮にぎり 8貫</div>
+                                    <div class="p-desc">朝獲れの新鮮なネタを贅沢に。</div>
+                                    <div class="p-footer">
+                                        <span class="p-price">¥2,400</span>
+                                        <button class="p-add" onclick="quickSend('寿司追加')">追加</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <div class="suggestions-container" id="dynamicChips"></div>
+                <div class="input-bar">
+                    <button class="btn-voice"><i class="fa-solid fa-microphone"></i></button>
+                    <input type="text" class="chat-input" id="chatInput" placeholder="メッセージを入力...">
+                    <button class="btn-send" id="sendBtn" onclick="sendMessage()">
+                        <i class="fa-solid fa-paper-plane"></i> 話しかける
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Nav (Exactly as menu_ai) -->
+        <div class="bottom-nav">
+            <div class="nav-item" onclick="window.location.href='menu_ai.html'"><i class="fa-solid fa-utensils"></i><span>メニュー</span></div>
+            <div class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>カート</span></div>
+            <div class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></div>
+            <div class="nav-item active"><i class="fa-solid fa-comment-dots"></i><span>会話</span></div>
+            <div class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></div>
+        </div>
+    </div>
+
+    <script>
+        let conversationState = 'initial';
+        const chipSets = {
+            initial: [{text: '今日のおすすめは？', p: true}, {text: '人気メニューを見せて'}, {text: '予算で選びたい'}]
+        };
+
+        function renderChips() {
+            const container = document.getElementById('dynamicChips');
+            container.innerHTML = chipSets.initial.map(c => 
+                `<div class="chip${c.p?' primary':''}" onclick="chipAction('${c.text}')">${c.text}</div>`
+            ).join('');
+        }
+
+        function chipAction(text) {
+            addUserMessage(text);
+            addAiMessage("かしこまりました。メニューをお探しします。");
+            updateTicker("メニューをお探しします...");
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (text) {
+                addUserMessage(text);
+                input.value = '';
+                simulateAiResponse(text);
+            }
+        }
+
+        function simulateAiResponse(text) {
+            setTimeout(() => {
+                addAiMessage('かしこまりました。お客様のご要望に合わせて調整いたします。');
+                updateTicker('お客様のご要望に合わせて調整いたします。');
+            }, 600);
+        }
+
+        function addUserMessage(text) {
+            const row = document.createElement('div');
+            row.className = 'msg-row sent';
+            row.innerHTML = `<div class="bubble">${text}</div>`;
+            document.getElementById('chatMessages').appendChild(row);
+            scrollToBottom();
+        }
+
+        function addAiMessage(text) {
+            const row = document.createElement('div');
+            row.className = 'msg-row received';
+            row.innerHTML = `<div class="bubble">${text}</div>`;
+            document.getElementById('chatMessages').appendChild(row);
+            scrollToBottom();
+        }
+
+        function quickSend(text) {
+            addUserMessage(text);
+            addAiMessage("カートに追加しました。");
+            updateTicker("カートに商品を追加しました。");
+        }
+
+        function updateTicker(text) {
+            document.getElementById('aiTicker').innerText = text;
+        }
+
+        function scrollToBottom() {
+            const win = document.getElementById('chatMessages');
+            win.scrollTop = win.scrollHeight;
+        }
+
+        window.onload = renderChips;
+    </script>
+</body>
+</html>
