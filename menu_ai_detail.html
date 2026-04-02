@@ -1313,6 +1313,100 @@
                 }
             }, 15000); // 15 giây
         });
+
+        // Wine data for extended flow
+        const wineItems = [
+            { 
+                name: 'シャルドネ 2022', 
+                desc: 'フルーティーでバランスの取れた白ワイン', 
+                price: '1,280', 
+                img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
+                type: '白ワイン',
+                taste: '柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴。魚料理や前菜に最適。',
+                detail: 'カリフォルニア産のシャルドネ種を使用。樽熟成により複雑な味わいを実現。アルコール度数: 13.5%',
+                pairing: '魚料理、前菜、チーズ'
+            },
+            { 
+                name: 'カベルネ・ソーヴィニヨン 2020', 
+                desc: '力強いタンニンと深みのある赤ワイン', 
+                price: '1,580', 
+                img: 'https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?w=400&q=80',
+                type: '赤ワイン', 
+                taste: '濃厚なダークベリーの風味と、スパイシーなオークの香り。肉料理にぴったり。',
+                detail: 'フランス・ボルドー産。24ヶ月のオーク樽熟成。アルコール度数: 14.5%',
+                pairing: 'ステーキ、ラム、熟成チーズ'
+            },
+            { 
+                name: 'ロゼ プロヴァンス 2023', 
+                desc: '軽やかでフルーティーなロゼワイン', 
+                price: '1,180', 
+                img: 'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=400&q=80',
+                type: 'ロゼワイン',
+                taste: 'イチゴやラズベリーの甘い香りと、さわやかな酸味のバランスが絶妙。',
+                detail: '南フランス・プロヴァンス地方産。若々しいフレッシュさが特徴。アルコール度数: 12.5%',
+                pairing: 'サラダ、軽い前菜、シーフード'
+            }
+        ];
+
+        // Check URL for wine parameter
+        window.addEventListener('load', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const wineIndex = urlParams.get('wine');
+            
+            if (wineIndex !== null && wineIndex >= 0 && wineIndex < wineItems.length) {
+                const wine = wineItems[wineIndex];
+                
+                // Update page for wine detail
+                document.title = 'posSpeak - ' + wine.name + ' 詳細';
+                
+                // Update AI banner text
+                const aiTickerText = document.getElementById('aiTickerText');
+                if (aiTickerText) {
+                    aiTickerText.textContent = 'このワインは ' + wine.taste + ' お料理との相性も抜群です。';
+                }
+                
+                // Update food image and details
+                const foodImg = document.getElementById('foodImg');
+                const foodName = document.getElementById('foodName');
+                const foodDesc = document.getElementById('foodDesc');
+                const foodPrice = document.getElementById('foodPrice');
+                
+                if (foodImg) foodImg.src = wine.img;
+                if (foodImg) foodImg.alt = wine.name;
+                if (foodName) foodName.textContent = wine.name;
+                if (foodDesc) foodDesc.textContent = wine.desc;
+                if (foodPrice) foodPrice.textContent = wine.price;
+                
+                // Update AI suggestion text
+                const aiSuggestion = document.querySelector('.ai-suggestion-text');
+                if (aiSuggestion) {
+                    aiSuggestion.textContent = wine.taste + ' ' + wine.detail + ' おすすめのペアリング: ' + wine.pairing;
+                }
+                
+                // Update voice order button text
+                const voiceOrderText = document.getElementById('voiceOrderText');
+                if (voiceOrderText) {
+                    voiceOrderText.innerHTML = wine.name + '<br>を注文';
+                }
+                
+                // Update back button to return to wine selection
+                const backBtn = document.querySelector('.back-btn');
+                if (backBtn) {
+                    backBtn.onclick = function() {
+                        window.location.href = 'menu_ai.html?extended=true&step=4';
+                    };
+                }
+                
+                // Update voice order function for wine
+                const voiceOrderBtn = document.getElementById('voiceOrderBtn');
+                if (voiceOrderBtn) {
+                    voiceOrderBtn.onclick = function() {
+                        // Redirect back to menu_ai.html with wine order state
+                        window.location.href = 'menu_ai.html?extended=true&step=5&wine=' + wineIndex;
+                    };
+                }
+            }
+        });
     </script>
 </body>
 

@@ -795,6 +795,37 @@
             { name: '冷やし中華', desc: 'コシのある細麺に彩り豊かな具材と酸味のきいたタレ', price: '950', img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80', reason: '🔥 辛さで汗を流してスッキリ', lowCal: false }
         ];
 
+        // Wine data for extended flow
+        const wineItems = [
+            { 
+                name: 'シャルドネ 2022', 
+                desc: 'フルーティーでバランスの取れた白ワイン', 
+                price: '1,280', 
+                img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
+                type: '白ワイン',
+                taste: '柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴。魚料理や前菜に最適。',
+                detail: 'カリフォルニア産のシャルドネ種を使用。樽熟成により複雑な味わいを実現。アルコール度数: 13.5%'
+            },
+            { 
+                name: 'カベルネ・ソーヴィニヨン 2020', 
+                desc: '力強いタンニンと深みのある赤ワイン', 
+                price: '1,580', 
+                img: 'https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?w=400&q=80',
+                type: '赤ワイン', 
+                taste: '濃厚なダークベリーの風味と、スパイシーなオークの香り。肉料理にぴったり。',
+                detail: 'フランス・ボルドー産。24ヶ月のオーク樽熟成。アルコール度数: 14.5%'
+            },
+            { 
+                name: 'ロゼ プロヴァンス 2023', 
+                desc: '軽やかでフルーティーなロゼワイン', 
+                price: '1,180', 
+                img: 'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=400&q=80',
+                type: 'ロゼワイン',
+                taste: 'イチゴやラズベリーの甘い香りと、さわやかな酸味のバランスが絶妙。',
+                detail: '南フランス・プロヴァンス地方産。若々しいフレッシュさが特徴。アルコール度数: 12.5%'
+            }
+        ];
+
         let streamInterval = null;
         let streamTimer = null;
         let headerResetTimer = null;
@@ -839,43 +870,90 @@
             console.log('Cards rendered with IDs: card0 to card' + (items.length - 1));
         }
 
-        function addToCart(name) {
+        function addToCart(name, isWine = false) {
             // Show cart alert instead of browser alert
             showCartAlert();
             
-            // AI thank you message
-            setTimeout(() => {
-                streamText(name + ' をカートに追加いたしました！ ご注文ありがとうございます。引き続き他のメニューもご覧ください。', 45, 2000);
-            }, 500);
-            
-            // Reset demo state
-            demoStep = 0;
-            
-            // Reset card styles after a delay
-            setTimeout(() => {
-                coolMenuItems.forEach((_, i) => {
-                    const card = document.getElementById('card' + i);
-                    if (card) {
-                        card.style.filter = '';
-                        card.style.opacity = '';
-                        card.style.pointerEvents = '';
-                        card.style.transform = '';
-                        card.style.borderColor = '';
-                        card.style.boxShadow = '';
-                        card.classList.remove('lowcal-filtered', 'lowcal-highlighted');
+            if (isWine) {
+                // Wine order - end extended flow
+                setTimeout(() => {
+                    streamText(name + ' をカートに追加いたしました！ ご注文ありがとうございます。', 45, 2000, () => {
+                        // Reset everything
+                        resetToInitialState();
+                    });
+                }, 500);
+            } else {
+                // Food order - start extended flow
+                setTimeout(() => {
+                    streamText(name + ' をカートに追加いたしました！ ご注文ありがとうございます。', 45, 2000, () => {
+                        // Start extended flow: ask if user wants more
+                        setTimeout(() => {
+                            streamText('ありがとうございます！ 他にご注文はございますか？ 例えば、お飲み物はいかがでしょうか？', 45, 3000, () => {
+                                extendedFlow = true;
+                                demoStep = 3; // Extended flow step
+                                setTimeout(showVoiceGuide, 1000);
+                            });
+                        }, 1000);
+                    });
+                }, 500);
+                
+                // Reset card styles after a delay
+                setTimeout(() => {
+                    coolMenuItems.forEach((_, i) => {
+                        const card = document.getElementById('card' + i);
+                        if (card) {
+                            card.style.filter = '';
+                            card.style.opacity = '';
+                            card.style.pointerEvents = '';
+                            card.style.transform = '';
+                            card.style.borderColor = '';
+                            card.style.boxShadow = '';
+                            card.classList.remove('lowcal-filtered', 'lowcal-highlighted');
+                        }
+                    });
+                    
+                    // Reset label
+                    const label = document.getElementById('sectionLabel');
+                    if (label) {
+                        label.querySelector('.section-label-badge').textContent = '✦ AI Suggest';
+                        label.querySelector('.section-label-text').textContent = 'AIがあなたにぴったりのメニューをご提案';
                     }
-                });
-                
-                // Reset label
-                const label = document.getElementById('sectionLabel');
-                if (label) {
-                    label.querySelector('.section-label-badge').textContent = '✦ AI Suggest';
-                    label.querySelector('.section-label-text').textContent = 'AIがあなたにぴったりのメニューをご提案';
+                }, 3000);
+            }
+        }
+        
+        function resetToInitialState() {
+            demoStep = 0;
+            extendedFlow = false;
+            selectedWineIndex = -1;
+            
+            // Reset all cards
+            coolMenuItems.forEach((_, i) => {
+                const card = document.getElementById('card' + i);
+                if (card) {
+                    card.style.filter = '';
+                    card.style.opacity = '';
+                    card.style.pointerEvents = '';
+                    card.style.transform = '';
+                    card.style.borderColor = '';
+                    card.style.boxShadow = '';
+                    card.classList.remove('lowcal-filtered', 'lowcal-highlighted');
                 }
-                
-                // Show voice guide again
-                setTimeout(showVoiceGuide, 1000);
-            }, 3000);
+            });
+            
+            // Reset to regular menu
+            renderCards(regularMenuItems);
+            
+            // Reset label
+            const label = document.getElementById('sectionLabel');
+            if (label) {
+                label.querySelector('.section-label-badge').textContent = '✦ AI Suggest';
+                label.querySelector('.section-label-text').textContent = 'AIがあなたにぴったりのメニューをご提案';
+                label.classList.remove('visible');
+            }
+            
+            // Show voice guide
+            setTimeout(showVoiceGuide, 2000);
         }
 
         function runDemo() {
@@ -1071,17 +1149,81 @@
                         const selectedItem = lowCalItems[0]; // 蒸し鶏サラダ
                         
                         streamText('かしこまりました！ ' + selectedItem.name + ' を 1 つカートに追加いたします。', 45, 2000, () => {
-                            // Show cart alert
-                            showCartAlert();
-                            
-                            // AI thank you message
+                            // Show cart alert and start extended flow
+                            addToCart(selectedItem.name);
+                        });
+                    }
+                }, 2000);
+                
+            } else if (extendedFlow && demoStep === 3) {
+                // Extended flow step 1: User asks about drinks
+                setTimeout(() => {
+                    showUserSpeechBubble('おすすめのドリンクは何ですか？');
+                }, 500);
+
+                setTimeout(() => {
+                    btn.style.background = '';
+                    lbl.innerHTML = 'ボイス<br>オーダー';
+                    
+                    streamText('当店ではワインが大変人気です！ 特におすすめの3種類をご紹介します。', 45, 3000, () => {
+                        // Show wine items
+                        renderCards(wineItems);
+                        document.getElementById('sectionLabel').classList.add('visible');
+                        
+                        // Update label for wines
+                        const label = document.getElementById('sectionLabel');
+                        label.querySelector('.section-label-badge').textContent = '✦ Wine Selection';
+                        label.querySelector('.section-label-text').textContent = '当店自慢の厳選ワイン';
+                        
+                        // Reveal wine items
+                        wineItems.forEach((_, i) => {
                             setTimeout(() => {
-                                streamText('ご注文ありがとうございます！ 引き続き他のメニューもご覧ください。', 45, 0);
-                            }, 500);
-                            
-                            // Reset demo state
-                            demoStep = 0;
-                            setTimeout(showVoiceGuide, 3000);
+                                const card = document.getElementById('card' + i);
+                                if (card) card.classList.add('revealed');
+                            }, i * 250);
+                        });
+                        
+                        demoStep = 4; // Move to wine detail step
+                        setTimeout(showVoiceGuide, 1000);
+                    });
+                }, 2000);
+                
+            } else if (extendedFlow && demoStep === 4) {
+                // Extended flow step 2: User asks about first wine taste
+                setTimeout(() => {
+                    showUserSpeechBubble('1番目のワインの味はどんな感じですか？');
+                }, 500);
+
+                setTimeout(() => {
+                    btn.style.background = '';
+                    lbl.innerHTML = 'ボイス<br>オーダー';
+                    
+                    streamText('かしこまりました。1番目の「' + wineItems[0].name + '」について詳しくご説明します。', 45, 2000, () => {
+                        // Store selected wine index
+                        selectedWineIndex = 0;
+                        
+                        // Redirect to detail page after a delay
+                        setTimeout(() => {
+                            window.location.href = 'menu_ai_detail.html?wine=0';
+                        }, 1500);
+                    });
+                }, 2000);
+                
+            } else if (extendedFlow && demoStep === 5) {
+                // Extended flow step 3: User orders the wine
+                setTimeout(() => {
+                    showUserSpeechBubble('このワインを1つください');
+                }, 500);
+
+                setTimeout(() => {
+                    btn.style.background = '';
+                    lbl.innerHTML = 'ボイス<br>オーダー';
+                    
+                    if (selectedWineIndex >= 0) {
+                        const selectedWine = wineItems[selectedWineIndex];
+                        streamText('かしこまりました！ ' + selectedWine.name + ' を 1 つカートに追加いたします。', 45, 2000, () => {
+                            // Show cart alert and end extended flow
+                            addToCart(selectedWine.name, true);
                         });
                     }
                 }, 2000);
@@ -1090,6 +1232,25 @@
 
         function handleCardClick(card) {
             card.style.transform = 'scale(0.97)';
+            
+            // Check if we're in wine selection flow
+            if (extendedFlow && demoStep === 4) {
+                // Get wine index from card ID
+                const cardId = card.id;
+                const wineIndex = parseInt(cardId.replace('card', ''));
+                
+                if (!isNaN(wineIndex) && wineIndex >= 0 && wineIndex < wineItems.length) {
+                    selectedWineIndex = wineIndex;
+                    
+                    setTimeout(() => { 
+                        card.style.transform = ''; 
+                        window.location.href = 'menu_ai_detail.html?wine=' + wineIndex;
+                    }, 120);
+                    return;
+                }
+            }
+            
+            // Default behavior for regular menu items
             setTimeout(() => { card.style.transform = ''; window.location.href = 'menu_ai_detail.html'; }, 120);
         }
 
@@ -1104,6 +1265,8 @@
 
         // Demo state management
         let demoStep = 0; // 0: welcome, 1: first mic, 2: second mic, 3: item selection
+        let extendedFlow = false; // false: normal flow, true: extended flow (wine selection)
+        let selectedWineIndex = -1; // -1: none, 0-2: wine index
         
         // Cart alert function
         function showCartAlert() {
@@ -1128,9 +1291,14 @@
             }, 2000);
         }
         
-        // Auto welcome message on page load
+        // Check URL parameters on page load
         window.addEventListener('load', function() {
             console.log('Page loaded, showing welcome message...');
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const extended = urlParams.get('extended');
+            const step = urlParams.get('step');
+            const wineIndex = urlParams.get('wine');
             
             // Ensure AI banner is visible
             const aiBanner = document.getElementById('aiBanner');
@@ -1138,32 +1306,83 @@
             if (aiBanner) aiBanner.style.display = 'flex';
             if (contextBar) contextBar.style.display = 'none';
             
-            // Show welcome message immediately
-            setTimeout(() => {
-                const tickerText = document.getElementById('tickerText');
-                if (tickerText) {
-                    tickerText.textContent = '';
-                    tickerText.classList.add('streaming');
+            if (extended === 'true' && step === '4') {
+                // Returning from wine detail page - show wines again
+                console.log('Returning to wine selection');
+                extendedFlow = true;
+                demoStep = 4;
+                
+                // Show wine items
+                renderCards(wineItems);
+                document.getElementById('sectionLabel').classList.add('visible');
+                
+                // Update label for wines
+                const label = document.getElementById('sectionLabel');
+                label.querySelector('.section-label-badge').textContent = '✦ Wine Selection';
+                label.querySelector('.section-label-text').textContent = '当店自慢の厳選ワイン';
+                
+                // Reveal wine items
+                wineItems.forEach((_, i) => {
+                    setTimeout(() => {
+                        const card = document.getElementById('card' + i);
+                        if (card) card.classList.add('revealed');
+                    }, i * 250);
+                });
+                
+                // Show voice guide
+                setTimeout(showVoiceGuide, 1000);
+                
+            } else if (extended === 'true' && step === '5' && wineIndex !== null) {
+                // Returning to order the wine
+                console.log('Ordering wine:', wineIndex);
+                extendedFlow = true;
+                demoStep = 5;
+                selectedWineIndex = parseInt(wineIndex);
+                
+                if (selectedWineIndex >= 0 && selectedWineIndex < wineItems.length) {
+                    const selectedWine = wineItems[selectedWineIndex];
                     
-                    const fullText = 'ようこそいらっしゃいませ！ 当店へのご来店ありがとうございます。ごゆっくりお楽しみください。';
-                    let i = 0;
-                    const speed = 45;
+                    // Simulate user ordering the wine
+                    setTimeout(() => {
+                        showUserSpeechBubble('このワインを1つください');
+                    }, 500);
                     
-                    function typeWriter() {
-                        if (i < fullText.length) {
-                            tickerText.textContent += fullText.charAt(i);
-                            i++;
-                            setTimeout(typeWriter, speed);
-                        } else {
-                            tickerText.classList.remove('streaming');
-                            // Show voice guide after message completes
-                            setTimeout(showVoiceGuide, 1000);
-                        }
-                    }
-                    
-                    typeWriter();
+                    setTimeout(() => {
+                        streamText('かしこまりました！ ' + selectedWine.name + ' を 1 つカートに追加いたします。', 45, 2000, () => {
+                            // Show cart alert and end extended flow
+                            addToCart(selectedWine.name, true);
+                        });
+                    }, 2000);
                 }
-            }, 500);
+                
+            } else {
+                // Normal page load - show welcome message
+                setTimeout(() => {
+                    const tickerText = document.getElementById('tickerText');
+                    if (tickerText) {
+                        tickerText.textContent = '';
+                        tickerText.classList.add('streaming');
+                        
+                        const fullText = 'ようこそいらっしゃいませ！ 当店へのご来店ありがとうございます。ごゆっくりお楽しみください。';
+                        let i = 0;
+                        const speed = 45;
+                        
+                        function typeWriter() {
+                            if (i < fullText.length) {
+                                tickerText.textContent += fullText.charAt(i);
+                                i++;
+                                setTimeout(typeWriter, speed);
+                            } else {
+                                tickerText.classList.remove('streaming');
+                                // Show voice guide after message completes
+                                setTimeout(showVoiceGuide, 1000);
+                            }
+                        }
+                        
+                        typeWriter();
+                    }
+                }, 500);
+            }
         });
     </script>
     
