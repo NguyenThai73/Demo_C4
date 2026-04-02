@@ -45,15 +45,65 @@
             box-shadow: 0 0 80px rgba(0, 0, 0, 0.5);
         }
 
-        /* AI Banner - Giống menu_ai.html */
+        /* AI Banner - Standardized */
         .ai-banner {
             background: var(--primary);
             color: #fff;
-            padding: 16px 40px;
+            padding: 0 40px;
+            height: 52px;
             display: flex;
             align-items: center;
             gap: 20px;
             flex-shrink: 0;
+            z-index: 100;
+        }
+
+        /* ─── HEADER: CONTEXT BAR ───────────────────────── */
+        .context-bar {
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            height: 52px;
+            font-size: 13px;
+            flex-shrink: 0;
+            z-index: 10;
+            display: none; /* Hide by default when AI is talking on load */
+        }
+
+        .context-left {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .context-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .context-label {
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 500;
+        }
+
+        .context-value {
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .context-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .context-date {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 12px;
         }
 
         /* Speaker icon với pulse animation */
@@ -904,12 +954,11 @@
             </a>
         </div>
 
-        <!-- AI Banner - Giống menu_ai.html -->
-        <div class="ai-banner">
+        <!-- AI Banner -->
+        <div class="ai-banner" id="aiBanner">
             <div class="banner-speaker">
                 <i class="fa-solid fa-volume-high"></i>
             </div>
-
             <div class="banner-staff">
                 <div class="banner-avatar-wrap">
                     <img class="banner-staff-avatar"
@@ -922,15 +971,10 @@
                     <span class="banner-staff-label">AIスタッフ</span>
                 </div>
             </div>
-
             <div class="banner-divider"></div>
-
             <div class="banner-ticker">
-                <div class="ticker-text" id="aiTickerText">
-                    ご希望にぴったりの一品です。白身魚の軽やかな味わいが白ワインと相性抜群。
-                </div>
+                <div class="ticker-text" id="aiTickerText">ご希望にぴったりの一品です。</div>
             </div>
-
             <!-- Back button in banner -->
             <div class="banner-divider"></div>
             <button class="back-btn" onclick="window.location.href='menu_ai.html'"
@@ -940,9 +984,19 @@
             </button>
         </div>
 
-
-
-
+        <div class="context-bar">
+            <div class="context-left">
+                <div class="context-item"><span class="context-label">卓番</span><span class="context-value">T-01,
+                        T-02</span></div>
+                <div class="context-divider"></div>
+                <div class="context-item"><span class="context-label">端末</span><span
+                        class="context-value">iPad-03</span></div>
+                <div class="context-divider"></div>
+                <div class="context-item"><span class="context-label">受付番号</span><span
+                        class="context-value">#0042</span></div>
+            </div>
+            <div class="context-date" id="ctxDate"></div>
+        </div>
 
         <!-- Main Content -->
         <div class="main-content">
@@ -1085,6 +1139,7 @@
         ];
 
         let currentIndex = 0;
+        let headerResetTimer = null;
 
         function updateUI() {
             const item = candidates[currentIndex];
@@ -1148,6 +1203,10 @@
             const btn = document.getElementById('voiceOrderBtn');
             const lbl = document.getElementById('voiceOrderText');
             const chat = document.getElementById('chatLink');
+            const aiBanner = document.getElementById('aiBanner');
+            const contextBar = document.querySelector('.context-bar');
+
+            if (headerResetTimer) clearTimeout(headerResetTimer);
 
             // Listening state - Hide Chat Switch
             btn.style.background = '#a0a0a0';
@@ -1159,7 +1218,14 @@
                 btn.style.background = '';
                 lbl.innerHTML = 'ボイス<br>オーダー';
                 chat.style.display = 'inline-flex';
-            }, 3000);
+
+                // Display Banner & Hide Header
+                aiBanner.style.display = 'flex';
+                contextBar.style.display = 'none';
+
+                // Simulate AI response logic
+                startAiTicker();
+            }, 2000);
         }
 
         function goBack() {
@@ -1171,16 +1237,21 @@
             window.location.href = 'chat_ai.html';
         }
 
-
-
         // AI Ticker Text Streaming Effect
         function startAiTicker() {
             const tickerText = document.getElementById('aiTickerText');
             const voiceGuide = document.getElementById('voiceGuideContainer');
+            const aiBanner = document.getElementById('aiBanner');
+            const contextBar = document.querySelector('.context-bar');
             const fullText = tickerText.textContent;
 
-            // Ẩn voice input khi AI bắt đầu nói
+            // Clear timer if manually triggered
+            if (headerResetTimer) clearTimeout(headerResetTimer);
+
+            // Hide voice input when AI starts talking
             voiceGuide.classList.add('hidden');
+            aiBanner.style.display = 'flex';
+            contextBar.style.display = 'none';
 
             tickerText.textContent = '';
             tickerText.classList.add('streaming');
@@ -1196,18 +1267,16 @@
                 } else {
                     tickerText.classList.remove('streaming');
 
-                    // Hiển thị voice input khi AI nói xong
+                    // Show voice input when AI finishes
                     setTimeout(() => {
                         voiceGuide.classList.remove('hidden');
                     }, 500);
 
-                    // Start blinking cursor animation after completion
-                    setTimeout(() => {
-                        tickerText.classList.add('streaming');
-                        setTimeout(() => {
-                            tickerText.classList.remove('streaming');
-                        }, 2000);
-                    }, 3000);
+                    // 5s Restoration Timer
+                    headerResetTimer = setTimeout(() => {
+                        aiBanner.style.display = 'none';
+                        contextBar.style.display = 'flex';
+                    }, 5000);
                 }
             }
 
