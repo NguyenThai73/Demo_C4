@@ -1235,91 +1235,38 @@
             }
         }
 
-        function handleCardClick(card) {
-            card.style.transform = 'scale(0.97)';
-
-            // Check if we're in wine selection flow
-            if (extendedFlow && demoStep === 4) {
-                // Get wine index from card ID
-                const cardId = card.id;
-                const wineIndex = parseInt(cardId.replace('card', ''));
-
-                if (!isNaN(wineIndex) && wineIndex >= 0 && wineIndex < wineItems.length) {
-                    selectedWineIndex = wineIndex;
-
-                    setTimeout(() => {
-                        card.style.transform = '';
-                        window.location.href = 'menu_ai_detail_wine.html';
-                    }, 120);
-                    return;
-                }
-            }
-
-            // Default behavior for regular menu items
-            setTimeout(() => { card.style.transform = ''; window.location.href = 'menu_ai_detail.html'; }, 120);
-        }
+        // Dessert data for the final step
+        const dessertItems = [
+            { name: 'とろけるフォンダンショコラ', desc: '中から温かいチョコが溢れ出す、至福のひんやりバニラ添え。', price: '980', img: 'https://images.unsplash.com/photo-1541920443744-71cbe00d5855?w=600&q=80', reason: '🍫 濃厚チョコ' },
+            { name: '季節のフルーツタルト', desc: '旬のフルーツを贅沢に使った、彩り豊かな自家製タルト。', price: '850', img: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=600&q=80', reason: '🍓 爽やか' },
+            { name: '自家製クレームブリュレ', desc: 'パリパリのキャラメリゼと、濃厚なカスタードのハーモニー。', price: '780', img: 'https://images.unsplash.com/photo-1470333841576-5146244844e3?w=600&q=80', reason: '🍮 定番人気' },
+            { name: 'とろける杏仁豆腐', desc: '口当たりの良い滑らかな杏仁豆腐。クコの実を添えてサッパリと。', price: '450', img: 'https://images.unsplash.com/photo-1563805039227-9999a0e6bb7c?w=400&q=80', reason: '🍨 さっぱり' },
+            { name: '自家製マンゴープリン', desc: '完熟マンゴーをたっぷり使った濃厚な味わい。', price: '520', img: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&q=80', reason: '🥭 濃厚な甘み' },
+            { name: '和風抹茶アイスパフェ', desc: '厳選された宇治抹茶のアイスと小豆、白玉の華やかなパフェ。', price: '680', img: 'https://images.unsplash.com/photo-1579372781848-65ec49896791?w=400&q=80', reason: '✨ 宇治抹茶使用' }
+        ];
 
         window.onload = () => {
-            renderCards(regularMenuItems);
+            renderCards(dessertItems);
+            // Cập nhật nhãn tiêu đề
+            const label = document.getElementById('sectionLabel');
+            if (label) {
+                label.classList.add('visible');
+                label.querySelector('.section-label-badge').textContent = '✦ AI Suggest';
+                label.querySelector('.section-label-text').textContent = '食後にぴったりなデザート 6 選';
+            }
+            
+            // AI nói chào mừng trang dessert
+            setTimeout(() => {
+                streamText('人気のデザート 6 点をご紹介します！ お好みのものをお選びください。', 45, 0);
+                setTimeout(showVoiceGuide, 1000);
+            }, 500);
+
             setInterval(() => {
                 const now = new Date();
                 const ctxDate = document.getElementById('ctxDate');
                 if (ctxDate) ctxDate.innerText = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
             }, 1000);
         };
-
-        // Demo state management
-        let demoStep = 0; // 0: welcome, 1: first mic, 2: second mic, 3: item selection
-        let extendedFlow = false; // false: normal flow, true: extended flow (wine selection)
-        let selectedWineIndex = -1; // -1: none, 0-2: wine index
-
-        // Cart alert function
-        function showCartAlert() {
-            const alert = document.createElement('div');
-            alert.className = 'cart-alert';
-            alert.textContent = 'カートに追加しました。';
-            document.body.appendChild(alert);
-
-            // Show alert
-            setTimeout(() => {
-                alert.classList.add('show');
-            }, 10);
-
-            // Hide after 2 seconds
-            setTimeout(() => {
-                alert.classList.remove('show');
-                setTimeout(() => {
-                    if (alert.parentNode) {
-                        alert.parentNode.removeChild(alert);
-                    }
-                }, 300);
-            }, 2000);
-        }
-
-        // Dessert data for the final step
-        const dessertItems = [
-            {
-                name: 'とろける杏仁豆腐',
-                desc: '口当たりの良い滑らかな杏仁豆腐。クコの実を添えて',
-                price: '450',
-                img: 'https://images.unsplash.com/photo-1563805039227-9999a0e6bb7c?w=400&q=80',
-                reason: '🍨 食後にさっぱり'
-            },
-            {
-                name: '自家製マンゴープリン',
-                desc: '完熟マンゴーをたっぷり使った濃厚な味わい',
-                price: '520',
-                img: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&q=80',
-                reason: '🥭 濃厚な甘み'
-            },
-            {
-                name: '抹茶アイスパフェ',
-                desc: '厳選された抹茶を使用した上品な味わいのパフェ',
-                price: '680',
-                img: 'https://images.unsplash.com/photo-1579372781848-65ec49896791?w=400&q=80',
-                reason: '✨ 宇治抹茶使用'
-            }
-        ];
 
         // Check URL parameters on page load
         window.addEventListener('load', function () {
