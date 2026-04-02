@@ -7,7 +7,8 @@
     <title>posSpeak – AI Sushi Detail</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -609,7 +610,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px; /* Tăng khoảng cách để không bị nhấn nhầm */
+            gap: 16px;
+            /* Tăng khoảng cách để không bị nhấn nhầm */
             z-index: 150;
             opacity: 1;
             transform: translateY(0);
@@ -1039,22 +1041,25 @@
                 <i class="fa-solid fa-utensils"></i>
                 <span>メニュー</span>
             </div>
-            <div class="nav-item" onclick="window.location.href='cart.html'">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span>カート</span>
-            </div>
-            <div class="nav-item" onclick="window.location.href='order_status.html'">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-                <span>注文履歴</span>
-            </div>
-            <div class="nav-item" onclick="window.location.href='chat_ai.html'">
-                <i class="fa-solid fa-comment-dots"></i>
-                <span>会話</span>
-            </div>
-            <div class="nav-item" onclick="changeLanguage()">
-                <i class="fa-solid fa-globe"></i>
-                <span>言語</span>
-            </div>
+            <<<<<<< HEAD <div class="nav-item" onclick="window.location.href='cart.html'">
+                =======
+                <div class="nav-item">
+                    >>>>>>> 7c07b9fdc337edf9e1c3fc66599ecda508724822
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>カート</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='order_status.html'">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>注文履歴</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='chat_ai.html'">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <span>会話</span>
+                </div>
+                <div class="nav-item" onclick="changeLanguage()">
+                    <i class="fa-solid fa-globe"></i>
+                    <span>言語</span>
+                </div>
         </div>
 
     </div>
@@ -1150,8 +1155,13 @@
             const chat = document.getElementById('chatLink');
 
             // Listening state - Hide Chat Switch
+<<<<<<< HEAD
             btn.style.background = '#a0a0a0';
             lbl.innerHTML = '聞き取り中';
+=======
+            btn.style.background = '#3a6b3d';
+            lbl.innerHTML = '聞き取り中...';
+>>>>>>> 7c07b9fdc337edf9e1c3fc66599ecda508724822
             chat.style.display = 'none';
 
             setTimeout(() => {

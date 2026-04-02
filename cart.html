@@ -77,7 +77,6 @@
             overflow: hidden;
         }
 
-        /* Cart List */
         .cart-list-container {
             flex: 1.5;
             background: #fff;
@@ -122,7 +121,6 @@
         .qty-btn:hover { border-color: var(--primary); color: var(--primary); }
         .qty-val { font-size: 16px; font-weight: 700; min-width: 20px; text-align: center; }
 
-        /* Summary Panel */
         .summary-panel {
             flex: 0.8;
             display: flex;
@@ -155,7 +153,6 @@
         }
         .cancel-btn:hover { border-color: #999; color: #444; }
 
-        /* ─── BOTTOM NAV ──────────────────────────────────── */
         .bottom-nav {
             display: flex;
             background: var(--footer-bg);
@@ -194,12 +191,10 @@
             display: flex; align-items: center; justify-content: center;
             border: 2px solid var(--footer-bg);
         }
-
     </style>
 </head>
 <body>
     <div class="ipad-frame">
-        <!-- Context Bar -->
         <div class="context-bar">
             <div class="context-left">
                 <div class="context-item"><span class="context-label">卓番</span><span class="context-value">T-01, T-02</span></div>
@@ -208,18 +203,16 @@
                 <div class="context-divider"></div>
                 <div class="context-item"><span class="context-label">受付番号</span><span class="context-value">#0042</span></div>
             </div>
-            <div class="context-date" id="ctxDate">2026/04/02 09:56</div>
+            <div class="context-date" id="ctxDate"></div>
         </div>
 
         <div class="main-content">
-            <!-- Left: Cart Items -->
             <div class="cart-list-container">
                 <div class="cart-header">
                     <h2>ご注文内容の確認</h2>
                     <button class="clear-btn" onclick="clearAll()"><i class="fa-solid fa-trash-can"></i> 全て消去</button>
                 </div>
                 <div class="cart-items" id="cartItems">
-                    <!-- Dynamic rendering -->
                     <div class="cart-item">
                         <img class="item-img" src="https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=120&q=80">
                         <div class="item-info">
@@ -236,7 +229,6 @@
                 </div>
             </div>
 
-            <!-- Right: Summary -->
             <div class="summary-panel">
                 <div class="summary-card">
                     <div class="summary-row">
@@ -261,12 +253,10 @@
             </div>
         </div>
 
-        <!-- Bottom Navigation -->
         <div class="bottom-nav">
             <button class="nav-item" onclick="history.back()"><i class="fa-solid fa-utensils"></i><span>メニュー</span></button>
             <button class="nav-item active"><i class="fa-solid fa-cart-shopping"></i><span class="nav-badge">1</span><span>カート</span></button>
             <button class="nav-item" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></button>
-            <button class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>AI相談</span></button>
             <button class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></button>
         </div>
     </div>
@@ -279,11 +269,11 @@
         function clearAll() {
             if(confirm('カートを空にしますか？')) {
                 document.getElementById('cartItems').innerHTML = '<div style="text-align:center; padding-top:60px; color:#aaa;">カートは空です</div>';
-                document.querySelector('.nav-badge').style.display='none';
+                const badge = document.querySelector('.nav-badge');
+                if(badge) badge.style.display='none';
             }
         }
         function updateQty(i, d) {
-            // Placeholder logic
             const val = document.querySelector('.qty-val');
             let n = parseInt(val.innerText);
             if(n+d > 0) val.innerText = n+d;
@@ -291,47 +281,13 @@
 
         setInterval(() => {
             const now = new Date();
-            document.getElementById('ctxDate').innerText = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+            const y = now.getFullYear();
+            const mo = String(now.getMonth()+1).padStart(2,'0');
+            const da = String(now.getDate()).padStart(2,'0');
+            const hh = String(now.getHours()).padStart(2,'0');
+            const mm = String(now.getMinutes()).padStart(2,'0');
+            document.getElementById('ctxDate').innerText = `${y}/${mo}/${da} ${hh}:${mm}`;
         }, 1000);
-    </script>
-</body>
-</html>
-
-    <script>
-        function goToMenu() {
-            const session = JSON.parse(localStorage.getItem('currentSession') || '{}');
-            window.location.href = session.orderMode === 'ai' ? 'menu_ai.html' : 'menu.html';
-        }
-
-        const prices = [600, 600];
-        const qtys = [2, 2];
-
-        function changeItemQty(index, delta) {
-            qtys[index] = Math.max(1, qtys[index] + delta);
-            document.getElementById('qty' + index).textContent = qtys[index];
-            updateTotal();
-        }
-
-        function updateTotal() {
-            let total = 0;
-            let count = 0;
-            for (let i = 0; i < prices.length; i++) {
-                total += prices[i] * qtys[i];
-                count += qtys[i];
-            }
-            document.getElementById('totalPrice').textContent = '¥' + total.toLocaleString();
-            document.getElementById('totalBadge').textContent = count;
-            // Update order button sub-text
-            document.getElementById('orderBtnSub').textContent = count + '品 · ¥' + total.toLocaleString();
-        }
-
-        // Initialize sub-text on load
-        updateTotal();
-
-        function openLang() { document.getElementById('langPopup').classList.add('show'); }
-        function closeLang() { document.getElementById('langPopup').classList.remove('show'); }
-        function openStaff() { document.getElementById('staffPopup').classList.add('show'); }
-        function closeStaff() { document.getElementById('staffPopup').classList.remove('show'); }
     </script>
 </body>
 </html>

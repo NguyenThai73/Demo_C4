@@ -1,668 +1,816 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Lumina Gastronomy - Start Ordering</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Noto Sans JP', sans-serif;
-    height: 100vh;
-    background: #1a1a1a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .ipad-frame {
-    width: 1280px;
-    height: 800px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: 12px;
-    background: #f0ece4;
-    box-shadow: 0 0 80px rgba(0,0,0,0.7);
-    position: relative;
-  }
-
-  /* ── Context Bar ── */
-  .context-bar {
-    background: #2d3a2e;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 32px;
-    font-size: 13px;
-    flex-shrink: 0;
-  }
-  .context-left { display: flex; gap: 20px; align-items: center; }
-  .context-item { display: flex; align-items: center; gap: 6px; }
-  .context-label { color: rgba(255,255,255,0.55); font-weight: 400; }
-  .context-value { font-weight: 700; letter-spacing: 0.3px; }
-  .context-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.2); }
-  .context-date { color: rgba(255,255,255,0.5); font-size: 12px; }
-
-  /* ── Main ── */
-  .main-content {
-    flex: 1;
-    background: #f0ece4;
-    display: flex;
-    padding: 40px 64px 30px;
-    gap: 40px;
-    overflow: hidden;
-  }
-
-  /* ── Left: AI Hero ── */
-  .hero-side {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .ai-card {
-    flex: 1;
-    background: #fff;
-    border-radius: 20px;
-    padding: 40px 48px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    cursor: pointer;
-    border: 3px solid #2d3a2e;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.2s;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  }
-  .ai-card:hover { box-shadow: 0 12px 36px rgba(0,0,0,0.15); transform: translateY(-2px); }
-
-  /* Pulse ring animation */
-  .mic-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 24px;
-    position: relative;
-    height: 100px;
-  }
-  .mic-ring {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(45,58,46,0.1);
-    animation: pulse-ring 2s ease-out infinite;
-  }
-  .mic-ring:nth-child(1) { width: 90px; height: 90px; animation-delay: 0s; }
-  .mic-ring:nth-child(2) { width: 70px; height: 70px; animation-delay: 0.35s; }
-  @keyframes pulse-ring {
-    0%   { transform: scale(0.85); opacity: 0.6; }
-    70%  { transform: scale(1.3); opacity: 0; }
-    100% { transform: scale(1.3); opacity: 0; }
-  }
-  .mic-btn {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: #2d3a2e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-    flex-shrink: 0;
-  }
-  .mic-btn .material-symbols-outlined {
-    font-size: 32px;
-    color: #fff;
-    font-variation-settings: 'FILL' 1;
-  }
-
-  .ai-card-title {
-    font-size: 26px;
-    font-weight: 900;
-    color: #1a1a1a;
-    text-align: center;
-    margin-bottom: 8px;
-    letter-spacing: -0.5px;
-  }
-  .ai-card-sub {
-    font-size: 15px;
-    color: #666;
-    text-align: center;
-    line-height: 1.6;
-    margin-bottom: 30px;
-  }
-
-  /* Language cards */
-  .lang-section-label {
-    font-size: 13px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #888;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-  .lang-section-label .material-symbols-outlined { font-size: 18px; color: #2d3a2e; }
-
-  .lang-cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
-  .lang-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 16px 10px;
-    border-radius: 14px;
-    border: 2px solid #e8e4de;
-    background: #f7f5f2;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: inherit;
-  }
-  .lang-card:hover {
-    border-color: #2d3a2e;
-    background: #f0f5f0;
-  }
-  .lang-card.active {
-    background: #2d3a2e;
-    border-color: #2d3a2e;
-    box-shadow: 0 2px 10px rgba(45,58,46,0.2);
-  }
-  .lang-flag {
-    font-size: 22px;
-    line-height: 1;
-  }
-  .lang-name {
-    font-size: 11.5px;
-    font-weight: 700;
-    color: #333;
-    line-height: 1.2;
-  }
-  .lang-card.active .lang-name { color: #fff; }
-  .lang-native {
-    font-size: 9.5px;
-    color: #999;
-    font-weight: 500;
-  }
-  .lang-card.active .lang-native { color: rgba(255,255,255,0.65); }
-
-  /* Voice / Chat toggle */
-  .method-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-  }
-  .method-btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 14px 0;
-    border-radius: 12px;
-    border: 1.5px solid #ddd;
-    background: #f7f5f2;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 700;
-    color: #444;
-    transition: all 0.15s;
-    font-family: inherit;
-  }
-  .method-btn .material-symbols-outlined { font-size: 20px; }
-  .method-btn.active {
-    background: #2d3a2e;
-    border-color: #2d3a2e;
-    color: #fff;
-  }
-
-  /* ── Right: Settings + Normal ── */
-  .right-side {
-    width: 380px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  /* Normal card */
-  .normal-card {
-    background: #fff;
-    border-radius: 20px;
-    padding: 24px 28px;
-    border: 2px solid #e0dcd4;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  }
-  .normal-card:hover { border-color: #bbb; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-  .normal-card.selected { border-color: #2d3a2e; background: #fdfdfd; }
-
-  .normal-card-top {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 10px;
-  }
-  .normal-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: #f0ece4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .normal-icon .material-symbols-outlined { font-size: 24px; color: #2d3a2e; }
-  .normal-card-label { font-size: 18px; font-weight: 900; color: #1a1a1a; }
-  .normal-card-sub { font-size: 13px; color: #888; line-height: 1.5; }
-
-  /* Settings panel */
-  .settings-panel {
-    background: #fff;
-    border-radius: 20px;
-    padding: 28px 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  }
-
-  .setting-row-label {
-    font-size: 12px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #999;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-  .setting-row-label .material-symbols-outlined { font-size: 18px; }
-
-  /* Guest counter */
-  .guest-row { display: flex; gap: 8px; }
-  .guest-counter {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #f7f5f2;
-    border-radius: 8px;
-    padding: 4px 6px;
-  }
-  .counter-label { font-size: 11.5px; font-weight: 700; color: #1a1a1a; text-align: center; }
-
-  /* Number Buttons */
-  .number-btns {
-    display: flex;
-    gap: 4px;
-    margin-top: 4px;
-  }
-  .num-btn {
-    flex: 1;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    border: 1.5px solid #e0dcd4;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 800;
-    color: #444;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .num-btn:hover {
-    border-color: #2d3a2e;
-  }
-  .num-btn.active {
-    background: #2d3a2e;
-    border-color: #2d3a2e;
-    color: #fff;
-  }
-
-  /* CTA lang highlight */
-  .cta-lang-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: rgba(255,255,255,0.18);
-    border-radius: 20px;
-    padding: 2px 8px 2px 6px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-  }
-
-  /* ── CTA ── */
-  .cta-wrap {
-    padding: 0 64px 40px;
-    background: #f0ece4;
-    flex-shrink: 0;
-  }
-  .cta-btn {
-    width: 100%;
-    padding: 22px 0;
-    border-radius: 16px;
-    border: none;
-    background: #2d3a2e;
-    color: #fff;
-    font-size: 20px;
-    font-weight: 900;
-    font-family: inherit;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    transition: all 0.15s;
-    letter-spacing: 0.02em;
-    box-shadow: 0 10px 30px rgba(45, 58, 46, 0.2);
-  }
-  .cta-btn:hover { background: #3a4d3b; transform: translateY(-2px); box-shadow: 0 15px 40px rgba(45, 58, 46, 0.3); }
-  .cta-btn:active { transform: scale(0.98); }
-  .cta-btn .material-symbols-outlined { font-size: 20px; font-variation-settings: 'FILL' 1; }
-
-  .material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  }
-</style>
-</head>
-<body>
-<div class="ipad-frame">
-
-  <!-- Context Bar -->
-  <div class="context-bar">
-    <div class="context-left">
-      <div class="context-item">
-        <span class="context-label">卓番:</span>
-        <span class="context-value" id="ctxTable">T-01, T-02</span>
-      </div>
-      <div class="context-divider"></div>
-      <div class="context-item">
-        <span class="context-label">端末:</span>
-        <span class="context-value" id="ctxTerminal">iPad-03</span>
-      </div>
-      <div class="context-divider"></div>
-      <div class="context-item">
-        <span class="context-label">受付番号:</span>
-        <span class="context-value" id="ctxReception">#0042</span>
-      </div>
-    </div>
-    <div class="context-date" id="ctxDate"></div>
-  </div>
-
-  <!-- Main Content -->
-  <div class="main-content">
-
-    <!-- Left: AI Card -->
-    <div class="hero-side">
-      <div class="ai-card" id="ai-card" onclick="selectMode('ai')">
-
-        <!-- Mic Visual -->
-        <div class="mic-wrap">
-          <div class="mic-ring"></div>
-          <div class="mic-ring"></div>
-          <div class="mic-btn">
-            <span class="material-symbols-outlined">mic</span>
-          </div>
-        </div>
-
-        <p class="ai-card-title">AIで注文する</p>
-        <p class="ai-card-sub">話しかけるだけ — メニューを探さなくてもOK</p>
-
-        <!-- Language Cards -->
-        <div class="lang-section-label">
-          <span class="material-symbols-outlined">language</span>
-          話しかける言語を選んでください
-        </div>
-        <div class="lang-cards">
-          <button class="lang-card active" onclick="selectLang(this, event)" data-lang="日本語">
-            <span class="lang-flag">🇯🇵</span>
-            <span class="lang-name">日本語</span>
-            <span class="lang-native">Japanese</span>
-          </button>
-          <button class="lang-card" onclick="selectLang(this, event)" data-lang="English">
-            <span class="lang-flag">🇺🇸</span>
-            <span class="lang-name">English</span>
-            <span class="lang-native">英語</span>
-          </button>
-          <button class="lang-card" onclick="selectLang(this, event)" data-lang="한국어">
-            <span class="lang-flag">🇰🇷</span>
-            <span class="lang-name">한국어</span>
-            <span class="lang-native">韓国語</span>
-          </button>
-          <button class="lang-card" onclick="selectLang(this, event)" data-lang="中文">
-            <span class="lang-flag">🇨🇳</span>
-            <span class="lang-name">中文</span>
-            <span class="lang-native">中国語</span>
-          </button>
-        </div>
-
-        <!-- Voice / Chat -->
-        <div class="method-row">
-          <button class="method-btn active" id="voice-btn" onclick="selectMethod('voice', event)">
-            <span class="material-symbols-outlined">mic</span>
-            音声
-          </button>
-          <button class="method-btn" id="chat-btn" onclick="selectMethod('chat', event)">
-            <span class="material-symbols-outlined">chat_bubble</span>
-            チャット
-          </button>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Right: Normal + Settings -->
-    <div class="right-side">
-
-      <!-- Normal Order Card -->
-      <div class="normal-card" id="normal-card" onclick="selectMode('normal')">
-        <div class="normal-card-top">
-          <div class="normal-icon">
-            <span class="material-symbols-outlined">restaurant_menu</span>
-          </div>
-          <span class="normal-card-label">通常メニュー</span>
-        </div>
-        <p class="normal-card-sub">メニューを見ながら自分で選んで注文</p>
-      </div>
-
-      <!-- Settings -->
-      <div class="settings-panel">
-
-        <!-- Guests -->
-        <div style="display: flex; flex-direction: column; gap: 14px;">
-          <div>
-            <div class="setting-row-label">
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
-              大人
-            </div>
-            <div class="number-btns" id="adultBtns">
-              <button class="num-btn" onclick="setGuest('adult', 1)">1</button>
-              <button class="num-btn active" onclick="setGuest('adult', 2)">2</button>
-              <button class="num-btn" onclick="setGuest('adult', 3)">3</button>
-              <button class="num-btn" onclick="setGuest('adult', 4)">4</button>
-              <button class="num-btn" onclick="setGuest('adult', 5)">5+</button>
-            </div>
-          </div>
-
-          <div>
-            <div class="setting-row-label">
-              <span class="material-symbols-outlined">child_care</span>
-              子供
-            </div>
-            <div class="number-btns" id="childBtns">
-              <button class="num-btn active" onclick="setGuest('child', 0)">0</button>
-              <button class="num-btn" onclick="setGuest('child', 1)">1</button>
-              <button class="num-btn" onclick="setGuest('child', 2)">2</button>
-              <button class="num-btn" onclick="setGuest('child', 3)">3</button>
-              <button class="num-btn" onclick="setGuest('child', 4)">4+</button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div><!-- /main-content -->
-
-  <!-- CTA -->
-  <div class="cta-wrap">
-    <button class="cta-btn" id="primary-cta" onclick="startOrder()">
-      <span class="material-symbols-outlined" id="cta-icon">mic</span>
-      <span id="cta-text">この設定で音声注文を開始</span>
-      <span class="cta-lang-badge" id="cta-lang-badge">🇯🇵 日本語</span>
-    </button>
-  </div>
-
-</div><!-- /ipad-frame -->
-
-<script>
-  let currentMode = 'ai';
-  let currentMethod = 'voice';
-  let adultCount = 2;
-  let childCount = 0;
-
-  function selectMode(mode) {
-    currentMode = mode;
-    const aiCard = document.getElementById('ai-card');
-    const normalCard = document.getElementById('normal-card');
-    const ctaIcon = document.getElementById('cta-icon');
-    const ctaText = document.getElementById('cta-text');
-
-    if (mode === 'ai') {
-      aiCard.style.borderColor = '#2d3a2e';
-      normalCard.classList.remove('selected');
-      ctaIcon.innerText = currentMethod === 'voice' ? 'mic' : 'chat_bubble';
-      ctaText.innerText = currentMethod === 'voice' ? '音声で注文を始める' : 'チャットで注文を始める';
-    } else {
-      normalCard.classList.add('selected');
-      aiCard.style.borderColor = '#e0dcd4';
-      ctaIcon.innerText = 'restaurant_menu';
-      ctaText.innerText = '通常注文で開始';
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Lumina Gastronomy - Start Ordering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Outfit:wght@600;700;800&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-  }
 
-  function selectMethod(method, event) {
-    event.stopPropagation();
-    currentMethod = method;
-    selectMode('ai');
-    document.getElementById('voice-btn').classList.toggle('active', method === 'voice');
-    document.getElementById('chat-btn').classList.toggle('active', method === 'chat');
-  }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      height: 100vh;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  function setGuest(type, val) {
-    let finalVal = val;
-    // Handle "5+" or "4+" click
-    if ((type === 'adult' && val === 5) || (type === 'child' && val === 4)) {
-      const label = type === 'adult' ? '大人' : '子供';
-      const promptVal = prompt(`${label}の正確な人数を入力してください（${val}名以上）`, val);
-      if (promptVal !== null) {
-        const num = parseInt(promptVal, 10);
-        if (!isNaN(num) && num >= val) {
-          finalVal = num;
-        } else if (promptVal === '') {
-          finalVal = val;
-        } else {
-          return; // Invalid or cancelled
-        }
-      } else {
-        return; // Cancelled
+    .ipad-frame {
+      width: 1280px;
+      height: 800px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #f0ece4;
+      box-shadow: 0 0 80px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+
+    /* ── Context Bar ── */
+    .context-bar {
+      background: #2d3a2e;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 32px;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .context-left {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .context-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .context-label {
+      color: rgba(255, 255, 255, 0.55);
+      font-weight: 400;
+    }
+
+    .context-value {
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .context-divider {
+      width: 1px;
+      height: 16px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .context-date {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 12px;
+    }
+
+    /* ── Main ── */
+    .main-content {
+      flex: 1;
+      background: #f0ece4;
+      display: flex;
+      padding: 40px 64px 30px;
+      gap: 40px;
+      overflow: hidden;
+    }
+
+    /* ── Left: AI Hero ── */
+    .hero-side {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .ai-card {
+      flex: 1;
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: pointer;
+      border: 3px solid #2d3a2e;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .ai-card:hover {
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    /* Pulse ring animation */
+    .mic-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      position: relative;
+      height: 100px;
+    }
+
+    .mic-ring {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(45, 58, 46, 0.1);
+      animation: pulse-ring 2s ease-out infinite;
+    }
+
+    .mic-ring:nth-child(1) {
+      width: 90px;
+      height: 90px;
+      animation-delay: 0s;
+    }
+
+    .mic-ring:nth-child(2) {
+      width: 70px;
+      height: 70px;
+      animation-delay: 0.35s;
+    }
+
+    @keyframes pulse-ring {
+      0% {
+        transform: scale(0.85);
+        opacity: 0.6;
+      }
+
+      70% {
+        transform: scale(1.3);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1.3);
+        opacity: 0;
       }
     }
 
-    if (type === 'adult') {
-      adultCount = finalVal;
-      const btns = document.getElementById('adultBtns').querySelectorAll('.num-btn');
-      btns.forEach((b, i) => {
-        const isActive = (i < 4 && (i + 1) === finalVal) || (i === 4 && finalVal >= 5);
-        b.classList.toggle('active', isActive);
-        if (i === 4) b.textContent = finalVal >= 5 ? finalVal + '+' : '5+';
-      });
-    } else {
-      childCount = finalVal;
-      const btns = document.getElementById('childBtns').querySelectorAll('.num-btn');
-      btns.forEach((b, i) => {
-        const isActive = (i < 4 && i === finalVal) || (i === 4 && finalVal >= 4);
-        b.classList.toggle('active', isActive);
-        if (i === 4) b.textContent = finalVal >= 4 ? finalVal + '+' : '4+';
-      });
+    .mic-btn {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #2d3a2e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
     }
-  }
 
-  const langFlags = { '日本語': '🇯🇵', 'English': '🇺🇸', '한국어': '🇰🇷', '中文': '🇨🇳' };
-
-  function selectLang(btn, event) {
-    if (event) event.stopPropagation();
-    document.querySelectorAll('.lang-card').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const lang = btn.dataset.lang;
-    currentLang = lang;
-    // Update CTA badge
-    const badge = document.getElementById('cta-lang-badge');
-    if (badge) badge.textContent = (langFlags[lang] || '') + ' ' + lang;
-    // Keep AI mode selected
-    selectMode('ai');
-  }
-
-  let currentLang = '日本語';
-
-  function startOrder() {
-    const isAI = currentMode === 'ai';
-    const session = {
-      tables: JSON.parse(localStorage.getItem('selectedTables') || '[]'),
-      adults: adultCount,
-      children: childCount,
-      totalGuests: adultCount + childCount,
-      language: currentLang,
-      orderMode: isAI ? 'ai' : 'manual',
-      aiMethod: currentMethod,
-      terminal: localStorage.getItem('terminalId') || 'iPad-03',
-      reception: localStorage.getItem('receptionNo') || '0042',
-      startedAt: new Date().toISOString()
-    };
-    localStorage.setItem('currentSession', JSON.stringify(session));
-    if (isAI) {
-      sessionStorage.setItem('showAiWelcome', 'yes');
-      window.location.href = 'menu_ai.html';
-    } else {
-      window.location.href = 'menu.html';
+    .mic-btn .material-symbols-outlined {
+      font-size: 32px;
+      color: #fff;
+      font-variation-settings: 'FILL' 1;
     }
-  }
 
-  (function initContext() {
-    const now = new Date();
-    const y = now.getFullYear();
-    const m = String(now.getMonth() + 1).padStart(2, '0');
-    const d = String(now.getDate()).padStart(2, '0');
-    const hh = String(now.getHours()).padStart(2, '0');
-    const mm = String(now.getMinutes()).padStart(2, '0');
-    document.getElementById('ctxDate').textContent = y + '/' + m + '/' + d + ' ' + hh + ':' + mm;
-    const tables = JSON.parse(localStorage.getItem('selectedTables') || '[]');
-    if (tables.length > 0) document.getElementById('ctxTable').textContent = tables.join(', ');
-    document.getElementById('ctxTerminal').textContent = localStorage.getItem('terminalId') || 'iPad-03';
-    document.getElementById('ctxReception').textContent = '#' + (localStorage.getItem('receptionNo') || '0042');
-  })();
-</script>
+    .ai-card-title {
+      font-size: 26px;
+      font-weight: 900;
+      color: #1a1a1a;
+      text-align: center;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .ai-card-sub {
+      font-size: 15px;
+      color: #666;
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    /* Language cards */
+    .lang-section-label {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #888;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .lang-section-label .material-symbols-outlined {
+      font-size: 18px;
+      color: #2d3a2e;
+    }
+
+    .lang-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .lang-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 16px 10px;
+      border-radius: 14px;
+      border: 2px solid #e8e4de;
+      background: #f7f5f2;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .lang-card:hover {
+      border-color: #2d3a2e;
+      background: #f0f5f0;
+    }
+
+    .lang-card.active {
+      background: #2d3a2e;
+      border-color: #2d3a2e;
+      box-shadow: 0 2px 10px rgba(45, 58, 46, 0.2);
+    }
+
+    .lang-flag {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .lang-name {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #333;
+      line-height: 1.2;
+    }
+
+    .lang-card.active .lang-name {
+      color: #fff;
+    }
+
+    .lang-native {
+      font-size: 9.5px;
+      color: #999;
+      font-weight: 500;
+    }
+
+    .lang-card.active .lang-native {
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    /* Voice / Chat toggle */
+    .method-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .method-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 0;
+      border-radius: 12px;
+      border: 1.5px solid #ddd;
+      background: #f7f5f2;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      color: #444;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .method-btn .material-symbols-outlined {
+      font-size: 20px;
+    }
+
+    .method-btn.active {
+      background: #2d3a2e;
+      border-color: #2d3a2e;
+      color: #fff;
+    }
+
+    /* ── Right: Settings + Normal ── */
+    .right-side {
+      width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Normal card */
+    .normal-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 24px 28px;
+      border: 2px solid #e0dcd4;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .normal-card:hover {
+      border-color: #bbb;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .normal-card.selected {
+      border-color: #2d3a2e;
+      background: #fdfdfd;
+    }
+
+    .normal-card-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .normal-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #f0ece4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .normal-icon .material-symbols-outlined {
+      font-size: 24px;
+      color: #2d3a2e;
+    }
+
+    .normal-card-label {
+      font-size: 18px;
+      font-weight: 900;
+      color: #1a1a1a;
+    }
+
+    .normal-card-sub {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    /* Settings panel */
+    .settings-panel {
+      background: #fff;
+      border-radius: 20px;
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .setting-row-label {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .setting-row-label .material-symbols-outlined {
+      font-size: 18px;
+    }
+
+    /* Guest counter */
+    .guest-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .guest-counter {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f7f5f2;
+      border-radius: 8px;
+      padding: 4px 6px;
+    }
+
+    .counter-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #1a1a1a;
+      text-align: center;
+    }
+
+    /* Number Buttons */
+    .number-btns {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .num-btn {
+      flex: 1;
+      <<<<<<< HEAD height: 48px;
+      =======height: 36px;
+      >>>>>>>7c07b9fdc337edf9e1c3fc66599ecda508724822 display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border: 1.5px solid #e0dcd4;
+      <<<<<<< HEAD border-radius: 10px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #444;
+      cursor: pointer;
+      transition: all 0.15s;
+      =======border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #444;
+      cursor: pointer;
+      transition: all 0.1s;
+      >>>>>>>7c07b9fdc337edf9e1c3fc66599ecda508724822
+    }
+
+    .num-btn:hover {
+      border-color: #2d3a2e;
+    }
+
+    .num-btn.active {
+      background: #2d3a2e;
+      border-color: #2d3a2e;
+      color: #fff;
+    }
+
+    /* CTA lang highlight */
+    .cta-lang-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      padding: 2px 8px 2px 6px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── CTA ── */
+    .cta-wrap {
+      padding: 0 64px 40px;
+      background: #f0ece4;
+      flex-shrink: 0;
+    }
+
+    .cta-btn {
+      width: 100%;
+      padding: 22px 0;
+      border-radius: 16px;
+      border: none;
+      background: #2d3a2e;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 900;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      transition: all 0.15s;
+      letter-spacing: 0.02em;
+      box-shadow: 0 10px 30px rgba(45, 58, 46, 0.2);
+    }
+
+    .cta-btn:hover {
+      background: #3a4d3b;
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(45, 58, 46, 0.3);
+    }
+
+    .cta-btn:active {
+      transform: scale(0.98);
+    }
+
+    .cta-btn .material-symbols-outlined {
+      font-size: 20px;
+      font-variation-settings: 'FILL' 1;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ipad-frame">
+
+    <!-- Context Bar -->
+    <div class="context-bar">
+      <div class="context-left">
+        <div class="context-item">
+          <span class="context-label">卓番:</span>
+          <span class="context-value" id="ctxTable">T-01, T-02</span>
+        </div>
+        <div class="context-divider"></div>
+        <div class="context-item">
+          <span class="context-label">端末:</span>
+          <span class="context-value" id="ctxTerminal">iPad-03</span>
+        </div>
+        <div class="context-divider"></div>
+        <div class="context-item">
+          <span class="context-label">受付番号:</span>
+          <span class="context-value" id="ctxReception">#0042</span>
+        </div>
+      </div>
+      <div class="context-date" id="ctxDate"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+      <!-- Left: AI Card -->
+      <div class="hero-side">
+        <div class="ai-card" id="ai-card" onclick="selectMode('ai')">
+
+          <!-- Mic Visual -->
+          <div class="mic-wrap">
+            <div class="mic-ring"></div>
+            <div class="mic-ring"></div>
+            <div class="mic-btn">
+              <span class="material-symbols-outlined">mic</span>
+            </div>
+          </div>
+
+          <p class="ai-card-title">AIで注文する</p>
+          <p class="ai-card-sub">話しかけるだけ — メニューを探さなくてもOK</p>
+
+          <!-- Language Cards -->
+          <div class="lang-section-label">
+            <span class="material-symbols-outlined">language</span>
+            話しかける言語を選んでください
+          </div>
+          <div class="lang-cards">
+            <button class="lang-card active" onclick="selectLang(this, event)" data-lang="日本語">
+              <span class="lang-flag">🇯🇵</span>
+              <span class="lang-name">日本語</span>
+              <span class="lang-native">Japanese</span>
+            </button>
+            <button class="lang-card" onclick="selectLang(this, event)" data-lang="English">
+              <span class="lang-flag">🇺🇸</span>
+              <span class="lang-name">English</span>
+              <span class="lang-native">英語</span>
+            </button>
+            <button class="lang-card" onclick="selectLang(this, event)" data-lang="한국어">
+              <span class="lang-flag">🇰🇷</span>
+              <span class="lang-name">한국어</span>
+              <span class="lang-native">韓国語</span>
+            </button>
+            <button class="lang-card" onclick="selectLang(this, event)" data-lang="中文">
+              <span class="lang-flag">🇨🇳</span>
+              <span class="lang-name">中文</span>
+              <span class="lang-native">中国語</span>
+            </button>
+          </div>
+
+          <!-- Voice / Chat -->
+          <div class="method-row">
+            <button class="method-btn active" id="voice-btn" onclick="selectMethod('voice', event)">
+              <span class="material-symbols-outlined">mic</span>
+              音声
+            </button>
+            <button class="method-btn" id="chat-btn" onclick="selectMethod('chat', event)">
+              <span class="material-symbols-outlined">chat_bubble</span>
+              チャット
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right: Normal + Settings -->
+      <div class="right-side">
+
+        <!-- Normal Order Card -->
+        <div class="normal-card" id="normal-card" onclick="selectMode('normal')">
+          <div class="normal-card-top">
+            <div class="normal-icon">
+              <span class="material-symbols-outlined">restaurant_menu</span>
+            </div>
+            <span class="normal-card-label">通常メニュー</span>
+          </div>
+          <p class="normal-card-sub">メニューを見ながら自分で選んで注文</p>
+        </div>
+
+        <!-- Settings -->
+        <div class="settings-panel">
+
+          <!-- Guests -->
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div>
+              <div class="setting-row-label">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+                大人
+              </div>
+              <div class="number-btns" id="adultBtns">
+                <button class="num-btn" onclick="setGuest('adult', 1)">1</button>
+                <button class="num-btn active" onclick="setGuest('adult', 2)">2</button>
+                <button class="num-btn" onclick="setGuest('adult', 3)">3</button>
+                <button class="num-btn" onclick="setGuest('adult', 4)">4</button>
+                <button class="num-btn" onclick="setGuest('adult', 5)">5+</button>
+              </div>
+            </div>
+
+            <div>
+              <div class="setting-row-label">
+                <span class="material-symbols-outlined">child_care</span>
+                子供
+              </div>
+              <div class="number-btns" id="childBtns">
+                <button class="num-btn active" onclick="setGuest('child', 0)">0</button>
+                <button class="num-btn" onclick="setGuest('child', 1)">1</button>
+                <button class="num-btn" onclick="setGuest('child', 2)">2</button>
+                <button class="num-btn" onclick="setGuest('child', 3)">3</button>
+                <button class="num-btn" onclick="setGuest('child', 4)">4+</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /main-content -->
+
+    <!-- CTA -->
+    <div class="cta-wrap">
+      <button class="cta-btn" id="primary-cta" onclick="startOrder()">
+        <span class="material-symbols-outlined" id="cta-icon">mic</span>
+        <span id="cta-text">この設定で音声注文を開始</span>
+        <span class="cta-lang-badge" id="cta-lang-badge">🇯🇵 日本語</span>
+      </button>
+    </div>
+
+  </div><!-- /ipad-frame -->
+
+  <script>
+    let currentMode = 'ai';
+    let currentMethod = 'voice';
+    let adultCount = 2;
+    let childCount = 0;
+
+    function selectMode(mode) {
+      currentMode = mode;
+      const aiCard = document.getElementById('ai-card');
+      const normalCard = document.getElementById('normal-card');
+      const ctaIcon = document.getElementById('cta-icon');
+      const ctaText = document.getElementById('cta-text');
+
+      if (mode === 'ai') {
+        aiCard.style.borderColor = '#2d3a2e';
+        normalCard.classList.remove('selected');
+        ctaIcon.innerText = currentMethod === 'voice' ? 'mic' : 'chat_bubble';
+        ctaText.innerText = currentMethod === 'voice' ? '音声で注文を始める' : 'チャットで注文を始める';
+      } else {
+        normalCard.classList.add('selected');
+        aiCard.style.borderColor = '#e0dcd4';
+        ctaIcon.innerText = 'restaurant_menu';
+        ctaText.innerText = '通常注文で開始';
+      }
+    }
+
+    function selectMethod(method, event) {
+      event.stopPropagation();
+      currentMethod = method;
+      selectMode('ai');
+      document.getElementById('voice-btn').classList.toggle('active', method === 'voice');
+      document.getElementById('chat-btn').classList.toggle('active', method === 'chat');
+    }
+
+    function setGuest(type, val) {
+      let finalVal = val;
+      // Handle "5+" or "4+" click
+      if ((type === 'adult' && val === 5) || (type === 'child' && val === 4)) {
+        const label = type === 'adult' ? '大人' : '子供';
+        const promptVal = prompt(`${label}の正確な人数を入力してください（${val}名以上）`, val);
+        if (promptVal !== null) {
+          const num = parseInt(promptVal, 10);
+          if (!isNaN(num) && num >= val) {
+            finalVal = num;
+          } else if (promptVal === '') {
+            finalVal = val;
+          } else {
+            return; // Invalid or cancelled
+          }
+        } else {
+          return; // Cancelled
+        }
+      }
+
+      if (type === 'adult') {
+        adultCount = finalVal;
+        const btns = document.getElementById('adultBtns').querySelectorAll('.num-btn');
+        btns.forEach((b, i) => {
+          const isActive = (i < 4 && (i + 1) === finalVal) || (i === 4 && finalVal >= 5);
+          b.classList.toggle('active', isActive);
+          if (i === 4) b.textContent = finalVal >= 5 ? finalVal + '+' : '5+';
+        });
+      } else {
+        childCount = finalVal;
+        const btns = document.getElementById('childBtns').querySelectorAll('.num-btn');
+        btns.forEach((b, i) => {
+          const isActive = (i < 4 && i === finalVal) || (i === 4 && finalVal >= 4);
+          b.classList.toggle('active', isActive);
+          if (i === 4) b.textContent = finalVal >= 4 ? finalVal + '+' : '4+';
+        });
+      }
+    }
+
+    const langFlags = { '日本語': '🇯🇵', 'English': '🇺🇸', '한국어': '🇰🇷', '中文': '🇨🇳' };
+
+    function selectLang(btn, event) {
+      if (event) event.stopPropagation();
+      document.querySelectorAll('.lang-card').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const lang = btn.dataset.lang;
+      currentLang = lang;
+      // Update CTA badge
+      const badge = document.getElementById('cta-lang-badge');
+      if (badge) badge.textContent = (langFlags[lang] || '') + ' ' + lang;
+      // Keep AI mode selected
+      selectMode('ai');
+    }
+
+    let currentLang = '日本語';
+
+    function startOrder() {
+      const isAI = currentMode === 'ai';
+      const session = {
+        tables: JSON.parse(localStorage.getItem('selectedTables') || '[]'),
+        adults: adultCount,
+        children: childCount,
+        totalGuests: adultCount + childCount,
+        language: currentLang,
+        orderMode: isAI ? 'ai' : 'manual',
+        aiMethod: currentMethod,
+        terminal: localStorage.getItem('terminalId') || 'iPad-03',
+        reception: localStorage.getItem('receptionNo') || '0042',
+        startedAt: new Date().toISOString()
+      };
+      localStorage.setItem('currentSession', JSON.stringify(session));
+      if (isAI) {
+        sessionStorage.setItem('showAiWelcome', 'yes');
+        window.location.href = 'menu_ai.html';
+      } else {
+        window.location.href = 'menu.html';
+      }
+    }
+
+    (function initContext() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('ctxDate').textContent = y + '/' + m + '/' + d + ' ' + hh + ':' + mm;
+      const tables = JSON.parse(localStorage.getItem('selectedTables') || '[]');
+      if (tables.length > 0) document.getElementById('ctxTable').textContent = tables.join(', ');
+      document.getElementById('ctxTerminal').textContent = localStorage.getItem('terminalId') || 'iPad-03';
+      document.getElementById('ctxReception').textContent = '#' + (localStorage.getItem('receptionNo') || '0042');
+    })();
+  </script>
 </body>
+
 </html>
