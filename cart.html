@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>posSpeak – Shopping Cart</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -21,7 +23,11 @@
             --text-sub: #666;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Noto Sans JP', sans-serif;
@@ -40,7 +46,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 0 80px rgba(0,0,0,0.7);
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.7);
             border-radius: 12px;
             position: relative;
         }
@@ -60,13 +66,37 @@
         }
 
         .context-left {
-            display: flex; gap: 24px; align-items: center;
+            display: flex;
+            gap: 24px;
+            align-items: center;
         }
-        .context-item { display: flex; align-items: center; gap: 8px; }
-        .context-label { color: rgba(255, 255, 255, 0.4); font-weight: 500; }
-        .context-value { font-weight: 700; letter-spacing: 0.02em; }
-        .context-divider { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); }
-        .context-date { color: rgba(255, 255, 255, 0.35); font-size: 12px; }
+
+        .context-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .context-label {
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 500;
+        }
+
+        .context-value {
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .context-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .context-date {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 12px;
+        }
 
         /* ─── MAIN CONTENT ────────────────────────────────── */
         .main-content {
@@ -84,7 +114,7 @@
             padding: 32px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
             border: 1.5px solid var(--border);
         }
 
@@ -96,12 +126,39 @@
             padding-bottom: 16px;
             border-bottom: 1px solid #efefef;
         }
-        .cart-header h2 { font-size: 20px; font-weight: 800; color: var(--text-main); }
-        .clear-btn { background: none; border: none; color: #ef4444; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
 
-        .cart-items { flex: 1; overflow-y: auto; padding-right: 8px; }
-        .cart-items::-webkit-scrollbar { width: 4px; }
-        .cart-items::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
+        .cart-header h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .clear-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .cart-items::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .cart-items::-webkit-scrollbar-thumb {
+            background: #eee;
+            border-radius: 10px;
+        }
 
         .cart-item {
             display: flex;
@@ -109,17 +166,79 @@
             padding: 16px 0;
             border-bottom: 1px solid #f5f5f5;
         }
-        .item-img { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; margin-right: 16px; background: #f9f9f9; }
-        .item-info { flex: 1; }
-        .item-name { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
-        .item-option { font-size: 11px; color: #888; font-weight: 500; }
-        .item-price { font-size: 16px; font-weight: 800; color: var(--text-main); width: 100px; text-align: right; margin-right: 24px; }
-        .item-price::before { content: '¥'; font-size: 11px; margin-right: 1px; }
 
-        .qty-ctrl { display: flex; align-items: center; gap: 12px; }
-        .qty-btn { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--border); background: #fff; color: #444; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .qty-btn:hover { border-color: var(--primary); color: var(--primary); }
-        .qty-val { font-size: 16px; font-weight: 700; min-width: 20px; text-align: center; }
+        .item-img {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-right: 16px;
+            background: #f9f9f9;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .item-option {
+            font-size: 11px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        .item-price {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-main);
+            width: 100px;
+            text-align: right;
+            margin-right: 24px;
+        }
+
+        .item-price::before {
+            content: '¥';
+            font-size: 11px;
+            margin-right: 1px;
+        }
+
+        .qty-ctrl {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            background: #fff;
+            color: #444;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .qty-val {
+            font-size: 16px;
+            font-weight: 700;
+            min-width: 20px;
+            text-align: center;
+        }
 
         .summary-panel {
             flex: 0.8;
@@ -127,31 +246,97 @@
             flex-direction: column;
             gap: 20px;
         }
+
         .summary-card {
             background: #fff;
             border-radius: 24px;
             padding: 32px;
             border: 1.5px solid var(--border);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
         }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 16px; }
-        .summary-label { font-size: 14px; color: #888; font-weight: 600; }
-        .summary-value { font-size: 14px; color: var(--text-main); font-weight: 700; }
-        .summary-total { border-top: 1px solid #efefef; padding-top: 16px; margin-top: 8px; }
-        .total-label { font-size: 16px; font-weight: 800; }
-        .total-price { font-size: 24px; font-weight: 900; color: var(--primary); }
-        .total-price::before { content: '¥'; font-size: 16px; margin-right: 2px; }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .summary-label {
+            font-size: 14px;
+            color: #888;
+            font-weight: 600;
+        }
+
+        .summary-value {
+            font-size: 14px;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .summary-total {
+            border-top: 1px solid #efefef;
+            padding-top: 16px;
+            margin-top: 8px;
+        }
+
+        .total-label {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .total-price {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .total-price::before {
+            content: '¥';
+            font-size: 16px;
+            margin-right: 2px;
+        }
 
         .order-btn {
-            height: 72px; width: 100%; background: var(--primary); color: #fff; border: none; border-radius: 20px; font-size: 18px; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 10px 30px rgba(45, 58, 46, 0.2);
-            display: flex; align-items: center; justify-content: center; gap: 12px;
+            height: 72px;
+            width: 100%;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 10px 30px rgba(45, 58, 46, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
         }
-        .order-btn:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 14px 40px rgba(45, 58, 46, 0.3); }
+
+        .order-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 40px rgba(45, 58, 46, 0.3);
+        }
 
         .cancel-btn {
-            height: 56px; width: 100%; background: none; border: 2px solid var(--border); color: #888; border-radius: 16px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s;
+            height: 56px;
+            width: 100%;
+            background: none;
+            border: 2px solid var(--border);
+            color: #888;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
         }
-        .cancel-btn:hover { border-color: #999; color: #444; }
+
+        .cancel-btn:hover {
+            border-color: #999;
+            color: #444;
+        }
 
         .bottom-nav {
             display: flex;
@@ -161,6 +346,7 @@
             flex-shrink: 0;
             width: 100%;
         }
+
         .nav-item {
             flex: 1;
             display: flex;
@@ -176,10 +362,177 @@
             font-family: inherit;
             position: relative;
         }
-        .nav-item.active { color: var(--primary); }
-        .nav-item i { font-size: 22px; }
 
-        /* Voice Guide Container - REPLICATED FROM menu_ai_detail.html */
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item i {
+            font-size: 22px;
+        }
+
+        /* AI Banner - REPLICATED FROM menu_ai_detail.html */
+        .ai-banner {
+            background: var(--primary);
+            color: #fff;
+            padding: 16px 40px;
+            display: none; /* Hidden by default in cart.html */
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+            z-index: 200;
+            width: 100%;
+        }
+
+        .banner-speaker {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.13);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .banner-speaker::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.22);
+            animation: spk-pulse 2.2s ease-out infinite;
+        }
+
+        @keyframes spk-pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+
+        .banner-speaker i {
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .banner-staff {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .banner-avatar-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .banner-staff-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.28);
+            display: block;
+        }
+
+        .banner-avatar-dot {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #7ecb8f;
+            border: 2px solid var(--primary);
+            animation: dot-blink 1.4s ease-in-out infinite;
+        }
+
+        @keyframes dot-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+
+        .banner-staff-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .banner-staff-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .banner-staff-label {
+            font-size: 10px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.48);
+            letter-spacing: 0.03em;
+        }
+
+        .banner-divider {
+            width: 1px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.15);
+            flex-shrink: 0;
+        }
+
+        .banner-ticker {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            min-width: 0;
+            max-height: 24px;
+            overflow: hidden;
+        }
+
+        .ticker-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #fff;
+            line-height: 1.2;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+            max-width: 100%;
+        }
+
+        .ticker-text.streaming::after {
+            content: '▋';
+            display: inline-block;
+            font-size: 13px;
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: cur-blink 0.6s step-end infinite;
+        }
+
+        @keyframes cur-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: -4px;
+            right: calc(50% - 18px);
+            background: #ef4444;
+            color: #fff;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--footer-bg);
+        }
+
+        /* Voice Guide Container — REPLICATED FROM menu_ai_detail.html */
         .voice-guide-container {
             position: absolute;
             bottom: 76px;
@@ -284,30 +637,48 @@
             border-color: var(--primary);
             background: #fff;
         }
-    </style>
-            position: absolute;
-            top: -4px;
-            right: calc(50% - 18px);
-            background: #ef4444;
-            color: #fff;
-            font-size: 10px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            border: 2px solid var(--footer-bg);
+
+        .chat-switch-link i {
+            font-size: 11px;
         }
     </style>
 </head>
+
 <body>
     <div class="ipad-frame">
+        <!-- AI Banner - Replicated from menu_ai_detail.html -->
+        <div class="ai-banner" id="aiBanner">
+            <div class="banner-speaker">
+                <i class="fa-solid fa-volume-high"></i>
+            </div>
+            <div class="banner-staff">
+                <div class="banner-avatar-wrap">
+                    <img class="banner-staff-avatar" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&q=80" alt="さくら">
+                    <div class="banner-avatar-dot"></div>
+                </div>
+                <div class="banner-staff-text">
+                    <span class="banner-staff-name">さくら</span>
+                    <span class="banner-staff-label">AIスタッフ</span>
+                </div>
+            </div>
+            <div class="banner-divider"></div>
+            <div class="banner-ticker">
+                <div class="ticker-text" id="aiTickerText">
+                    ご希望にぴったりの一品です。
+                </div>
+            </div>
+        </div>
+
         <div class="context-bar">
             <div class="context-left">
-                <div class="context-item"><span class="context-label">卓番</span><span class="context-value">T-01, T-02</span></div>
+                <div class="context-item"><span class="context-label">卓番</span><span class="context-value">T-01,
+                        T-02</span></div>
                 <div class="context-divider"></div>
-                <div class="context-item"><span class="context-label">端末</span><span class="context-value">iPad-03</span></div>
+                <div class="context-item"><span class="context-label">端末</span><span
+                        class="context-value">iPad-03</span></div>
                 <div class="context-divider"></div>
-                <div class="context-item"><span class="context-label">受付番号</span><span class="context-value">#0042</span></div>
+                <div class="context-item"><span class="context-label">受付番号</span><span
+                        class="context-value">#0042</span></div>
             </div>
             <div class="context-date" id="ctxDate"></div>
         </div>
@@ -327,7 +698,8 @@
                         </div>
                         <div class="item-price">2,800</div>
                         <div class="qty-ctrl">
-                            <button class="qty-btn" onclick="updateQty(0, -1)"><i class="fa-solid fa-minus"></i></button>
+                            <button class="qty-btn" onclick="updateQty(0, -1)"><i
+                                    class="fa-solid fa-minus"></i></button>
                             <span class="qty-val">1</span>
                             <button class="qty-btn" onclick="updateQty(0, 1)"><i class="fa-solid fa-plus"></i></button>
                         </div>
@@ -340,7 +712,8 @@
                         </div>
                         <div class="item-price">3,500</div>
                         <div class="qty-ctrl">
-                            <button class="qty-btn" onclick="updateQty(1, -1)"><i class="fa-solid fa-minus"></i></button>
+                            <button class="qty-btn" onclick="updateQty(1, -1)"><i
+                                    class="fa-solid fa-minus"></i></button>
                             <span class="qty-val">1</span>
                             <button class="qty-btn" onclick="updateQty(1, 1)"><i class="fa-solid fa-plus"></i></button>
                         </div>
@@ -372,6 +745,17 @@
             </div>
         </div>
 
+        <div class="bottom-nav">
+            <button class="nav-item" onclick="window.location.href='menu_ai.html'"><i
+                    class="fa-solid fa-utensils"></i><span>メニュー</span></button>
+            <button class="nav-item active"><i class="fa-solid fa-cart-shopping"></i><span class="nav-badge"
+                    id="totalBadge">2</span><span>カート</span></button>
+            <button class="nav-item" onclick="window.location.href='order_status.html'"><i
+                    class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></button>
+            <button class="nav-item" onclick="window.location.href='chat_ai.html'"><i
+                    class="fa-solid fa-comment-dots"></i><span>会話</span></button>
+            <button class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></button>
+        </div>
         <!-- Voice Guide Container — bottom right — REPLICATED -->
         <div class="voice-guide-container" id="voiceGuideContainer">
             <button class="voice-order-btn" id="voiceOrderBtn" onclick="startVoice()">
@@ -384,63 +768,72 @@
                 <i class="fa-regular fa-comment-dots"></i>チャットに切替
             </a>
         </div>
-
-        <div class="bottom-nav">
-            <button class="nav-item" onclick="window.location.href='menu_ai.html'"><i class="fa-solid fa-utensils"></i><span>メニュー</span></button>
-            <button class="nav-item active"><i class="fa-solid fa-cart-shopping"></i><span class="nav-badge" id="totalBadge">2</span><span>カート</span></button>
-            <button class="nav-item" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></button>
-            <button class="nav-item" onclick="window.location.href='chat_ai.html'"><i class="fa-solid fa-comment-dots"></i><span>会話</span></button>
-            <button class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></button>
-        </div>
     </div>
 
     <script>
         function sendOrder() {
-            alert('注文を送信しました');
             window.location.href = 'order_status.html';
         }
         function clearAll() {
-            if(confirm('カートを空にしますか？')) {
+            if (confirm('カートを空にしますか？')) {
                 document.getElementById('cartItems').innerHTML = '<div style="text-align:center; padding-top:60px; color:#aaa;">カートは空です</div>';
                 const badge = document.querySelector('.nav-badge');
-                if(badge) badge.style.display='none';
+                if (badge) badge.style.display = 'none';
             }
         }
         function updateQty(i, d) {
             const val = document.querySelectorAll('.qty-val')[i];
             let n = parseInt(val.innerText);
-            if(n+d > 0) val.innerText = n+d;
+            if (n + d > 0) val.innerText = n + d;
         }
 
         function startVoice() {
             const btn = document.getElementById('voiceOrderBtn');
             const lbl = document.getElementById('voiceOrderText');
             const chat = document.getElementById('chatLink');
+            const aiBanner = document.getElementById('aiBanner');
+            const aiTicker = document.getElementById('aiTickerText');
+            const contextBar = document.querySelector('.context-bar');
 
-            // Listening state - Hide Chat Switch
+            // --- STEP 1: LISTENING PHASE ---
+            // Just update the button. Banner stays hidden.
             btn.style.background = '#a0a0a0';
             lbl.innerHTML = '聞き取り中';
             chat.style.display = 'none';
 
             setTimeout(() => {
-                // Restore button & Show Chat Switch
+                // --- STEP 2: FINISHED LISTENING / RESPONSE PHASE ---
+                
+                // Show AI Sakura Banner
+                aiBanner.style.display = 'flex';
+                // Hide Header Context Bar as requested
+                contextBar.style.display = 'none';
+                
+                aiTicker.innerText = '承知いたしました。他に何かお手伝いできることはありますか？';
+                
+                // Reset Voice Button
                 btn.style.background = '';
                 lbl.innerHTML = 'ボイス<br>オーダー';
                 chat.style.display = 'inline-flex';
-                alert('注文を送信しました');
-                window.location.href = 'order_status.html';
+                
+                // Keep the response for 5 seconds, then return to normal
+                setTimeout(() => {
+                    aiBanner.style.display = 'none';
+                    contextBar.style.display = 'flex'; // Restore information bar
+                }, 5000);
             }, 3000);
         }
 
         setInterval(() => {
             const now = new Date();
             const y = now.getFullYear();
-            const mo = String(now.getMonth()+1).padStart(2,'0');
-            const da = String(now.getDate()).padStart(2,'0');
-            const hh = String(now.getHours()).padStart(2,'0');
-            const mm = String(now.getMinutes()).padStart(2,'0');
+            const mo = String(now.getMonth() + 1).padStart(2, '0');
+            const da = String(now.getDate()).padStart(2, '0');
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
             document.getElementById('ctxDate').innerText = `${y}/${mo}/${da} ${hh}:${mm}`;
         }, 1000);
     </script>
 </body>
+
 </html>
