@@ -3,565 +3,386 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>テーブルセッション開始</title>
+    <title>posSpeak – Table Session</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #2d3a2e;
+            --primary-light: #3f5240;
+            --accent: #d4a373;
+            --bg: #f0ece4;
+            --card-bg: #ffffff;
+            --footer-bg: #e8e4dc;
+            --border: #e0dcd4;
+            --text-main: #1a1a1a;
+            --text-sub: #666;
+            --occupied: #ef4444;
+            --selected: #2d3a2e;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            font-family: 'Noto Sans JP', sans-serif;
             height: 100vh;
             background: #1a1a1a;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .container {
-            background: #fff;
-            width: 880px;
-            height: 640px;
-            border-radius: 16px;
-            padding: 36px 48px 36px;
-            position: relative;
-            overflow-y: auto;
-        }
-
-        .staff-badge {
-            position: absolute;
-            top: 24px;
-            right: 28px;
-            background: #ef4444;
-            color: #fff;
-            font-size: 13px;
-            font-weight: 600;
-            padding: 6px 16px;
-            border-radius: 20px;
-        }
-
-        .page-title {
-            text-align: center;
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 6px;
-            margin-top: 8px;
-        }
-
-        .page-subtitle {
-            text-align: center;
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 32px;
-        }
-
-        .form-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .input-wrapper {
-            position: relative;
-            margin-bottom: 16px;
-        }
-
-        .input-wrapper input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            color: #333;
-            background: #fff;
-            outline: none;
-        }
-
-        .input-wrapper input::placeholder {
-            color: #999;
-        }
-
-        .input-wrapper input:focus {
-            border-color: #2d3a2e;
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-            font-size: 16px;
-            pointer-events: none;
-        }
-
-        /* 状態凡例 */
-        .table-legend {
-            display: flex;
-            gap: 18px;
-            margin-bottom: 14px;
-            flex-wrap: wrap;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            color: #555;
-        }
-
-        .legend-swatch {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-
-        .legend-swatch.empty    { background: #fff; }
-        .legend-swatch.selected { background: #8B6914; border-color: #8B6914; }
-        .legend-swatch.occupied { background: #fce4e4; border-color: #fca5a5; }
-
-        /* Carousel wrapper */
-        .carousel-wrapper {
-            position: relative;
-            margin-bottom: 8px;
             overflow: hidden;
         }
 
-        .carousel-track {
-            display: flex;
-            transition: transform 0.3s ease;
-            cursor: grab;
-        }
-
-        .carousel-track.dragging {
-            transition: none;
-            cursor: grabbing;
-        }
-
-        .carousel-page {
-            min-width: 100%;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            padding: 2px;
-        }
-
-        .table-btn {
-            padding: 12px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: #fff;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            cursor: pointer;
-            transition: all 0.15s;
-            text-align: center;
-            user-select: none;
-        }
-
-        .table-btn:hover {
-            border-color: #8B6914;
-            background: #f5f5f5;
-        }
-
-        /* 選択中 — 茶色 */
-        .table-btn.selected {
-            background: #8B6914;
-            color: #fff;
-            border-color: #8B6914;
-        }
-
-        /* 利用中 — 赤 */
-        .table-btn.occupied {
-            background: #fce4e4;
-            color: #e53e3e;
-            border-color: #fca5a5;
-        }
-
-        /* 利用中 + 選択中 — 赤ベース＋茶色ボーダー */
-        .table-btn.occupied.selected {
-            background: #e53e3e;
-            color: #fff;
-            border-color: #8B6914;
-            box-shadow: 0 0 0 3px #8B6914;
-        }
-
-        /* Pagination dots */
-        .carousel-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 16px;
-            min-height: 18px;
-        }
-
-        .carousel-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #ddd;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .carousel-dot.active {
-            background: #8B6914;
-            width: 24px;
-            border-radius: 4px;
-        }
-
-        /* No results */
-        .no-results {
-            text-align: center;
-            color: #999;
-            font-size: 14px;
-            padding: 24px 0;
-            display: none;
-        }
-
-        /* 選択中テーブル表示バー */
-        .selection-bar {
-            background: #f7f3e8;
-            border: 1px solid #d4b858;
-            border-radius: 8px;
-            padding: 10px 16px;
-            margin-bottom: 16px;
-            font-size: 13px;
-            color: #6b5a1e;
-            display: none;
-        }
-
-        .selection-bar.visible {
-            display: block;
-        }
-
-        .start-btn {
-            width: 100%;
-            padding: 16px;
-            background: #2d3a2e;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-bottom: 28px;
-        }
-
-        .start-btn:hover {
-            background: #3a4a3b;
-        }
-
-        .active-section-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 12px;
-        }
-
-        .active-table-list {
+        .ipad-frame {
+            width: 1280px;
+            height: 800px;
+            background: var(--bg);
             display: flex;
             flex-direction: column;
-            gap: 0;
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0,0,0,0.7);
+            border-radius: 12px;
+            position: relative;
         }
 
-        .active-table-item {
+        /* ─── HEADER: CONTEXT BAR ───────────────────────── */
+        .context-bar {
+            background: var(--primary);
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 14px 16px;
-            border-bottom: 1px solid #f0f0f0;
+            padding: 0 32px;
+            height: 52px;
+            font-size: 13px;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+        .staff-only-badge { background: #ef4444; color: #fff; padding: 4px 12px; border-radius: 4px; font-weight: 800; font-size: 10px; letter-spacing: 0.05em; }
+
+        /* ─── MAIN CONTENT ────────────────────────────────── */
+        .main-content {
+            flex: 1;
+            padding: 48px 64px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            overflow-y: auto;
         }
 
-        .active-table-item:last-child {
-            border-bottom: none;
-        }
+        .page-header { text-align: center; }
+        .page-title { font-size: 32px; font-weight: 900; color: var(--text-main); margin-bottom: 8px; }
+        .page-subtitle { font-size: 16px; color: var(--text-sub); }
 
-        .active-table-left {
+        .layout-grid { display: grid; grid-template-columns: 1fr 400px; gap: 48px; }
+
+        /* Table Selection Area */
+        .selection-section { display: flex; flex-direction: column; gap: 24px; }
+        
+        .search-box {
+            position: relative;
+            background: #fff;
+            border-radius: 16px;
+            border: 1.5px solid var(--border);
+            padding: 4px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
+        .search-box i { padding: 0 16px; color: #ccc; }
+        .search-box input { flex: 1; border: none; padding: 12px 0; font-size: 16px; font-weight: 600; outline: none; }
 
-        .green-dot {
-            width: 10px;
-            height: 10px;
-            background: #22c55e;
-            border-radius: 50%;
-        }
+        .legend { display: flex; gap: 20px; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--text-sub); }
+        .status-dot { width: 12px; height: 12px; border-radius: 3px; border: 1.5px solid var(--border); }
+        .status-dot.empty { background: #fff; }
+        .status-dot.occupied { background: var(--occupied); border-color: var(--occupied); }
+        .status-dot.selected { background: var(--selected); border-color: var(--selected); }
 
-        .active-table-name {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1a1a1a;
+        .table-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
         }
+        .table-btn {
+            height: 80px;
+            background: #fff;
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-btn:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .table-btn.occupied { background: #fee2e2; border-color: #fecaca; color: #dc2626; }
+        .table-btn.selected { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 8px 20px rgba(45, 58, 46, 0.2); }
 
-        .active-table-guests {
-            font-size: 14px;
-            color: #555;
-            margin-left: 4px;
+        /* Info / Action Panel */
+        .action-panel { display: flex; flex-direction: column; gap: 24px; }
+        
+        .active-list-card {
+            background: #fff;
+            border-radius: 24px;
+            border: 1.5px solid var(--border);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
+        .card-header { font-size: 14px; font-weight: 900; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.05em; }
+        .active-item { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1.5px solid #f5f5f5; }
+        .active-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .active-info { display: flex; flex-direction: column; gap: 4px; }
+        .active-table { font-size: 17px; font-weight: 800; color: var(--text-main); }
+        .active-meta { font-size: 12px; color: #aaa; font-weight: 600; }
+        .status-pill { padding: 4px 10px; background: #f0fdf4; color: #166534; border-radius: 6px; font-size: 11px; font-weight: 800; }
 
-        .active-table-time {
-            font-size: 13px;
-            color: #999;
+        .btn-start {
+            width: 100%; height: 72px; background: var(--primary); color: #fff; border: none; border-radius: 20px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 30px rgba(45, 58, 46, 0.2);
+            display: flex; align-items: center; justify-content: center; gap: 12px;
         }
+        .btn-start:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; }
+        .btn-start:not(:disabled):hover { background: var(--primary-light); transform: translateY(-2px); }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="staff-badge">Staff only</div>
-
-        <div class="page-title">テーブルセッション開始</div>
-        <div class="page-subtitle">テーブル番号を入力してください</div>
-
-        <label class="form-label">テーブル番号（複数選択可）</label>
-        <div class="input-wrapper">
-            <input type="text" id="tableInput" placeholder="テーブル検索　例: T-01">
-            <span class="search-icon">&#128269;</span>
+    <div class="ipad-frame">
+        <!-- Context Bar -->
+        <div class="context-bar">
+            <span class="staff-only-badge">MANAGER MODE – STAFF ONLY</span>
+            <div id="ctxTime" style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.6);">11:24 AM</div>
         </div>
 
-        <div class="table-legend">
-            <div class="legend-item"><span class="legend-swatch empty"></span>空席</div>
-            <div class="legend-item"><span class="legend-swatch selected"></span>選択中</div>
-            <div class="legend-item"><span class="legend-swatch occupied"></span>利用中</div>
-        </div>
-
-        <div class="carousel-wrapper" id="carouselWrapper">
-            <div class="carousel-track" id="carouselTrack"></div>
-        </div>
-        <div class="carousel-dots" id="carouselDots"></div>
-        <div class="no-results" id="noResults">該当するテーブルが見つかりません</div>
-
-        <div id="selectionBar" class="selection-bar">
-            選択中: <span id="selectionText"></span>
-        </div>
-
-        <button class="start-btn">このテーブルで受付開始</button>
-
-        <div class="active-section-title">現在のアクティブテーブル</div>
-        <div class="active-table-list">
-            <div class="active-table-item">
-                <div class="active-table-left">
-                    <span class="green-dot"></span>
-                    <span class="active-table-name">T-03</span>
-                    <span class="active-table-guests">4名様</span>
-                </div>
-                <span class="active-table-time">15:23 開始</span>
+        <div class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">セッション開始</h1>
+                <p class="page-subtitle">お客様のテーブルを選択して、注文受付を開始してください。</p>
             </div>
-            <div class="active-table-item">
-                <div class="active-table-left">
-                    <span class="green-dot"></span>
-                    <span class="active-table-name">T-06</span>
-                    <span class="active-table-guests">2名様</span>
+
+            <div class="layout-grid">
+                <!-- Left: Table Selection -->
+                <div class="selection-section">
+                    <div class="search-area" style="display: flex; flex-direction: column; gap: 16px;">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="tableSearch" placeholder="テーブル番号で検索 (例: T-01)">
+                        </div>
+                        <div class="filter-scroll-container">
+                            <div class="filter-chips" id="filterChips">
+                                <button class="chip active" data-filter="all" onclick="setFilter('all')">全て</button>
+                                <button class="chip" data-filter="available" onclick="setFilter('available')">空席のみ</button>
+                                <button class="chip" data-filter="C" onclick="setFilter('C')">カウンター席 (C)</button>
+                                <button class="chip" data-filter="L" onclick="setFilter('L')">臨時席 (L)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="legend">
+                        <div class="legend-item"><span class="status-dot empty"></span>空席</div>
+                        <div class="legend-item"><span class="status-dot occupied"></span>利用中</div>
+                        <div class="legend-item"><span class="status-dot selected"></span>選択中</div>
+                        <div class="legend-item"><span class="status-dot" style="border-left: 4px solid var(--accent);"></span>カウンター</div>
+                        <div class="legend-item"><span class="status-dot" style="border-left: 4px solid #ef4444;"></span>臨時</div>
+                    </div>
+
+                    <div class="table-grid" id="tableGrid">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination-area" id="pagination">
+                        <button class="nav-btn" id="prevPage" onclick="changePage(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                        <div class="page-dots" id="pageDots"></div>
+                        <button class="nav-btn" id="nextPage" onclick="changePage(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
                 </div>
-                <span class="active-table-time">15:45 開始</span>
-            </div>
-            <div class="active-table-item">
-                <div class="active-table-left">
-                    <span class="green-dot"></span>
-                    <span class="active-table-name">T-11</span>
-                    <span class="active-table-guests">6名様</span>
+
+                <!-- Right: Active Info -->
+                <div class="action-panel">
+                    <div class="active-list-card">
+                        <div class="card-header">アクティブなテーブル</div>
+                        <div class="active-item">
+                            <div class="active-info">
+                                <span class="active-table">T-04</span>
+                                <span class="active-meta">2名様 / 10:45〜</span>
+                            </div>
+                            <span class="status-pill">配膳中</span>
+                        </div>
+                        <div class="active-item">
+                            <div class="active-info">
+                                <span class="active-table">T-09</span>
+                                <span class="active-meta">4名様 / 11:12〜</span>
+                            </div>
+                            <span class="status-pill">食事中</span>
+                        </div>
+                        <div class="active-item">
+                            <div class="active-info">
+                                <span class="active-table">T-12</span>
+                                <span class="active-meta">1名様 / 11:20〜</span>
+                            </div>
+                            <span class="status-pill">新規</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-start" id="startBtn" disabled>
+                        <span>受付を開始する</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                    <p style="text-align: center; font-size: 12px; color: #aaa; font-weight: 600;">選択したテーブルの端末が注文可能状態になります。</p>
                 </div>
-                <span class="active-table-time">16:10 開始</span>
             </div>
         </div>
     </div>
 
     <script>
-        // --- Data ---
-        const allTables = [
-            'T-01','T-02','T-03','T-04','T-05','T-06','T-07','T-08',
-            'T-09','T-10','T-11','T-12','T-13','T-14','T-15','T-16',
-            'T-17','T-18','T-19','T-20'
+        // Reduced table list to fit first view
+        const tables = [
+            'T-01','T-02','T-03','T-04',
+            'T-05','T-06','T-07','T-08',
+            'C-01','C-02','C-03','C-04',
+            'L-01'
         ];
-        const occupiedTables = ['T-03', 'T-06', 'T-11'];
-        const selectedTables = new Set();
-        const ITEMS_PER_PAGE = 8; // 4 columns x 2 rows
+        const occupied = ['T-03', 'T-06', 'C-02'];
+        let selected = [];
 
-        let currentPage = 0;
-        let filteredTables = [...allTables];
+        let currentFilter = 'all';
+        let currentPage = 1;
+        const itemsPerPage = 12; // 4 columns x 3 rows per page (one extra row added)
 
-        // --- Render ---
-        function renderCarousel() {
-            const track = document.getElementById('carouselTrack');
-            const dots = document.getElementById('carouselDots');
-            const noResults = document.getElementById('noResults');
+        function setFilter(type) {
+            currentFilter = type;
+            currentPage = 1; // Reset to page 1 on filter
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            document.querySelector(`.chip[data-filter="${type}"]`).classList.add('active');
+            renderTables();
+        }
 
-            const totalPages = Math.ceil(filteredTables.length / ITEMS_PER_PAGE);
+        function changePage(dir) {
+            currentPage += dir;
+            renderTables();
+        }
 
-            if (filteredTables.length === 0) {
-                track.innerHTML = '';
-                dots.innerHTML = '';
-                noResults.style.display = 'block';
-                return;
-            }
-            noResults.style.display = 'none';
+        function renderTables() {
+            const grid = document.getElementById('tableGrid');
+            const term = document.getElementById('tableSearch').value.toUpperCase();
+            
+            const filtered = tables.filter(t => {
+                const matchesSearch = t.includes(term);
+                let matchesFilter = true;
+                if (currentFilter === 'available') {
+                    matchesFilter = !occupied.includes(t);
+                } else if (currentFilter !== 'all') {
+                    matchesFilter = t.startsWith(currentFilter);
+                }
+                return matchesSearch && matchesFilter;
+            });
 
-            // Clamp current page
-            if (currentPage >= totalPages) currentPage = totalPages - 1;
-            if (currentPage < 0) currentPage = 0;
+            // Pagination Logic
+            const totalPages = Math.ceil(filtered.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
+            
+            const start = (currentPage - 1) * itemsPerPage;
+            const paged = filtered.slice(start, start + itemsPerPage);
 
-            // Build pages
-            let pagesHTML = '';
-            for (let p = 0; p < totalPages; p++) {
-                const start = p * ITEMS_PER_PAGE;
-                const pageTables = filteredTables.slice(start, start + ITEMS_PER_PAGE);
-                let btns = '';
-                for (const t of pageTables) {
-                    const isOccupied = occupiedTables.includes(t);
-                    const isSelected = selectedTables.has(t);
+            grid.innerHTML = paged
+                .map(t => {
+                    const isOccupied = occupied.includes(t);
+                    const isSelected = selected.includes(t);
                     let cls = 'table-btn';
+                    
+                    if (t.startsWith('C')) cls += ' counter-type';
+                    if (t.startsWith('L')) cls += ' temp-type';
+                    
                     if (isOccupied) cls += ' occupied';
                     if (isSelected) cls += ' selected';
-                    btns += `<button class="${cls}" data-table="${t}" onclick="clickTable(this,'${t}')">${t}</button>`;
-                }
-                pagesHTML += `<div class="carousel-page">${btns}</div>`;
+                    
+                    return `<button class="${cls}" onclick="toggleTable('${t}')">${t}</button>`;
+                }).join('');
+            
+            // Update Pagination Controls
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages || totalPages === 0;
+            
+            let dots = '';
+            for (let i = 1; i <= totalPages; i++) {
+                dots += `<span class="dot ${i === currentPage ? 'active' : ''}"></span>`;
             }
-            track.innerHTML = pagesHTML;
-            track.style.transform = `translateX(-${currentPage * 100}%)`;
+            document.getElementById('pageDots').innerHTML = dots;
+            document.getElementById('pagination').style.opacity = totalPages > 1 ? '1' : '0';
 
-            // Build dots
-            let dotsHTML = '';
-            for (let p = 0; p < totalPages; p++) {
-                dotsHTML += `<button class="carousel-dot${p === currentPage ? ' active' : ''}" onclick="goToPage(${p})"></button>`;
-            }
-            dots.innerHTML = dotsHTML;
+            document.getElementById('startBtn').disabled = selected.length === 0;
         }
 
-        function goToPage(p) {
-            currentPage = p;
-            const track = document.getElementById('carouselTrack');
-            track.style.transform = `translateX(-${currentPage * 100}%)`;
-            updateDots();
-        }
-
-        function updateDots() {
-            document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentPage);
-            });
-        }
-
-        // --- Table click ---
-        function clickTable(btn, tableId) {
-            if (selectedTables.has(tableId)) {
-                selectedTables.delete(tableId);
-                btn.classList.remove('selected');
+        function toggleTable(t) {
+            if (selected.includes(t)) {
+                selected = selected.filter(x => x !== t);
             } else {
-                selectedTables.add(tableId);
-                btn.classList.add('selected');
+                selected.push(t);
             }
-            updateSelectionBar();
+            renderTables();
         }
 
-        // --- Selection bar ---
-        function updateSelectionBar() {
-            const bar = document.getElementById('selectionBar');
-            const text = document.getElementById('selectionText');
-            if (selectedTables.size === 0) {
-                bar.classList.remove('visible');
-                return;
-            }
-            const sorted = Array.from(selectedTables).sort();
-            text.textContent = sorted.join(', ');
-            bar.classList.add('visible');
-        }
+        document.getElementById('tableSearch').addEventListener('input', renderTables);
 
-        // --- Filter / Search ---
-        document.getElementById('tableInput').addEventListener('input', function () {
-            const q = this.value.trim().toUpperCase();
-            if (q === '') {
-                filteredTables = [...allTables];
-            } else {
-                filteredTables = allTables.filter(t => t.includes(q));
-            }
-            currentPage = 0;
-            renderCarousel();
-        });
-
-        // --- Swipe / Drag ---
-        (function initSwipe() {
-            const track = document.getElementById('carouselTrack');
-            let startX = 0, currentX = 0, isDragging = false;
-
-            function onStart(x) {
-                isDragging = true;
-                startX = x;
-                currentX = x;
-                track.classList.add('dragging');
-            }
-            function onMove(x) {
-                if (!isDragging) return;
-                currentX = x;
-                const diff = currentX - startX;
-                const base = -currentPage * 100;
-                const wrapper = document.getElementById('carouselWrapper');
-                const pct = (diff / wrapper.offsetWidth) * 100;
-                track.style.transform = `translateX(${base + pct}%)`;
-            }
-            function onEnd() {
-                if (!isDragging) return;
-                isDragging = false;
-                track.classList.remove('dragging');
-                const diff = currentX - startX;
-                const wrapper = document.getElementById('carouselWrapper');
-                const totalPages = Math.ceil(filteredTables.length / ITEMS_PER_PAGE);
-                if (diff < -50 && currentPage < totalPages - 1) {
-                    currentPage++;
-                } else if (diff > 50 && currentPage > 0) {
-                    currentPage--;
-                }
-                track.style.transform = `translateX(-${currentPage * 100}%)`;
-                updateDots();
-            }
-
-            // Mouse events
-            track.addEventListener('mousedown', e => { e.preventDefault(); onStart(e.clientX); });
-            window.addEventListener('mousemove', e => onMove(e.clientX));
-            window.addEventListener('mouseup', () => onEnd());
-
-            // Touch events
-            track.addEventListener('touchstart', e => onStart(e.touches[0].clientX), { passive: true });
-            track.addEventListener('touchmove', e => onMove(e.touches[0].clientX), { passive: true });
-            track.addEventListener('touchend', () => onEnd());
-        })();
-
-        // --- Start button ---
-        document.querySelector('.start-btn').addEventListener('click', function (e) {
-            e.preventDefault();
-            if (selectedTables.size === 0) {
-                alert('テーブルを選択してください。');
-                return;
-            }
-            const occupiedSelected = Array.from(selectedTables).filter(t => occupiedTables.includes(t));
-            if (occupiedSelected.length > 0) {
-                const msg = '以下のテーブルは現在利用中です:\n'
-                    + occupiedSelected.join(', ')  
-                    + '\n\nテーブルを合席してもよろしいですか？';
-                if (!confirm(msg)) return;
-            }
-
-            // Save to localStorage
-            const sorted = Array.from(selectedTables).sort();
-            localStorage.setItem('selectedTables', JSON.stringify(sorted));
-            localStorage.setItem('occupiedInSelection', JSON.stringify(occupiedSelected));
-
+        document.getElementById('startBtn').addEventListener('click', () => {
+            localStorage.setItem('currentTables', JSON.stringify(selected));
             window.location.href = 'order.html';
         });
 
-        // --- Init ---
-        renderCarousel();
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('ctxTime').innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        }, 1000);
+
+        renderTables();
     </script>
+    <style>
+        /* Extra styles for different seat types and chips */
+        .table-btn.counter-type { border-left: 4px solid var(--accent); }
+        .table-btn.temp-type { border-left: 4px solid #ef4444; font-style: italic; }
+
+        /* Pagination UI */
+        .pagination-area { 
+            display: flex; justify-content: center; align-items: center; gap: 20px; 
+            margin-top: 24px; transition: opacity 0.3s;
+        }
+        .nav-btn { 
+            width: 36px; height: 36px; border: 1.5px solid var(--border); background: #fff; 
+            border-radius: 50%; color: var(--primary); cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .nav-btn:not(:disabled):hover { border-color: var(--primary); background: #fdfdfd; }
+        
+        .page-dots { display: flex; gap: 8px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: #e0dcd4; transition: 0.2s; }
+        .dot.active { background: var(--primary); width: 20px; border-radius: 10px; }
+
+        .chip {
+            padding: 10px 20px;
+            background: #fff;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .chip.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+    </style>
 </body>
 </html>
