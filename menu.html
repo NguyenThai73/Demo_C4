@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>posSpeak – Menu Catalog</title>
+    <title>posSpeak – メニュー</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -17,20 +18,17 @@
             --card-bg: #ffffff;
             --footer-bg: #e8e4dc;
             --border: #e0dcd4;
-            --text-main: #1a1a1a;
-            --text-sub: #666;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Noto Sans JP', sans-serif;
-            height: 100vh;
             background: #1a1a1a;
             display: flex;
-            align-items: center;
             justify-content: center;
-            overflow: hidden;
+            align-items: center;
+            height: 100vh;
         }
 
         .ipad-frame {
@@ -45,7 +43,7 @@
             position: relative;
         }
 
-        /* ─── HEADER: CONTEXT BAR ───────────────────────── */
+        /* ─── HEADER ─────────────────────────────────────────── */
         .context-bar {
             background: var(--primary);
             color: #fff;
@@ -59,295 +57,93 @@
             z-index: 10;
         }
 
-        .context-left {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
+        .context-left { display: flex; gap: 24px; align-items: center; }
+        .context-item { display: flex; align-items: center; gap: 8px; }
+        .context-label { color: rgba(255,255,255,0.4); font-weight: 500; }
+        .context-value { font-weight: 700; letter-spacing: 0.02em; }
+        .context-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.15); }
+        .context-date { color: rgba(255,255,255,0.35); font-size: 12px; }
 
-        .context-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .context-label {
-            color: rgba(255, 255, 255, 0.4);
-            font-weight: 500;
-        }
-
-        .context-value {
-            font-weight: 700;
-            letter-spacing: 0.02em;
-        }
-
-        .context-divider {
-            width: 1px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .context-date {
-            color: rgba(255, 255, 255, 0.35);
-            font-size: 12px;
-        }
-
-        /* ─── CATEGORY TABS ───────────────────────────────────── */
+        /* ─── CATEGORY TABS ──────────────────────────────────── */
         .category-tabs {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            padding: 16px 32px;
+            gap: 8px;
+            padding: 16px 20px 12px;
             flex-shrink: 0;
-            background: var(--bg);
             border-bottom: 1px solid var(--border);
-            overflow-x: auto;
-        }
-        .category-tabs::-webkit-scrollbar { display: none; }
-
-        .cat-tab {
-            padding: 8px 24px;
-            border-radius: 24px;
-            font-size: 14px;
-            font-weight: 700;
-            color: #666;
-            background: transparent;
-            border: 1.5px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        .cat-tab:hover { color: var(--primary); background: rgba(0,0,0,0.03); }
-        .cat-tab.active {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
+            background: var(--bg);
         }
 
-        /* ─── MENU CONTENT ───────────────────────────────────── */
-        .menu-grid-wrapper {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px 32px;
-        }
-        .menu-grid-wrapper::-webkit-scrollbar { width: 5px; }
-        .menu-grid-wrapper::-webkit-scrollbar-track { background: transparent; }
-        .menu-grid-wrapper::-webkit-scrollbar-thumb { background: #d0ccc4; border-radius: 10px; }
+        .cat-tab { padding: 7px 22px; border-radius: 20px; font-size: 13px; font-weight: 700; color: #666; background: transparent; border: 1.5px solid transparent; cursor: pointer; transition: 0.2s; }
+        .cat-tab:hover { color: var(--primary); }
+        .cat-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        /* ─── MENU GRID ──────────────────────────────────────── */
+        .menu-grid-wrapper { flex: 1; overflow-y: auto; padding: 12px 28px 20px; }
+        .menu-grid-wrapper::-webkit-scrollbar { width: 4px; }
+        .menu-grid-wrapper::-webkit-scrollbar-thumb { background: #d0ccc4; border-radius: 4px; }
 
-        .menu-card {
-            background: #fff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            border: 1.5px solid var(--border);
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-        }
-        .menu-card:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
-            border-color: #bbb;
-        }
+        .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1100px; margin: 0 auto; }
 
-        .menu-card-img-wrap {
-            position: relative;
-            width: 100%;
-            padding-top: 75%;
-            overflow: hidden;
-        }
-        .menu-card-img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            background: #f5f3ef;
-            transition: transform 0.4s;
-        }
-        .menu-card:hover .menu-card-img { transform: scale(1.05); }
+        .menu-card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; display: flex; flex-direction: column; border: 1.5px solid var(--border); transition: 0.18s; animation: card-in 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+        .menu-card:hover { transform: translateY(-4px); box-shadow: 0 8px 22px rgba(0,0,0,0.1); }
 
-        .menu-card-body {
-            padding: 16px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .menu-card-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-        .menu-card-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-bottom: 12px;
-        }
-        .menu-tag {
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-        .menu-tag.popular { background: #fef3c7; color: #92400e; }
-        .menu-tag.taste   { background: #eff6ff; color: #1e40af; }
-        .menu-tag.healthy { background: #f0fdf4; color: #166534; }
-        .menu-tag.reason  { background: #f5f3ef; color: #666; }
+        @keyframes card-in { from { opacity: 0; transform: translateY(10px) scale(0.97); } to { opacity: 1; transform: none; } }
 
-        .menu-card-footer {
-            margin-top: auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .menu-card-price {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--text-main);
-        }
-        .menu-card-price::before { content: '¥'; font-size: 13px; margin-right: 2px; }
+        .menu-card-img-wrap { position: relative; width: 100%; padding-top: 72%; overflow: hidden; }
+        .menu-card-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #f5f3ef; }
 
-        .add-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .add-btn:hover { background: var(--primary-light); transform: scale(1.1); }
+        .menu-card-body { padding: 11px 13px 13px; flex: 1; display: flex; flex-direction: column; }
+        .menu-card-name { font-size: 14px; font-weight: 700; color: #2e3335; margin-bottom: 6px; }
+        .menu-card-desc { font-size: 11px; color: #888; line-height: 1.5; margin-bottom: 10px; flex: 1; }
+        .menu-card-footer { display: flex; align-items: center; justify-content: space-between; }
+        .menu-card-price { font-size: 18px; font-weight: 700; }
+        .menu-card-price::before { content: '¥'; font-size: 12px; margin-right: 1px; }
 
-        /* ─── BOTTOM NAVIGATION ────────────────────────────── */
-        .bottom-nav {
-            display: flex;
-            background: var(--footer-bg);
-            border-top: 1px solid var(--border);
-            padding: 12px 0 20px;
-            flex-shrink: 0;
-            width: 100%;
-        }
-        .nav-item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            color: #888;
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            font-family: inherit;
-        }
+        .add-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: #fff; color: #2e3335; border: 1.5px solid #d0ccc6; border-radius: 9999px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.15s; }
+        .add-btn:hover { border-color: var(--primary); background: #f5f3ef; }
+
+        /* ─── BOTTOM NAV ─────────────────────────────────────── */
+        .bottom-nav { display: flex; background: var(--footer-bg); border-top: 1px solid var(--border); padding: 10px 0 20px; width: 100%; flex-shrink: 0; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #888; font-size: 11px; font-weight: 700; cursor: pointer; }
         .nav-item.active { color: var(--primary); }
         .nav-item i { font-size: 22px; }
-        .nav-badge {
-            position: absolute;
-            top: -4px;
-            right: -8px;
-            background: #ef4444;
-            color: #fff;
-            font-size: 10px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid var(--footer-bg);
-        }
-
-        /* ─── MODALS ─────────────────────────────────────── */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-overlay.show { display: flex; }
-        .modal {
-            background: #fff;
-            width: 600px;
-            border-radius: 24px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        .modal-header { padding: 24px 32px; border-bottom: 1px solid #efefef; display: flex; justify-content: space-between; align-items: center; }
-        .modal-title { font-size: 20px; font-weight: 800; }
-        .modal-body { padding: 32px; max-height: 500px; overflow-y: auto; }
-        .modal-footer { padding: 24px 32px; background: #f9f9f9; display: flex; flex-direction: column; gap: 20px; }
-
-        .modal-section-label { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 16px; margin-top: 24px; }
-        .modal-section-label:first-child { margin-top: 0; }
-
-        .modal-option {
-            display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-radius: 12px; border: 1.5px solid #eee; margin-bottom: 8px; cursor: pointer; transition: 0.2s;
-        }
-        .modal-option:hover { border-color: var(--primary); background: #f9fbf9; }
-        .modal-option label { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 15px; font-weight: 600; flex: 1; }
-        .modal-option input { width: 20px; height: 20px; accent-color: var(--primary); }
-
-        .qty-row { display: flex; align-items: center; justify-content: center; gap: 24px; }
-        .qty-btn { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--primary); background: #fff; color: var(--primary); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .qty-btn:hover { background: var(--primary); color: #fff; }
-        .qty-val { font-size: 28px; font-weight: 800; min-width: 40px; text-align: center; }
-
-        .modal-confirm-btn {
-            height: 60px; background: var(--primary); color: #fff; border: none; border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer; transition: 0.2s; 
-        }
-        .modal-confirm-btn:hover { background: var(--primary-light); transform: translateY(-2px); }
-
     </style>
 </head>
+
 <body>
     <div class="ipad-frame">
-        <!-- Context Bar -->
+
+        <!-- Header: table info only -->
         <div class="context-bar">
             <div class="context-left">
-                <div class="context-item"><span class="context-label">卓番</span><span class="context-value">T-01, T-02</span></div>
+                <div class="context-item">
+                    <span class="context-label">卓番</span>
+                    <span class="context-value" id="tableNo">T-01, T-02</span>
+                </div>
                 <div class="context-divider"></div>
-                <div class="context-item"><span class="context-label">端末</span><span class="context-value">iPad-03</span></div>
+                <div class="context-item">
+                    <span class="context-label">端末</span>
+                    <span class="context-value" id="terminalNo">iPad-03</span>
+                </div>
                 <div class="context-divider"></div>
-                <div class="context-item"><span class="context-label">受付番号</span><span class="context-value">#0042</span></div>
+                <div class="context-item">
+                    <span class="context-label">受付番号</span>
+                    <span class="context-value" id="receiptNo">#0042</span>
+                </div>
             </div>
-            <div class="context-date" id="ctxDate">2026/04/02 09:56</div>
+            <div class="context-date" id="ctxDate"></div>
         </div>
 
-        <!-- Category Tabs -->
+        <!-- Category tabs -->
         <div class="category-tabs">
-            <button class="cat-tab active" onclick="switchCategory('osusume', this)">おすすめ</button>
-            <button class="cat-tab" onclick="switchCategory('zensai', this)">前菜</button>
-            <button class="cat-tab" onclick="switchCategory('yakimono', this)">焼き物</button>
-            <button class="cat-tab" onclick="switchCategory('salad', this)">サラダ</button>
-            <button class="cat-tab" onclick="switchCategory('drink', this)">ドリンク</button>
-            <button class="cat-tab" onclick="switchCategory('dessert', this)">デザート</button>
+            <button class="cat-tab active">おすすめ</button>
+            <button class="cat-tab">前菜</button>
+            <button class="cat-tab">麺類</button>
+            <button class="cat-tab">ドリンク</button>
+            <button class="cat-tab">サラダ</button>
         </div>
 
         <!-- Menu Grid -->
@@ -355,78 +151,40 @@
             <div class="menu-grid" id="menuGrid"></div>
         </div>
 
-        <!-- Bottom Navigation -->
+        <!-- Bottom Nav -->
         <div class="bottom-nav">
-            <button class="nav-item active"><i class="fa-solid fa-utensils"></i><span>メニュー</span></button>
-            <button class="nav-item" onclick="window.location.href='cart.html'"><div style="position:relative;"><i class="fa-solid fa-cart-shopping"></i><span class="nav-badge" id="cartBadge" style="display:none;">0</span></div><span>カート</span></button>
-            <button class="nav-item" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></button>
-            <button class="nav-item" onclick="window.location.href='menu_ai.html'"><i class="fa-solid fa-comment-dots"></i><span>AI相談</span></button>
-            <button class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></button>
+            <div class="nav-item active" onclick="window.location.reload()"><i class="fa-solid fa-utensils"></i><span>メニュー</span></div>
+            <div class="nav-item" onclick="window.location.href='cart.html'"><i class="fa-solid fa-cart-shopping"></i><span>カート</span></div>
+            <div class="nav-item" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></div>
+            <div class="nav-item" onclick="window.location.href='chat_ai.html'"><i class="fa-solid fa-comment-dots"></i><span>会話</span></div>
+            <div class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></div>
         </div>
-    </div>
 
-    <!-- Customize Modal -->
-    <div class="modal-overlay" id="customizeModal">
-        <div class="modal">
-            <div class="modal-header">
-                <span class="modal-title" id="modalTitle">カスタマイズ</span>
-                <i class="fa-solid fa-xmark" onclick="closeModal()" style="cursor:pointer; font-size: 20px; color: #999;"></i>
-            </div>
-            <div class="modal-body">
-                <div class="modal-section-label">辛さの選択 (必須)</div>
-                <div class="modal-option"><label><input type="radio" name="spice" checked> 普通</label></div>
-                <div class="modal-option"><label><input type="radio" name="spice"> 中辛</label></div>
-                <div class="modal-option"><label><input type="radio" name="spice"> 大辛</label></div>
-
-                <div class="modal-section-label">トッピングの追加 (任意)</div>
-                <div class="modal-option"><label><input type="checkbox"> チーズ <span style="font-weight:400; color:#888; font-size:13px; margin-left:auto;">+¥100</span></label></div>
-                <div class="modal-option"><label><input type="checkbox"> アボカド <span style="font-weight:400; color:#888; font-size:13px; margin-left:auto;">+¥150</span></label></div>
-            </div>
-            <div class="modal-footer">
-                <div class="qty-row">
-                    <button class="qty-btn" onclick="changeQty(-1)"><i class="fa-solid fa-minus"></i></button>
-                    <span class="qty-val" id="qtyVal">1</span>
-                    <button class="qty-btn" onclick="changeQty(1)"><i class="fa-solid fa-plus"></i></button>
-                </div>
-                <button class="modal-confirm-btn" onclick="confirmAdd()">カートに入れる</button>
-            </div>
-        </div>
     </div>
 
     <script>
-        const menuData = {
-            osusume: [
-                { name: '和牛ステーキ 特選', price: '2800', img: 'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=600&q=80', tags: [{text:'人気',type:'popular'}, {text:'がっつり',type:'taste'}] },
-                { name: '特選 海鮮丼', price: '1980', img: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&q=80', tags: [{text:'新鮮',type:'taste'}, {text:'おすすめ',type:'reason'}] },
-                { name: '黒豚のすき焼き御膳', price: '2400', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80', tags: [{text:'贅沢',type:'taste'}] },
-                { name: '季節の天ぷら盛り', price: '1580', img: 'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=600&q=80', tags: [{text:'サクサク',type:'taste'}] },
-                { name: '本マグロ大トロ刺し', price: '2200', img: 'https://images.unsplash.com/photo-1534482421-64566f976cfa?w=600&q=80', tags: [{text:'限定',type:'popular'}] },
-                { name: '自家製ハンバーグ', price: '1480', img: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=600&q=80', tags: [{text:'肉汁',type:'taste'}] },
-            ],
-            zensai: [], yakimono: [], salad: [], drink: [], dessert: []
-        };
+        const menuItems = [
+            { name: '牛カルビ焼き',        desc: '厳選和牛カルビをじっくり炭火で焼き上げた看板メニュー',         price: '1680', img: 'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=600&q=80' },
+            { name: '海鮮天ぷら盛り合わせ', desc: 'エビ・イカ・白身魚の揚げたて天ぷら。サクサク食感',             price: '1380', img: 'https://images.unsplash.com/photo-1514190051997-0f6f39ca5cde?w=600&q=80' },
+            { name: '特製ラーメン',         desc: '12時間煮込んだ濃厚とんこつスープ。自家製麺使用',               price: '980',  img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&q=80' },
+            { name: '鶏の唐揚げ定食',       desc: '国産鶏もも肉をサクジュワに揚げた人気定食。ご飯大盛り無料',     price: '1080', img: 'https://images.unsplash.com/photo-1562802378-063ec186a863?w=600&q=80' },
+            { name: '季節の刺身盛り',       desc: '市場直送の鮮魚を職人が丁寧に盛り付け。本日のおすすめ',         price: '1580', img: 'https://images.unsplash.com/photo-1534482421-64566f976cfa?w=600&q=80' },
+            { name: 'マルゲリータピザ',     desc: '石窯焼きのもちもち生地にフレッシュトマトとモッツァレラ',       price: '1280', img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=80' },
+        ];
 
-        function renderMenu(cat) {
-            const grid = document.getElementById('menuGrid');
-            const items = menuData[cat] || menuData.osusume;
-            if (items.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:100px; color:#888;">準備中...</div>';
-                return;
-            }
-            grid.innerHTML = items.map(item => `
-                <div class="menu-card" onclick="openModal('${item.name}')">
+        function renderCards() {
+            document.getElementById('menuGrid').innerHTML = menuItems.map((item, i) => `
+                <div class="menu-card" style="animation-delay:${i * 60}ms" onclick="handleCardClick(this)">
                     <div class="menu-card-img-wrap">
                         <img class="menu-card-img" src="${item.img}" alt="${item.name}">
                     </div>
                     <div class="menu-card-body">
                         <div class="menu-card-name">${item.name}</div>
-                        <div class="menu-card-tags">
-                            ${(item.tags||[]).map(t => `<span class="menu-tag ${t.type}">${t.text}</span>`).join('')}
-                        </div>
+                        <div class="menu-card-desc">${item.desc}</div>
                         <div class="menu-card-footer">
                             <span class="menu-card-price">${item.price}</span>
-                            <button class="add-btn" onclick="event.stopPropagation();openModal('${item.name}')">
-                                <i class="fa-solid fa-plus"></i>
+                            <button class="add-btn" onclick="event.stopPropagation();">
+                                <i class="fa-solid fa-cart-shopping"></i>追加
                             </button>
                         </div>
                     </div>
@@ -434,38 +192,31 @@
             `).join('');
         }
 
-        function switchCategory(cat, el) {
-            document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
-            renderMenu(cat);
+        function handleCardClick(card) {
+            card.style.transform = 'scale(0.97)';
+            setTimeout(() => { card.style.transform = ''; }, 120);
         }
 
-        let currentQty = 1;
-        function openModal(name) {
-            document.getElementById('modalTitle').innerText = name;
-            currentQty = 1;
-            document.getElementById('qtyVal').innerText = currentQty;
-            document.getElementById('customizeModal').classList.add('show');
-        }
-        function closeModal() { document.getElementById('customizeModal').classList.remove('show'); }
-        function changeQty(d) {
-            currentQty = Math.max(1, currentQty + d);
-            document.getElementById('qtyVal').innerText = currentQty;
-        }
-        function confirmAdd() {
-            alert('カートに追加しました');
-            closeModal();
-            const badge = document.getElementById('cartBadge');
-            badge.style.display = 'flex';
-            badge.innerText = parseInt(badge.innerText || '0') + currentQty;
-        }
-
-        // Initial
-        renderMenu('osusume');
-        setInterval(() => {
+        function updateClock() {
             const now = new Date();
-            document.getElementById('ctxDate').innerText = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-        }, 1000);
+            const p = n => String(n).padStart(2, '0');
+            document.getElementById('ctxDate').innerText =
+                `${now.getFullYear()}/${p(now.getMonth()+1)}/${p(now.getDate())} ${p(now.getHours())}:${p(now.getMinutes())}`;
+        }
+
+        window.onload = () => {
+            renderCards();
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            try {
+                const s = JSON.parse(localStorage.getItem('currentSession') || '{}');
+                if (s.tableNo)    document.getElementById('tableNo').innerText    = s.tableNo;
+                if (s.terminalNo) document.getElementById('terminalNo').innerText = s.terminalNo;
+                if (s.receiptNo)  document.getElementById('receiptNo').innerText  = '#' + String(s.receiptNo).padStart(4, '0');
+            } catch(e) {}
+        };
     </script>
 </body>
+
 </html>

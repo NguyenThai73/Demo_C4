@@ -7,7 +7,8 @@
     <title>posSpeak - AI提案詳細</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -70,7 +71,8 @@
             font-size: 13px;
             flex-shrink: 0;
             z-index: 10;
-            display: none; /* Hide by default when AI is talking on load */
+            display: none;
+            /* Hide by default when AI is talking on load */
         }
 
         .context-left {
@@ -659,7 +661,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px; /* Tăng khoảng cách để không bị nhấn nhầm */
+            gap: 16px;
+            /* Tăng khoảng cách để không bị nhấn nhầm */
             z-index: 150;
             opacity: 1;
             transform: translateY(0);
@@ -1272,11 +1275,11 @@
                         voiceGuide.classList.remove('hidden');
                     }, 500);
 
-                    // 5s Restoration Timer
+                    // 8s Restoration Timer
                     headerResetTimer = setTimeout(() => {
                         aiBanner.style.display = 'none';
                         contextBar.style.display = 'flex';
-                    }, 5000);
+                    }, 8000);
                 }
             }
 
