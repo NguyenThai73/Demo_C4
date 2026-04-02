@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>posSpeak – AI Menu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -19,7 +22,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+            font-family: 'Noto Sans JP', sans-serif;
             background: #1a1a1a;
             display: flex;
             justify-content: center;
@@ -583,9 +586,9 @@
     <!-- Bottom Nav -->
     <div class="bottom-nav">
         <div class="nav-item active"><i class="fa-solid fa-utensils"></i><span>メニュー</span></div>
-        <div class="nav-item"><i class="fa-solid fa-cart-shopping"></i><span>カート</span></div>
+        <div class="nav-item" onclick="window.location.href='cart.html'"><i class="fa-solid fa-cart-shopping"></i><span>カート</span></div>
         <div class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></div>
-        <div class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>会話</span></div>
+        <div class="nav-item" onclick="window.location.href='chat_ai.html'"><i class="fa-solid fa-comment-dots"></i><span>会話</span></div>
         <div class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></div>
     </div>
 
@@ -844,10 +847,10 @@
             const voiceGuide = document.getElementById('voiceGuide');
             
             // Visual feedback
-            microBtn.style.background = '#22c55e';
+            microBtn.style.background = '#a0a0a0';
             microBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-            guideText.innerHTML = '聞き取り中...';
-            guideText.style.background = 'rgba(34, 197, 94, 0.9)';
+            guideText.innerHTML = '聞き取り中';
+            guideText.style.background = 'rgba(160, 160, 160, 0.9)';
             
             // Simulate voice input (2 seconds)
             setTimeout(() => {
