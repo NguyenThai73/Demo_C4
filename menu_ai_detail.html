@@ -151,23 +151,27 @@
             flex-shrink: 0;
         }
 
-        /* Streaming text area */
+        /* Streaming text area - GIỚI HẠN 1 DÒNG */
         .banner-ticker {
             flex: 1;
             display: flex;
             align-items: center;
             min-width: 0;
+            max-height: 24px; /* Giới hạn chiều cao */
+            overflow: hidden;
         }
 
         .ticker-text {
             font-size: 16px;
             font-weight: 500;
             color: #fff;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            word-break: break-word;
+            line-height: 1.2;
+            white-space: nowrap; /* CHỈ 1 DÒNG */
+            text-overflow: ellipsis; /* Thêm ... khi quá dài */
+            overflow: hidden;
             opacity: 1;
             transition: opacity 0.4s ease;
+            max-width: 100%;
         }
 
         .ticker-text.fading { opacity: 0; }
@@ -340,6 +344,7 @@
             flex-direction: column;
             gap: 24px;
             min-width: 400px;
+            padding-bottom: 160px; /* Thêm khoảng cách để không bị voice mode đè lên */
         }
 
         /* Dish Header */
@@ -348,7 +353,7 @@
             border-radius: 16px;
             padding: 24px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid var(--border);
+            /* Đã bỏ border: 1px solid var(--border); */
         }
 
         .dish-title {
@@ -363,7 +368,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin: 30px 0 40px 0;
+            padding-bottom: 20px;
+            position: relative;
+            z-index: 100; /* Đảm bảo nằm trên voice mode */
         }
 
         .dish-price {
@@ -404,9 +412,7 @@
             font-size: 16px;
             color: #666;
             line-height: 1.6;
-            padding: 20px 0;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
+            padding: 0 0 20px 0;
             margin-bottom: 20px;
         }
 
@@ -422,7 +428,7 @@
             background: #f8fafc;
             border-radius: 12px;
             padding: 16px;
-            border: 1px solid #e5e7eb;
+            /* Đã bỏ border: 1px solid #e5e7eb; */
         }
 
         .info-label {
@@ -462,148 +468,20 @@
         .critical-tag.warning {
             background: #fef2f2;
             color: #dc2626;
-            border: 1px solid #fecaca;
+            /* Đã bỏ border: 1px solid #fecaca; */
         }
 
         .critical-tag.success {
             background: #f0fdf4;
             color: #166534;
-            border: 1px solid #dcfce7;
+            /* Đã bỏ border: 1px solid #dcfce7; */
         }
 
-        /* Accordion Section */
-        .accordion-section {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid var(--border);
-            overflow: hidden;
-        }
 
-        .accordion-item {
-            border-bottom: 1px solid var(--border);
-        }
 
-        .accordion-item:last-child {
-            border-bottom: none;
-        }
 
-        .accordion-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px;
-            background: #fff;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 700;
-            color: #2e3335;
-            border: none;
-            width: 100%;
-            text-align: left;
-            transition: background 0.2s;
-        }
 
-        .accordion-header:hover {
-            background: #f9f9f7;
-        }
 
-        .accordion-header i {
-            transition: transform 0.2s;
-            color: #666;
-        }
-
-        .accordion-header.open i {
-            transform: rotate(180deg);
-        }
-
-        .accordion-body {
-            padding: 0 24px 24px;
-            font-size: 14px;
-            color: #555;
-            line-height: 1.6;
-            display: none;
-        }
-
-        .accordion-body.show {
-            display: block;
-        }
-
-        /* Customize Options */
-        .customize-group {
-            margin-bottom: 20px;
-        }
-
-        .customize-label {
-            font-size: 14px;
-            font-weight: 700;
-            color: #444;
-            margin-bottom: 12px;
-        }
-
-        .customize-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .customize-chip {
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 600;
-            background: #fff;
-            color: #666;
-            border: 1.5px solid #e5e7eb;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .customize-chip.active {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-
-        .customize-chip:hover:not(.active) {
-            background: #f3f4f6;
-            border-color: #d1d5db;
-        }
-
-        /* Nutrition Grid */
-        .nutrition-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        /* Allergy Chips */
-        .allergy-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .allergy-chip {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .allergy-chip.contains {
-            background: #fef2f2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
-        }
-
-        .allergy-chip.may-contain {
-            background: #fffbeb;
-            color: #d97706;
-            border: 1px solid #fde68a;
-        }
 
         /* Candidate Navigation */
         .candidate-nav {
@@ -668,12 +546,14 @@
             text-align: center;
         }
 
-        /* Bottom Nav */
+        /* Bottom Nav - Giống hệt menu_ai.html */
         .bottom-nav {
-            background: var(--footer-bg);
-            border-top: 1px solid #e8e2d8;
             display: flex;
-            padding: 12px 0 24px;
+            background: var(--footer-bg);
+            border-top: 1px solid var(--border);
+            padding: 10px 0 20px;
+            width: 100%;
+            flex-shrink: 0;
         }
 
         .nav-item {
@@ -682,16 +562,16 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            color: #666;
-            font-weight: 700;
+            color: #888;
             font-size: 11px;
+            font-weight: 700;
             cursor: pointer;
             border: none;
             background: transparent;
         }
 
         .nav-item.active { 
-            color: #000; 
+            color: var(--primary); 
         }
 
         .nav-item i { 
@@ -709,6 +589,13 @@
             gap: 12px;
             z-index: 150;
             cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        
+        .voice-guide-micro.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .micro-btn {
@@ -902,7 +789,9 @@
 
             <div class="banner-staff">
                 <div class="banner-avatar-wrap">
-                    <img src="https://api.dicebear.com/7.x/personas/svg?seed=sakura&backgroundColor=b6e3f4" class="banner-staff-avatar">
+                    <img class="banner-staff-avatar"
+                         src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&q=80"
+                         alt="さくら">
                     <div class="banner-avatar-dot"></div>
                 </div>
                 <div class="banner-staff-text">
@@ -915,7 +804,7 @@
 
             <div class="banner-ticker">
                 <div class="ticker-text" id="aiTickerText">
-                    ご希望の「さっぱりしたもの」「白ワインに合う」「軽めのメイン」にぴったりの一品です。白身魚の軽やかな味わいと香草の風味が、白ワインとの相性抜群。前菜としてもメインとしてもお楽しみいただけます。
+                    ご希望にぴったりの一品です。白身魚の軽やかな味わいが白ワインと相性抜群。
                 </div>
             </div>
             
@@ -967,6 +856,10 @@
                 <!-- Dish Header -->
                 <div class="dish-header">
                     <h2 id="itemTitle" class="dish-title">白身魚のグリル 〜香草ソース〜</h2>
+
+                    <p id="itemDesc" class="dish-description">
+                        白身魚をハーブでさっぱりと仕上げました。香草の豊かな香りが白ワインとの相性抜群。軽やかな味わいで前菜にもメインにも。
+                    </p>
                     
                     <div class="dish-price-row">
                         <span id="itemPrice" class="dish-price">980</span>
@@ -975,10 +868,6 @@
                             カートに入れる
                         </button>
                     </div>
-
-                    <p id="itemDesc" class="dish-description">
-                        白身魚をハーブでさっぱりと仕上げました。香草の豊かな香りが白ワインとの相性抜群。軽やかな味わいで前菜にもメインにも。
-                    </p>
 
                     <!-- Quick Info -->
                     <div class="quick-info-grid">
@@ -1004,67 +893,6 @@
                         </span>
                     </div>
                 </div>
-
-                <!-- Accordion Section -->
-                <div class="accordion-section">
-                    <!-- Customize Accordion -->
-                    <div class="accordion-item">
-                        <button class="accordion-header" onclick="toggleAccordion(this)">
-                            <span><i class="fa-solid fa-gear"></i> カスタマイズ</span>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </button>
-                        <div class="accordion-body">
-                            <div class="customize-group">
-                                <div class="customize-label">辛さの選択 (必須)</div>
-                                <div class="customize-chips">
-                                    <span class="customize-chip active">普通</span>
-                                    <span class="customize-chip">中辛</span>
-                                    <span class="customize-chip">大辛</span>
-                                </div>
-                            </div>
-                            <div class="customize-group">
-                                <div class="customize-label">ソースの選択</div>
-                                <div class="customize-chips">
-                                    <span class="customize-chip active">香草ソース</span>
-                                    <span class="customize-chip">トマトベリーソース</span>
-                                    <span class="customize-chip">ガーリックオイル</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Nutrition & Allergy Accordion -->
-                    <div class="accordion-item">
-                        <button class="accordion-header" onclick="toggleAccordion(this)">
-                            <span><i class="fa-solid fa-chart-pie"></i> 栄養情報・アレルギー</span>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </button>
-                        <div class="accordion-body">
-                            <div class="nutrition-grid">
-                                <div class="info-card">
-                                    <div class="info-label"><i class="fa-solid fa-dumbbell"></i> タンパク質</div>
-                                    <div class="info-value">28.5 g</div>
-                                </div>
-                                <div class="info-card">
-                                    <div class="info-label"><i class="fa-solid fa-bread-slice"></i> 炭水化物</div>
-                                    <div class="info-value">12.3 g</div>
-                                </div>
-                            </div>
-                            <div class="customize-group">
-                                <div class="customize-label">アレルギー情報</div>
-                                <div class="allergy-chips">
-                                    <span class="allergy-chip contains">乳製品</span>
-                                    <span class="allergy-chip contains">小麦</span>
-                                    <span class="allergy-chip may-contain">卵</span>
-                                    <span class="allergy-chip may-contain">甲殻類</span>
-                                </div>
-                                <p style="font-size: 13px; color: #666; margin-top: 12px;">
-                                    ※「乳製品」「小麦」を含みます。「卵」「甲殻類」は製造工程で混入する可能性があります。
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -1081,24 +909,28 @@
             </button>
         </div>
 
-        <!-- Bottom Nav -->
+        <!-- Bottom Nav - Giống hệt menu_ai.html -->
         <div class="bottom-nav">
-            <button class="nav-item" onclick="window.location.href='menu_ai.html'">
+            <div class="nav-item active" onclick="window.location.href='menu_ai.html'">
                 <i class="fa-solid fa-utensils"></i>
-                メニュー
-            </button>
-            <button class="nav-item active">
+                <span>メニュー</span>
+            </div>
+            <div class="nav-item">
                 <i class="fa-solid fa-cart-shopping"></i>
-                カート
-            </button>
-            <button class="nav-item" onclick="window.location.href='chat_ai.html'">
-                <i class="fa-solid fa-comment-dots"></i>
-                会話履歴
-            </button>
-            <button class="nav-item" onclick="window.location.href='order_status.html'">
+                <span>カート</span>
+            </div>
+            <div class="nav-item" onclick="window.location.href='order_status.html'">
                 <i class="fa-solid fa-clock-rotate-left"></i>
-                注文履歴
-            </button>
+                <span>注文履歴</span>
+            </div>
+            <div class="nav-item" onclick="window.location.href='chat_ai.html'">
+                <i class="fa-solid fa-comment-dots"></i>
+                <span>会話</span>
+            </div>
+            <div class="nav-item" onclick="changeLanguage()">
+                <i class="fa-solid fa-globe"></i>
+                <span>言語</span>
+            </div>
         </div>
 
         <!-- Overlay -->
@@ -1106,7 +938,7 @@
             <div class="ai-chat-sheet">
                 <div class="chat-sheet-header">
                     <div style="display:flex; align-items:center; gap:12px;">
-                        <img src="https://api.dicebear.com/7.x/personas/svg?seed=sakura" style="width:48px; border-radius:50%;">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&q=80" style="width:48px; height:48px; border-radius:50%; object-fit:cover;">
                         <span style="font-size:20px; font-weight:800;">さくら (AIスタッフ)</span>
                     </div>
                     <button onclick="closeAiChat()" style="border:none; background:none; font-size:24px; color:#666;">×</button>
@@ -1154,7 +986,7 @@
                 price: '880', 
                 desc: '採れたて旬野菜を濃厚ソースで。温かいソースと冷たい野菜のコントラスト。', 
                 img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=80',
-                reason: '💪 低カロリーで栄養満点'
+                reason: '🌿 野菜たっぷりでヘルシー'
             }
         ];
 
@@ -1184,12 +1016,6 @@
             updateUI();
         }
 
-        function toggleAccordion(btn) {
-            const body = btn.nextElementSibling;
-            body.classList.toggle('show');
-            btn.classList.toggle('open');
-        }
-
         function changeImg(el) { 
             document.getElementById('mainImg').src = el.src; 
             document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
@@ -1212,10 +1038,19 @@
         function addText(t) { 
             document.getElementById('chatInput').value = t; 
         }
+        
+        function changeLanguage() {
+            alert('言語切り替え機能 (Language switch)\n\n実際の実装では、英語/日本語/ベトナム語などの切り替えを行います。');
+            // In real app: Implement language switching logic
+        }
 
         function startVoiceInput() {
             const microBtn = document.querySelector('.micro-btn');
             const guideText = document.querySelector('.voice-guide-text');
+            const voiceGuide = document.querySelector('.voice-guide-micro');
+            
+            // Ẩn voice input khi bắt đầu nói
+            voiceGuide.classList.add('hidden');
             
             // Visual feedback
             microBtn.style.background = '#22c55e';
@@ -1230,34 +1065,28 @@
                 guideText.innerHTML = 'タップして<br>ご希望を話してください。';
                 guideText.style.background = 'rgba(45, 58, 46, 0.9)';
                 
+                // Hiển thị lại voice input khi hoàn thành
+                setTimeout(() => {
+                    voiceGuide.classList.remove('hidden');
+                }, 500);
+                
                 // Show voice input result in chat overlay
                 openAiChat();
                 addText('もっと辛いものが食べたい');
             }, 2000);
         }
 
-        // Add click handlers for customize chips
-        document.querySelectorAll('.customize-chip').forEach(chip => {
-            chip.addEventListener('click', function() {
-                const parent = this.parentElement;
-                // For radio-like behavior (only one active in group)
-                if (parent.classList.contains('customize-chips')) {
-                    // Check if this group should have single selection
-                    const isRequired = this.textContent.includes('普通') || 
-                                      this.textContent.includes('中辛') || 
-                                      this.textContent.includes('大辛');
-                    if (isRequired) {
-                        parent.querySelectorAll('.customize-chip').forEach(c => c.classList.remove('active'));
-                    }
-                }
-                this.classList.add('active');
-            });
-        });
+
 
         // AI Ticker Text Streaming Effect
         function startAiTicker() {
             const tickerText = document.getElementById('aiTickerText');
+            const voiceGuide = document.querySelector('.voice-guide-micro');
             const fullText = tickerText.textContent;
+            
+            // Ẩn voice input khi AI bắt đầu nói
+            voiceGuide.classList.add('hidden');
+            
             tickerText.textContent = '';
             tickerText.classList.add('streaming');
             
@@ -1271,6 +1100,12 @@
                     setTimeout(typeWriter, speed);
                 } else {
                     tickerText.classList.remove('streaming');
+                    
+                    // Hiển thị voice input khi AI nói xong
+                    setTimeout(() => {
+                        voiceGuide.classList.remove('hidden');
+                    }, 500);
+                    
                     // Start blinking cursor animation after completion
                     setTimeout(() => {
                         tickerText.classList.add('streaming');
@@ -1291,6 +1126,25 @@
         // Start AI ticker on page load
         window.addEventListener('load', function() {
             startAiTicker();
+            
+            // Tự động khởi động lại AI nói sau mỗi 15 giây (mô phỏng)
+            setInterval(function() {
+                // Chỉ khởi động lại nếu AI không đang nói
+                const tickerText = document.getElementById('aiTickerText');
+                if (!tickerText.classList.contains('streaming')) {
+                    // Cập nhật nội dung mới
+                    const messages = [
+                        "ご希望にぴったりの一品です。白身魚の軽やかな味わいが白ワインと相性抜群。",
+                        "この料理は暑い日に体を冷やす効果があります。",
+                        "白ワインとの相性が抜群です。"
+                    ];
+                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                    tickerText.textContent = randomMessage;
+                    
+                    // Bắt đầu nói
+                    startAiTicker();
+                }
+            }, 15000); // 15 giây
         });
     </script>
 </body>
