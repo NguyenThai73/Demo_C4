@@ -1028,32 +1028,24 @@
             <div class="image-section">
                 <div class="main-image-container">
                     <div class="image-badge">
-                        <i class="fa-solid fa-camera"></i>
-                        AI推奨写真
+                        <i class="fas fa-wine-glass"></i> Vintage 2015
                     </div>
-                    <img id="mainImg" src="https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=600&q=80"
-                        alt="Main" class="main-image">
+                    <img src="premium_wine.png" alt="Premium Wine" class="main-image">
                     <!-- AI reason badge -->
-                    <div class="ai-reason-badge" id="aiReasonBadge">
+                    <div class="ai-reason-badge">
                         <div class="ai-reason-dot"></div>
-                        <span id="aiReasonText">🌡️ 暑い日に体を冷やす</span>
+                        お客様の好みに合わせた、深みのある芳醇な赤ワインです。
                     </div>
                 </div>
 
                 <div class="thumbnail-section">
                     <div class="thumbnail-label">
-                        <i class="fa-solid fa-images"></i>
-                        他の写真を見る
+                        <i class="fas fa-images"></i> ギャラリー
                     </div>
                     <div class="thumbnail-grid">
-                        <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=200&q=80"
-                            class="thumbnail active" onclick="changeImg(this)">
-                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=200&q=80"
-                            class="thumbnail" onclick="changeImg(this)">
-                        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=200&q=80"
-                            class="thumbnail" onclick="changeImg(this)">
-                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&q=80"
-                            class="thumbnail" onclick="changeImg(this)">
+                        <img src="premium_wine.png" class="thumbnail active" onclick="changeImage(this)">
+                        <img src="wine_thumb_1.png" class="thumbnail" onclick="changeImage(this)">
+                        <img src="wine_thumb_2.png" class="thumbnail" onclick="changeImage(this)">
                     </div>
                 </div>
             </div>
@@ -1062,14 +1054,14 @@
             <div class="info-panel">
                 <!-- Dish Header -->
                 <div class="dish-header">
-                    <h2 id="itemTitle" class="dish-title">白身魚のグリル 〜香草ソース〜</h2>
+                    <h2 id="itemTitle" class="dish-title">プレミアム・シャトー・マルゴー</h2>
 
                     <p id="itemDesc" class="dish-description">
-                        白身魚をハーブでさっぱりと仕上げました。香草の豊かな香りが白ワインとの相性抜群。軽やかな味わいで前菜にもメインにも。
+                        1er Grand Cru Classé. 2015年はマルゴーの歴史の中でも象徴的なヴィンテージ。エレガントでシルキーなタンニン、豊かな果実味が調和した至極の1本です。
                     </p>
 
                     <div class="dish-price-row">
-                        <span id="itemPrice" class="dish-price">980</span>
+                        <span id="itemPrice" class="dish-price">120,000</span>
                         <button class="add-cart-btn" onclick="addToCart()">
                             <i class="fa-solid fa-cart-plus"></i>
                             カートに入れる
@@ -1080,11 +1072,11 @@
                     <div class="quick-info-grid">
                         <div class="info-card">
                             <div class="info-label"><i class="fa-solid fa-fire"></i> エネルギー</div>
-                            <div class="info-value">320 kcal</div>
+                            <div class="info-value">85 kcal</div>
                         </div>
                         <div class="info-card">
-                            <div class="info-label"><i class="fa-solid fa-clock"></i> 調理時間</div>
-                            <div class="info-value">約15分</div>
+                            <div class="info-label"><i class="fa-solid fa-clock"></i> 提供時間</div>
+                            <div class="info-value">約1分</div>
                         </div>
                     </div>
 
@@ -1237,8 +1229,11 @@
             updateUI();
         }
 
-        function changeImg(el) {
-            document.getElementById('mainImg').src = el.src;
+        function changeImage(el) {
+            const mainImg = document.querySelector('.main-image');
+            mainImg.src = el.src;
+            
+            // Update active thumbnail
             document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
         }

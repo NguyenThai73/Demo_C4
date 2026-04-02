@@ -990,7 +990,12 @@
         }
 
         function showUserSpeechBubble(text) {
+            // Remove existing bubbles first to prevent duplication
+            const existingBubbles = document.querySelectorAll('.user-speech-bubble');
+            existingBubbles.forEach(b => b.remove());
+
             const sub = document.createElement('div');
+            sub.className = 'user-speech-bubble';
             sub.style = `
                 position: absolute;
                 bottom: 220px;
@@ -1204,7 +1209,7 @@
                         
                         // Redirect to detail page after a delay
                         setTimeout(() => {
-                            window.location.href = 'menu_ai_detail.html?wine=0';
+                            window.location.href = 'menu_ai_detail_wine.html';
                         }, 1500);
                     });
                 }, 2000);
@@ -1244,7 +1249,7 @@
                     
                     setTimeout(() => { 
                         card.style.transform = ''; 
-                        window.location.href = 'menu_ai_detail.html?wine=' + wineIndex;
+                        window.location.href = 'menu_ai_detail_wine.html';
                     }, 120);
                     return;
                 }
@@ -1291,10 +1296,33 @@
             }, 2000);
         }
         
+        // Dessert data for the final step
+        const dessertItems = [
+            { 
+                name: 'とろける杏仁豆腐', 
+                desc: '口当たりの良い滑らかな杏仁豆腐。クコの実を添えて', 
+                price: '450', 
+                img: 'https://images.unsplash.com/photo-1563805039227-9999a0e6bb7c?w=400&q=80', 
+                reason: '🍨 食後にさっぱり' 
+            },
+            { 
+                name: '自家製マンゴープリン', 
+                desc: '完熟マンゴーをたっぷり使った濃厚な味わい', 
+                price: '520', 
+                img: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&q=80', 
+                reason: '🥭 濃厚な甘み' 
+            },
+            { 
+                name: '抹茶アイスパフェ', 
+                desc: '厳選された抹茶を使用した上品な味わいのパフェ', 
+                price: '680', 
+                img: 'https://images.unsplash.com/photo-1579372781848-65ec49896791?w=400&q=80', 
+                reason: '✨ 宇治抹茶使用' 
+            }
+        ];
+
         // Check URL parameters on page load
         window.addEventListener('load', function() {
-            console.log('Page loaded, showing welcome message...');
-            
             const urlParams = new URLSearchParams(window.location.search);
             const extended = urlParams.get('extended');
             const step = urlParams.get('step');
@@ -1306,7 +1334,35 @@
             if (aiBanner) aiBanner.style.display = 'flex';
             if (contextBar) contextBar.style.display = 'none';
             
-            if (extended === 'true' && step === '4') {
+            if (step === 'dessert') {
+                // Show desserts only
+                renderCards(dessertItems);
+                document.getElementById('sectionLabel').classList.add('visible');
+                
+                // Update label for desserts
+                const label = document.getElementById('sectionLabel');
+                label.querySelector('.section-label-badge').textContent = '✦ Sweet Selection';
+                label.querySelector('.section-label-text').textContent = '厳選した人気のスイーツ 3 点';
+                
+                // Show AI message for desserts
+                setTimeout(() => {
+                    const tickerText = document.getElementById('tickerText');
+                    if (tickerText) {
+                        tickerText.textContent = '';
+                        tickerText.classList.add('streaming');
+                        const fullText = '人気のスイーツ 3 点をご紹介します！ お好みのものをお選びください。';
+                        let i = 0;
+                        function type() {
+                            if (i < fullText.length) {
+                                tickerText.textContent += fullText.charAt(i); i++;
+                                setTimeout(type, 45);
+                            } else { tickerText.classList.remove('streaming'); }
+                        }
+                        type();
+                    }
+                }, 500);
+
+            } else if (extended === 'true' && step === '4') {
                 // Returning from wine detail page - show wines again
                 console.log('Returning to wine selection');
                 extendedFlow = true;
