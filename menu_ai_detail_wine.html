@@ -1001,7 +1001,8 @@
             </div>
             <div class="banner-divider"></div>
             <div class="banner-ticker">
-                <div class="ticker-text" id="aiTickerText">ご希望にぴったりの一品です。</div>
+                <div class="ticker-text" id="aiTickerText">ご希望にぴったりの一品です。
+柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！</div>
             </div>
             <!-- Back button in banner -->
             <div class="banner-divider"></div>
@@ -1370,8 +1371,8 @@
                 if (!tickerText.classList.contains('streaming')) {
                     // Cập nhật nội dung mới
                     const messages = [
-                        "ご希望にぴったりの一品です。白身魚の軽やかな味わいが白ワインと相性抜群。",
-                        "この料理は暑い日に体を冷やす効果があります。",
+                        "ご希望にぴったりの一品です。\n柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！",
+                        "このワインは魚料理との相性が抜群です。",
                         "白ワインとの相性が抜群です。"
                     ];
                     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
@@ -1391,7 +1392,7 @@
                 price: '3,300',
                 img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
                 type: '白ワイン',
-                taste: '柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴。魚料理や前菜に最適。',
+                taste: '柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！',
                 detail: 'カリフォルニア産のシャルドネ種を使用。樽熟成により複雑な味わいを実現。アルコール度数: 13.5%',
                 pairing: '魚料理、前菜、チーズ'
             },
@@ -1431,7 +1432,7 @@
                 // Update AI banner text
                 const aiTickerText = document.getElementById('aiTickerText');
                 if (aiTickerText) {
-                    aiTickerText.textContent = 'ご希望にぴったりの一品です。\n' + wine.taste + ' お料理との相性も抜群ですよ！';
+                    aiTickerText.textContent = 'ご希望にぴったりの一品です。\n柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！';
                 }
 
                 // Update food image and details
