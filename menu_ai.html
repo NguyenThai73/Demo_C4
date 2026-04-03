@@ -1141,7 +1141,7 @@
             } else if (demoStep === 2) {
                 // Step 3: Voice selection of menu item
                 setTimeout(() => {
-                    showUserSpeechBubble('蒸し鶏サラダを1つお願いします');
+                    showUserSpeechBubble('レモンソーダを1つお願いします');
                 }, 500);
 
                 setTimeout(() => {
@@ -1152,7 +1152,7 @@
                     // Simulate voice recognition - auto-select the first lowCal item
                     const lowCalItems = coolMenuItems.filter(item => item.lowCal);
                     if (lowCalItems.length > 0) {
-                        const selectedItem = lowCalItems[0]; // 蒸し鶏サラダ
+                        const selectedItem = lowCalItems[0]; // レモンソーダ
 
                         streamText('かしこまりました！ ' + selectedItem.name + ' を 1 つカートに追加いたします。', 45, 2000, () => {
                             // Show cart alert and start extended flow
