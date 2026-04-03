@@ -637,6 +637,14 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
+        .voice-sub-btn.calling {
+            background: #475569 !important;
+            color: #fff !important;
+            border-color: #334155 !important;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
         .replay-btn {
             position: absolute;
             top: 62px;
@@ -912,7 +920,7 @@
                 <button class="voice-sub-btn" onclick="window.location.href='chat_ai.html'">
                     <i class="fa-regular fa-comment-dots"></i>チャットに切替
                 </button>
-                <button class="voice-sub-btn" onclick="openStaffModal()">
+                <button class="voice-sub-btn" onclick="openStaffModal()" id="callStaffBtn">
                     <i class="fa-solid fa-bell"></i>店員を呼ぶ
                 </button>
             </div>
@@ -997,6 +1005,14 @@
                 return;
             }
             closeStaffModal();
+
+            // Update main button state
+            const btn = document.getElementById('callStaffBtn');
+            if (btn) {
+                btn.classList.add('calling');
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>店員呼出中';
+            }
+
             const alertBox = document.createElement('div');
             alertBox.className = 'cart-alert';
             alertBox.style.background = 'rgba(26, 54, 93, 0.95)';
@@ -1119,6 +1135,14 @@
             renderCards(regularMenuItems);
             const label = document.getElementById('sectionLabel');
             if (label) label.classList.remove('visible');
+
+            // Reset Staff Call button
+            const btn = document.getElementById('callStaffBtn');
+            if (btn) {
+                btn.classList.remove('calling');
+                btn.innerHTML = '<i class="fa-solid fa-bell"></i>店員を呼ぶ';
+            }
+
             setTimeout(showVoiceGuide, 2000);
         }
 
