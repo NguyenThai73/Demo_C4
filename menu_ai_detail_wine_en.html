@@ -1005,7 +1005,7 @@
                 <span class="voice-order-text" id="voiceOrderText">Voice<br>Order</span>
             </button>
             <a class="chat-switch-link" id="chatLink" onclick="switchToChatMode()">
-                <i class="fa-regular fa-comment-dots"></i>チャットに切替
+                <i class="fa-regular fa-comment-dots"></i>Chat
             </a>
         </div>
 
@@ -1348,7 +1348,7 @@
                     setTimeout(() => {
                         startAiTicker(() => {
                             setTimeout(() => {
-                                window.location.href = 'menu_ai_dessert.html';
+                                window.location.href = 'menu_ai_dessert_en.html';
                             }, 1000);
                         });
                     }, 1000);
@@ -1414,7 +1414,7 @@
                 desc: 'カリフォルニアの温暖な気候で育まれたシャルドネ. 豊かな果実味と, 樽熟成由来のバニラの香りが絶妙なハーモニーを奏で, 爽やかな酸味が料理を一層引き立てます.',
                 price: '1,280',
                 img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80',
-                taste: '柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！'
+                taste: 'This white wine has refreshing citrus acidity with a gentle hint of vanilla. It pairs beautifully with a wide range of dishes.'
             }
         ];
 
@@ -1426,7 +1426,7 @@
             syncCartBadgeFromStorage();
 
             // Default greeting
-            aiTickerText.textContent = 'ご希望にぴったりの一品です。\n柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！';
+            aiTickerText.textContent = 'This is a great match for your preference.\nIt is a white wine with refreshing citrus notes and a light touch of vanilla. It pairs very well with many dishes.';
 
             if (wineIndex !== null && wineIndex >= 0 && wineIndex < wineItems.length) {
                 const wine = wineItems[wineIndex];
@@ -1441,7 +1441,7 @@
             // Random messages interval
             setInterval(function () {
                 if (!aiTickerText.classList.contains('streaming') && aiBanner.style.display === 'none') {
-                    aiTickerText.textContent = 'ご希望にぴったりの一品です。\n柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！';
+                    aiTickerText.textContent = 'This is a great match for your preference.\nIt is a white wine with refreshing citrus notes and a light touch of vanilla. It pairs very well with many dishes.';
                     startAiTicker();
                 }
             }, 15000);
