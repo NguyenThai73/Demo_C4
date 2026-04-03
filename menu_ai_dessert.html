@@ -836,9 +836,15 @@
         }
 
         function showUserSpeechBubble(text) {
+            // Remove existing bubbles first to prevent duplication
+            const existingBubbles = document.querySelectorAll('.user-speech-bubble');
+            existingBubbles.forEach(b => b.remove());
+
             const sub = document.createElement('div');
-            sub.style = "position:absolute; bottom:220px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); color:#fff; padding:14px 32px; border-radius:40px; font-weight:700; font-size:18px; z-index:9000; animation: bubble-up 0.4s forwards; box-shadow: 0 10px 40px rgba(0,0,0,0.3);";
-            sub.textContent = '「' + text + '」';
+            sub.className = 'user-speech-bubble';
+            sub.styleContent = "position:absolute; bottom:220px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); color:#fff; padding:14px 32px; border-radius:40px; font-weight:700; font-size:18px; z-index:9000; animation: bubble-up 0.4s forwards; box-shadow: 0 10px 40px rgba(0,0,0,0.3);";
+            sub.style = sub.styleContent; // Fix potential typo in previous code if any
+            sub.textContent = text;
             document.querySelector('.ipad-frame').appendChild(sub);
             if (!document.getElementById('bubble-style')) {
                 const s = document.createElement('style'); s.id = 'bubble-style';
