@@ -1029,13 +1029,13 @@
             <div class="image-section">
                 <div class="main-image-container">
                     <div class="image-badge">
-                        <i class="fas fa-wine-glass"></i> Vintage 2015
+                        <i class="fas fa-wine-glass"></i> Vintage 2022
                     </div>
-                    <img src="premium_wine.png" alt="Premium Wine" class="main-image">
+                    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80" alt="Chardonnay 2022" class="main-image" id="foodImg">
                     <!-- AI reason badge -->
                     <div class="ai-reason-badge">
                         <div class="ai-reason-dot"></div>
-                        お客様の好みに合わせた、深みのある芳醇な赤ワインです。
+                        お客様の好みに合わせた、バランスの取れた爽やかな白ワインです。
                     </div>
                 </div>
 
@@ -1055,14 +1055,14 @@
             <div class="info-panel">
                 <!-- Dish Header -->
                 <div class="dish-header">
-                    <h2 id="itemTitle" class="dish-title">プレミアム・シャトー・マルゴー</h2>
+                    <h2 id="itemTitle" class="dish-title">シャルドネ 2022</h2>
 
                     <p id="itemDesc" class="dish-description">
-                        1er Grand Cru Classé. 2015年はマルゴーの歴史の中でも象徴的なヴィンテージ。エレガントでシルキーなタンニン、豊かな果実味が調和した至極の1本です。
+                        カリフォルニアの温暖な気候で育まれたシャルドネ。豊かな果実味と、樽熟成由来のバニラの香りが絶妙なハーモニーを奏で、爽やかな酸味が料理を一層引き立てます。バランスの取れたエレガントな味わいをお楽しみください。
                     </p>
 
                     <div class="dish-price-row">
-                        <span id="itemPrice" class="dish-price">120,000</span>
+                        <span id="itemPrice" class="dish-price">1,280</span>
                         <button class="add-cart-btn" onclick="addToCart()">
                             <i class="fa-solid fa-cart-plus"></i>
                             カートに入れる
@@ -1379,7 +1379,7 @@
         const wineItems = [
             {
                 name: 'シャルドネ 2022',
-                desc: 'フルーティーでバランスの取れた白ワイン',
+                desc: 'カリフォルニアの温暖な気候で育まれたシャルドネ。豊かな果実味と、樽熟成由来のバニラの香りが絶妙なハーモニーを奏で、爽やかな酸味が料理を一層引き立てます。',
                 price: '1,280',
                 img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
                 type: '白ワイン',
@@ -1428,9 +1428,9 @@
 
                 // Update food image and details
                 const foodImg = document.getElementById('foodImg');
-                const foodName = document.getElementById('foodName');
-                const foodDesc = document.getElementById('foodDesc');
-                const foodPrice = document.getElementById('foodPrice');
+                const foodName = document.getElementById('itemTitle');
+                const foodDesc = document.getElementById('itemDesc');
+                const foodPrice = document.getElementById('itemPrice');
 
                 if (foodImg) foodImg.src = wine.img;
                 if (foodImg) foodImg.alt = wine.name;
