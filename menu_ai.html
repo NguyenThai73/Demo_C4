@@ -559,7 +559,7 @@
             align-items: center;
             justify-content: center;
             gap: 4px;
-            box-shadow: 0 6px 24 rgba(45, 58, 46, 0.38);
+            box-shadow: 0 6px 24px rgba(45, 58, 46, 0.38);
             transition: 0.15s;
         }
 
@@ -1012,7 +1012,7 @@
         const regularMenuItems = [
             { name: '牛カルビ焼き', desc: '厳選和牛カルビをじっくり炭火で焼き上げた看板メニュー', price: '1680', img: 'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=600&q=80' },
             { name: '海鮮天ぷら盛り合わせ', desc: 'エビ・イカ・白身魚の揚げたて天ぷら。サクサク食感', price: '1380', img: 'https://images.unsplash.com/photo-1514190051997-0f6f39ca5cde?w=600&q=80' },
-            { name: '特製ラーメン', desc: '12時間煮込んだ濃厚とんこつスープ。自家製麺使用', price: '980', img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&q=80' },
+            { name: '特製ラーメン', desc: '12時間煮込んだ濃厚とんこつスープ。自家製麺 sử dụng', price: '980', img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&q=80' },
             { name: '鶏の唐揚げ定食', desc: '国産鶏もも肉をサクジュワに揚げた人気定食。ご飯大盛り無料', price: '1080', img: 'https://images.unsplash.com/photo-1562802378-063ec186a863?w=600&q=80' },
             { name: '季節の刺身盛り', desc: '市場直送の鮮魚を職人が丁寧に盛り付け。本日のおすすめ', price: '1580', img: 'https://images.unsplash.com/photo-1534482421-64566f976cfa?w=600&q=80' },
             { name: 'マルゲリータピザ', desc: '石窯焼きのもちもち生地にフレッシュトマトとモッツァレラ', price: '1280', img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=80' }
@@ -1029,8 +1029,14 @@
 
         const wineItems = [
             { name: 'シャルドネ 2022', desc: 'フルーティーでバランスの取れた白ワイン', price: '3,300', img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80', type: '白ワイン' },
-            { name: 'カベルネ・ソーヴィニヨン 2020', desc: '力強いタンニンと深みのある赤ワイン', price: '1,580', img: 'https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?w=400&q=80', type: '赤ワイン' },
+            { name: 'カベルネ・ソーヴィニヨン 2020', desc: '力強いタンニン và 深みのある赤ワイン', price: '1,580', img: 'https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?w=400&q=80', type: '赤ワイン' },
             { name: 'ロゼ プロヴァンス 2023', desc: '軽やかでフルーティーなロゼワイン', price: '1,180', img: 'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=400&q=80', type: 'ロゼワイン' }
+        ];
+
+        const dessertItems = [
+            { name: 'とろける杏仁豆腐', desc: '口当たりの良い滑らかな杏仁豆腐。クコの実を添えて', price: '450', img: 'https://images.unsplash.com/photo-1563805039227-9999a0e6bb7c?w=400&q=80', reason: '🍨 食後にさっぱり' },
+            { name: '自家製マンゴープリン', desc: '完熟マンゴーをたっぷり使った濃厚な味わい', price: '520', img: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&q=80', reason: '🥭 濃厚な甘み' },
+            { name: '抹茶アイスパフェ', desc: '厳選された抹茶を使用した上品な味わいのパフェ', price: '680', img: 'https://images.unsplash.com/photo-1579372781848-65ec49896791?w=400&q=80', reason: '✨ 宇治抹茶使用' }
         ];
 
         let demoStep = 0, extendedFlow = false, selectedWineIndex = -1;
@@ -1038,20 +1044,29 @@
 
         function streamText(text, charDelay, pauseAfter, onDone) {
             const el = document.getElementById('tickerText');
+            if (!el) return;
             el.classList.add('fading');
             clearInterval(streamInterval); clearTimeout(streamTimer);
             setTimeout(() => {
                 el.textContent = ''; el.classList.remove('fading'); el.classList.add('streaming');
+                const aiBanner = document.getElementById('aiBanner');
+                const contextBar = document.querySelector('.context-bar');
+                if (aiBanner) aiBanner.style.display = 'flex';
+                if (contextBar) contextBar.style.display = 'none';
                 let i = 0;
                 streamInterval = setInterval(() => {
                     if (i < text.length) { el.textContent += text[i++]; }
-                    else { clearInterval(streamInterval); el.classList.remove('streaming'); if (onDone) streamTimer = setTimeout(onDone, pauseAfter); }
+                    else { 
+                        clearInterval(streamInterval); el.classList.remove('streaming'); 
+                        if (onDone) streamTimer = setTimeout(onDone, pauseAfter); 
+                    }
                 }, charDelay);
             }, 420);
         }
 
         function renderCards(items) {
             const grid = document.getElementById('menuGrid');
+            if (!grid) return;
             grid.innerHTML = items.map((item, i) => `
                 <div class="menu-card" id="card${i}" onclick="handleCardClick(this)">
                     <div class="menu-card-img-wrap">
@@ -1108,14 +1123,8 @@
         }
 
         function runDemo() {
-            demoStep = 0;
-            const aiBanner = document.getElementById('aiBanner'), contextBar = document.querySelector('.context-bar');
-            if (aiBanner) aiBanner.style.display = 'flex';
-            if (contextBar) contextBar.style.display = 'none';
-            document.getElementById('sectionLabel').classList.remove('visible');
-            renderCards(regularMenuItems);
+            resetToInitialState();
             streamText('ようこそいらっしゃいませ！\nご来店ありがとうございます。ご注文やおすすめについて、お気軽にお話しください。', 45, 0);
-            setTimeout(showVoiceGuide, 2000);
         }
 
         function showVoiceGuide() {
@@ -1148,7 +1157,7 @@
         }
 
         function startVoiceInput() {
-            const btn = document.getElementById('voiceOrderBtn'), lbl = document.getElementById('voiceOrderText'), voiceSubBtns = document.getElementById('voiceSubBtns'), voiceGuide = document.getElementById('voiceGuide'), aiBanner = document.getElementById('aiBanner'), contextBar = document.querySelector('.context-bar');
+            const btn = document.getElementById('voiceOrderBtn'), lbl = document.getElementById('voiceOrderText'), voiceSubBtns = document.getElementById('voiceSubBtns'), voiceGuide = document.getElementById('voiceGuide');
             if (headerResetTimer) clearTimeout(headerResetTimer);
             btn.style.background = '#a0a0a0'; lbl.innerHTML = '聞き取り中';
             if (voiceSubBtns) voiceSubBtns.style.display = 'none';
@@ -1158,7 +1167,7 @@
                 setTimeout(() => {
                     btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
                     if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
-                    voiceGuide.classList.remove('show'); aiBanner.style.display = 'flex'; contextBar.style.display = 'none';
+                    voiceGuide.classList.remove('show');
                     streamText('ありがとうございます。\nそれでは、本日の暑さにぴったりの涼やかメニューを6品ご紹介します。気になる一品をお選びください。', 45, 3000, () => {
                         renderCards(coolMenuItems);
                         document.getElementById('sectionLabel').classList.add('visible');
@@ -1240,16 +1249,14 @@
             setTimeout(() => window.location.href = 'menu_ai_detail.html', 120);
         }
 
-        window.onload = () => {
+        window.addEventListener('load', function () {
             renderCards(regularMenuItems);
             setInterval(() => {
                 const now = new Date();
                 const ctxDate = document.getElementById('ctxDate');
                 if (ctxDate) ctxDate.innerText = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
             }, 1000);
-        };
 
-        window.addEventListener('load', function () {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('step') === 'dessert') {
                 renderCards(dessertItems);
