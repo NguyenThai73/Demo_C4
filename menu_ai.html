@@ -698,6 +698,133 @@
             opacity: 1;
         }
 
+        .quick-cart-sheet {
+            position: absolute;
+            left: 16px;
+            width: 520px;
+            bottom: 82px;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(224, 220, 212, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 14px 36px rgba(30, 30, 30, 0.14);
+            padding: 16px 18px 14px;
+            z-index: 220;
+            opacity: 0;
+            transform: translateY(24px);
+            pointer-events: none;
+            transition: opacity 0.28s ease, transform 0.28s ease;
+        }
+
+        .quick-cart-sheet.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .quick-cart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .quick-cart-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #4a4a4a;
+        }
+
+        .quick-cart-clear {
+            border: none;
+            background: transparent;
+            color: #ef4444;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .quick-cart-items {
+            display: flex;
+            flex-direction: column;
+            max-height: 90px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+        }
+
+        .quick-cart-item {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto auto;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-top: 1px solid rgba(160, 160, 160, 0.22);
+        }
+
+        .quick-cart-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #636363;
+            min-width: 0;
+        }
+
+        .quick-cart-price {
+            font-size: 14px;
+            font-weight: 800;
+            color: #707070;
+            white-space: nowrap;
+        }
+
+        .quick-cart-qty {
+            font-size: 14px;
+            font-weight: 800;
+            color: #4a4a4a;
+            white-space: nowrap;
+        }
+
+        .quick-cart-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .quick-cart-total {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--primary);
+            font-weight: 900;
+        }
+
+        .quick-cart-total i {
+            font-size: 24px;
+            color: #2f2a29;
+        }
+
+        .quick-cart-total-price {
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .quick-cart-confirm {
+            min-width: 150px;
+            height: 42px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(45, 58, 46, 0.16);
+            font-family: inherit;
+        }
+
         /* LowCal filter styles */
         .lowcal-filtered {
             filter: blur(4px) !important;
@@ -984,6 +1111,23 @@
             <div class="menu-grid" id="menuGrid"></div>
         </div>
 
+        <div class="quick-cart-sheet" id="quickCartSheet">
+            <div class="quick-cart-header">
+                <div class="quick-cart-title">カート内の商品</div>
+                <button class="quick-cart-clear" onclick="clearQuickCart()">
+                    <i class="fa-regular fa-trash-can"></i> 全て消去
+                </button>
+            </div>
+            <div class="quick-cart-items" id="quickCartItems"></div>
+            <div class="quick-cart-footer">
+                <div class="quick-cart-total">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="quick-cart-total-price" id="quickCartTotal">¥0</span>
+                </div>
+                <button class="quick-cart-confirm" onclick="window.location.href='cart.html?confirm=true'">注文を確定</button>
+            </div>
+        </div>
+
         <div class="bottom-nav">
             <div class="nav-item active" onclick="window.location.reload()"><i class="fa-solid fa-utensils"></i><span>メニュー</span></div>
             <div class="nav-item" onclick="window.location.href='cart.html'">
@@ -1197,8 +1341,10 @@
         ];
 
         const CART_COUNT_STORAGE_KEY = 'posSpeakCartCount';
+        const CART_ITEMS_STORAGE_KEY = 'posSpeakCartItems';
         let demoStep = 0, extendedFlow = false, selectedWineIndex = -1, currentLanguage = 'jp', cartItemCount = 0;
-        let streamInterval = null, streamTimer = null, headerResetTimer = null;
+        let quickCartItems = [];
+        let streamInterval = null, streamTimer = null, headerResetTimer = null, quickCartSheetTimer = null;
 
         function streamText(text, charDelay, pauseAfter, onDone) {
             const el = document.getElementById('tickerText');
@@ -1243,11 +1389,98 @@
             `).join('');
         }
 
+        function parsePrice(value) {
+            return parseInt(String(value).replace(/[^\d]/g, ''), 10) || 0;
+        }
+
+        function getAllKnownMenuItems() {
+            return [...regularMenuItems, ...coolMenuItems, ...wineItems, ...dessertItems];
+        }
+
+        function findMenuItemByName(name) {
+            return getAllKnownMenuItems().find(item => item.name === name) || null;
+        }
+
+        function loadQuickCartItems() {
+            try {
+                const raw = localStorage.getItem(CART_ITEMS_STORAGE_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                quickCartItems = Array.isArray(parsed) ? parsed : [];
+            } catch (error) {
+                quickCartItems = [];
+            }
+        }
+
+        function saveQuickCartItems() {
+            localStorage.setItem(CART_ITEMS_STORAGE_KEY, JSON.stringify(quickCartItems));
+        }
+
+        function renderQuickCartSheet() {
+            const list = document.getElementById('quickCartItems');
+            const totalEl = document.getElementById('quickCartTotal');
+            if (!list || !totalEl) return;
+
+            if (quickCartItems.length === 0) {
+                list.innerHTML = `<div class="quick-cart-item"><div class="quick-cart-name">カートは空です</div><div class="quick-cart-price">¥0</div><div class="quick-cart-qty">0</div></div>`;
+                totalEl.textContent = '¥0';
+                return;
+            }
+
+            const visibleItems = quickCartItems.slice(-3);
+            list.innerHTML = visibleItems.map(item => `
+                <div class="quick-cart-item">
+                    <div class="quick-cart-name">${item.name}</div>
+                    <div class="quick-cart-price">¥${parsePrice(item.price).toLocaleString()}</div>
+                    <div class="quick-cart-qty">× ${item.qty}</div>
+                </div>
+            `).join('');
+
+            const total = quickCartItems.reduce((sum, item) => sum + parsePrice(item.price) * item.qty, 0);
+            totalEl.textContent = `¥${total.toLocaleString()}`;
+        }
+
+        function showQuickCartSheet() {
+            const sheet = document.getElementById('quickCartSheet');
+            if (!sheet) return;
+            renderQuickCartSheet();
+            sheet.classList.add('show');
+            clearTimeout(quickCartSheetTimer);
+            quickCartSheetTimer = setTimeout(() => {
+                sheet.classList.remove('show');
+            }, 3800);
+        }
+
+        function addItemToQuickCart(name) {
+            const menuItem = findMenuItemByName(name) || { name, price: '0' };
+            const existing = quickCartItems.find(item => item.name === name);
+            if (existing) existing.qty += 1;
+            else quickCartItems.push({ name: menuItem.name, price: String(menuItem.price || '0'), qty: 1 });
+            saveQuickCartItems();
+            renderQuickCartSheet();
+        }
+
+        function clearQuickCart() {
+            clearTimeout(quickCartSheetTimer);
+            quickCartItems = [];
+            localStorage.removeItem(CART_ITEMS_STORAGE_KEY);
+            cartItemCount = 0;
+            localStorage.setItem(CART_COUNT_STORAGE_KEY, '0');
+            const badge = document.getElementById('cartCountBadge');
+            if (badge) {
+                badge.textContent = '0';
+                badge.classList.remove('show');
+            }
+            renderQuickCartSheet();
+            const sheet = document.getElementById('quickCartSheet');
+            if (sheet) sheet.classList.remove('show');
+        }
+
         function syncCartBadgeFromStorage() {
             const badge = document.getElementById('cartCountBadge');
             if (!badge) return;
             const storedCount = parseInt(localStorage.getItem(CART_COUNT_STORAGE_KEY) || '0', 10);
-            cartItemCount = Number.isNaN(storedCount) ? 0 : storedCount;
+            const storedItemCount = quickCartItems.reduce((sum, item) => sum + (item.qty || 0), 0);
+            cartItemCount = Math.max(Number.isNaN(storedCount) ? 0 : storedCount, storedItemCount);
             badge.textContent = String(cartItemCount);
             badge.classList.toggle('show', cartItemCount > 0);
         }
@@ -1261,8 +1494,9 @@
             badge.classList.toggle('show', cartItemCount > 0);
         }
 
-        function showCartAlert() {
+        function showCartAlert(itemName = '') {
             incrementCartBadge();
+            if (itemName) addItemToQuickCart(itemName);
             const alert = document.createElement('div');
             alert.className = 'cart-alert';
             alert.textContent = 'カートに追加しました。';
@@ -1272,10 +1506,11 @@
                 alert.classList.remove('show');
                 setTimeout(() => alert.remove(), 300);
             }, 2000);
+            showQuickCartSheet();
         }
 
         function addToCart(name, isWine = false) {
-            showCartAlert();
+            showCartAlert(name);
             if (isWine) {
                 setTimeout(() => streamText(name + ' をカートに追加いたしました！ ご注文ありがとうございます。', 45, 2000, () => resetToInitialState()), 500);
             } else {
@@ -1387,7 +1622,7 @@
                     if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
                     const selectedItem = coolMenuItems.find(m => m.name === 'レモンソーダ');
                     if (selectedItem) {
-                        showCartAlert();
+                        showCartAlert(selectedItem.name);
                         streamText('かしこまりました！ ' + selectedItem.name + ' を 1 つカートに追加いたしました。ありがとうございます！', 42, 1000, () => {
                             setTimeout(() => streamText('他にご注文はございますか？\n例えば、お飲み物はいかがでしょうか？', 42, 3000, () => {
                                 extendedFlow = true; demoStep = 3; setTimeout(showVoiceGuide, 1000);
@@ -1438,6 +1673,8 @@
             currentLanguage = 'jp';
             renderCards(regularMenuItems);
             updateLanguageSelectionUI();
+            loadQuickCartItems();
+            renderQuickCartSheet();
             syncCartBadgeFromStorage();
 
             const langOverlay = document.getElementById('langModalOverlay');

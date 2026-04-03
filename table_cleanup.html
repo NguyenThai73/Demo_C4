@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>posSpeak – Table Cleanup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #213f31;
+            --bg: #f2eee6;
+            --card: #ffffff;
+            --border: #ddd7cf;
+            --text-main: #2d2928;
+            --text-sub: #7b756f;
+            --success: #199247;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #1a1a1a;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ipad-frame {
+            width: 1280px;
+            height: 800px;
+            background: var(--bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+        }
+        .context-bar {
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            height: 52px;
+            font-size: 13px;
+        }
+        .context-left { display:flex; gap:24px; align-items:center; }
+        .context-item { display:flex; align-items:center; gap:8px; }
+        .context-label { color: rgba(255,255,255,0.42); }
+        .context-value { font-weight: 700; }
+        .context-divider { width:1px; height:20px; background: rgba(255,255,255,0.16); }
+        .context-date { color: rgba(255,255,255,0.38); font-size: 12px; }
+        .main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        .panel {
+            width: 760px;
+            background: var(--card);
+            border-radius: 28px;
+            border: 1px solid var(--border);
+            padding: 42px 48px 36px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        }
+        .icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            background: rgba(33,63,49,0.08);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+        }
+        .title {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+        .desc {
+            font-size: 17px;
+            line-height: 1.8;
+            color: var(--text-sub);
+            font-weight: 600;
+            margin-bottom: 26px;
+        }
+        .table-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            border-radius: 999px;
+            background: #f7f5f2;
+            color: #5d5854;
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 28px;
+        }
+        .checklist {
+            text-align: left;
+            width: 86%;
+            margin: 0 auto 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: #faf8f5;
+            color: #5a5552;
+            font-size: 15px;
+            font-weight: 700;
+        }
+        .check-item i { color: var(--success); }
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+        }
+        .ghost-btn, .primary-btn {
+            min-width: 210px;
+            height: 52px;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+        }
+        .ghost-btn {
+            background: #fff;
+            color: #5d5854;
+            border: 1.5px solid #cfc8bf;
+        }
+        .primary-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="ipad-frame">
+        <div class="context-bar">
+            <div class="context-left">
+                <div class="context-item"><span class="context-label">卓番</span><span class="context-value">T-01, T-02</span></div>
+                <div class="context-divider"></div>
+                <div class="context-item"><span class="context-label">端末</span><span class="context-value">iPad-03</span></div>
+                <div class="context-divider"></div>
+                <div class="context-item"><span class="context-label">受付番号</span><span class="context-value">#0042</span></div>
+            </div>
+            <div class="context-date" id="ctxDate"></div>
+        </div>
+
+        <div class="main">
+            <div class="panel">
+                <div class="icon"><i class="fa-solid fa-broom"></i></div>
+                <div class="title">スタッフが片付け中です</div>
+                <div class="desc">お支払いは完了しました。<br>スタッフがテーブルの片付けとリセットを行っています。完了後、次のお客様を受付できる状態に戻します。</div>
+                <div class="table-chip"><i class="fa-solid fa-table-cells-large"></i> 対象テーブル: T-01, T-02</div>
+                <div class="checklist">
+                    <div class="check-item"><i class="fa-solid fa-check"></i> レシート案内済み</div>
+                    <div class="check-item"><i class="fa-solid fa-check"></i> 食器回収・テーブル清掃</div>
+                    <div class="check-item"><i class="fa-solid fa-check"></i> 次回受付のための端末リセット</div>
+                </div>
+                <div class="actions">
+                    <button class="ghost-btn" onclick="window.location.href='payment.html'">支払い画面に戻る</button>
+                    <button class="primary-btn" onclick="completeCleanup()">片付け完了</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function completeCleanup() {
+            window.location.href = 'order.html';
+        }
+
+        setInterval(() => {
+            const now = new Date();
+            const y = now.getFullYear();
+            const mo = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('ctxDate').textContent = `${y}/${mo}/${d} ${hh}:${mm}`;
+        }, 1000);
+    </script>
+</body>
+</html>

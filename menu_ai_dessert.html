@@ -705,6 +705,244 @@
             opacity: 1;
         }
 
+        .quick-cart-sheet {
+            position: absolute;
+            left: 16px;
+            width: 520px;
+            bottom: 82px;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(224, 220, 212, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 14px 36px rgba(30, 30, 30, 0.14);
+            padding: 16px 18px 14px;
+            z-index: 220;
+            opacity: 0;
+            transform: translateY(24px);
+            pointer-events: none;
+            transition: opacity 0.28s ease, transform 0.28s ease;
+        }
+
+        .quick-cart-sheet.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .quick-cart-header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:8px; }
+        .quick-cart-title { font-size:14px; font-weight:800; color:#4a4a4a; }
+        .quick-cart-clear { border:none; background:transparent; color:#ef4444; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:8px; font-family:inherit; }
+        .quick-cart-items { display:flex; flex-direction:column; max-height:90px; overflow-y:auto; margin-bottom:12px; }
+        .quick-cart-item { display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:12px; padding:8px 0; border-top:1px solid rgba(160,160,160,0.22); }
+        .quick-cart-name { font-size:13px; font-weight:600; color:#636363; min-width:0; }
+        .quick-cart-price, .quick-cart-qty { font-size:14px; font-weight:800; color:#5a5653; white-space:nowrap; }
+        .quick-cart-footer { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+        .quick-cart-total { display:inline-flex; align-items:center; gap:12px; color:var(--primary); font-weight:900; }
+        .quick-cart-total i { font-size:24px; color:#2f2a29; }
+        .quick-cart-total-price { font-size:24px; line-height:1; }
+        .quick-cart-confirm { min-width:150px; height:42px; border:none; border-radius:10px; background:var(--primary); color:#fff; font-size:15px; font-weight:800; cursor:pointer; box-shadow:0 8px 18px rgba(45,58,46,0.16); font-family:inherit; }
+
+        .customize-modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.34);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3200;
+            backdrop-filter: blur(3px);
+        }
+
+        .customize-modal-overlay.show {
+            display: flex;
+        }
+
+        .customize-modal {
+            width: 1060px;
+            max-width: calc(100% - 48px);
+            background: #fff;
+            border-radius: 24px;
+            padding: 22px 28px 18px;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+        }
+
+        .customize-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #d8d4cc;
+            margin-bottom: 16px;
+        }
+
+        .customize-modal-title {
+            font-size: 22px;
+            font-weight: 900;
+            color: #4a4a4a;
+        }
+
+        .customize-close-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 2px solid #6f6a68;
+            background: #fff;
+            color: #524d4b;
+            cursor: pointer;
+            font-size: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .customize-section {
+            margin-bottom: 14px;
+        }
+
+        .customize-section-label {
+            font-size: 15px;
+            font-weight: 800;
+            color: #5b5552;
+            margin-bottom: 10px;
+        }
+
+        .customize-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .customize-option {
+            border: 1.5px solid #e3ddd4;
+            border-radius: 12px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px 0 14px;
+            cursor: pointer;
+            transition: border-color 0.18s ease, background 0.18s ease;
+        }
+
+        .customize-option.selected {
+            border-color: var(--primary);
+            background: rgba(45, 58, 46, 0.04);
+        }
+
+        .customize-option-left {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .customize-radio {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #56665a;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .customize-option.selected .customize-radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+
+        .customize-check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #56665a;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .customize-option.selected .customize-check::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+
+        .customize-option-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: #4b4644;
+        }
+
+        .customize-option-price {
+            font-size: 15px;
+            font-weight: 800;
+            color: #5a5653;
+        }
+
+        .customize-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            padding-top: 8px;
+        }
+
+        .customize-qty {
+            display: inline-flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .customize-qty-btn {
+            width: 34px;
+            height: 34px;
+            border: none;
+            border-radius: 10px;
+            background: #6f6b6b;
+            color: #fff;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .customize-qty-value {
+            font-size: 28px;
+            font-weight: 900;
+            color: #2d2929;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .customize-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .customize-cancel-btn,
+        .customize-confirm-btn {
+            width: 210px;
+            height: 54px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .customize-cancel-btn {
+            background: #fff;
+            color: #3f3a39;
+            border: 1.5px solid #aca49a;
+        }
+
+        .customize-confirm-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+        }
+
         /* LowCal filter styles */
         .lowcal-filtered {
             filter: blur(4px) !important;
@@ -778,6 +1016,23 @@
             <div class="menu-grid" id="menuGrid"></div>
         </div>
 
+        <div class="quick-cart-sheet" id="quickCartSheet">
+            <div class="quick-cart-header">
+                <div class="quick-cart-title">カート内の商品</div>
+                <button class="quick-cart-clear" onclick="clearQuickCart()">
+                    <i class="fa-regular fa-trash-can"></i> 全て消去
+                </button>
+            </div>
+            <div class="quick-cart-items" id="quickCartItems"></div>
+            <div class="quick-cart-footer">
+                <div class="quick-cart-total">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="quick-cart-total-price" id="quickCartTotal">¥0</span>
+                </div>
+                <button class="quick-cart-confirm" onclick="window.location.href='cart.html?confirm=true'">注文を確定</button>
+            </div>
+        </div>
+
         <div class="bottom-nav">
             <div class="nav-item active" onclick="window.location.href='menu_ai.html'"><i
                     class="fa-solid fa-utensils"></i><span>メニュー</span></div>
@@ -809,24 +1064,185 @@
                 <i class="fa-regular fa-comment-dots"></i>チャットに切替
             </a>
         </div>
+
+        <div class="customize-modal-overlay" id="customizeModalOverlay">
+            <div class="customize-modal">
+                <div class="customize-modal-header">
+                    <div class="customize-modal-title">カスタマイズ</div>
+                    <button class="customize-close-btn" onclick="closeCustomizeModal()">&times;</button>
+                </div>
+
+                <div class="customize-section">
+                    <div class="customize-section-label">ソースの選択(必須)</div>
+                    <div class="customize-options">
+                        <div class="customize-option selected" data-group="sauce" onclick="selectCustomizeSingle('sauce', this)">
+                            <div class="customize-option-left">
+                                <span class="customize-radio"></span>
+                                <span class="customize-option-text">通常</span>
+                            </div>
+                        </div>
+                        <div class="customize-option" data-group="sauce" onclick="selectCustomizeSingle('sauce', this)">
+                            <div class="customize-option-left">
+                                <span class="customize-radio"></span>
+                                <span class="customize-option-text">ベリーソース</span>
+                            </div>
+                            <span class="customize-option-price">+100円</span>
+                        </div>
+                        <div class="customize-option" data-group="sauce" onclick="selectCustomizeSingle('sauce', this)">
+                            <div class="customize-option-left">
+                                <span class="customize-radio"></span>
+                                <span class="customize-option-text">キャラメルソース</span>
+                            </div>
+                            <span class="customize-option-price">+80円</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="customize-section">
+                    <div class="customize-section-label">トッピングの追加(任意、複数選択可)</div>
+                    <div class="customize-options">
+                        <div class="customize-option" data-group="topping" onclick="toggleCustomizeMulti(this)">
+                            <div class="customize-option-left">
+                                <span class="customize-check"></span>
+                                <span class="customize-option-text">ホイップクリーム</span>
+                            </div>
+                            <span class="customize-option-price">+50円</span>
+                        </div>
+                        <div class="customize-option" data-group="topping" onclick="toggleCustomizeMulti(this)">
+                            <div class="customize-option-left">
+                                <span class="customize-check"></span>
+                                <span class="customize-option-text">バニラアイス</span>
+                            </div>
+                            <span class="customize-option-price">+120円</span>
+                        </div>
+                        <div class="customize-option" data-group="topping" onclick="toggleCustomizeMulti(this)">
+                            <div class="customize-option-left">
+                                <span class="customize-check"></span>
+                                <span class="customize-option-text">ミント追加</span>
+                            </div>
+                            <span class="customize-option-price">+30円</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="customize-section">
+                    <div class="customize-section-label">抜く食材(任意)</div>
+                    <div class="customize-options">
+                        <div class="customize-option" data-group="remove" onclick="toggleCustomizeMulti(this)">
+                            <div class="customize-option-left">
+                                <span class="customize-check"></span>
+                                <span class="customize-option-text">粉砂糖なし</span>
+                            </div>
+                        </div>
+                        <div class="customize-option" data-group="remove" onclick="toggleCustomizeMulti(this)">
+                            <div class="customize-option-left">
+                                <span class="customize-check"></span>
+                                <span class="customize-option-text">ナッツなし</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="customize-footer">
+                    <div class="customize-qty">
+                        <button class="customize-qty-btn" onclick="changeCustomizeQty(-1)">−</button>
+                        <div class="customize-qty-value" id="customizeQtyValue">1</div>
+                        <button class="customize-qty-btn" onclick="changeCustomizeQty(1)">＋</button>
+                    </div>
+                    <div class="customize-actions">
+                        <button class="customize-cancel-btn" onclick="closeCustomizeModal()">キャンセル</button>
+                        <button class="customize-confirm-btn" onclick="confirmCustomizeOrder()">確定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
         const CART_COUNT_STORAGE_KEY = 'posSpeakCartCount';
+        const CART_ITEMS_STORAGE_KEY = 'posSpeakCartItems';
         const dessertItems = [
-            { name: 'とろけるフォンダンショコラ', desc: '中から温かいチョコが溢れ出す、至福のひんやりバニラ添える。', price: '980', img: 'https://images.unsplash.com/photo-1541920443744-71cbe00d5855?w=600&q=80', reason: '🍫 濃厚チョコ' },
+            { name: 'とろけるフォンダンショコラ', desc: '中から温かいチョコが溢れ出す、至福のひんやりバニラ添える。', price: '980', img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=900&q=80', reason: '🍫 濃厚チョコ' },
             { name: '季節のフルーツタルト', desc: '旬のフルーツを贅沢に使った、彩り豊かな自家製タルト。', price: '850', img: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=600&q=80', reason: '🍓 爽やか' },
-            { name: '自家製クレームブリュレ', desc: 'パリパリのキャラメリゼと、濃厚なカスタードのハーモニー。', price: '780', img: 'https://images.unsplash.com/photo-1470333841576-5146244844e3?w=600&q=80', reason: '🍮 定番人気' },
-            { name: 'とろける杏仁豆腐', desc: '口当たりの良い滑らかな杏仁豆腐。クコの実を添えてサッパリと。', price: '450', img: 'https://images.unsplash.com/photo-1563805039227-9999a0e6bb7c?w=400&q=80', reason: '🍨 さっぱり' },
+            { name: '自家製クレームブリュレ', desc: 'パリパリのキャラメリゼと、濃厚なカスタードのハーモニー。', price: '780', img: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=900&q=80', reason: '🍮 定番人気' },
+            { name: 'とろける杏仁豆腐', desc: '口当たりの良い滑らかな杏仁豆腐。クコの実を添えてサッパリと。', price: '450', img: 'https://images.unsplash.com/photo-1759277513351-3c6aefc0bb0d?auto=format&fit=crop&w=900&q=80', reason: '🍨 さっぱり' },
             { name: '自家製マンゴープリン', desc: '完熟マンゴーをたっぷり使った濃厚な味わい。', price: '520', img: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&q=80', reason: '🥭 濃厚な甘み' },
-            { name: '和風抹茶アイスパフェ', desc: '厳選された宇治抹茶のアイスと小豆、白玉の華やかなパフェ。', price: '680', img: 'https://images.unsplash.com/photo-1579372781848-65ec49896791?w=400&q=80', reason: '✨ 宇治抹茶使用' }
+            { name: '和風抹茶アイスパフェ', desc: '厳選された宇治抹茶のアイスと小豆、白玉の華やかなパフェ。', price: '680', img: 'https://images.unsplash.com/photo-1753463813133-6b3fb0d5e303?auto=format&fit=crop&w=900&q=80', reason: '✨ 宇治抹茶使用' }
         ];
+
+        let quickCartItems = [];
+        let quickCartSheetTimer = null;
+
+        function parsePrice(value) {
+            return parseInt(String(value).replace(/[^\d]/g, ''), 10) || 0;
+        }
+
+        function loadQuickCartItems() {
+            try {
+                const raw = localStorage.getItem(CART_ITEMS_STORAGE_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                quickCartItems = Array.isArray(parsed) ? parsed : [];
+            } catch (error) {
+                quickCartItems = [];
+            }
+        }
+
+        function saveQuickCartItems() {
+            localStorage.setItem(CART_ITEMS_STORAGE_KEY, JSON.stringify(quickCartItems));
+        }
+
+        function addItemToQuickCart(name, price, qty = 1) {
+            const existing = quickCartItems.find(item => item.name === name);
+            if (existing) existing.qty += qty;
+            else quickCartItems.push({ name, price: String(price), qty });
+            saveQuickCartItems();
+        }
+
+        function renderQuickCartSheet() {
+            const list = document.getElementById('quickCartItems');
+            const totalEl = document.getElementById('quickCartTotal');
+            if (!list || !totalEl) return;
+            if (quickCartItems.length === 0) {
+                list.innerHTML = `<div class="quick-cart-item"><div class="quick-cart-name">カートは空です</div><div class="quick-cart-price">¥0</div><div class="quick-cart-qty">0</div></div>`;
+                totalEl.textContent = '¥0';
+                return;
+            }
+            const visibleItems = quickCartItems.slice(-3);
+            list.innerHTML = visibleItems.map(item => `<div class="quick-cart-item"><div class="quick-cart-name">${item.name}</div><div class="quick-cart-price">¥${parsePrice(item.price).toLocaleString()}</div><div class="quick-cart-qty">× ${item.qty}</div></div>`).join('');
+            const total = quickCartItems.reduce((sum, item) => sum + parsePrice(item.price) * item.qty, 0);
+            totalEl.textContent = `¥${total.toLocaleString()}`;
+        }
+
+        function showQuickCartSheet() {
+            const sheet = document.getElementById('quickCartSheet');
+            if (!sheet) return;
+            renderQuickCartSheet();
+            sheet.classList.add('show');
+            clearTimeout(quickCartSheetTimer);
+            quickCartSheetTimer = setTimeout(() => sheet.classList.remove('show'), 3800);
+        }
+
+        function clearQuickCart() {
+            clearTimeout(quickCartSheetTimer);
+            quickCartItems = [];
+            localStorage.removeItem(CART_ITEMS_STORAGE_KEY);
+            localStorage.setItem(CART_COUNT_STORAGE_KEY, '0');
+            const badge = document.getElementById('cartCountBadge');
+            if (badge) {
+                badge.textContent = '0';
+                badge.classList.remove('show');
+            }
+            renderQuickCartSheet();
+            const sheet = document.getElementById('quickCartSheet');
+            if (sheet) sheet.classList.remove('show');
+        }
 
         function syncCartBadgeFromStorage() {
             const badge = document.getElementById('cartCountBadge');
             if (!badge) return;
             const storedCount = parseInt(localStorage.getItem(CART_COUNT_STORAGE_KEY) || '0', 10);
-            const count = Number.isNaN(storedCount) ? 0 : storedCount;
+            const storedItemCount = quickCartItems.reduce((sum, item) => sum + (item.qty || 0), 0);
+            const count = Math.max(Number.isNaN(storedCount) ? 0 : storedCount, storedItemCount);
             badge.textContent = String(count);
             badge.classList.toggle('show', count > 0);
         }
@@ -853,7 +1269,7 @@
                         <div class="menu-card-desc">${item.desc}</div>
                         <div class="menu-card-footer">
                             <span class="menu-card-price">${item.price}</span>
-                            <button class="add-btn" onclick="event.stopPropagation(); showCartAlert()"><i class="fa-solid fa-cart-shopping"></i>追加</button>
+                            <button class="add-btn" onclick="event.stopPropagation(); showCartAlert('${item.name}', '${item.price}')"><i class="fa-solid fa-cart-shopping"></i>追加</button>
                         </div>
                     </div>
                 </div>
@@ -873,8 +1289,9 @@
             }, 420);
         }
 
-        function showCartAlert() {
+        function showCartAlert(itemName = '', itemPrice = '0', qty = 1) {
             incrementCartBadge();
+            if (itemName) addItemToQuickCart(itemName, itemPrice, qty);
             const a = document.createElement('div');
             a.className = 'cart-alert';
             a.textContent = 'カートに追加しました。';
@@ -884,6 +1301,7 @@
                 a.classList.remove('show');
                 setTimeout(() => a.remove(), 300);
             }, 2000);
+            showQuickCartSheet();
         }
 
         function showVoiceGuide() {
@@ -910,6 +1328,50 @@
         }
 
         let voiceStep = 0;
+        let customizeQty = 1;
+
+        function openCustomizeModal() {
+            customizeQty = 1;
+            const qty = document.getElementById('customizeQtyValue');
+            if (qty) qty.textContent = '1';
+            document.querySelectorAll('.customize-option[data-group="sauce"]').forEach((el, index) => {
+                el.classList.toggle('selected', index === 0);
+            });
+            document.querySelectorAll('.customize-option[data-group="topping"], .customize-option[data-group="remove"]').forEach(el => {
+                el.classList.remove('selected');
+            });
+            const modal = document.getElementById('customizeModalOverlay');
+            if (modal) modal.classList.add('show');
+        }
+
+        function closeCustomizeModal() {
+            const modal = document.getElementById('customizeModalOverlay');
+            if (modal) modal.classList.remove('show');
+        }
+
+        function selectCustomizeSingle(group, el) {
+            document.querySelectorAll(`.customize-option[data-group="${group}"]`).forEach(option => option.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function toggleCustomizeMulti(el) {
+            el.classList.toggle('selected');
+        }
+
+        function changeCustomizeQty(delta) {
+            customizeQty = Math.max(1, customizeQty + delta);
+            const qty = document.getElementById('customizeQtyValue');
+            if (qty) qty.textContent = String(customizeQty);
+        }
+
+        function confirmCustomizeOrder() {
+            closeCustomizeModal();
+            showCartAlert('季節のフルーツタルト', '850', customizeQty);
+            const qtyLabel = customizeQty > 1 ? ` を ${customizeQty} つ` : ' を 1 つ';
+            streamText('カスタマイズを承りました！ 季節のフルーツタルト' + qtyLabel + 'カートに追加いたしました。ほかにご注文はございますか？', 45, 0, () => {
+                voiceStep = 1;
+            });
+        }
 
         function startVoiceInput() {
             const btn = document.getElementById('voiceOrderBtn');
@@ -923,9 +1385,8 @@
                     btn.style.background = '';
                     lbl.innerHTML = 'ボイス<br>オーダー';
                     showUserSpeechBubble('季節のフルーツタルトを1つお願いします');
-                    streamText('かしこまりました！ 季節のフルーツタルトを 1 つ追加いたします。ほかにご注文はございますか？', 45, 0, () => {
-                        showCartAlert();
-                        voiceStep = 1; // Move to next step
+                    streamText('かしこまりました！ 季節のフルーツタルトですね。カスタマイズ内容をご確認ください。', 45, 0, () => {
+                        openCustomizeModal();
                     });
                 }, 2000);
             } else {
@@ -942,6 +1403,8 @@
         }
 
         window.onload = () => {
+            loadQuickCartItems();
+            renderQuickCartSheet();
             renderCards(dessertItems);
             syncCartBadgeFromStorage();
             // Show AI banner initially
@@ -959,6 +1422,13 @@
                 const ctxDate = document.getElementById('ctxDate');
                 if (ctxDate) ctxDate.innerText = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
             }, 1000);
+
+            const customizeOverlay = document.getElementById('customizeModalOverlay');
+            if (customizeOverlay) {
+                customizeOverlay.addEventListener('click', (event) => {
+                    if (event.target === customizeOverlay) closeCustomizeModal();
+                });
+            }
         };
 
         function runDemo() { window.location.reload(); }

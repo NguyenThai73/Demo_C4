@@ -395,10 +395,7 @@
         let headerResetTimer = null;
 
         function goToPayment() {
-            if(confirm('お会計に進みます。スタッフを呼び出してもよろしいですか？')) {
-                // In a real app, this would notify the kitchen/staff
-                alert('スタッフを呼び出しました。少々お待ちください。');
-            }
+            window.location.href = 'payment.html';
         }
 
         function showUserSpeechBubble(text) {
