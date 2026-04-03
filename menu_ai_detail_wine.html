@@ -52,7 +52,7 @@
             color: #fff;
             padding: 0 40px;
             height: 52px;
-            display: flex;
+            display: none; /* Hidden by default, shown by startAiTicker */
             align-items: center;
             gap: 20px;
             flex-shrink: 0;
@@ -63,7 +63,7 @@
         .context-bar {
             background: var(--primary);
             color: #fff;
-            display: flex;
+            display: flex; /* Show by default */
             align-items: center;
             justify-content: space-between;
             padding: 0 32px;
@@ -71,8 +71,6 @@
             font-size: 13px;
             flex-shrink: 0;
             z-index: 10;
-            display: none;
-            /* Hide by default when AI is talking on load */
         }
 
         .context-left {
@@ -1001,8 +999,7 @@
             </div>
             <div class="banner-divider"></div>
             <div class="banner-ticker">
-                <div class="ticker-text" id="aiTickerText">ご希望にぴったりの一品です。
-柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！</div>
+                <div class="ticker-text" id="aiTickerText"></div>
             </div>
             <!-- Back button in banner -->
             <div class="banner-divider"></div>
@@ -1062,7 +1059,7 @@
                     <h2 id="itemTitle" class="dish-title">シャルドネ 2022</h2>
 
                     <p id="itemDesc" class="dish-description">
-                        カリフォルニアの温暖な気候で育まれたシャルドネ。豊かな果実味と、樽熟成由来のバニラの香りが絶妙なハーモニーを奏で、爽やかな酸味が料理を一層引き立てます。完熟した白桃やパッションフルーツの香りに加え、ほのかなトーストのニュアンスが複雑さを添えます。適度な酸味とクリーミーな口当たりのバランスが絶妙で、魚介類や鶏肉料理、クリームソースパスタとの相性が抜群です。2022年という素晴らしいヴィンテージの恵みを存分に感じられる一本です。
+                        カリフォルニアの温暖な気候で育まれたシャルドネ. 豊かな果実味と, 樽熟成由来のバニラの香りが絶妙なハーモニーを奏で, 爽やかな酸味が料理を一層引き立てます. 完熟した白桃やパッションフルーツの香りに加え, ほのかなトーストのニュアンスが複雑さを添えます. 適度な酸味とクリーミーな口当たりのバランスが絶妙で, 魚介類や鶏肉料理, クリームソースパスタとの相性が抜群です. 2022年という素晴らしいヴィンテージの恵みを存分に感じられる一本です.
                     </p>
 
                     <div class="dish-price-row">
@@ -1072,8 +1069,6 @@
                             カートに入れる
                         </button>
                     </div>
-
-
 
                     <!-- Critical Tags -->
                     <div class="critical-tags">
@@ -1140,14 +1135,14 @@
             {
                 title: '完熟トマトのカプレーゼ',
                 price: '720',
-                desc: '完熟トマトとモッツァレラのフレッシュな組み合わせ。バジルとオリーブオイルのハーモニー。',
+                desc: '完熟トマトとモッツァレラのフレッシュな組み合わせ. バジルとオリーブオイルのハーモニー.',
                 img: 'https://images.unsplash.com/photo-1510629954389-c1e0da47d214?w=600&q=80',
                 reason: '🍅 さっぱり軽めのランチに'
             },
             {
                 title: '旬野菜のバーニャカウダ',
                 price: '880',
-                desc: '採れたて旬野菜を濃厚ソースで。温かいソースと冷たい野菜のコントラスト。',
+                desc: '採れたて旬野菜を濃厚ソースで. 温かいソースと冷たい野菜のコントラスト.',
                 img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=80',
                 reason: '🌿 野菜たっぷりでヘルシー'
             }
@@ -1208,24 +1203,7 @@
             document.getElementById('itemTitle').innerText = item.title;
             document.getElementById('itemPrice').innerText = item.price;
             document.getElementById('itemDesc').innerText = item.desc;
-            document.getElementById('mainImg').src = item.img;
-
-            // Update AI reason badge
-            if (item.reason) {
-                document.getElementById('aiReasonText').innerText = item.reason;
-                document.getElementById('aiReasonBadge').style.display = 'flex';
-            } else {
-                document.getElementById('aiReasonBadge').style.display = 'none';
-            }
-
-            // Update link label: last item → loop back, others → next
-            const link = document.querySelector('.back-to-menu-link');
-            if (link) {
-                const isLast = currentIndex === candidates.length - 1;
-                link.innerHTML = isLast
-                    ? '<i class="fa-solid fa-rotate-left"></i> 最初の候補に戻る'
-                    : '<i class="fa-solid fa-chevron-right"></i> 他のメニューを見る';
-            }
+            document.getElementById('foodImg').src = item.img;
         }
 
         function showNextCandidate() {
@@ -1261,7 +1239,6 @@
 
         function changeLanguage() {
             alert('言語切り替え機能 (Language switch)\n\n実際の実装では、英語/日本語/ベトナム語などの切り替えを行います。');
-            // In real app: Implement language switching logic
         }
 
         function startVoice() {
@@ -1288,8 +1265,29 @@
                 aiBanner.style.display = 'flex';
                 contextBar.style.display = 'none';
 
-                // Simulate AI response logic
-                startAiTicker();
+                if (flowStep === 1) {
+                    showUserSpeechBubble('これを一つください。');
+                    const tickerText = document.getElementById('aiTickerText');
+                    tickerText.textContent = 'かしこまりました。シャルドネ 2022を一つカートに追加しました。他のご注文はいかがでしょうか？';
+                    
+                    setTimeout(() => {
+                        startAiTicker(() => {
+                            flowStep = 2;
+                        });
+                    }, 1000);
+                } else if (flowStep === 2) {
+                    showUserSpeechBubble('何かデザートはありますか？');
+                    const tickerText = document.getElementById('aiTickerText');
+                    tickerText.textContent = 'はい、多数ご用意しております！それではデザートメニューを表示しますね！';
+                    
+                    setTimeout(() => {
+                        startAiTicker(() => {
+                            setTimeout(() => {
+                                window.location.href = 'menu_ai.html?step=dessert';
+                            }, 1000);
+                        });
+                    }, 1000);
+                }
             }, 2000);
         }
 
@@ -1298,7 +1296,6 @@
         }
 
         function switchToChatMode() {
-            // Chuyển sang màn hình chat_ai.html
             window.location.href = 'chat_ai.html';
         }
 
@@ -1310,10 +1307,8 @@
             const contextBar = document.querySelector('.context-bar');
             const fullText = tickerText.textContent;
 
-            // Clear timer if manually triggered
             if (headerResetTimer) clearTimeout(headerResetTimer);
 
-            // Hide voice input when AI starts talking
             voiceGuide.classList.add('hidden');
             aiBanner.style.display = 'flex';
             contextBar.style.display = 'none';
@@ -1322,7 +1317,7 @@
             tickerText.classList.add('streaming');
 
             let i = 0;
-            const speed = 30; // milliseconds per character
+            const speed = 40; 
 
             function typeWriter() {
                 if (i < fullText.length) {
@@ -1331,15 +1326,12 @@
                     setTimeout(typeWriter, speed);
                 } else {
                     tickerText.classList.remove('streaming');
-
-                    // Show voice input when AI finishes
                     setTimeout(() => {
                         voiceGuide.classList.remove('hidden');
                     }, 500);
 
                     if (callback) callback();
 
-                    // 8s Restoration Timer
                     headerResetTimer = setTimeout(() => {
                         aiBanner.style.display = 'none';
                         contextBar.style.display = 'flex';
@@ -1347,44 +1339,17 @@
                 }
             }
 
-            // Start typing after a short delay
-            setTimeout(typeWriter, 800);
+            setTimeout(typeWriter, 100);
         }
 
-        // Initialize
-        updateUI();
-
-        // Wine data for extended flow
+        // Wine data
         const wineItems = [
             {
                 name: 'シャルドネ 2022',
-                desc: 'カリフォルニアの温暖な気候で育まれたシャルドネ。豊かな果実味と、樽熟成由来のバニラの香りが絶妙なハーモニーを奏で、爽やかな酸味が料理を一層引き立てます。完熟した白桃やパッションフルーツの香りに加え、ほのかなトーストのニュアンスが複雑さを添えます。適度な酸味とクリーミーな口当たりのバランスが絶妙で、魚介類や鶏肉料理、クリームソースパスタとの相性が抜群です。2022年という素晴らしいヴィンテージの恵みを存分に感じられる一本です。',
+                desc: 'カリフォルニアの温暖な気候で育まれたシャルドネ. 豊かな果実味と, 樽熟成由来のバニラの香りが絶妙なハーモニーを奏で, 爽やかな酸味が料理を一層引き立てます.',
                 price: '1,280',
-                img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
-                type: '白ワイン',
-                taste: '柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！',
-                detail: 'カリフォルニア産のシャルドネ種を使用。樽熟成により複雑な味わいを実現。アルコール度数: 13.5%',
-                pairing: '魚料理、前菜、チーズ'
-            },
-            {
-                name: 'カベルネ・ソーヴィニヨン 2020',
-                desc: '力強いタンニンと深みのある赤ワイン',
-                price: '1,580',
-                img: 'https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?w=400&q=80',
-                type: '赤ワイン',
-                taste: '濃厚なダークベリーの風味と、スパイシーなオークの香り。肉料理にぴったり。',
-                detail: 'フランス・ボルドー産。24ヶ月のオーク樽熟成。アルコール度数: 14.5%',
-                pairing: 'ステーキ、ラム、熟成チーズ'
-            },
-            {
-                name: 'ロゼ プロヴァンス 2023',
-                desc: '軽やかでフルーティーなロゼワイン',
-                price: '1,180',
-                img: 'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=400&q=80',
-                type: 'ロゼワイン',
-                taste: 'イチゴやラズベリーの甘い香りと、さわやかな酸味のバランスが絶妙。',
-                detail: '南フランス・プロヴァンス地方産。若々しいフレッシュさが特徴。アルコール度数: 12.5%',
-                pairing: 'サラダ、軽い前菜、シーフード'
+                img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80',
+                taste: '柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！'
             }
         ];
 
@@ -1392,222 +1357,28 @@
         window.addEventListener('load', function () {
             const urlParams = new URLSearchParams(window.location.search);
             const wineIndex = urlParams.get('wine');
+            const aiTickerText = document.getElementById('aiTickerText');
 
-            // Update page if wine parameter exists
+            // Default greeting
+            aiTickerText.textContent = 'ご希望にぴったりの一品です。\n柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！';
+
             if (wineIndex !== null && wineIndex >= 0 && wineIndex < wineItems.length) {
                 const wine = wineItems[wineIndex];
-
-                // Update page for wine detail
-                document.title = 'posSpeak - ' + wine.name + ' 詳細';
-
-                // Update AI banner text
-                const aiTickerText = document.getElementById('aiTickerText');
-                if (aiTickerText) {
-                    aiTickerText.textContent = 'ご希望にぴったりの一品です。\n柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！';
-                }
-
-                // Update food image and details
-                const foodImg = document.getElementById('foodImg');
-                const foodName = document.getElementById('itemTitle');
-                const foodDesc = document.getElementById('itemDesc');
-                const foodPrice = document.getElementById('itemPrice');
-
-                if (foodImg) foodImg.src = wine.img;
-                if (foodImg) foodImg.alt = wine.name;
-                if (foodName) foodName.textContent = wine.name;
-                if (foodDesc) foodDesc.textContent = wine.desc;
-                if (foodPrice) foodPrice.textContent = wine.price;
-
-                // Update AI suggestion text
-                const aiSuggestion = document.querySelector('.ai-suggestion-text');
-                if (aiSuggestion) {
-                    aiSuggestion.textContent = wine.taste + ' ' + wine.detail + ' おすすめのペアリング: ' + wine.pairing;
-                }
-
-                // Update voice order button text
-                const voiceOrderText = document.getElementById('voiceOrderText');
-                if (voiceOrderText) {
-                    voiceOrderText.innerHTML = wine.name + '<br>を注文';
-                }
-
-                // Update back button to return to wine selection
-                const backBtn = document.querySelector('.back-btn');
-                if (backBtn) {
-                    backBtn.onclick = function () {
-                        window.location.href = 'menu_ai.html?extended=true&step=4';
-                    };
-                }
-
-                // Update voice order function for wine
-                const voiceOrderBtn = document.getElementById('voiceOrderBtn');
-                if (voiceOrderBtn) {
-                    voiceOrderBtn.onclick = function () {
-                        const btn = document.getElementById('voiceOrderBtn');
-                        const lbl = document.getElementById('voiceOrderText');
-                        const chat = document.getElementById('chatLink');
-
-                        // 1. Enter LISTENING state
-                        btn.style.background = '#a0a0a0';
-                        lbl.innerHTML = '聞き取り中';
-                        if (chat) chat.style.display = 'none';
-
-                        setTimeout(() => {
-                            // 2. END LISTENING
-                            btn.style.background = '';
-                            lbl.innerHTML = 'ボイス<br>オーダー';
-                            if (chat) chat.style.display = 'inline-flex';
-
-                            if (flowStep === 1) {
-                                // STEP 1: ORDER WINE
-                                showUserSpeechBubble('これを一つください。');
-
-                                const tickerText = document.getElementById('aiTickerText');
-                                if (tickerText) {
-                                    tickerText.textContent = 'かしこまりました。シャルドネ 2022を一つカートに追加しました。他のご注文はいかがでしょうか？';
-                                }
-
-                                setTimeout(() => {
-                                    startAiTicker(() => {
-                                        showCartAlert();
-                                        flowStep = 2;
-                                    });
-                                }, 1000);
-                            } else if (flowStep === 2) {
-                                // STEP 2: ASK ABOUT DESSERT & IMMEDIATELY REDIRECT
-                                showUserSpeechBubble('何かデザートはありますか？');
-
-                                const tickerText = document.getElementById('aiTickerText');
-                                if (tickerText) {
-                                    tickerText.textContent = 'はい、多数ご用意しております！それではデザートメニューを表示しますね！';
-                                }
-
-                                setTimeout(() => {
-                                    startAiTicker(() => {
-                                        // Redirect immediately after AI finishes talking
-                                        setTimeout(() => {
-                                            window.location.href = 'menu_ai.html?step=dessert';
-                                        }, 1000);
-                                    });
-                                }, 1000);
-                            }
-                        }, 1500);
-                    };
-                }
+                document.getElementById('itemTitle').textContent = wine.name;
+                document.getElementById('itemPrice').textContent = wine.price;
+                document.getElementById('foodImg').src = wine.img;
             }
-            
-            // Start AI ticker with streaming effect
-            setTimeout(() => {
-                startAiTicker();
-            }, 800);
 
-            // Tự động khởi động lại AI nói sau mỗi 15 giây (mô phỏng)
+            // Start streaming immediately on load
+            startAiTicker();
+
+            // Random messages interval
             setInterval(function () {
-                // Chỉ khởi động lại nếu AI không đang nói
-                const tickerText = document.getElementById('aiTickerText');
-                if (!tickerText.classList.contains('streaming')) {
-                    // Cập nhật nội dung mới
-                    const messages = [
-                        "ご希望にぴったりの一品です。\n柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！",
-                        "このワインは魚料理との相性が抜群です。",
-                        "白ワインとの相性が抜群です。"
-                    ];
-                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-                    tickerText.textContent = randomMessage;
-
-                    // Bắt đầu nói
+                if (!aiTickerText.classList.contains('streaming') && aiBanner.style.display === 'none') {
+                    aiTickerText.textContent = 'ご希望にぴったりの一品です。\n柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！';
                     startAiTicker();
                 }
-            }, 15000); // 15 giây
-        });
-
-                // Update food image and details
-                const foodImg = document.getElementById('foodImg');
-                const foodName = document.getElementById('itemTitle');
-                const foodDesc = document.getElementById('itemDesc');
-                const foodPrice = document.getElementById('itemPrice');
-
-                if (foodImg) foodImg.src = wine.img;
-                if (foodImg) foodImg.alt = wine.name;
-                if (foodName) foodName.textContent = wine.name;
-                if (foodDesc) foodDesc.textContent = wine.desc;
-                if (foodPrice) foodPrice.textContent = wine.price;
-
-                // Update AI suggestion text
-                const aiSuggestion = document.querySelector('.ai-suggestion-text');
-                if (aiSuggestion) {
-                    aiSuggestion.textContent = wine.taste + ' ' + wine.detail + ' おすすめのペアリング: ' + wine.pairing;
-                }
-
-                // Update voice order button text
-                const voiceOrderText = document.getElementById('voiceOrderText');
-                if (voiceOrderText) {
-                    voiceOrderText.innerHTML = wine.name + '<br>を注文';
-                }
-
-                // Update back button to return to wine selection
-                const backBtn = document.querySelector('.back-btn');
-                if (backBtn) {
-                    backBtn.onclick = function () {
-                        window.location.href = 'menu_ai.html?extended=true&step=4';
-                    };
-                }
-
-                // Update voice order function for wine
-                const voiceOrderBtn = document.getElementById('voiceOrderBtn');
-                if (voiceOrderBtn) {
-                    voiceOrderBtn.onclick = function () {
-                        const btn = document.getElementById('voiceOrderBtn');
-                        const lbl = document.getElementById('voiceOrderText');
-                        const chat = document.getElementById('chatLink');
-
-                        // 1. Enter LISTENING state
-                        btn.style.background = '#a0a0a0';
-                        lbl.innerHTML = '聞き取り中';
-                        if (chat) chat.style.display = 'none';
-
-                        setTimeout(() => {
-                            // 2. END LISTENING
-                            btn.style.background = '';
-                            lbl.innerHTML = 'ボイス<br>オーダー';
-                            if (chat) chat.style.display = 'inline-flex';
-
-                            if (flowStep === 1) {
-                                // STEP 1: ORDER WINE
-                                showUserSpeechBubble('これを一つください。');
-
-                                const tickerText = document.getElementById('aiTickerText');
-                                if (tickerText) {
-                                    tickerText.textContent = 'かしこまりました。シャルドネ 2022を一つカートに追加しました。他のご注文はいかがでしょうか？';
-                                }
-
-                                setTimeout(() => {
-                                    startAiTicker(() => {
-                                        showCartAlert();
-                                        flowStep = 2;
-                                    });
-                                }, 1000);
-                            } else if (flowStep === 2) {
-                                // STEP 2: ASK ABOUT DESSERT & IMMEDIATELY REDIRECT
-                                showUserSpeechBubble('何かデザートはありますか？');
-
-                                const tickerText = document.getElementById('aiTickerText');
-                                if (tickerText) {
-                                    tickerText.textContent = 'はい、多数ご用意しております！それではデザートメニューを表示しますね！';
-                                }
-
-                                setTimeout(() => {
-                                    startAiTicker(() => {
-                                        // Redirect immediately after AI finishes talking
-                                        setTimeout(() => {
-                                            window.location.href = 'menu_ai.html?step=dessert';
-                                        }, 1000);
-                                    });
-                                }, 1000);
-                            }
-                        }, 1500);
-                    };
-                }
-            }
+            }, 15000);
         });
     </script>
 </body>
