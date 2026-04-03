@@ -1360,30 +1360,6 @@
         // Initialize
         updateUI();
 
-        // Start AI ticker on page load
-        window.addEventListener('load', function () {
-            startAiTicker();
-
-            // Tự động khởi động lại AI nói sau mỗi 15 giây (mô phỏng)
-            setInterval(function () {
-                // Chỉ khởi động lại nếu AI không đang nói
-                const tickerText = document.getElementById('aiTickerText');
-                if (!tickerText.classList.contains('streaming')) {
-                    // Cập nhật nội dung mới
-                    const messages = [
-                        "ご希望にぴったりの一品です。\n柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！",
-                        "このワインは魚料理との相性が抜群です。",
-                        "白ワインとの相性が抜群です。"
-                    ];
-                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-                    tickerText.textContent = randomMessage;
-
-                    // Bắt đầu nói
-                    startAiTicker();
-                }
-            }, 15000); // 15 giây
-        });
-
         // Wine data for extended flow
         const wineItems = [
             {
@@ -1393,7 +1369,7 @@
                 img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
                 type: '白ワイン',
                 taste: '柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！',
-                detail: 'カリフォルニア産のシャルドネ種を使用。樽熟成により複雑な味わいを実現。アルコール度数: 13.5%',
+                detail: 'カリフォルニア産のシャルドネ種を使用。樽熟成により複複雜な味わいを実現。アルコール度数: 13.5%',
                 pairing: '魚料理、前菜、チーズ'
             },
             {
@@ -1418,11 +1394,12 @@
             }
         ];
 
-        // Check URL for wine parameter
+        // Initialize page on load
         window.addEventListener('load', function () {
             const urlParams = new URLSearchParams(window.location.search);
             const wineIndex = urlParams.get('wine');
 
+            // Update page if wine parameter exists
             if (wineIndex !== null && wineIndex >= 0 && wineIndex < wineItems.length) {
                 const wine = wineItems[wineIndex];
 
@@ -1434,6 +1411,120 @@
                 if (aiTickerText) {
                     aiTickerText.textContent = 'ご希望にぴったりの一品です。\n柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！';
                 }
+
+                // Update food image and details
+                const foodImg = document.getElementById('foodImg');
+                const foodName = document.getElementById('itemTitle');
+                const foodDesc = document.getElementById('itemDesc');
+                const foodPrice = document.getElementById('itemPrice');
+
+                if (foodImg) foodImg.src = wine.img;
+                if (foodImg) foodImg.alt = wine.name;
+                if (foodName) foodName.textContent = wine.name;
+                if (foodDesc) foodDesc.textContent = wine.desc;
+                if (foodPrice) foodPrice.textContent = wine.price;
+
+                // Update AI suggestion text
+                const aiSuggestion = document.querySelector('.ai-suggestion-text');
+                if (aiSuggestion) {
+                    aiSuggestion.textContent = wine.taste + ' ' + wine.detail + ' おすすめのペアリング: ' + wine.pairing;
+                }
+
+                // Update voice order button text
+                const voiceOrderText = document.getElementById('voiceOrderText');
+                if (voiceOrderText) {
+                    voiceOrderText.innerHTML = wine.name + '<br>を注文';
+                }
+
+                // Update back button to return to wine selection
+                const backBtn = document.querySelector('.back-btn');
+                if (backBtn) {
+                    backBtn.onclick = function () {
+                        window.location.href = 'menu_ai.html?extended=true&step=4';
+                    };
+                }
+
+                // Update voice order function for wine
+                const voiceOrderBtn = document.getElementById('voiceOrderBtn');
+                if (voiceOrderBtn) {
+                    voiceOrderBtn.onclick = function () {
+                        const btn = document.getElementById('voiceOrderBtn');
+                        const lbl = document.getElementById('voiceOrderText');
+                        const chat = document.getElementById('chatLink');
+
+                        // 1. Enter LISTENING state
+                        btn.style.background = '#a0a0a0';
+                        lbl.innerHTML = '聞き取り中';
+                        if (chat) chat.style.display = 'none';
+
+                        setTimeout(() => {
+                            // 2. END LISTENING
+                            btn.style.background = '';
+                            lbl.innerHTML = 'ボイス<br>オーダー';
+                            if (chat) chat.style.display = 'inline-flex';
+
+                            if (flowStep === 1) {
+                                // STEP 1: ORDER WINE
+                                showUserSpeechBubble('このワインを一つください');
+
+                                const tickerText = document.getElementById('aiTickerText');
+                                if (tickerText) {
+                                    tickerText.textContent = 'かしこまりました！ ' + wine.name + ' を 1 つカートに追加いたしました。他にご注文はございますか？';
+                                }
+
+                                setTimeout(() => {
+                                    startAiTicker(() => {
+                                        showCartAlert();
+                                        flowStep = 2;
+                                    });
+                                }, 1000);
+                            } else if (flowStep === 2) {
+                                // STEP 2: ASK ABOUT DESSERT & IMMEDIATELY REDIRECT
+                                showUserSpeechBubble('何かデザートはありますか？');
+
+                                const tickerText = document.getElementById('aiTickerText');
+                                if (tickerText) {
+                                    tickerText.textContent = 'はい、多数ご用意しております！それではデザートメニューを表示しますね！';
+                                }
+
+                                setTimeout(() => {
+                                    startAiTicker(() => {
+                                        // Redirect immediately after AI finishes talking
+                                        setTimeout(() => {
+                                            window.location.href = 'menu_ai.html?step=dessert';
+                                        }, 1000);
+                                    });
+                                }, 1000);
+                            }
+                        }, 1500);
+                    };
+                }
+            }
+            
+            // Start AI ticker with streaming effect
+            setTimeout(() => {
+                startAiTicker();
+            }, 800);
+
+            // Tự động khởi động lại AI nói sau mỗi 15 giây (mô phỏng)
+            setInterval(function () {
+                // Chỉ khởi động lại nếu AI không đang nói
+                const tickerText = document.getElementById('aiTickerText');
+                if (!tickerText.classList.contains('streaming')) {
+                    // Cập nhật nội dung mới
+                    const messages = [
+                        "ご希望にぴったりの一品です。\n柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！",
+                        "このワインは魚料理との相性が抜群です。",
+                        "白ワインとの相性が抜群です。"
+                    ];
+                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                    tickerText.textContent = randomMessage;
+
+                    // Bắt đầu nói
+                    startAiTicker();
+                }
+            }, 15000); // 15 giây
+        });
 
                 // Update food image and details
                 const foodImg = document.getElementById('foodImg');
