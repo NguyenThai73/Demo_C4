@@ -1149,8 +1149,6 @@
                     lbl.innerHTML = 'ボイス<br>オーダー';
                     if (chatLink) chatLink.style.display = 'inline-flex';
 
-                    // Simulate voice recognition - auto-select the first lowCal item
-                    const lowCalItems = coolMenuItems.filter(item => item.lowCal);
                     if (lowCalItems.length > 0) {
                         const selectedItem = lowCalItems[0]; // レモンソーダ
 
@@ -1159,6 +1157,7 @@
                             addToCart(selectedItem.name);
                         });
                     }
+                    isProcessingVoice = false;
                 }, 2000);
 
             } else if (extendedFlow && demoStep === 3) {
