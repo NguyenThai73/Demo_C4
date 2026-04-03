@@ -1149,16 +1149,32 @@
                     lbl.innerHTML = 'ボイス<br>オーダー';
                     if (chatLink) chatLink.style.display = 'inline-flex';
 
+                    // Simulate voice recognition - auto-select the first lowCal item
+                    const lowCalItems = coolMenuItems.filter(item => item.lowCal);
                     if (lowCalItems.length > 0) {
                         const selectedItem = lowCalItems[0]; // レモンソーダ
+                        
+                        // Show cart alert immediately
+                        showCartAlert();
 
-                        streamText('かしこまりました！ ' + selectedItem.name + ' を 1 つカートに追加いたします。', 45, 2000, () => {
-                            // Show cart alert and start extended flow
-                            addToCart(selectedItem.name);
+                        // Consolidated response to make it feel responsive and less stalled
+                        streamText('かしこまりました！ ' + selectedItem.name + ' を 1 つカートに追加いたしました。ありがとうございます。\n\n他にご注文はございますか？ 例えば、お飲み物はいかがでしょうか？', 42, 3000, () => {
+                            extendedFlow = true;
+                            demoStep = 3; // Move to extended flow step (Step 4: Drink inquiry)
+                            setTimeout(showVoiceGuide, 1000);
                         });
+                        
+                        // Sync card UI
+                        setTimeout(() => {
+                            const cardId = 'card' + coolMenuItems.findIndex(m => m.name === selectedItem.name);
+                            const card = document.getElementById(cardId);
+                            if (card) {
+                                card.style.transform = 'scale(0.97)';
+                                setTimeout(() => { card.style.transform = ''; }, 200);
+                            }
+                        }, 500);
                     }
-                    isProcessingVoice = false;
-                }, 2000);
+                }, 1500); // Reduced gap slightly from 2000 to 1500
 
             } else if (extendedFlow && demoStep === 3) {
                 // Extended flow step 1: User asks about drinks
