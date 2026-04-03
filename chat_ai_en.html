@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -367,17 +367,17 @@
         <div class="context-bar">
             <div class="context-left">
                 <div class="context-item">
-                    <span class="context-label">卓番:</span>
+                    <span class="context-label">Table:</span>
                     <span class="context-value" id="ctxTable">T-01, T-02</span>
                 </div>
                 <div class="context-divider"></div>
                 <div class="context-item">
-                    <span class="context-label">端末:</span>
+                    <span class="context-label">Device:</span>
                     <span class="context-value" id="ctxTerminal">iPad-03</span>
                 </div>
                 <div class="context-divider"></div>
                 <div class="context-item">
-                    <span class="context-label">受付番号:</span>
+                    <span class="context-label">Ticket:</span>
                     <span class="context-value" id="ctxReception">#0042</span>
                 </div>
             </div>
@@ -407,11 +407,11 @@
                         <div class="ai-message-stack">
                             <div class="ai-message-name">さくらAI</div>
                         <div class="bubble">
-                            こんにちは！さくらです。🌸<br>
-                            本日の気分やご予算に合わせて、最適なメニューをご提案します。
+                            Hello! I'm Sakura. 🌸<br>
+                            I can recommend the best menu based on your mood and budget today.
                         </div>
                         <div class="bubble">
-                            今日は何か特別な日ですか？🎉
+                            Is it a special occasion today? 🎉
                         </div>
                     </div>
                     </div>
@@ -427,10 +427,10 @@
                         <div class="ai-message-stack">
                             <div class="ai-message-name">さくらAI</div>
                         <div class="bubble">
-                            記念日のディナーにぴったりなコースもご用意しております。
+                            We also have courses that are perfect for an anniversary dinner.
                         </div>
                         <div class="bubble">
-                            地元の新鮮な食材をふんだんに使った料理をぜひお楽しみください。
+                            Please enjoy dishes prepared with plenty of fresh local ingredients.
                         </div>
                     </div>
                     </div>
@@ -438,7 +438,7 @@
 
                 <!-- User Question -->
                 <div class="msg-row sent">
-                    <div class="bubble">おすすめのドリンクはございますか？</div>
+                    <div class="bubble">Do you have any drink recommendations?</div>
                 </div>
 
                 <!-- AI Response -->
@@ -451,7 +451,7 @@
                         <div class="ai-message-stack">
                             <div class="ai-message-name">さくらAI</div>
                         <div class="bubble">
-                            はい、当店自慢の地酒と、季節のフルーツジュースがおすすめです。🍶🍹
+                            Yes. Our signature local sake and seasonal fruit juice are both popular choices. 🍶🍹
                         </div>
                         <!-- Product Suggestions -->
                         <div class="product-suggestions">
@@ -505,9 +505,9 @@
                 <div class="suggestions-container" id="dynamicChips"></div>
                 <div class="input-bar">
                     <button class="btn-voice" id="btnVoice" onclick="toggleVoice()"><i class="fa-solid fa-microphone"></i></button>
-                    <input type="text" class="chat-input" id="chatInput" placeholder="質問してみましょう">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Ask anything">
                     <button class="btn-send" id="sendBtn" onclick="sendMessage()">
-                        <i class="fa-solid fa-paper-plane"></i> 送信する
+                        <i class="fa-solid fa-paper-plane"></i> Send
                     </button>
                 </div>
             </div>
@@ -515,18 +515,18 @@
 
         <!-- Bottom Nav (Exactly as menu_ai) -->
         <div class="bottom-nav">
-            <div class="nav-item" onclick="window.location.href='menu_ai.html'"><i class="fa-solid fa-utensils"></i><span>メニュー</span></div>
+            <div class="nav-item" onclick="window.location.href='menu_ai_en.html'"><i class="fa-solid fa-utensils"></i><span>メニュー</span></div>
             <div class="nav-item" onclick="window.location.href='cart.html'"><i class="fa-solid fa-cart-shopping"></i><span>カート</span></div>
             <div class="nav-item" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></div>
             <div class="nav-item active"><i class="fa-solid fa-comment-dots"></i><span>会話</span></div>
-            <div class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></div>
+            <div class="nav-item"><i class="fa-solid fa-globe"></i><span>English</span></div>
         </div>
     </div>
 
     <script>
         let conversationState = 'initial';
         const chipSets = {
-            initial: [{text: '今日のおすすめは？', p: true}, {text: '人気メニューを見せて'}, {text: '早いメニューを見せて'}]
+            initial: [{text: "What's today's recommendation?", p: true}, {text: 'Show me popular dishes'}, {text: 'I want options by budget'}]
         };
 
         const aiProducts = {
@@ -534,9 +534,9 @@
                 { name: '刺身盛り合わせ', price: '2,800', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80', badge: '人気No.1', reason: '📈 今月最も注文されています', desc: '鮮度抜群のネタを贅沢に。' },
                 { name: '特選和牛ステーキ', price: '3,800', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80', badge: 'リピート多', reason: '⭐ 満足度98%の人気メニュー', desc: 'とろけるような食感と旨味。' }
             ],
-            quick: [
-                { name: '日替わり御膳', price: '1,200', img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80', badge: '早め提供', reason: '⏱ 比較的スムーズにご提供できます', desc: '毎日変わる旬の味。' },
-                { name: '彩り野菜の天丼', price: '980', img: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&q=80', badge: 'すぐおすすめ', reason: '⚡ 手早くお出ししやすい人気メニュー', desc: 'サクサクの衣と特製タレ。' }
+            budget: [
+                { name: '日替わり御膳', price: '1,200', img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80', badge: 'コスパ良', reason: '💰 お手頃価格で大満足', desc: '毎日変わる旬の味。' },
+                { name: '彩り野菜の天丼', price: '980', img: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&q=80', badge: '得。', reason: '🥗 ヘルシー＆リーズナブル', desc: 'サクサクの衣と特製タレ。' }
             ],
             recommended: [
                 { name: '豊後牛ハンバーグ', price: '1,850', img: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400&q=80', badge: 'イチオシ', reason: '🌡️ 暑い日に体を冷やす', desc: '肉汁溢れるジューシーな一品です。' },
@@ -567,17 +567,17 @@
 
             if (isListening) {
                 btn.classList.add('recording');
-                input.placeholder = "聞き取り中...";
+                input.placeholder = "Listening...";
                 // Simulate voice-to-text after 2.5s
                 setTimeout(() => {
                     if (isListening) {
-                        input.value = "お勧めののデザートはありますか？";
+                        input.value = "Do you have any recommended desserts?";
                         toggleVoice();
                     }
                 }, 2500);
             } else {
                 btn.classList.remove('recording');
-                input.placeholder = "質問してみましょう";
+                input.placeholder = "Ask anything";
             }
         }
 
@@ -593,17 +593,17 @@
 
         function simulateAiResponse(text) {
             setTimeout(() => {
-                let response = 'かしこまりました。お客様のご要望に合わせて調整いたします。';
+                let response = "Certainly. I'll tailor my suggestions to your request.";
                 let products = [];
                 
-                if (text.includes('人気')) {
-                    response = '当店で特に人気のメニューをご紹介します！皆様から大変好評をいただいております！✨';
+                if (text.includes('popular') || text.includes('人気')) {
+                    response = "Here are some of our most popular dishes. These are consistently loved by our guests. ✨";
                     products = aiProducts.popular;
-                } else if (text.includes('早い') || text.includes('早く')) {
-                    response = '比較的早くご提供しやすいメニューをご案内します！お急ぎの際にもおすすめです。⏱️';
-                    products = aiProducts.quick;
+                } else if (text.includes('budget') || text.includes('予算')) {
+                    response = "Here are a few satisfying options that fit a budget-conscious choice. 💰";
+                    products = aiProducts.budget;
                 } else {
-                    response = '本日の仕入れに合わせた、シェフ自慢の「本日のおすすめ」をご案内いたします！🍃';
+                    response = "Here are today's chef recommendations based on the freshest ingredients we received. 🍃";
                     products = aiProducts.recommended;
                 }
                 
@@ -666,11 +666,11 @@
 
         function quickSend(text) {
             addUserMessage(text);
-            addAiMessage("カートに追加しました。");
+            addAiMessage("Added to cart.");
             
             // Increment cart total for demo
-            if (text.includes('ハンバーグ')) currentCartTotal += 1850;
-            else if (text.includes('寿司')) currentCartTotal += 2400;
+            if (text.toLowerCase().includes('hamburger')) currentCartTotal += 1850;
+            else if (text.toLowerCase().includes('nigiri') || text.toLowerCase().includes('sushi')) currentCartTotal += 2400;
             else currentCartTotal += 1000;
             
             updateCartDisplay();
