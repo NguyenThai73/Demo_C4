@@ -227,8 +227,8 @@
             display: flex;
             align-items: center;
             min-width: 0;
-            max-height: 24px;
-            /* Giới hạn chiều cao */
+            max-height: 52px;
+            /* Tăng chiều cao cho 2 dòng */
             overflow: hidden;
         }
 
@@ -236,11 +236,14 @@
             font-size: 16px;
             font-weight: 500;
             color: #fff;
-            line-height: 1.2;
-            white-space: nowrap;
-            /* CHỈ 1 DÒNG */
-            text-overflow: ellipsis;
-            /* Thêm ... khi quá dài */
+            line-height: 1.4;
+            white-space: pre-wrap;
+            /* Hỗ trợ xuống dòng */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            /* Giới hạn 2 dòng */
+            -webkit-box-orient: vertical;
             overflow: hidden;
             opacity: 1;
             transition: opacity 0.4s ease;
@@ -1423,7 +1426,7 @@
                 // Update AI banner text
                 const aiTickerText = document.getElementById('aiTickerText');
                 if (aiTickerText) {
-                    aiTickerText.textContent = 'このワインは ' + wine.taste + ' お料理との相性も抜群です。';
+                    aiTickerText.textContent = 'ご希望にぴったりの一品です。\n' + wine.taste + ' お料理との相性も抜群ですよ！';
                 }
 
                 // Update food image and details
