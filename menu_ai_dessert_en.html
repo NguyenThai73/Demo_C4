@@ -817,9 +817,9 @@
             { name: 'とろけるフォンダンショコラ', desc: '中から温かいチョコが溢れ出す、至福のひんやりバニラ添える。', price: '980', img: 'https://images.unsplash.com/photo-1541920443744-71cbe00d5855?w=600&q=80', reason: '🍫 濃厚チョコ' },
             { name: '季節のフルーツタルト', desc: '旬のフルーツを贅沢に使った、彩り豊かな自家製タルト。', price: '850', img: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=600&q=80', reason: '🍓 爽やか' },
             { name: '自家製クレームブリュレ', desc: 'パリパリのキャラメリゼと、濃厚なカスタードのハーモニー。', price: '780', img: 'https://images.unsplash.com/photo-1470333841576-5146244844e3?w=600&q=80', reason: '🍮 定番人気' },
-            { name: 'とろける杏仁豆腐', desc: '口当たりの良い滑らかな杏仁豆腐。クコの実を添えてサッパリと。', price: '450', img: 'https://images.unsplash.com/photo-1563805039227-9999a0e6bb7c?w=400&q=80', reason: '🍨 さっぱり' },
-            { name: '自家製マンゴープリン', desc: '完熟マンゴーをたっぷり使った濃厚な味わい。', price: '520', img: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&q=80', reason: '🥭 濃厚な甘み' },
-            { name: '和風抹茶アイスパフェ', desc: '厳選された宇治抹茶のアイスと小豆、白玉の華やかなパフェ。', price: '680', img: 'https://images.unsplash.com/photo-1579372781848-65ec49896791?w=400&q=80', reason: '✨ 宇治抹茶使用' }
+            { name: 'とろける杏仁豆腐', desc: '口当たりの良い滑らかな杏仁豆腐。クコの実を添えてサッパリと。', price: '450', img: 'https://images.unsplash.com/photo-1759277513351-3c6aefc0bb0d?auto=format&fit=crop&w=900&q=80', reason: '🍨 さっぱり' },
+            { name: '自家製マンゴープリン', desc: '完熟マンゴーをたっぷり使った濃厚な味わい。', price: '520', img: 'https://images.unsplash.com/photo-1767429013015-8ea007ccf002?auto=format&fit=crop&w=900&q=80', reason: '🥭 濃厚な甘み' },
+            { name: '和風抹茶アイスパフェ', desc: '厳選された宇治抹茶のアイスと小豆、白玉の華やかなパフェ。', price: '680', img: 'https://images.unsplash.com/photo-1753463813133-6b3fb0d5e303?auto=format&fit=crop&w=900&q=80', reason: '✨ 宇治抹茶使用' }
         ];
 
         function syncCartBadgeFromStorage() {
@@ -922,8 +922,8 @@
                 setTimeout(() => {
                     btn.style.background = '';
                     lbl.innerHTML = 'ボイス<br>オーダー';
-                    showUserSpeechBubble('季節のフルーツタルトを1つお願いします');
-                    streamText('かしこまりました！ 季節のフルーツタルトを 1 つ追加いたします。ほかにご注文はございますか？', 45, 0, () => {
+                    showUserSpeechBubble('One seasonal fruit tart, please.');
+                    streamText('Certainly. I will add one seasonal fruit tart. Would you like anything else?', 45, 0, () => {
                         showCartAlert();
                         voiceStep = 1; // Move to next step
                     });
@@ -933,8 +933,8 @@
                 setTimeout(() => {
                     btn.style.background = '';
                     lbl.innerHTML = 'ボイス<br>オーダー';
-                    showUserSpeechBubble('以上でこれでお願いします。');
-                    streamText('承知いたしました。注文内容を確認いたします。カード画面へ移動します。', 45, 2000, () => {
+                    showUserSpeechBubble("That's all, thank you.");
+                    streamText('Understood. I will confirm your order now. Moving to the cart screen.', 45, 2000, () => {
                         window.location.href = 'cart.html?confirm=true';
                     });
                 }, 2000);
@@ -950,7 +950,7 @@
 
             setTimeout(() => {
                 document.getElementById('sectionLabel').classList.add('visible');
-                streamText('人気のデザート 6 点をご紹介します！ お好みのものをお選びください。', 45, 0);
+                streamText('Here are six popular desserts. Please choose your favorite.', 45, 0);
                 setTimeout(showVoiceGuide, 1000);
             }, 500);
 
