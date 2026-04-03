@@ -1033,7 +1033,7 @@
             <div class="image-section">
                 <div class="main-image-container">
                     <div class="image-badge">
-                        <i class="fas fa-wine-glass"></i> Vintage 2022
+                        <i class="fas fa-wine-glass"></i> ヴィンテージ 2022
                     </div>
                     <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80" alt="Chardonnay 2022" class="main-image" id="foodImg">
                     <!-- AI reason badge -->
@@ -1062,11 +1062,11 @@
                     <h2 id="itemTitle" class="dish-title">シャルドネ 2022</h2>
 
                     <p id="itemDesc" class="dish-description">
-                        カリフォルニアの温暖な気候で育まれたシャルドネ。豊かな果実味と、樽熟成由来のバニラの香りが絶妙なハーモニーを奏で、爽やかな酸味が料理を一層引き立てます。バランスの取れたエレガントな味わいをお楽しみください。
+                        カリフォルニアの温暖な気候で育まれたシャルドネ。豊かな果実味と、樽熟成由来のバニラの香りが絶妙なハーモニーを奏で、爽やかな酸味が料理を一層引き立てます。完熟した白桃やパッションフルーツの香りに加え、ほのかなトーストのニュアンスが複雑さを添えます。適度な酸味とクリーミーな口当たりのバランスが絶妙で、魚介類や鶏肉料理、クリームソースパスタとの相性が抜群です。2022年という素晴らしいヴィンテージの恵みを存分に感じられる一本です。
                     </p>
 
                     <div class="dish-price-row">
-                        <span id="itemPrice" class="dish-price">3,300</span>
+                        <span id="itemPrice" class="dish-price">1,280</span>
                         <button class="add-cart-btn" onclick="addToCart()">
                             <i class="fa-solid fa-cart-plus"></i>
                             カートに入れる
@@ -1076,12 +1076,20 @@
                     <!-- Quick Info -->
                     <div class="quick-info-grid">
                         <div class="info-card">
-                            <div class="info-label"><i class="fa-solid fa-fire"></i> エネルギー</div>
-                            <div class="info-value">85 kcal</div>
+                            <div class="info-label"><i class="fa-solid fa-calendar"></i> ヴィンテージ</div>
+                            <div class="info-value">2022</div>
                         </div>
                         <div class="info-card">
-                            <div class="info-label"><i class="fa-solid fa-clock"></i> 提供時間</div>
-                            <div class="info-value">約1分</div>
+                            <div class="info-label"><i class="fa-solid fa-wine-glass"></i> 種類</div>
+                            <div class="info-value">白ワイン</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label"><i class="fa-solid fa-map-marker-alt"></i> 産地</div>
+                            <div class="info-value">カリフォルニア</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label"><i class="fa-solid fa-percent"></i> アルコール度数</div>
+                            <div class="info-value">13.5%</div>
                         </div>
                     </div>
 
@@ -1089,11 +1097,15 @@
                     <div class="critical-tags">
                         <span class="critical-tag warning">
                             <i class="fa-solid fa-exclamation-triangle"></i>
-                            乳製品・小麦を含む
+                            酸化防止剤（亜硫酸塩）を含む
                         </span>
                         <span class="critical-tag success">
                             <i class="fa-solid fa-check-circle"></i>
-                            カスタマイズ可能
+                            ヴィーガン対応
+                        </span>
+                        <span class="critical-tag success">
+                            <i class="fa-solid fa-check-circle"></i>
+                            樽熟成
                         </span>
                     </div>
                 </div>
@@ -1364,12 +1376,12 @@
         const wineItems = [
             {
                 name: 'シャルドネ 2022',
-                desc: 'カリフォルニアの温暖な気候で育まれたシャルドネ。豊かな果実味と、樽熟成由来のバニラの香りが絶妙なハーモニーを奏で、爽やかな酸味が料理を一層引き立てます。',
-                price: '3,300',
+                desc: 'カリフォルニアの温暖な気候で育まれたシャルドネ。豊かな果実味と、樽熟成由来のバニラの香りが絶妙なハーモニーを奏で、爽やかな酸味が料理を一層引き立てます。完熟した白桃やパッションフルーツの香りに加え、ほのかなトーストのニュアンスが複雑さを添えます。適度な酸味とクリーミーな口当たりのバランスが絶妙で、魚介類や鶏肉料理、クリームソースパスタとの相性が抜群です。2022年という素晴らしいヴィンテージの恵みを存分に感じられる一本です。',
+                price: '1,280',
                 img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80',
                 type: '白ワイン',
                 taste: '柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！',
-                detail: 'カリフォルニア産のシャルドネ種を使用。樽熟成により複複雜な味わいを実現。アルコール度数: 13.5%',
+                detail: 'カリフォルニア産のシャルドネ種を使用。樽熟成により複雑な味わいを実現。アルコール度数: 13.5%',
                 pairing: '魚料理、前菜、チーズ'
             },
             {
