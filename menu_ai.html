@@ -971,7 +971,7 @@
             renderCards(regularMenuItems);
 
             // Show welcome message (same as auto-load)
-            streamText('ようこそいらっしゃいませ！ 当店へのご来店ありがとうございます。ごゆっくりお楽しみください。', 45, 0);
+            streamText('ようこそいらっしゃいませ！\nご来店ありがとうございます。ご注文やおすすめについて、お気軽にお話しください。', 45, 0);
 
             // Show voice guide for manual interaction
             setTimeout(showVoiceGuide, 2000);
@@ -1420,7 +1420,7 @@
                         tickerText.textContent = '';
                         tickerText.classList.add('streaming');
 
-                        const fullText = 'ようこそいらっしゃいませ！ 当店へのご来店ありがとうございます。ごゆっくりお楽しみください。';
+                        const fullText = 'ようこそいらっしゃいませ！\nご来店ありがとうございます。ご注文やおすすめについて、お気軽にお話しください。';
                         let i = 0;
                         const speed = 45;
 
