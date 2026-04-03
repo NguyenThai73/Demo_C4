@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>posSpeak - AI提案詳細</title>
+    <title>posSpeak - AI Wine Detail</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
@@ -1002,7 +1002,7 @@
                     <path
                         d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
                 </svg>
-                <span class="voice-order-text" id="voiceOrderText">ボイス<br>オーダー</span>
+                <span class="voice-order-text" id="voiceOrderText">Voice<br>Order</span>
             </button>
             <a class="chat-switch-link" id="chatLink" onclick="switchToChatMode()">
                 <i class="fa-regular fa-comment-dots"></i>チャットに切替
@@ -1022,8 +1022,8 @@
                     <div class="banner-avatar-dot"></div>
                 </div>
                 <div class="banner-staff-text">
-                    <span class="banner-staff-name">さくら</span>
-                    <span class="banner-staff-label">AIスタッフ</span>
+                    <span class="banner-staff-name">Sakura</span>
+                    <span class="banner-staff-label">AI Staff</span>
                 </div>
             </div>
             <div class="banner-divider"></div>
@@ -1208,7 +1208,7 @@
             incrementCartBadge();
             const alert = document.createElement('div');
             alert.className = 'cart-alert';
-            alert.textContent = 'カートに追加しました。';
+            alert.textContent = 'Added to cart.';
             document.body.appendChild(alert);
             setTimeout(() => alert.classList.add('show'), 10);
             setTimeout(() => {
@@ -1302,7 +1302,7 @@
         }
 
         function changeLanguage() {
-            alert('言語切り替え機能 (Language switch)\n\n実際の実装では、英語/日本語/ベトナム語などの切り替えを行います。');
+            alert('Language switch\n\nIn the actual implementation, this will switch between English, Japanese, Vietnamese, and other supported languages.');
         }
 
         function startVoice() {
@@ -1316,13 +1316,13 @@
 
             // Listening state - Hide Chat Switch
             btn.style.background = '#a0a0a0';
-            lbl.innerHTML = '聞き取り中';
+            lbl.innerHTML = 'Listening';
             chat.style.display = 'none';
 
             setTimeout(() => {
                 // Restore button & Show Chat Switch
                 btn.style.background = '';
-                lbl.innerHTML = 'ボイス<br>オーダー';
+                lbl.innerHTML = 'Voice<br>Order';
                 chat.style.display = 'inline-flex';
 
                 // Display Banner & Hide Header
@@ -1330,9 +1330,9 @@
                 contextBar.style.display = 'none';
 
                 if (flowStep === 1) {
-                    showUserSpeechBubble('これを一つください。');
+                    showUserSpeechBubble('I would like one of this, please.');
                     const tickerText = document.getElementById('aiTickerText');
-                    tickerText.textContent = 'かしこまりました。シャルドネ 2022を一つカートに追加しました。他のご注文はいかがでしょうか？';
+                    tickerText.textContent = 'Certainly. I have added one Chardonnay 2022 to your cart. Would you like anything else?';
                     showCartAlert();
                     
                     setTimeout(() => {
@@ -1341,9 +1341,9 @@
                         });
                     }, 1000);
                 } else if (flowStep === 2) {
-                    showUserSpeechBubble('何かデザートはありますか？');
+                    showUserSpeechBubble('Do you have any desserts?');
                     const tickerText = document.getElementById('aiTickerText');
-                    tickerText.textContent = 'はい、多数ご用意しております！それではデザートメニューを表示しますね！';
+                    tickerText.textContent = 'Yes, we do. Let me show you the dessert menu.';
                     
                     setTimeout(() => {
                         startAiTicker(() => {
@@ -1357,7 +1357,7 @@
         }
 
         function goBack() {
-            window.location.href = 'menu_ai.html';
+            window.location.href = 'menu_ai_en.html';
         }
 
         function switchToChatMode() {

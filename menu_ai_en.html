@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>posSpeak – AI Menu</title>
+    <title>posSpeak – AI Menu English</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
@@ -945,8 +945,8 @@
                     <div class="banner-avatar-dot"></div>
                 </div>
                 <div class="banner-staff-text">
-                    <span class="banner-staff-name">さくら</span>
-                    <span class="banner-staff-label">AIスタッフ</span>
+                    <span class="banner-staff-name">Sakura</span>
+                    <span class="banner-staff-label">AI Staff</span>
                 </div>
             </div>
             <div class="banner-divider"></div>
@@ -1072,11 +1072,11 @@
             <div class="lang-modal">
                 <div class="lang-modal-title">AI language</div>
                 <div class="lang-options">
-                    <div class="lang-option-card selected" id="lang-jp" onclick="selectLanguage('jp')">
+                    <div class="lang-option-card" id="lang-jp" onclick="selectLanguage('jp')">
                         <img src="https://flagcdn.com/w80/jp.png" class="lang-flag" alt="日本語">
                         <div class="lang-label">日本語</div>
                     </div>
-                    <div class="lang-option-card" id="lang-en" onclick="selectLanguage('en')">
+                    <div class="lang-option-card selected" id="lang-en" onclick="selectLanguage('en')">
                         <img src="https://flagcdn.com/w80/us.png" class="lang-flag" alt="English">
                         <div class="lang-label">英語</div>
                     </div>
@@ -1133,8 +1133,8 @@
 
         function getLanguageConfig() {
             return {
-                code: 'jp',
-                welcome: 'ようこそいらっしゃいませ！\nご来店ありがとうございます。ご注文やおすすめについて、お気軽にお話しください。'
+                code: 'en',
+                welcome: 'AI language switched to English.\nHello and welcome to posSpeak. I am ready to help with recommendations and your order.'
             };
         }
 
@@ -1157,11 +1157,11 @@
         }
 
         function selectLanguage(lang) {
-            if (lang === 'en') {
-                window.location.href = 'menu_ai_en.html';
+            if (lang === 'jp') {
+                window.location.href = 'menu_ai.html';
                 return;
             }
-            currentLanguage = 'jp';
+            currentLanguage = 'en';
             updateLanguageSelectionUI();
             closeLangModal();
         }
@@ -1199,6 +1199,24 @@
         const CART_COUNT_STORAGE_KEY = 'posSpeakCartCount';
         let demoStep = 0, extendedFlow = false, selectedWineIndex = -1, currentLanguage = 'jp', cartItemCount = 0;
         let streamInterval = null, streamTimer = null, headerResetTimer = null;
+
+        function syncCartBadgeFromStorage() {
+            const badge = document.getElementById('cartCountBadge');
+            if (!badge) return;
+            const storedCount = parseInt(localStorage.getItem(CART_COUNT_STORAGE_KEY) || '0', 10);
+            cartItemCount = Number.isNaN(storedCount) ? 0 : storedCount;
+            badge.textContent = String(cartItemCount);
+            badge.classList.toggle('show', cartItemCount > 0);
+        }
+
+        function incrementCartBadge() {
+            cartItemCount += 1;
+            localStorage.setItem(CART_COUNT_STORAGE_KEY, String(cartItemCount));
+            const badge = document.getElementById('cartCountBadge');
+            if (!badge) return;
+            badge.textContent = String(cartItemCount);
+            badge.classList.toggle('show', cartItemCount > 0);
+        }
 
         function streamText(text, charDelay, pauseAfter, onDone) {
             const el = document.getElementById('tickerText');
@@ -1241,24 +1259,6 @@
                     </div>
                 </div>
             `).join('');
-        }
-
-        function syncCartBadgeFromStorage() {
-            const badge = document.getElementById('cartCountBadge');
-            if (!badge) return;
-            const storedCount = parseInt(localStorage.getItem(CART_COUNT_STORAGE_KEY) || '0', 10);
-            cartItemCount = Number.isNaN(storedCount) ? 0 : storedCount;
-            badge.textContent = String(cartItemCount);
-            badge.classList.toggle('show', cartItemCount > 0);
-        }
-
-        function incrementCartBadge() {
-            cartItemCount += 1;
-            localStorage.setItem(CART_COUNT_STORAGE_KEY, String(cartItemCount));
-            const badge = document.getElementById('cartCountBadge');
-            if (!badge) return;
-            badge.textContent = String(cartItemCount);
-            badge.classList.toggle('show', cartItemCount > 0);
         }
 
         function showCartAlert() {
@@ -1348,12 +1348,12 @@
             if (voiceSubBtns) voiceSubBtns.style.display = 'none';
 
             if (demoStep === 0) {
-                setTimeout(() => showUserSpeechBubble('さっぱりした、涼しいメニューを教えて'), 500);
+                setTimeout(() => showUserSpeechBubble('What do you recommend today?'), 500);
                 setTimeout(() => {
                     btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
                     if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
                     voiceGuide.classList.remove('show');
-                    streamText('ありがとうございます。\nそれでは、本日の暑さにぴったりの涼やかメニューを6品ご紹介します。気になる一品をお選びください。', 45, 3000, () => {
+                    streamText('Thank you.\nHere are six refreshing dishes that are perfect for today. Please choose the one that catches your eye.', 45, 3000, () => {
                         renderCards(coolMenuItems);
                         document.getElementById('sectionLabel').classList.add('visible');
                         coolMenuItems.forEach((_, i) => setTimeout(() => { const card = document.getElementById('card' + i); if (card) card.classList.add('revealed'); }, i * 250));
@@ -1361,11 +1361,11 @@
                     });
                 }, 2000);
             } else if (demoStep === 1) {
-                setTimeout(() => showUserSpeechBubble('この中で特に低カロリーなものはありますか？'), 500);
+                setTimeout(() => showUserSpeechBubble('Which of these is especially low in calories?'), 500);
                 setTimeout(() => {
                     btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
                     if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
-                    streamText('はい、この 6 品の中では、こちらの 3 品が特に低カロリーでおすすめですよ！ 🌱', 45, 3000, () => {
+                    streamText('Yes. Among these six dishes, these three are especially low in calories and highly recommended. 🌱', 45, 3000, () => {
                         coolMenuItems.forEach((item, i) => {
                             const card = document.getElementById('card' + i);
                             if (card) {
@@ -1375,47 +1375,47 @@
                         });
                         const label = document.getElementById('sectionLabel');
                         label.querySelector('.section-label-badge').textContent = '✦ Health Suggest';
-                        label.querySelector('.section-label-text').textContent = '体にも優しい、低カロリーなセレクション';
-                        setTimeout(() => streamText('3 品の低カロリーメニューがご用意できました！ 🎯 お好みの一品を「クリック」で選択するか、「音声でメニュー名」をお伝えください。', 45, 0), 1000);
+                        label.querySelector('.section-label-text').textContent = 'A lighter low-calorie selection';
+                        setTimeout(() => streamText('These are the three low-calorie options available. 🎯 Please click the item you want, or say the menu name by voice.', 45, 0), 1000);
                         demoStep = 2; setTimeout(showVoiceGuide, 3000);
                     });
                 }, 2000);
             } else if (demoStep === 2) {
-                setTimeout(() => showUserSpeechBubble('レモンソーダを1つお願いします'), 500);
+                setTimeout(() => showUserSpeechBubble('One lemon soda, please.'), 500);
                 setTimeout(() => {
                     btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
                     if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
                     const selectedItem = coolMenuItems.find(m => m.name === 'レモンソーダ');
                     if (selectedItem) {
                         showCartAlert();
-                        streamText('かしこまりました！ ' + selectedItem.name + ' を 1 つカートに追加いたしました。ありがとうございます！', 42, 1000, () => {
-                            setTimeout(() => streamText('他にご注文はございますか？\n例えば、お飲み物はいかがでしょうか？', 42, 3000, () => {
+                        streamText('Certainly. I have added one ' + selectedItem.name + ' to your cart. Thank you.', 42, 1000, () => {
+                            setTimeout(() => streamText('Would you like anything else?\nFor example, would you like a drink recommendation?', 42, 3000, () => {
                                 extendedFlow = true; demoStep = 3; setTimeout(showVoiceGuide, 1000);
                             }), 500);
                         });
                     }
                 }, 1500);
             } else if (extendedFlow && demoStep === 3) {
-                setTimeout(() => showUserSpeechBubble('おすすめのドリンクは何ですか？'), 500);
+                setTimeout(() => showUserSpeechBubble('What drinks do you recommend?'), 500);
                 setTimeout(() => {
                     btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
-                    streamText('当店ではワインが大変人気です！ 特におすすめの3種類をご紹介します。', 45, 3000, () => {
+                    streamText('Our wines are especially popular. Let me show you three recommended selections.', 45, 3000, () => {
                         renderCards(wineItems);
                         document.getElementById('sectionLabel').classList.add('visible');
                         const label = document.getElementById('sectionLabel');
                         label.querySelector('.section-label-badge').textContent = '✦ Wine Selection';
-                        label.querySelector('.section-label-text').textContent = '当店自慢の厳選ワイン';
+                        label.querySelector('.section-label-text').textContent = 'Our featured wine selections';
                         wineItems.forEach((_, i) => setTimeout(() => { const card = document.getElementById('card' + i); if (card) card.classList.add('revealed'); }, i * 250));
                         demoStep = 4; setTimeout(showVoiceGuide, 1000);
                     });
                 }, 2000);
             } else if (extendedFlow && demoStep === 4) {
-                setTimeout(() => showUserSpeechBubble('シャルドネ 2022の味はどんな感じですか？'), 500);
+                setTimeout(() => showUserSpeechBubble('What does Chardonnay 2022 taste like?'), 500);
                 setTimeout(() => {
                     btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
-                    streamText('かしこまりました。「' + wineItems[0].name + '」について詳しくご説明します。', 45, 2000, () => {
+                    streamText('Certainly. Let me tell you more about "' + wineItems[0].name + '."', 45, 2000, () => {
                         selectedWineIndex = 0;
-                        setTimeout(() => window.location.href = 'menu_ai_detail_wine.html?wine=0', 1500);
+                        setTimeout(() => window.location.href = 'menu_ai_detail_wine_en.html?wine=0', 1500);
                     });
                 }, 2000);
             }
@@ -1427,7 +1427,7 @@
                 const wineIndex = parseInt(card.id.replace('card', ''));
                 if (!isNaN(wineIndex)) { 
                     selectedWineIndex = wineIndex; 
-                    setTimeout(() => window.location.href = 'menu_ai_detail_wine.html?wine=' + wineIndex, 120); 
+                    setTimeout(() => window.location.href = 'menu_ai_detail_wine_en.html?wine=' + wineIndex, 120); 
                     return; 
                 }
             }
@@ -1435,7 +1435,7 @@
         }
 
         window.addEventListener('load', function () {
-            currentLanguage = 'jp';
+            currentLanguage = 'en';
             renderCards(regularMenuItems);
             updateLanguageSelectionUI();
             syncCartBadgeFromStorage();
@@ -1457,7 +1457,7 @@
             if (urlParams.get('step') === 'dessert') {
                 renderCards(dessertItems);
                 document.getElementById('sectionLabel').classList.add('visible');
-                setTimeout(() => streamText('人気のスイーツ 3 点をご紹介します！ お好みのものをお選びください。', 45, 0), 500);
+                setTimeout(() => streamText('Here are three popular desserts for you. Please choose your favorite one.', 45, 0), 500);
             } else {
                 setTimeout(() => streamText(getLanguageConfig().welcome, 45, 0, () => setTimeout(showVoiceGuide, 1000)), 500);
             }

@@ -527,6 +527,35 @@
             font-size: 22px;
         }
 
+        .nav-icon-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-count-badge {
+            position: absolute;
+            top: -8px;
+            right: -12px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: 999px;
+            background: #d92d20;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 800;
+            line-height: 18px;
+            text-align: center;
+            box-shadow: 0 3px 8px rgba(217, 45, 32, 0.28);
+            display: none;
+        }
+
+        .cart-count-badge.show {
+            display: block;
+        }
+
         .voice-guide-container {
             position: absolute;
             bottom: 86px;
@@ -750,10 +779,15 @@
         </div>
 
         <div class="bottom-nav">
-            <div class="nav-item active" onclick="window.location.reload()"><i
+            <div class="nav-item active" onclick="window.location.href='menu_ai.html'"><i
                     class="fa-solid fa-utensils"></i><span>メニュー</span></div>
-            <div class="nav-item" onclick="window.location.href='cart.html'"><i
-                    class="fa-solid fa-cart-shopping"></i><span>カート</span></div>
+            <div class="nav-item" onclick="window.location.href='cart.html'">
+                <div class="nav-icon-wrap">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-count-badge" id="cartCountBadge">0</span>
+                </div>
+                <span>カート</span>
+            </div>
             <div class="nav-item" onclick="window.location.href='order_status.html'"><i
                     class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></div>
             <div class="nav-item" onclick="window.location.href='chat_ai.html'"><i
@@ -778,6 +812,7 @@
     </div>
 
     <script>
+        const CART_COUNT_STORAGE_KEY = 'posSpeakCartCount';
         const dessertItems = [
             { name: 'とろけるフォンダンショコラ', desc: '中から温かいチョコが溢れ出す、至福のひんやりバニラ添える。', price: '980', img: 'https://images.unsplash.com/photo-1541920443744-71cbe00d5855?w=600&q=80', reason: '🍫 濃厚チョコ' },
             { name: '季節のフルーツタルト', desc: '旬のフルーツを贅沢に使った、彩り豊かな自家製タルト。', price: '850', img: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=600&q=80', reason: '🍓 爽やか' },
@@ -786,6 +821,25 @@
             { name: '自家製マンゴープリン', desc: '完熟マンゴーをたっぷり使った濃厚な味わい。', price: '520', img: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&q=80', reason: '🥭 濃厚な甘み' },
             { name: '和風抹茶アイスパフェ', desc: '厳選された宇治抹茶のアイスと小豆、白玉の華やかなパフェ。', price: '680', img: 'https://images.unsplash.com/photo-1579372781848-65ec49896791?w=400&q=80', reason: '✨ 宇治抹茶使用' }
         ];
+
+        function syncCartBadgeFromStorage() {
+            const badge = document.getElementById('cartCountBadge');
+            if (!badge) return;
+            const storedCount = parseInt(localStorage.getItem(CART_COUNT_STORAGE_KEY) || '0', 10);
+            const count = Number.isNaN(storedCount) ? 0 : storedCount;
+            badge.textContent = String(count);
+            badge.classList.toggle('show', count > 0);
+        }
+
+        function incrementCartBadge() {
+            const storedCount = parseInt(localStorage.getItem(CART_COUNT_STORAGE_KEY) || '0', 10);
+            const nextCount = (Number.isNaN(storedCount) ? 0 : storedCount) + 1;
+            localStorage.setItem(CART_COUNT_STORAGE_KEY, String(nextCount));
+            const badge = document.getElementById('cartCountBadge');
+            if (!badge) return;
+            badge.textContent = String(nextCount);
+            badge.classList.toggle('show', nextCount > 0);
+        }
 
         function renderCards(items) {
             document.getElementById('menuGrid').innerHTML = items.map((item, i) => `
@@ -820,6 +874,7 @@
         }
 
         function showCartAlert() {
+            incrementCartBadge();
             const a = document.createElement('div');
             a.className = 'cart-alert';
             a.textContent = 'カートに追加しました。';
@@ -888,6 +943,7 @@
 
         window.onload = () => {
             renderCards(dessertItems);
+            syncCartBadgeFromStorage();
             // Show AI banner initially
             document.getElementById('aiBanner').style.display = 'flex';
             document.querySelector('.context-bar').style.display = 'none';
