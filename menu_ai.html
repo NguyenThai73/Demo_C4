@@ -1197,14 +1197,14 @@
             } else if (extendedFlow && demoStep === 4) {
                 // Extended flow step 2: User asks about first wine taste
                 setTimeout(() => {
-                    showUserSpeechBubble('1番目のワインの味はどんな感じですか？');
+                    showUserSpeechBubble('シャルドネ 2022 の味はどんな感じですか？');
                 }, 500);
 
                 setTimeout(() => {
                     btn.style.background = '';
                     lbl.innerHTML = 'ボイス<br>オーダー';
 
-                    streamText('かしこまりました。1番目の「' + wineItems[0].name + '」について詳しくご説明します。', 45, 2000, () => {
+                    streamText('かしこまりました。「' + wineItems[0].name + '」について詳しくご説明します。', 45, 2000, () => {
                         // Store selected wine index
                         selectedWineIndex = 0;
 
