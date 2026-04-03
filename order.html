@@ -244,6 +244,7 @@
       cursor: pointer;
       transition: all 0.15s;
       font-family: inherit;
+      position: relative;
     }
 
     .lang-card:hover {
@@ -255,6 +256,39 @@
       background: #2d3a2e;
       border-color: #2d3a2e;
       box-shadow: 0 2px 10px rgba(45, 58, 46, 0.2);
+    }
+
+    .lang-card.disabled {
+      background: #f2f0eb;
+      border-color: #ddd7ce;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .lang-card.disabled:hover {
+      border-color: #ddd7ce;
+      background: #f2f0eb;
+      transform: none;
+    }
+
+    .lang-card.disabled .lang-name,
+    .lang-card.disabled .lang-native {
+      color: #8f8a81;
+    }
+
+    .lang-soon {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: #e7e2d9;
+      color: #7a6f62;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1;
     }
 
     .lang-flag {
@@ -705,15 +739,17 @@
               <span class="lang-name">English</span>
               <span class="lang-native">英語</span>
             </button>
-            <button class="lang-card" onclick="selectLang(this, event)" data-lang="한국어">
+            <button class="lang-card disabled" onclick="selectLang(this, event)" data-lang="한국어" disabled aria-disabled="true">
+              <span class="lang-soon">準備中</span>
               <span class="lang-flag">🇰🇷</span>
               <span class="lang-name">한국어</span>
-              <span class="lang-native">韓国語</span>
+              <span class="lang-native">Coming Soon</span>
             </button>
-            <button class="lang-card" onclick="selectLang(this, event)" data-lang="中文">
+            <button class="lang-card disabled" onclick="selectLang(this, event)" data-lang="中文" disabled aria-disabled="true">
+              <span class="lang-soon">準備中</span>
               <span class="lang-flag">🇨🇳</span>
               <span class="lang-name">中文</span>
-              <span class="lang-native">中国語</span>
+              <span class="lang-native">Coming Soon</span>
             </button>
           </div>
 
@@ -915,6 +951,7 @@
 
     function selectLang(btn, event) {
       if (event) event.stopPropagation();
+      if (btn.disabled || btn.classList.contains('disabled')) return;
       document.querySelectorAll('.lang-card').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const lang = btn.dataset.lang;
@@ -942,7 +979,7 @@
       localStorage.setItem('currentSession', JSON.stringify(session));
       if (isAI) {
         sessionStorage.setItem('showAiWelcome', 'yes');
-        window.location.href = 'menu_ai.html';
+        window.location.href = currentMethod === 'chat' ? 'menu_ai_chat.html' : 'menu_ai.html';
       } else {
         window.location.href = 'menu.html';
       }
