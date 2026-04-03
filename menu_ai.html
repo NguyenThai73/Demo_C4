@@ -630,6 +630,35 @@
             background: #fff;
         }
 
+        .voice-sub-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .voice-sub-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #666;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1.5px solid #d8d4cc;
+            background: rgba(255, 255, 255, 0.9);
+            transition: 0.15s;
+            font-family: inherit;
+        }
+
+        .voice-sub-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
         .replay-btn {
             position: absolute;
             top: 62px;
@@ -771,9 +800,14 @@
                 </svg>
                 <span class="voice-order-text" id="voiceOrderText">ボイス<br>オーダー</span>
             </button>
-            <a class="chat-switch-link" id="chatLink" onclick="window.location.href='chat_ai.html'">
-                <i class="fa-regular fa-comment-dots"></i>チャットに切替
-            </a>
+            <div class="voice-sub-btns" id="voiceSubBtns">
+                <button class="voice-sub-btn" onclick="window.location.href='chat_ai.html'">
+                    <i class="fa-regular fa-comment-dots"></i>チャットに切替
+                </button>
+                <button class="voice-sub-btn" onclick="alert('店員を呼んでいます...')">
+                    <i class="fa-solid fa-bell"></i>店員を呼ぶ
+                </button>
+            </div>
         </div>
     </div>
 
@@ -981,11 +1015,11 @@
             const voiceGuide = document.getElementById('voiceGuide');
             const btn = document.getElementById('voiceOrderBtn');
             const lbl = document.getElementById('voiceOrderText');
-            const chatLink = document.getElementById('chatLink');
+            const voiceSubBtns = document.getElementById('voiceSubBtns');
             if (voiceGuide) {
                 if (btn) btn.style.background = '';
                 if (lbl) lbl.innerHTML = 'ボイス<br>オーダー';
-                if (chatLink) chatLink.style.display = 'inline-flex';
+                if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
                 voiceGuide.classList.add('show');
             }
         }
@@ -1043,7 +1077,7 @@
 
             const btn = document.getElementById('voiceOrderBtn');
             const lbl = document.getElementById('voiceOrderText');
-            const chatLink = document.getElementById('chatLink');
+            const voiceSubBtns = document.getElementById('voiceSubBtns');
             const voiceGuide = document.getElementById('voiceGuide');
             const aiBanner = document.getElementById('aiBanner');
             const contextBar = document.querySelector('.context-bar');
@@ -1051,7 +1085,7 @@
             if (headerResetTimer) clearTimeout(headerResetTimer);
             btn.style.background = '#a0a0a0';
             lbl.innerHTML = '聞き取り中';
-            if (chatLink) chatLink.style.display = 'none';
+            if (voiceSubBtns) voiceSubBtns.style.display = 'none';
 
             // Handle demo steps
             if (demoStep === 0) {
@@ -1063,7 +1097,7 @@
                 setTimeout(() => {
                     btn.style.background = '';
                     lbl.innerHTML = 'ボイス<br>オーダー';
-                    if (chatLink) chatLink.style.display = 'inline-flex';
+                    if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
                     voiceGuide.classList.remove('show');
                     aiBanner.style.display = 'flex';
                     contextBar.style.display = 'none';
@@ -1095,7 +1129,7 @@
                 setTimeout(() => {
                     btn.style.background = '';
                     lbl.innerHTML = 'ボイス<br>オーダー';
-                    if (chatLink) chatLink.style.display = 'inline-flex';
+                    if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
 
                     streamText('はい、この 6 品の中では、こちらの 3 品が特に低カロリーでおすすめですよ！ 🌱', 45, 3000, () => {
                         // Filter Logic: Blur non-lowCal items
@@ -1147,7 +1181,7 @@
                 setTimeout(() => {
                     btn.style.background = '';
                     lbl.innerHTML = 'ボイス<br>オーダー';
-                    if (chatLink) chatLink.style.display = 'inline-flex';
+                    if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
 
                     // Simulate voice recognition - auto-select the first lowCal item
                     const lowCalItems = coolMenuItems.filter(item => item.lowCal);
@@ -1157,11 +1191,16 @@
                         // Show cart alert immediately
                         showCartAlert();
 
-                        // Consolidated response to make it feel responsive and less stalled
-                        streamText('かしこまりました！ ' + selectedItem.name + ' を 1 つカートに追加いたしました。ありがとうございます。\n\n他にご注文はございますか？ 例えば、お飲み物はいかがでしょうか？', 42, 3000, () => {
-                            extendedFlow = true;
-                            demoStep = 3; // Move to extended flow step (Step 4: Drink inquiry)
-                            setTimeout(showVoiceGuide, 1000);
+                        // Split response into two sequential messages with a clear reset for better readability
+                        streamText('かしこまりました！ ' + selectedItem.name + ' を 1 つカートに追加いたしました。ありがとうございます！', 42, 1000, () => {
+                            // Clear and move to the next inquiry
+                            setTimeout(() => {
+                                streamText('他にご注文はございますか？\n例えば、お飲み物はいかがでしょうか？', 42, 3000, () => {
+                                    extendedFlow = true;
+                                    demoStep = 3; // Move to extended flow step (Step 4: Drink inquiry)
+                                    setTimeout(showVoiceGuide, 1000);
+                                });
+                            }, 500);
                         });
                         
                         // Sync card UI
