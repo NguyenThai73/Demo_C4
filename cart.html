@@ -555,6 +555,11 @@
             z-index: 150;
         }
 
+        .voice-sub-btns {
+            display: flex;
+            gap: 10px;
+        }
+
         .voice-order-btn {
             width: 100px;
             height: 100px;
@@ -644,6 +649,165 @@
             color: var(--primary);
             border-color: var(--primary);
             background: #fff;
+        }
+
+        .staff-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .staff-modal {
+            width: 720px;
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: modal-up 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modal-up {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .staff-modal-header {
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .staff-modal-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #1a365d;
+        }
+
+        .staff-modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: none;
+            color: #64748b;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .staff-modal-options {
+            padding: 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .staff-option-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .staff-option-card:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .staff-option-card.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+
+        .staff-option-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .staff-option-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .staff-modal-footer {
+            padding: 0 32px 32px;
+            text-align: center;
+        }
+
+        .staff-modal-hint {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .call-staff-confirm-btn {
+            width: 100%;
+            height: 64px;
+            background: #f87171;
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(248, 113, 113, 0.3);
+            transition: all 0.2s;
+        }
+
+        .call-staff-confirm-btn:hover {
+            background: #ef4444;
+            transform: translateY(-2px);
+        }
+
+        .cart-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(26, 54, 93, 0.95);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            z-index: 3000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .cart-alert.show {
+            opacity: 1;
         }
     </style>
 </head>
@@ -750,9 +914,65 @@
                 </svg>
                 <span class="voice-order-text" id="voiceOrderText">ボイス<br>オーダー</span>
             </button>
-            <a class="chat-switch-link" id="chatLink" onclick="window.location.href='chat_ai.html'">
-                <i class="fa-regular fa-comment-dots"></i>チャットに切替
-            </a>
+            <div class="voice-sub-btns">
+                <a class="chat-switch-link" id="chatLink" onclick="window.location.href='chat_ai.html'">
+                    <i class="fa-regular fa-comment-dots"></i>チャットに切替
+                </a>
+                <a class="chat-switch-link" id="callStaffBtn" onclick="openStaffModal()">
+                    <i class="fa-solid fa-bell"></i>店員を呼ぶ
+                </a>
+            </div>
+        </div>
+
+        <div class="staff-modal-overlay" id="staffModalOverlay">
+            <div class="staff-modal">
+                <div class="staff-modal-header">
+                    <div class="staff-modal-title">
+                        <span style="font-size: 24px;">🤖</span> 何かお手伝いできることはありますか？
+                    </div>
+                    <button class="staff-modal-close" onclick="closeStaffModal()">&times;</button>
+                </div>
+                <div class="staff-modal-options">
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-droplet" style="color: #3b82f6;"></i></div>
+                        <div class="staff-option-label">水を追加</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-restroom" style="color: #3b82f6;"></i></div>
+                        <div class="staff-option-label">トイレの場所</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-utensils" style="color: #94a3b8;"></i></div>
+                        <div class="staff-option-label">お皿を片付ける</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-circle-question" style="color: #ef4444;"></i></div>
+                        <div class="staff-option-label">その他ご質問</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-baby" style="color: #f59e0b;"></i></div>
+                        <div class="staff-option-label">子ども用食器</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-chair" style="color: #845ef7;"></i></div>
+                        <div class="staff-option-label">ベビーチェア</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-hand-holding-heart" style="color: #ec4899;"></i></div>
+                        <div class="staff-option-label">箸・フォークを追加</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-soap" style="color: #10b981;"></i></div>
+                        <div class="staff-option-label">テーブルの清掃</div>
+                    </div>
+                </div>
+                <div class="staff-modal-footer">
+                    <div class="staff-modal-hint">複数選択できます。選択後、下のボタンでスタッフを呼び出します。</div>
+                    <button class="call-staff-confirm-btn" onclick="confirmStaffCall()">
+                        <i class="fa-solid fa-bell"></i> スタッフ呼び出し
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -777,6 +997,27 @@
             if (n + d > 0) val.innerText = n + d;
         }
 
+        function showUserSpeechBubble(text) {
+            document.querySelectorAll('.user-speech-bubble').forEach(b => b.remove());
+            const bubble = document.createElement('div');
+            bubble.className = 'user-speech-bubble';
+            bubble.style = 'position:absolute; bottom:220px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); color:#fff; padding:14px 32px; border-radius:40px; font-weight:700; font-size:18px; z-index:2000; box-shadow:0 10px 30px rgba(0,0,0,0.3); pointer-events:none; animation:bubble-up 0.4s cubic-bezier(0.18,0.89,0.32,1.28) forwards;';
+            bubble.textContent = text;
+            document.body.appendChild(bubble);
+            if (!document.getElementById('bubble-style')) {
+                const style = document.createElement('style');
+                style.id = 'bubble-style';
+                style.innerHTML = '@keyframes bubble-up { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }';
+                document.head.appendChild(style);
+            }
+            setTimeout(() => {
+                bubble.style.transition = 'opacity 0.5s, transform 0.5s';
+                bubble.style.opacity = '0';
+                bubble.style.transform = 'translate(-50%, -20px)';
+                setTimeout(() => bubble.remove(), 500);
+            }, 3000);
+        }
+
         function startVoice() {
             const btn = document.getElementById('voiceOrderBtn');
             const lbl = document.getElementById('voiceOrderText');
@@ -793,19 +1034,73 @@
             setTimeout(() => {
                 aiBanner.style.display = 'flex';
                 contextBar.style.display = 'none';
+                showUserSpeechBubble('何か早く食べられるものはありますか？ 急いでいます。');
+
+                const aiTickerText = document.getElementById('aiTickerText');
+                if (aiTickerText) {
+                    aiTickerText.textContent = '承知しました。すぐにご紹介いたします。';
+                }
 
                 btn.style.background = '';
                 lbl.innerHTML = 'ボイス<br>オーダー';
                 chat.style.display = 'inline-flex';
 
                 headerResetTimer = setTimeout(() => {
-                    aiBanner.style.display = 'none';
-                    contextBar.style.display = 'flex';
-                }, 8000);
+                    if (aiTickerText) {
+                        aiTickerText.textContent = 'それでは、調理時間の短い 3 品をご案内します。';
+                    }
+                    headerResetTimer = setTimeout(() => {
+                        window.location.href = 'menu_ai_fast.html';
+                    }, 2200);
+                }, 2200);
             }, 2000);
         }
 
+        function openStaffModal() {
+            const modal = document.getElementById('staffModalOverlay');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.querySelectorAll('.staff-option-card').forEach(c => c.classList.remove('selected'));
+            }
+        }
+
+        function closeStaffModal() {
+            const modal = document.getElementById('staffModalOverlay');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function toggleStaffOption(el) {
+            el.classList.toggle('selected');
+        }
+
+        function confirmStaffCall() {
+            const selectedCount = document.querySelectorAll('.staff-option-card.selected').length;
+            if (selectedCount === 0) {
+                alert('ご希望の項目を選択してください。');
+                return;
+            }
+
+            closeStaffModal();
+
+            const alertBox = document.createElement('div');
+            alertBox.className = 'cart-alert';
+            alertBox.innerHTML = 'ありがとうございます。<br>少々お待ちください、店員が伺います。';
+            document.body.appendChild(alertBox);
+            setTimeout(() => alertBox.classList.add('show'), 10);
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+                setTimeout(() => alertBox.remove(), 300);
+            }, 3000);
+        }
+
         window.onload = () => {
+            const staffModal = document.getElementById('staffModalOverlay');
+            if (staffModal) {
+                staffModal.addEventListener('click', (event) => {
+                    if (event.target === staffModal) closeStaffModal();
+                });
+            }
+
             setInterval(() => {
                 const now = new Date();
                 const ctxDate = document.getElementById('ctxDate');

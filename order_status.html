@@ -401,6 +401,27 @@
             }
         }
 
+        function showUserSpeechBubble(text) {
+            document.querySelectorAll('.user-speech-bubble').forEach(b => b.remove());
+            const bubble = document.createElement('div');
+            bubble.className = 'user-speech-bubble';
+            bubble.style = 'position:absolute; bottom:220px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); color:#fff; padding:14px 32px; border-radius:40px; font-weight:700; font-size:18px; z-index:2000; box-shadow:0 10px 30px rgba(0,0,0,0.3); pointer-events:none; animation:bubble-up 0.4s cubic-bezier(0.18,0.89,0.32,1.28) forwards;';
+            bubble.textContent = text;
+            document.body.appendChild(bubble);
+            if (!document.getElementById('bubble-style')) {
+                const style = document.createElement('style');
+                style.id = 'bubble-style';
+                style.innerHTML = '@keyframes bubble-up { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }';
+                document.head.appendChild(style);
+            }
+            setTimeout(() => {
+                bubble.style.transition = 'opacity 0.5s, transform 0.5s';
+                bubble.style.opacity = '0';
+                bubble.style.transform = 'translate(-50%, -20px)';
+                setTimeout(() => bubble.remove(), 500);
+            }, 3000);
+        }
+
         function startVoice() {
             const btn = document.getElementById('voiceOrderBtn');
             const lbl = document.getElementById('voiceOrderText');
@@ -420,16 +441,19 @@
                 // --- STEP 2: RESPONSE PHASE ---
                 aiBanner.style.display = 'flex';
                 contextBar.style.display = 'none';
-                aiTicker.innerText = 'さらに追加のご注文はございますか？お伺いいたします。';
+                showUserSpeechBubble('今日のおすすめで、何か特別なメニューはありますか？');
+                aiTicker.innerText = '承知しました。ご要望を確認いたしました。';
                 
                 btn.style.background = '';
                 lbl.innerHTML = 'ボイス<br>オーダー';
                 chat.style.display = 'inline-flex';
                 
                 headerResetTimer = setTimeout(() => {
-                    aiBanner.style.display = 'none';
-                    contextBar.style.display = 'flex';
-                }, 8000);
+                    aiTicker.innerText = 'はい、当店の本日おすすめ特別メニューがございます。それでは、厳選した 3 品をご紹介します。';
+                    headerResetTimer = setTimeout(() => {
+                        window.location.href = 'menu_ai_special.html';
+                    }, 2400);
+                }, 2200);
             }, 2000);
         }
         setInterval(() => {
