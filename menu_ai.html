@@ -842,6 +842,81 @@
             background: #ef4444;
             transform: translateY(-2px);
         }
+
+        /* Language Modal */
+        .lang-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            backdrop-filter: blur(4px);
+        }
+
+        .lang-modal {
+            width: 500px;
+            background: #fff;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: modal-up 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+        }
+
+        .lang-modal-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #334155;
+            margin-bottom: 24px;
+        }
+
+        .lang-options {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .lang-option-card {
+            flex: 1;
+            background: #f8f7f2;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 24px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .lang-option-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            background: #fff;
+        }
+
+        .lang-option-card.selected {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 8px 20px rgba(45, 58, 46, 0.15);
+        }
+
+        .lang-flag {
+            width: 48px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .lang-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #334155;
+        }
     </style>
 </head>
 
@@ -904,7 +979,7 @@
             <div class="nav-item" onclick="window.location.href='cart.html'"><i class="fa-solid fa-cart-shopping"></i><span>カート</span></div>
             <div class="nav-item" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></div>
             <div class="nav-item" onclick="window.location.href='chat_ai.html'"><i class="fa-solid fa-comment-dots"></i><span>会話</span></div>
-            <div class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></div>
+            <div class="nav-item" onclick="openLangModal()"><i class="fa-solid fa-globe"></i><span>言語</span></div>
         </div>
 
         <button class="replay-btn" onclick="runDemo()"><i class="fa-solid fa-rotate-right"></i> デモ再生</button>
@@ -977,6 +1052,23 @@
                 </div>
             </div>
         </div>
+
+        <!-- Language Selection Modal -->
+        <div class="lang-modal-overlay" id="langModalOverlay">
+            <div class="lang-modal">
+                <div class="lang-modal-title">言語を選択してください / Select Language</div>
+                <div class="lang-options">
+                    <div class="lang-option-card selected" id="lang-jp" onclick="selectLanguage('jp')">
+                        <img src="https://flagcdn.com/w80/jp.png" class="lang-flag" alt="日本語">
+                        <div class="lang-label">日本語</div>
+                    </div>
+                    <div class="lang-option-card" id="lang-en" onclick="selectLanguage('en')">
+                        <img src="https://flagcdn.com/w80/us.png" class="lang-flag" alt="English">
+                        <div class="lang-label">英語</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1025,6 +1117,39 @@
             }, 3000);
         }
 
+        function openLangModal() {
+            const overlay = document.getElementById('langModalOverlay');
+            if (!overlay) return;
+            overlay.style.display = 'flex';
+            updateLanguageSelectionUI();
+        }
+
+        function closeLangModal() {
+            const overlay = document.getElementById('langModalOverlay');
+            if (overlay) overlay.style.display = 'none';
+        }
+
+        function updateLanguageSelectionUI() {
+            document.querySelectorAll('.lang-option-card').forEach(card => card.classList.remove('selected'));
+            const target = document.getElementById(currentLanguage === 'en' ? 'lang-en' : 'lang-jp');
+            if (target) target.classList.add('selected');
+        }
+
+        function selectLanguage(lang) {
+            currentLanguage = lang;
+            updateLanguageSelectionUI();
+            closeLangModal();
+
+            const voiceGuide = document.getElementById('voiceGuide');
+            if (voiceGuide) voiceGuide.classList.remove('show');
+
+            const message = lang === 'en'
+                ? 'Welcome to posSpeak!\nThank you for visiting. Feel free to ask for recommendations or place your order anytime.'
+                : 'ようこそいらっしゃいませ！\nご来店ありがとうございます。ご注文やおすすめについて、お気軽にお話しください。';
+
+            streamText(message, 45, 0, () => setTimeout(showVoiceGuide, 1000));
+        }
+
         const regularMenuItems = [
             { name: '牛カルビ焼き', desc: '厳選和牛カルビをじっくり炭火で焼き上げた看板メニュー', price: '1680', img: 'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=600&q=80' },
             { name: '海鮮天ぷら盛り合わせ', desc: 'エビ・イカ・白身魚の揚げたて天ぷら。サクサク食感', price: '1380', img: 'https://images.unsplash.com/photo-1514190051997-0f6f39ca5cde?w=600&q=80' },
@@ -1055,7 +1180,7 @@
             { name: '抹茶アイスパフェ', desc: '厳選された抹茶を使用した上品な味わいのパフェ', price: '680', img: 'https://images.unsplash.com/photo-1579372781848-65ec49896791?w=400&q=80', reason: '✨ 宇治抹茶使用' }
         ];
 
-        let demoStep = 0, extendedFlow = false, selectedWineIndex = -1;
+        let demoStep = 0, extendedFlow = false, selectedWineIndex = -1, currentLanguage = 'jp';
         let streamInterval = null, streamTimer = null, headerResetTimer = null;
 
         function streamText(text, charDelay, pauseAfter, onDone) {
@@ -1275,6 +1400,14 @@
 
         window.addEventListener('load', function () {
             renderCards(regularMenuItems);
+
+            const langOverlay = document.getElementById('langModalOverlay');
+            if (langOverlay) {
+                langOverlay.addEventListener('click', (event) => {
+                    if (event.target === langOverlay) closeLangModal();
+                });
+            }
+
             setInterval(() => {
                 const now = new Date();
                 const ctxDate = document.getElementById('ctxDate');
