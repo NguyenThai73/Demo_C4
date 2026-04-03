@@ -110,6 +110,322 @@
         .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #888; font-size: 11px; font-weight: 700; cursor: pointer; }
         .nav-item.active { color: var(--primary); }
         .nav-item i { font-size: 22px; }
+
+        .quick-actions {
+            position: absolute;
+            right: 28px;
+            bottom: 88px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 30;
+        }
+
+        .quick-action-btn {
+            min-width: 162px;
+            height: 50px;
+            border-radius: 999px;
+            border: 1.5px solid rgba(45, 58, 46, 0.14);
+            background: rgba(255, 255, 255, 0.96);
+            color: var(--primary);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+            transition: 0.18s;
+        }
+
+        .quick-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
+            border-color: rgba(45, 58, 46, 0.28);
+        }
+
+        .quick-action-btn.primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .quick-action-btn i {
+            font-size: 18px;
+        }
+
+        .quick-action-btn.staff-ai-btn {
+            justify-content: flex-start;
+            padding: 0 18px 0 12px;
+            gap: 12px;
+        }
+
+        .quick-action-avatar-wrap {
+            position: relative;
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+        }
+
+        .quick-action-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.32);
+            display: block;
+        }
+
+        .quick-action-avatar-dot {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #7ecb8f;
+            border: 2px solid var(--primary);
+        }
+
+        .consult-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.42);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .consult-modal {
+            width: 520px;
+            background: #fff;
+            border-radius: 28px;
+            padding: 28px 24px 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.24);
+            animation: modal-up 0.25s ease-out;
+        }
+
+        @keyframes modal-up {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .consult-title {
+            font-size: 22px;
+            font-weight: 900;
+            color: #1f2937;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .consult-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            color: #7b7b7b;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .consult-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .consult-option {
+            border: 2px solid #e8e2d9;
+            background: #f8f5ef;
+            border-radius: 20px;
+            padding: 22px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.18s;
+            font-family: inherit;
+        }
+
+        .consult-option:hover {
+            border-color: var(--primary);
+            background: #fff;
+            transform: translateY(-2px);
+        }
+
+        .consult-option i {
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .consult-option-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #2e3335;
+        }
+
+        .consult-option-sub {
+            font-size: 11px;
+            font-weight: 600;
+            color: #8a8a8a;
+        }
+
+        .staff-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .staff-modal {
+            width: 720px;
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: modal-up 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .staff-modal-header {
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .staff-modal-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #1a365d;
+        }
+
+        .staff-modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: none;
+            color: #64748b;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .staff-modal-options {
+            padding: 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .staff-option-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .staff-option-card:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .staff-option-card.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+
+        .staff-option-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .staff-option-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .staff-modal-footer {
+            padding: 0 32px 32px;
+            text-align: center;
+        }
+
+        .staff-modal-hint {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .call-staff-confirm-btn {
+            width: 100%;
+            height: 64px;
+            background: #f87171;
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(248, 113, 113, 0.3);
+            transition: all 0.2s;
+        }
+
+        .call-staff-confirm-btn:hover {
+            background: #ef4444;
+            transform: translateY(-2px);
+        }
+
+        .cart-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(26, 54, 93, 0.95);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            z-index: 3000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .cart-alert.show {
+            opacity: 1;
+        }
     </style>
 </head>
 
@@ -151,6 +467,21 @@
             <div class="menu-grid" id="menuGrid"></div>
         </div>
 
+        <div class="quick-actions">
+            <button class="quick-action-btn primary staff-ai-btn" onclick="openConsultModal()">
+                <span class="quick-action-avatar-wrap">
+                    <img class="quick-action-avatar"
+                        src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&q=80"
+                        alt="さくら">
+                    <span class="quick-action-avatar-dot"></span>
+                </span>
+                <span>さくらAIスタッフに相談</span>
+            </button>
+            <button class="quick-action-btn" onclick="openStaffModal()">
+                <i class="fa-solid fa-bell"></i>店員を呼ぶ
+            </button>
+        </div>
+
         <!-- Bottom Nav -->
         <div class="bottom-nav">
             <div class="nav-item active" onclick="window.location.reload()"><i class="fa-solid fa-utensils"></i><span>メニュー</span></div>
@@ -158,6 +489,76 @@
             <div class="nav-item" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></div>
             <div class="nav-item" onclick="window.location.href='chat_ai.html'"><i class="fa-solid fa-comment-dots"></i><span>会話</span></div>
             <div class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></div>
+        </div>
+
+        <div class="consult-modal-overlay" id="consultModal">
+            <div class="consult-modal">
+                <div class="consult-title">AIに相談</div>
+                <div class="consult-subtitle">注文方法を選択してください</div>
+                <div class="consult-options">
+                    <button class="consult-option" onclick="window.location.href='menu_ai_chat.html'">
+                        <i class="fa-regular fa-comment-dots"></i>
+                        <div class="consult-option-title">入力オーダー</div>
+                        <div class="consult-option-sub">Chat Mode</div>
+                    </button>
+                    <button class="consult-option" onclick="window.location.href='menu_ai.html'">
+                        <i class="fa-solid fa-microphone"></i>
+                        <div class="consult-option-title">ボイスオーダー</div>
+                        <div class="consult-option-sub">Voice Mode</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="staff-modal-overlay" id="staffModalOverlay">
+            <div class="staff-modal">
+                <div class="staff-modal-header">
+                    <div class="staff-modal-title">
+                        <span style="font-size: 24px;">🤖</span> 何かお手伝いできることはありますか？
+                    </div>
+                    <button class="staff-modal-close" onclick="closeStaffModal()">&times;</button>
+                </div>
+                <div class="staff-modal-options">
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-droplet" style="color: #3b82f6;"></i></div>
+                        <div class="staff-option-label">水を追加</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-restroom" style="color: #3b82f6;"></i></div>
+                        <div class="staff-option-label">トイレの場所</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-utensils" style="color: #94a3b8;"></i></div>
+                        <div class="staff-option-label">お皿を片付ける</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-circle-question" style="color: #ef4444;"></i></div>
+                        <div class="staff-option-label">その他ご質問</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-baby" style="color: #f59e0b;"></i></div>
+                        <div class="staff-option-label">子ども用食器</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-chair" style="color: #845ef7;"></i></div>
+                        <div class="staff-option-label">ベビーチェア</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-hand-holding-heart" style="color: #ec4899;"></i></div>
+                        <div class="staff-option-label">箸・フォークを追加</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-soap" style="color: #10b981;"></i></div>
+                        <div class="staff-option-label">テーブルの清掃</div>
+                    </div>
+                </div>
+                <div class="staff-modal-footer">
+                    <div class="staff-modal-hint">複数選択できます。選択後、下のボタンでスタッフを呼び出します。</div>
+                    <button class="call-staff-confirm-btn" onclick="confirmStaffCall()">
+                        <i class="fa-solid fa-bell"></i> スタッフ呼び出し
+                    </button>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -197,6 +598,53 @@
             setTimeout(() => { card.style.transform = ''; }, 120);
         }
 
+        function openConsultModal() {
+            const modal = document.getElementById('consultModal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closeConsultModal() {
+            const modal = document.getElementById('consultModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function openStaffModal() {
+            const modal = document.getElementById('staffModalOverlay');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.querySelectorAll('.staff-option-card').forEach(c => c.classList.remove('selected'));
+            }
+        }
+
+        function closeStaffModal() {
+            const modal = document.getElementById('staffModalOverlay');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function toggleStaffOption(el) {
+            el.classList.toggle('selected');
+        }
+
+        function confirmStaffCall() {
+            const selectedCount = document.querySelectorAll('.staff-option-card.selected').length;
+            if (selectedCount === 0) {
+                alert('ご希望の項目を選択してください。');
+                return;
+            }
+
+            closeStaffModal();
+
+            const alertBox = document.createElement('div');
+            alertBox.className = 'cart-alert';
+            alertBox.innerHTML = 'ありがとうございます。<br>少々お待ちください、店員が伺います。';
+            document.body.appendChild(alertBox);
+            setTimeout(() => alertBox.classList.add('show'), 10);
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+                setTimeout(() => alertBox.remove(), 300);
+            }, 3000);
+        }
+
         function updateClock() {
             const now = new Date();
             const p = n => String(n).padStart(2, '0');
@@ -208,6 +656,20 @@
             renderCards();
             updateClock();
             setInterval(updateClock, 1000);
+
+            const consultModal = document.getElementById('consultModal');
+            if (consultModal) {
+                consultModal.addEventListener('click', (event) => {
+                    if (event.target === consultModal) closeConsultModal();
+                });
+            }
+
+            const staffModal = document.getElementById('staffModalOverlay');
+            if (staffModal) {
+                staffModal.addEventListener('click', (event) => {
+                    if (event.target === staffModal) closeStaffModal();
+                });
+            }
 
             try {
                 const s = JSON.parse(localStorage.getItem('currentSession') || '{}');
