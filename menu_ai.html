@@ -871,45 +871,32 @@
             console.log('Cards rendered with IDs: card0 to card' + (items.length - 1));
         }
 
-        function addToCart(name, isWine = false, skipMessage = false) {
+        function addToCart(name, isWine = false) {
             // Show cart alert instead of browser alert
             showCartAlert();
 
             if (isWine) {
                 // Wine order - end extended flow
-                if (skipMessage) {
-                    setTimeout(resetToInitialState, 1000);
-                    return;
-                }
                 setTimeout(() => {
                     streamText(name + ' をカートに追加いたしました！ ご注文ありがとうございます。', 45, 2000, () => {
+                        // Reset everything
                         resetToInitialState();
                     });
                 }, 500);
             } else {
                 // Food order - start extended flow
-                if (skipMessage) {
-                    setTimeout(() => {
-                        streamText('ありがとうございます！ 他にご注文はございますか？ 例えば、お飲み物はいかがでしょうか？', 45, 2500, () => {
-                            extendedFlow = true;
-                            demoStep = 3; 
-                            setTimeout(showVoiceGuide, 1000);
-                        });
-                    }, 1000);
-                    return;
-                }
                 setTimeout(() => {
                     streamText(name + ' をカートに追加いたしました！ ご注文ありがとうございます。', 45, 2000, () => {
+                        // Start extended flow: ask if user wants more
                         setTimeout(() => {
-                            streamText('ありがとうございます！ 他にご注文はございますか？ 例えば、お飲み物はいかがでしょうか？', 45, 2500, () => {
+                            streamText('ありがとうございます！ 他にご注文はございますか？ 例えば、お飲み物はいかがでしょうか？', 45, 3000, () => {
                                 extendedFlow = true;
-                                demoStep = 3;
+                                demoStep = 3; // Extended flow step
                                 setTimeout(showVoiceGuide, 1000);
                             });
                         }, 1000);
                     });
                 }, 500);
-            }
 
                 // Reset card styles after a delay
                 setTimeout(() => {
@@ -933,6 +920,7 @@
                         label.querySelector('.section-label-text').textContent = 'AIがあなたにぴったりのメニューをご提案';
                     }
                 }, 3000);
+            }
         }
 
         function resetToInitialState() {
@@ -1168,7 +1156,7 @@
 
                         streamText('かしこまりました！ ' + selectedItem.name + ' を 1 つカートに追加いたします。', 45, 2000, () => {
                             // Show cart alert and start extended flow
-                            addToCart(selectedItem.name, false, true);
+                            addToCart(selectedItem.name);
                         });
                     }
                 }, 2000);
@@ -1209,7 +1197,7 @@
             } else if (extendedFlow && demoStep === 4) {
                 // Extended flow step 2: User asks about first wine taste
                 setTimeout(() => {
-                    showUserSpeechBubble('シャルドネ 2022 の味はどんな感じですか？');
+                    showUserSpeechBubble('シャルドネ 2022の味はどんな感じですか？');
                 }, 500);
 
                 setTimeout(() => {
@@ -1241,7 +1229,7 @@
                         const selectedWine = wineItems[selectedWineIndex];
                         streamText('かしこまりました！ ' + selectedWine.name + ' を 1 つカートに追加いたします。', 45, 2000, () => {
                             // Show cart alert and end extended flow
-                            addToCart(selectedWine.name, true, true);
+                            addToCart(selectedWine.name, true);
                         });
                     }
                 }, 2000);
@@ -1419,7 +1407,7 @@
                     setTimeout(() => {
                         streamText('かしこまりました！ ' + selectedWine.name + ' を 1 つカートに追加いたします。', 45, 2000, () => {
                             // Show cart alert and end extended flow
-                            addToCart(selectedWine.name, true, true);
+                            addToCart(selectedWine.name, true);
                         });
                     }, 2000);
                 }
