@@ -15,9 +15,9 @@
             --primary: #2d3a2e;
             --primary-light: #3f5240;
             --accent: #d4a373;
-            --bg: #f0ece4;
+            --bg: #F9F8F2;
             --card-bg: #ffffff;
-            --footer-bg: #e8e4dc;
+            --footer-bg: #EAE8E2;
             --border: #e0dcd4;
         }
 
@@ -34,43 +34,102 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
 
         .ipad-frame {
-            width: 1280px;
-            height: 800px;
-            background: var(--bg);
+            width: 1705.72px;
+            height: 1144.13px;
+            background: #F9F8F2;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             box-shadow: 0 0 80px rgba(0, 0, 0, 0.7);
             border-radius: 12px;
             position: relative;
+            transform-origin: center center;
+            will-change: transform;
+        }
+
+        .ipad-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 202px;
+            background: #F9F8F2;
+            z-index: 0;
+        }
+
+        .restaurant-header {
+            position: relative;
+            width: 100%;
+            height: 53px;
+            margin: 40px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            font-size: 44px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: 0;
+            color: #333333;
+            flex-shrink: 0;
+            z-index: 20;
+        }
+
+        .restaurant-title {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
+            height: 53px;
+        }
+
+        .restaurant-meta {
+            position: absolute;
+            right: 84px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            color: #333333;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .restaurant-table {
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: 0;
+        }
+
+        .restaurant-ticket {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1;
+            color: #7f7a74;
+            letter-spacing: 0;
         }
 
         .context-bar {
-            background: var(--primary);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 32px;
-            height: 52px;
-            font-size: 13px;
-            flex-shrink: 0;
-            z-index: 10;
+            display: none !important;
         }
 
         .context-left {
             display: flex;
-            gap: 24px;
+            gap: 28px;
             align-items: center;
         }
 
         .context-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .context-label {
@@ -91,147 +150,85 @@
 
         .context-date {
             color: rgba(255, 255, 255, 0.35);
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .ai-banner {
-            background: var(--primary);
-            padding: 0 20px;
-            height: 52px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            transform: none;
+            bottom: 113.47px;
+            background: #EAE8E2;
+            width: 100%;
+            margin: 0;
+            padding: 0 228px;
+            height: 87px;
             display: none;
             align-items: center;
-            gap: 14px;
+            gap: 0;
             flex-shrink: 0;
             overflow: hidden;
-            position: relative;
-            z-index: 100;
+            z-index: 80;
         }
 
-        .banner-speaker {
-            width: 38px;
-            height: 38px;
+        .banner-close-btn {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border: none;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.13);
-            display: flex;
+            background: rgba(51, 51, 51, 0.08);
+            color: #6f6963;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            position: relative;
+            cursor: pointer;
+            z-index: 2;
+            transition: background 0.2s ease, color 0.2s ease;
         }
 
-        .banner-speaker::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(255, 255, 255, 0.22);
-            animation: spk-pulse 2.2s ease-out infinite;
+        .banner-close-btn:hover {
+            background: rgba(51, 51, 51, 0.14);
+            color: #333333;
         }
 
-        .banner-speaker svg {
-            width: 20px;
-            height: 20px;
-            fill: #fff;
-        }
-
-        @keyframes spk-pulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-
-            100% {
-                transform: scale(1.6);
-                opacity: 0;
-            }
-        }
-
-        .banner-staff {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-        }
-
-        .banner-avatar-wrap {
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .banner-staff-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.28);
-            display: block;
-        }
-
-        .banner-avatar-dot {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #7ecb8f;
-            border: 2px solid var(--primary);
-            animation: dot-blink 1.4s ease-in-out infinite;
-        }
-
-        @keyframes dot-blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.35;
-            }
-        }
-
-        .banner-staff-text {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-        }
-
-        .banner-staff-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: #fff;
+        .banner-close-btn i {
+            font-size: 14px;
             line-height: 1;
         }
 
-        .banner-staff-label {
-            font-size: 10px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.48);
-            letter-spacing: 0.03em;
-        }
 
+        .banner-speaker,
+        .banner-staff,
         .banner-divider {
-            width: 1px;
-            height: 26px;
-            background: rgba(255, 255, 255, 0.15);
-            flex-shrink: 0;
+            display: none;
         }
 
         .banner-ticker {
             flex: 1;
+            height: 42px;
             display: flex;
             align-items: center;
             min-width: 0;
+            padding-left: 26px;
+            border-left: 3px solid #333333;
         }
 
         .ticker-text {
-            font-size: 16px;
-            font-weight: 500;
-            color: #fff;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            word-break: break-word;
+            width: 100%;
+            max-width: 100%;
+            height: 42px;
+            font-size: 18px;
+            font-weight: 400;
+            color: #333333;
+            line-height: 42px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
             opacity: 1;
             transition: opacity 0.4s ease;
         }
@@ -265,19 +262,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 16px 20px 12px;
+            width: 829.04px;
+            height: 65.82px;
+            margin: 36px auto 0;
+            gap: 12px;
+            padding: 6px 0;
             flex-shrink: 0;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg);
+            background: transparent;
+            position: relative;
+            z-index: 20;
         }
 
         .cat-tab {
-            padding: 7px 22px;
-            border-radius: 20px;
-            font-size: 13px;
+            width: 152.7px;
+            height: 53.19px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            font-size: 24px;
             font-weight: 700;
-            color: #666;
+            line-height: 27px;
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333333;
             background: transparent;
             border: 1.5px solid transparent;
             cursor: pointer;
@@ -289,22 +296,17 @@
         }
 
         .cat-tab.active {
-            background: var(--primary);
+            background: #333333;
             color: #fff;
-            border-color: var(--primary);
+            border-color: #333333;
         }
 
         .section-label {
-            padding: 14px 32px 6px;
-            flex-shrink: 0;
-            opacity: 0;
-            transform: translateY(6px);
-            transition: 0.5s;
+            display: none;
         }
 
         .section-label.visible {
-            opacity: 1;
-            transform: translateY(0);
+            display: none;
         }
 
         .section-label-inner {
@@ -332,7 +334,7 @@
         .menu-grid-wrapper {
             flex: 1;
             overflow-y: auto;
-            padding: 12px 28px 20px;
+            padding: 38px 28px 220px;
         }
 
         .menu-grid-wrapper::-webkit-scrollbar {
@@ -346,27 +348,38 @@
 
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            max-width: 1100px;
+            grid-template-columns: repeat(3, 380.41px);
+            column-gap: 26px;
+            row-gap: 24px;
+            width: max-content;
             margin: 0 auto;
+            justify-content: center;
         }
 
         .menu-card {
-            background: #fff;
+            background: #FFFFFF;
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: none;
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            border: 1.5px solid var(--border);
+            border: none;
             transition: 0.18s, opacity 0.6s, filter 0.6s;
+            width: 380.41px;
+            height: 449.79px;
         }
 
         .menu-card.blurring {
             opacity: 0.18;
             filter: blur(3px);
+        }
+
+        .menu-card.staged {
+            opacity: 0;
+            filter: blur(10px);
+            transform: translateY(28px) scale(0.94);
+            pointer-events: none;
         }
 
         .menu-card.revealed {
@@ -394,8 +407,11 @@
 
         .menu-card-img-wrap {
             position: relative;
-            width: 100%;
-            padding-top: 72%;
+            width: 324px;
+            height: 231px;
+            margin: 28.2px auto 0;
+            border-radius: 16px;
+            border: 1px solid #e7e2d8;
             overflow: hidden;
         }
 
@@ -415,7 +431,7 @@
             right: 0;
             background: linear-gradient(to top, rgba(20, 28, 20, 0.78) 0%, rgba(20, 28, 20, 0) 100%);
             color: #fff;
-            font-size: 11.5px;
+            font-size: 18px;
             font-weight: 600;
             padding: 22px 10px 9px;
             display: flex;
@@ -440,71 +456,131 @@
         }
 
         .menu-card-body {
-            padding: 11px 13px 13px;
+            width: 324px;
+            margin: 0 auto;
+            padding: 20px 0 18px;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
-        .menu-card-name {
-            font-size: 14px;
-            font-weight: 700;
+        .menu-card-copy {
+            width: 324px;
+            height: 65.86px;
+            display: -webkit-box;
+            display: box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            font-size: 27.44px;
+            font-weight: 400;
             color: #2e3335;
-            margin-bottom: 6px;
-        }
-
-        .menu-card-desc {
-            font-size: 11px;
-            color: #888;
-            line-height: 1.5;
-            margin-bottom: 10px;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            letter-spacing: 0;
+            padding: 0 10px;
             flex: 1;
         }
 
         .menu-card-footer {
             display: flex;
+            width: 324px;
             align-items: center;
             justify-content: space-between;
+            margin-top: auto;
         }
 
         .menu-card-price {
-            font-size: 18px;
-            font-weight: 700;
+            width: 73px;
+            height: 47px;
+            display: inline-flex;
+            align-items: baseline;
+            font-size: 38px;
+            font-weight: 400;
+            line-height: 1;
         }
 
         .menu-card-price::before {
             content: '¥';
-            font-size: 12px;
-            margin-right: 1px;
+            width: 13px;
+            height: 29px;
+            display: inline-flex;
+            align-items: baseline;
+            justify-content: center;
+            font-size: 24px;
+            line-height: 1;
+            margin-right: 2px;
+            transform: none;
         }
 
         .add-btn {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
+            justify-content: center;
+            gap: 8px;
+            width: 138.76px;
+            height: 55.11px;
             background: #fff;
+            background-image: url('./cartborder.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
             color: #2e3335;
-            border: 1.5px solid #d0ccc6;
+            border: none;
             border-radius: 9999px;
-            font-size: 13px;
+            font-size: 0;
             font-weight: 600;
             cursor: pointer;
             transition: 0.15s;
         }
 
+        .add-btn-label {
+            width: 55px;
+            height: 33px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            font-weight: 700;
+            line-height: 1;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .add-btn i {
+            width: 26.69px;
+            height: 25.26px;
+            font-size: 26px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .add-btn:hover {
-            border-color: var(--primary);
             background: #f5f3ef;
         }
 
         .bottom-nav {
             display: flex;
+            align-items: center;
+            justify-content: center;
             background: var(--footer-bg);
             border-top: 1px solid var(--border);
-            padding: 10px 0 20px;
             width: 100%;
+            height: 105.47px;
+            padding: 14px 0 18px;
             flex-shrink: 0;
+        }
+
+        .bottom-nav-inner {
+            width: 829.04px;
+            height: 65.82px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .nav-item {
@@ -512,11 +588,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            gap: 7px;
             color: #888;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
             cursor: pointer;
+        }
+
+        .nav-item span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42.68px;
+            height: 13.1px;
+            font-size: 13px;
+            line-height: 1;
         }
 
         .nav-item.active {
@@ -524,7 +611,15 @@
         }
 
         .nav-item i {
-            font-size: 22px;
+            font-size: 33.29px;
+            line-height: 1;
+        }
+
+        .footer-icon-img {
+            width: 33.29px;
+            height: 33.29px;
+            object-fit: contain;
+            display: block;
         }
 
         .nav-icon-wrap {
@@ -535,51 +630,38 @@
         }
 
         .cart-count-badge {
-            position: absolute;
-            top: -8px;
-            right: -12px;
-            min-width: 18px;
-            height: 18px;
-            padding: 0 5px;
-            border-radius: 999px;
-            background: #d92d20;
-            color: #fff;
-            font-size: 10px;
-            font-weight: 800;
-            line-height: 18px;
-            text-align: center;
-            box-shadow: 0 3px 8px rgba(217, 45, 32, 0.28);
-            display: none;
-        }
-
-        .cart-count-badge.show {
-            display: block;
+            display: none !important;
         }
 
         .voice-guide-container {
             position: absolute;
-            bottom: 86px;
-            right: 28px;
+            bottom: 128px;
+            left: calc(100% - 132px);
+            right: auto;
+            transform: translateX(-50%) translateY(20px);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
+            gap: 18px;
             z-index: 150;
             opacity: 0;
-            transform: translateY(20px);
             transition: 0.5s;
         }
 
         .voice-guide-container.show {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0);
         }
 
         .voice-order-btn {
-            width: 100px;
-            height: 100px;
+            width: 108px;
+            height: 108px;
             border-radius: 50%;
-            background: var(--primary);
+            background: transparent;
+            background-image: url('./bg_icon.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
             border: none;
             cursor: pointer;
             position: relative;
@@ -588,70 +670,61 @@
             align-items: center;
             justify-content: center;
             gap: 4px;
-            box-shadow: 0 6px 24px rgba(45, 58, 46, 0.38);
+            box-shadow: none;
             transition: 0.15s;
+            overflow: hidden;
+            isolation: isolate;
         }
 
-        .voice-order-btn::before {
-            content: '';
-            position: absolute;
-            inset: 6px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(255, 255, 255, 0.28);
-            pointer-events: none;
-        }
-
+        .voice-order-btn::before,
         .voice-order-btn::after {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 2px solid rgba(45, 58, 46, 0.28);
-            animation: voice-pulse 2.2s ease-out infinite;
-        }
-
-        @keyframes voice-pulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.55;
-            }
-
-            100% {
-                transform: scale(1.45);
-                opacity: 0;
-            }
+            display: none;
         }
 
         .voice-order-btn svg {
-            width: 36px;
-            height: 36px;
-            fill: rgba(255, 255, 255, 0.88);
+            display: none;
+        }
+
+        .voice-order-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            display: block;
+            position: relative;
+            z-index: 1;
         }
 
         .voice-order-text {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
             color: rgba(255, 255, 255, 0.82);
             letter-spacing: 0.06em;
             line-height: 1.25;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
+
 
         .voice-sub-btns {
             display: flex;
+            flex-direction: column;
             gap: 10px;
+            align-items: flex-end;
         }
 
         .voice-sub-btn {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             color: #666;
             cursor: pointer;
-            padding: 8px 16px;
-            border-radius: 20px;
+            min-width: 148px;
+            justify-content: center;
+            padding: 10px 16px;
+            border-radius: 999px;
             border: 1.5px solid #d8d4cc;
             background: rgba(255, 255, 255, 0.9);
             transition: 0.15s;
@@ -680,34 +753,50 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(45, 58, 46, 0.95);
-            color: white;
-            padding: 20px 40px;
-            border-radius: 12px;
-            font-size: 18px;
+            background: #FFFFFF;
+            color: #2e3335;
+            width: 512px;
+            height: 288px;
+            padding: 0;
+            border-radius: 20px;
+            font-size: 0;
             font-weight: 700;
             z-index: 3000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
             opacity: 0;
             transition: opacity 0.3s;
             pointer-events: none;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .cart-alert.show {
             opacity: 1;
         }
 
+        .cart-alert-text {
+            width: 271px;
+            height: 33px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            line-height: 1;
+            color: #2e3335;
+        }
+
         .quick-cart-sheet {
             position: absolute;
-            left: 16px;
-            width: 520px;
-            bottom: 82px;
+            left: 24px;
+            width: 468px;
+            bottom: 118px;
             background: rgba(255, 255, 255, 0.98);
             border: 1px solid rgba(224, 220, 212, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 14px 36px rgba(30, 30, 30, 0.14);
-            padding: 16px 18px 14px;
+            border-radius: 18px;
+            box-shadow: 0 12px 28px rgba(30, 30, 30, 0.12);
+            padding: 14px 16px 12px;
             z-index: 220;
             opacity: 0;
             transform: translateY(24px);
@@ -725,12 +814,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 8px;
+            gap: 12px;
+            margin-bottom: 6px;
         }
 
         .quick-cart-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: #4a4a4a;
         }
@@ -739,48 +828,48 @@
             border: none;
             background: transparent;
             color: #ef4444;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             font-family: inherit;
         }
 
         .quick-cart-items {
             display: flex;
             flex-direction: column;
-            max-height: 90px;
+            max-height: 84px;
             overflow-y: auto;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .quick-cart-item {
             display: grid;
             grid-template-columns: minmax(0, 1fr) auto auto;
             align-items: center;
-            gap: 12px;
-            padding: 8px 0;
+            gap: 10px;
+            padding: 7px 0;
             border-top: 1px solid rgba(160, 160, 160, 0.22);
         }
 
         .quick-cart-name {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #636363;
             min-width: 0;
         }
 
         .quick-cart-price {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: #707070;
             white-space: nowrap;
         }
 
         .quick-cart-qty {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: #4a4a4a;
             white-space: nowrap;
@@ -790,39 +879,232 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
+            gap: 12px;
         }
 
         .quick-cart-total {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             color: var(--primary);
             font-weight: 900;
         }
 
         .quick-cart-total i {
-            font-size: 24px;
+            font-size: 21px;
             color: #2f2a29;
         }
 
         .quick-cart-total-price {
-            font-size: 24px;
+            font-size: 21px;
             line-height: 1;
         }
 
         .quick-cart-confirm {
-            min-width: 150px;
-            height: 42px;
+            min-width: 138px;
+            height: 38px;
             border: none;
             border-radius: 10px;
-            background: var(--primary);
+            background: #18324C;
             color: #fff;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 8px 18px rgba(45, 58, 46, 0.16);
+            box-shadow: 0 6px 14px rgba(45, 58, 46, 0.14);
             font-family: inherit;
+        }
+
+        .customize-modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(12, 12, 12, 0.32);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3200;
+            backdrop-filter: blur(4px);
+        }
+
+        .customize-modal-overlay.show {
+            display: flex;
+        }
+
+        .customize-modal {
+            width: 1060px;
+            max-width: calc(100% - 48px);
+            background: #fff;
+            border-radius: 28px;
+            padding: 30px 36px 28px;
+            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.18);
+            border: 1px solid #E2DDD4;
+        }
+
+        .customize-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #DDD7CE;
+            margin-bottom: 22px;
+        }
+
+        .customize-modal-title {
+            font-size: 31px;
+            font-weight: 400;
+            color: #333333;
+            line-height: 1;
+        }
+
+        .customize-close-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid #B8B0A6;
+            background: #FFFFFF;
+            color: #6A645D;
+            cursor: pointer;
+            font-size: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .customize-section {
+            margin-bottom: 20px;
+        }
+
+        .customize-section-label {
+            font-size: 18px;
+            font-weight: 500;
+            color: #5B5552;
+            margin-bottom: 12px;
+        }
+
+        .customize-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .customize-option {
+            border: 1px solid #E2DDD4;
+            border-radius: 14px;
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px 0 16px;
+            cursor: pointer;
+            transition: border-color 0.18s ease, background 0.18s ease;
+        }
+
+        .customize-option.selected {
+            border-color: #18324C;
+            background: rgba(24, 50, 76, 0.05);
+        }
+
+        .customize-option-left {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .customize-radio,
+        .customize-check {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 2px solid #5F6862;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .customize-option.selected .customize-radio::after,
+        .customize-option.selected .customize-check::after {
+            content: '';
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #18324C;
+        }
+
+        .customize-option-text {
+            font-size: 22px;
+            font-weight: 400;
+            color: #333333;
+        }
+
+        .customize-option-price {
+            font-size: 21px;
+            font-weight: 400;
+            color: #5A5653;
+        }
+
+        .customize-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            padding-top: 10px;
+        }
+
+        .customize-qty {
+            display: inline-flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .customize-qty-btn {
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 12px;
+            background: #6F6B6B;
+            color: #fff;
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .customize-qty-value {
+            font-size: 42px;
+            font-weight: 400;
+            color: #2D2929;
+            min-width: 32px;
+            text-align: center;
+            line-height: 1;
+        }
+
+        .customize-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .customize-cancel-btn,
+        .customize-confirm-btn {
+            width: 330px;
+            height: 72px;
+            border-radius: 14px;
+            font-size: 24px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .customize-cancel-btn {
+            background: #fff;
+            color: #3F3A39;
+            border: 1px solid #ACA49A;
+        }
+
+        .customize-confirm-btn {
+            background: #18324C;
+            color: #fff;
+            border: none;
         }
 
         /* LowCal filter styles */
@@ -989,70 +1271,67 @@
         }
 
         .lang-modal {
-            width: 680px;
-            background: rgba(255, 255, 255, 0.96);
-            border-radius: 28px;
-            padding: 22px 18px;
-            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+            width: 770px;
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
             animation: modal-up 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-align: center;
         }
 
         .lang-modal-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #6b7280;
-            margin-bottom: 18px;
+            display: none;
         }
 
         .lang-options {
             display: flex;
-            gap: 18px;
+            gap: 24px;
             justify-content: center;
         }
 
         .lang-option-card {
-            flex: 1;
-            min-height: 134px;
-            background: #f4f0ea;
-            border: 3px solid transparent;
+            width: 360.33px;
+            height: 168.68px;
+            background: #F4F0EA;
+            border: none;
             border-radius: 24px;
-            padding: 22px 18px;
+            padding: 0 52px;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
             display: grid;
             grid-template-columns: auto 1fr;
             align-items: center;
-            gap: 18px;
+            gap: 28px;
             text-align: left;
         }
 
         .lang-option-card:hover {
-            border-color: var(--primary);
             transform: translateY(-3px);
-            background: #fff;
+            background: #EFE8DE;
             box-shadow: 0 12px 26px rgba(45, 58, 46, 0.12);
         }
 
         .lang-option-card.selected {
-            border-color: var(--primary);
-            background: #fff;
-            box-shadow: 0 10px 24px rgba(45, 58, 46, 0.16);
+            background: #E7DED1;
+            box-shadow: 0 10px 24px rgba(45, 58, 46, 0.14);
         }
 
         .lang-flag {
-            width: 58px;
-            height: 40px;
+            width: 60px;
+            height: 39.99px;
             object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            border-radius: 2px;
+            box-shadow: none;
         }
 
         .lang-label {
-            font-size: 22px;
-            font-weight: 800;
+            font-size: 41.59px;
+            font-weight: 400;
             color: #3b3b3b;
             letter-spacing: 0.01em;
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1;
         }
     </style>
 </head>
@@ -1060,23 +1339,9 @@
 <body>
     <div class="ipad-frame">
         <div class="ai-banner" id="aiBanner">
-            <div class="banner-speaker"><svg viewBox="0 0 24 24">
-                    <path
-                        d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                </svg></div>
-            <div class="banner-staff">
-                <div class="banner-avatar-wrap">
-                    <img class="banner-staff-avatar"
-                        src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&q=80"
-                        alt="さくら">
-                    <div class="banner-avatar-dot"></div>
-                </div>
-                <div class="banner-staff-text">
-                    <span class="banner-staff-name">さくら</span>
-                    <span class="banner-staff-label">AIスタッフ</span>
-                </div>
-            </div>
-            <div class="banner-divider"></div>
+            <button class="banner-close-btn" type="button" onclick="hideAiBanner()" aria-label="AI speakを閉じる">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
             <div class="banner-ticker"><span class="ticker-text" id="tickerText"></span></div>
         </div>
 
@@ -1091,11 +1356,19 @@
             <div class="context-date" id="ctxDate"></div>
         </div>
 
+        <div class="restaurant-header">
+            <div class="restaurant-title">富士屋本店</div>
+            <div class="restaurant-meta">
+                <div class="restaurant-table">テーブル12</div>
+                <div class="restaurant-ticket">受付番号A102</div>
+            </div>
+        </div>
+
         <div class="category-tabs">
             <button class="cat-tab active">おすすめ</button>
             <button class="cat-tab">前菜</button>
             <button class="cat-tab">麺類</button>
-            <button class="cat-tab">ドリンク</button>
+            <button class="cat-tab" onclick="window.location.href='menu_ai_drink.html'">ドリンク</button>
             <button class="cat-tab">サラダ</button>
             <button class="cat-tab" onclick="window.location.href='menu_ai_dessert.html'">デザート</button>
         </div>
@@ -1129,24 +1402,24 @@
         </div>
 
         <div class="bottom-nav">
-            <div class="nav-item active" onclick="window.location.reload()"><i class="fa-solid fa-utensils"></i><span>メニュー</span></div>
-            <div class="nav-item" onclick="window.location.href='cart.html'">
-                <div class="nav-icon-wrap">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="cart-count-badge" id="cartCountBadge">0</span>
+            <div class="bottom-nav-inner">
+                <div class="nav-item active" onclick="window.location.reload()"><i class="fa-solid fa-utensils"></i><span>メニュー</span></div>
+                <div class="nav-item" onclick="window.location.href='cart.html'">
+                    <div class="nav-icon-wrap">
+                        <img class="footer-icon-img" src="./cart.png" alt="カート">
+                        <span class="cart-count-badge" id="cartCountBadge">0</span>
+                    </div>
+                    <span>カート</span>
                 </div>
-                <span>カート</span>
+                <div class="nav-item" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></div>
+                <div class="nav-item" onclick="window.location.href='chat_ai.html'"><i class="fa-solid fa-comment-dots"></i><span>会話</span></div>
+                <div class="nav-item" onclick="openLangModal()"><i class="fa-solid fa-globe"></i><span>日本語</span></div>
             </div>
-            <div class="nav-item" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></div>
-            <div class="nav-item" onclick="window.location.href='chat_ai.html'"><i class="fa-solid fa-comment-dots"></i><span>会話</span></div>
-            <div class="nav-item" onclick="openLangModal()"><i class="fa-solid fa-globe"></i><span>日本語</span></div>
         </div>
 
         <div class="voice-guide-container" id="voiceGuide">
             <button class="voice-order-btn" id="voiceOrderBtn" onclick="startVoiceInput()">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
-                </svg>
+                <img class="voice-order-icon" src="./micro.png" alt="Voice">
                 <span class="voice-order-text" id="voiceOrderText">ボイス<br>オーダー</span>
             </button>
             <div class="voice-sub-btns" id="voiceSubBtns">
@@ -1227,6 +1500,98 @@
                 </div>
             </div>
         </div>
+
+        <div class="customize-modal-overlay" id="customizeModalOverlay">
+            <div class="customize-modal">
+                <div class="customize-modal-header">
+                    <div class="customize-modal-title">カスタマイズ</div>
+                    <button class="customize-close-btn" onclick="closeCustomizeModal()">&times;</button>
+                </div>
+
+                <div class="customize-section">
+                    <div class="customize-section-label">ソースの選択(必須)</div>
+                    <div class="customize-options">
+                        <div class="customize-option selected" data-group="sauce" onclick="selectCustomizeSingle('sauce', this)">
+                            <div class="customize-option-left">
+                                <span class="customize-radio"></span>
+                                <span class="customize-option-text">通常</span>
+                            </div>
+                        </div>
+                        <div class="customize-option" data-group="sauce" onclick="selectCustomizeSingle('sauce', this)">
+                            <div class="customize-option-left">
+                                <span class="customize-radio"></span>
+                                <span class="customize-option-text">ベリーソース</span>
+                            </div>
+                            <span class="customize-option-price">+100円</span>
+                        </div>
+                        <div class="customize-option" data-group="sauce" onclick="selectCustomizeSingle('sauce', this)">
+                            <div class="customize-option-left">
+                                <span class="customize-radio"></span>
+                                <span class="customize-option-text">キャラメルソース</span>
+                            </div>
+                            <span class="customize-option-price">+80円</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="customize-section">
+                    <div class="customize-section-label">トッピングの追加(任意、複数選択可)</div>
+                    <div class="customize-options">
+                        <div class="customize-option" data-group="topping" onclick="toggleCustomizeMulti(this)">
+                            <div class="customize-option-left">
+                                <span class="customize-check"></span>
+                                <span class="customize-option-text">ホイップクリーム</span>
+                            </div>
+                            <span class="customize-option-price">+50円</span>
+                        </div>
+                        <div class="customize-option" data-group="topping" onclick="toggleCustomizeMulti(this)">
+                            <div class="customize-option-left">
+                                <span class="customize-check"></span>
+                                <span class="customize-option-text">バニラアイス</span>
+                            </div>
+                            <span class="customize-option-price">+120円</span>
+                        </div>
+                        <div class="customize-option" data-group="topping" onclick="toggleCustomizeMulti(this)">
+                            <div class="customize-option-left">
+                                <span class="customize-check"></span>
+                                <span class="customize-option-text">ミント追加</span>
+                            </div>
+                            <span class="customize-option-price">+30円</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="customize-section">
+                    <div class="customize-section-label">抜く食材(任意)</div>
+                    <div class="customize-options">
+                        <div class="customize-option" data-group="remove" onclick="toggleCustomizeMulti(this)">
+                            <div class="customize-option-left">
+                                <span class="customize-check"></span>
+                                <span class="customize-option-text">粉砂糖なし</span>
+                            </div>
+                        </div>
+                        <div class="customize-option" data-group="remove" onclick="toggleCustomizeMulti(this)">
+                            <div class="customize-option-left">
+                                <span class="customize-check"></span>
+                                <span class="customize-option-text">ナッツなし</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="customize-footer">
+                    <div class="customize-qty">
+                        <button class="customize-qty-btn" onclick="changeCustomizeQty(-1)">−</button>
+                        <div class="customize-qty-value" id="customizeQtyValue">1</div>
+                        <button class="customize-qty-btn" onclick="changeCustomizeQty(1)">＋</button>
+                    </div>
+                    <div class="customize-actions">
+                        <button class="customize-cancel-btn" onclick="closeCustomizeModal()">キャンセル</button>
+                        <button class="customize-confirm-btn" onclick="confirmCustomizeOrder()">確定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1278,7 +1643,7 @@
         function getLanguageConfig() {
             return {
                 code: 'jp',
-                welcome: 'ようこそいらっしゃいませ！\nご来店ありがとうございます。ご注文やおすすめについて、お気軽にお話しください。'
+                welcome: 'ようこそ！ご注文やおすすめはお気軽にどうぞ。'
             };
         }
 
@@ -1301,11 +1666,7 @@
         }
 
         function selectLanguage(lang) {
-            if (lang === 'en') {
-                window.location.href = 'menu_ai_en.html';
-                return;
-            }
-            currentLanguage = 'jp';
+            currentLanguage = lang;
             updateLanguageSelectionUI();
             closeLangModal();
         }
@@ -1342,6 +1703,8 @@
 
         const CART_COUNT_STORAGE_KEY = 'posSpeakCartCount';
         const CART_ITEMS_STORAGE_KEY = 'posSpeakCartItems';
+        const FRAME_WIDTH = 1705.72;
+        const FRAME_HEIGHT = 1144.13;
         let demoStep = 0, extendedFlow = false, selectedWineIndex = -1, currentLanguage = 'jp', cartItemCount = 0;
         let quickCartItems = [];
         let streamInterval = null, streamTimer = null, headerResetTimer = null, quickCartSheetTimer = null;
@@ -1350,7 +1713,9 @@
             const el = document.getElementById('tickerText');
             if (!el) return;
             el.classList.add('fading');
-            clearInterval(streamInterval); clearTimeout(streamTimer);
+            clearInterval(streamInterval);
+            clearTimeout(streamTimer);
+            if (headerResetTimer) clearTimeout(headerResetTimer);
             setTimeout(() => {
                 el.textContent = ''; el.classList.remove('fading'); el.classList.add('streaming');
                 const aiBanner = document.getElementById('aiBanner');
@@ -1362,6 +1727,7 @@
                     if (i < text.length) { el.textContent += text[i++]; }
                     else { 
                         clearInterval(streamInterval); el.classList.remove('streaming'); 
+                        headerResetTimer = setTimeout(() => hideAiBanner(), 7000);
                         if (onDone) streamTimer = setTimeout(onDone, pauseAfter); 
                     }
                 }, charDelay);
@@ -1378,19 +1744,47 @@
                         ${item.reason ? `<div class="ai-badge"><div class="ai-badge-dot"></div>${item.reason}</div>` : ''}
                     </div>
                     <div class="menu-card-body">
-                        <div class="menu-card-name">${item.name}</div>
-                        <div class="menu-card-desc">${item.desc}</div>
+                        <div class="menu-card-copy">${getCardCopy(item)}</div>
                         <div class="menu-card-footer">
-                            <span class="menu-card-price">${item.price}</span>
-                            <button class="add-btn" onclick="event.stopPropagation(); addToCart('${item.name}')"><i class="fa-solid fa-cart-shopping"></i>追加</button>
+                            <span class="menu-card-price">${formatPrice(item.price)}</span>
+                            <button class="add-btn" onclick="event.stopPropagation(); openCustomizeModal('${item.name}', '${item.price}')"><i class="fa-solid fa-cart-shopping"></i><span class="add-btn-label">追加</span></button>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
+        function renderCardsWithSimulation(items, options = {}) {
+            const { stagger = 170, initialDelay = 120, onComplete } = options;
+            renderCards(items);
+            const cards = Array.from(document.querySelectorAll('.menu-card'));
+            cards.forEach(card => card.classList.add('staged'));
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.remove('staged');
+                    card.classList.add('revealed');
+                }, initialDelay + (index * stagger));
+            });
+            if (onComplete) {
+                setTimeout(onComplete, initialDelay + (cards.length * stagger) + 260);
+            }
+        }
+
         function parsePrice(value) {
             return parseInt(String(value).replace(/[^\d]/g, ''), 10) || 0;
+        }
+
+        function formatPrice(value) {
+            return parsePrice(value).toLocaleString();
+        }
+
+        function getCardCopy(item) {
+            if (item.cardCopy) return item.cardCopy;
+            const shortDesc = String(item.desc || '')
+                .replace(/[。．].*$/, '')
+                .trim()
+                .slice(0, 8);
+            return shortDesc ? `${item.name} ${shortDesc}` : item.name;
         }
 
         function getAllKnownMenuItems() {
@@ -1430,7 +1824,7 @@
             list.innerHTML = visibleItems.map(item => `
                 <div class="quick-cart-item">
                     <div class="quick-cart-name">${item.name}</div>
-                    <div class="quick-cart-price">¥${parsePrice(item.price).toLocaleString()}</div>
+                    <div class="quick-cart-price">¥${formatPrice(item.price)}</div>
                     <div class="quick-cart-qty">× ${item.qty}</div>
                 </div>
             `).join('');
@@ -1499,14 +1893,59 @@
             if (itemName) addItemToQuickCart(itemName);
             const alert = document.createElement('div');
             alert.className = 'cart-alert';
-            alert.textContent = 'カートに追加しました。';
+            alert.innerHTML = '<div class="cart-alert-text">カートに追加しました。</div>';
             document.body.appendChild(alert);
             setTimeout(() => alert.classList.add('show'), 10);
             setTimeout(() => {
                 alert.classList.remove('show');
                 setTimeout(() => alert.remove(), 300);
             }, 2000);
-            showQuickCartSheet();
+        }
+
+        let customizeQty = 1;
+        let currentCustomizeItem = { name: '', price: '0' };
+
+        function openCustomizeModal(name, price = '0') {
+            currentCustomizeItem = { name, price: String(price) };
+            customizeQty = 1;
+            const qty = document.getElementById('customizeQtyValue');
+            if (qty) qty.textContent = '1';
+            document.querySelectorAll('.customize-option[data-group="sauce"]').forEach((el, index) => {
+                el.classList.toggle('selected', index === 0);
+            });
+            document.querySelectorAll('.customize-option[data-group="topping"], .customize-option[data-group="remove"]').forEach(el => {
+                el.classList.remove('selected');
+            });
+            const modal = document.getElementById('customizeModalOverlay');
+            if (modal) modal.classList.add('show');
+        }
+
+        function closeCustomizeModal() {
+            const modal = document.getElementById('customizeModalOverlay');
+            if (modal) modal.classList.remove('show');
+        }
+
+        function selectCustomizeSingle(group, el) {
+            document.querySelectorAll(`.customize-option[data-group="${group}"]`).forEach(option => option.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function toggleCustomizeMulti(el) {
+            el.classList.toggle('selected');
+        }
+
+        function changeCustomizeQty(delta) {
+            customizeQty = Math.max(1, customizeQty + delta);
+            const qty = document.getElementById('customizeQtyValue');
+            if (qty) qty.textContent = String(customizeQty);
+        }
+
+        function confirmCustomizeOrder() {
+            closeCustomizeModal();
+            const targetName = currentCustomizeItem.name || '商品';
+            for (let i = 0; i < customizeQty; i += 1) {
+                showCartAlert(targetName);
+            }
         }
 
         function addToCart(name, isWine = false) {
@@ -1557,11 +1996,19 @@
             }
         }
 
+        function hideAiBanner() {
+            const banner = document.getElementById('aiBanner');
+            const ticker = document.getElementById('tickerText');
+            if (ticker) ticker.classList.remove('streaming');
+            if (headerResetTimer) clearTimeout(headerResetTimer);
+            if (banner) banner.style.display = 'none';
+        }
+
         function showUserSpeechBubble(text) {
             document.querySelectorAll('.user-speech-bubble').forEach(b => b.remove());
             const sub = document.createElement('div');
             sub.className = 'user-speech-bubble';
-            sub.style = `position: absolute; bottom: 220px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.85); color: #fff; padding: 14px 32px; border-radius: 40px; font-weight: 700; font-size: 18px; z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); pointer-events: none; animation: bubble-up 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;`;
+            sub.style = `position: absolute; bottom: 226px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.85); color: #fff; padding: 14px 32px; border-radius: 40px; font-weight: 700; font-size: 18px; z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); pointer-events: none; animation: bubble-up 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;`;
             sub.textContent = text;
             document.body.appendChild(sub);
             if (!document.getElementById('bubble-style')) {
@@ -1589,10 +2036,10 @@
                     if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
                     voiceGuide.classList.remove('show');
                     streamText('ありがとうございます。\nそれでは、本日の暑さにぴったりの涼やかメニューを6品ご紹介します。気になる一品をお選びください。', 45, 3000, () => {
-                        renderCards(coolMenuItems);
+                        renderCardsWithSimulation(coolMenuItems, { stagger: 190, initialDelay: 180 });
                         document.getElementById('sectionLabel').classList.add('visible');
-                        coolMenuItems.forEach((_, i) => setTimeout(() => { const card = document.getElementById('card' + i); if (card) card.classList.add('revealed'); }, i * 250));
-                        demoStep = 1; setTimeout(showVoiceGuide, 1000);
+                        demoStep = 1;
+                        setTimeout(showVoiceGuide, 1600);
                     });
                 }, 2000);
             } else if (demoStep === 1) {
@@ -1650,7 +2097,7 @@
                     btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
                     streamText('かしこまりました。「' + wineItems[0].name + '」について詳しくご説明します。', 45, 2000, () => {
                         selectedWineIndex = 0;
-                        setTimeout(() => window.location.href = 'menu_ai_detail_wine.html?wine=0', 1500);
+                        setTimeout(showVoiceGuide, 1000);
                     });
                 }, 2000);
             }
@@ -1669,7 +2116,15 @@
             setTimeout(() => window.location.href = 'menu_ai_detail.html', 120);
         }
 
+        function fitFrame() {
+            const frame = document.querySelector('.ipad-frame');
+            if (!frame) return;
+            const scale = Math.min(window.innerWidth / FRAME_WIDTH, window.innerHeight / FRAME_HEIGHT);
+            frame.style.transform = `scale(${Math.min(scale, 1)})`;
+        }
+
         window.addEventListener('load', function () {
+            fitFrame();
             currentLanguage = 'jp';
             renderCards(regularMenuItems);
             updateLanguageSelectionUI();
@@ -1681,6 +2136,13 @@
             if (langOverlay) {
                 langOverlay.addEventListener('click', (event) => {
                     if (event.target === langOverlay) closeLangModal();
+                });
+            }
+
+            const customizeOverlay = document.getElementById('customizeModalOverlay');
+            if (customizeOverlay) {
+                customizeOverlay.addEventListener('click', (event) => {
+                    if (event.target === customizeOverlay) closeCustomizeModal();
                 });
             }
 
@@ -1699,6 +2161,8 @@
                 setTimeout(() => streamText(getLanguageConfig().welcome, 45, 0, () => setTimeout(showVoiceGuide, 1000)), 500);
             }
         });
+
+        window.addEventListener('resize', fitFrame);
     </script>
 </body>
 </html>

@@ -51,29 +51,85 @@
             will-change: transform;
         }
 
-        .context-bar {
-            background: var(--primary);
-            color: #fff;
+        .ipad-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 202px;
+            background: #F9F8F2;
+            z-index: 0;
+        }
+
+        .restaurant-header {
+            position: relative;
+            width: 100%;
+            height: 53px;
+            margin: 40px 0 0;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 32px;
-            height: 52px;
-            font-size: 13px;
+            justify-content: center;
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            font-size: 44px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: 0;
+            color: #333333;
             flex-shrink: 0;
-            z-index: 10;
+            z-index: 20;
+        }
+
+        .restaurant-title {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
+            height: 53px;
+        }
+
+        .restaurant-meta {
+            position: absolute;
+            right: 84px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            color: #333333;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .restaurant-table {
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: 0;
+        }
+
+        .restaurant-ticket {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1;
+            color: #7f7a74;
+            letter-spacing: 0;
+        }
+
+        .context-bar {
+            display: none !important;
         }
 
         .context-left {
             display: flex;
-            gap: 24px;
+            gap: 28px;
             align-items: center;
         }
 
         .context-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .context-label {
@@ -94,149 +150,85 @@
 
         .context-date {
             color: rgba(255, 255, 255, 0.35);
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .ai-banner {
+            position: absolute;
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%);
+            bottom: 113.47px;
             background: #EAE8E2;
-            padding: 0 20px;
-            height: 52px;
+            width: 1677px;
+            margin: 0;
+            padding: 0 228px;
+            height: 87px;
             display: none;
             align-items: center;
-            gap: 14px;
+            gap: 0;
             flex-shrink: 0;
             overflow: hidden;
-            position: relative;
-            z-index: 100;
-            margin-bottom: 8px;
+            z-index: 80;
         }
 
-
-        .banner-speaker {
-            width: 38px;
-            height: 38px;
+        .banner-close-btn {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border: none;
             border-radius: 50%;
             background: rgba(51, 51, 51, 0.08);
-            display: flex;
+            color: #6f6963;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            position: relative;
+            cursor: pointer;
+            z-index: 2;
+            transition: background 0.2s ease, color 0.2s ease;
         }
 
-        .banner-speaker::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(51, 51, 51, 0.18);
-            animation: spk-pulse 2.2s ease-out infinite;
-        }
-
-        .banner-speaker svg {
-            width: 20px;
-            height: 20px;
-            fill: #333333;
-        }
-
-        @keyframes spk-pulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-
-            100% {
-                transform: scale(1.6);
-                opacity: 0;
-            }
-        }
-
-        .banner-staff {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-        }
-
-        .banner-avatar-wrap {
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .banner-staff-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(51, 51, 51, 0.12);
-            display: block;
-        }
-
-        .banner-avatar-dot {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #7ecb8f;
-            border: 2px solid var(--bg);
-            animation: dot-blink 1.4s ease-in-out infinite;
-        }
-
-        @keyframes dot-blink {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.35;
-            }
-        }
-
-        .banner-staff-text {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-        }
-
-        .banner-staff-name {
-            font-size: 15px;
-            font-weight: 700;
+        .banner-close-btn:hover {
+            background: rgba(51, 51, 51, 0.14);
             color: #333333;
+        }
+
+        .banner-close-btn i {
+            font-size: 14px;
             line-height: 1;
         }
 
-        .banner-staff-label {
-            font-size: 10px;
-            font-weight: 500;
-            color: rgba(51, 51, 51, 0.48);
-            letter-spacing: 0.03em;
-        }
 
+        .banner-speaker,
+        .banner-staff,
         .banner-divider {
-            width: 1px;
-            height: 26px;
-            background: rgba(51, 51, 51, 0.14);
-            flex-shrink: 0;
+            display: none;
         }
 
         .banner-ticker {
             flex: 1;
+            height: 42px;
             display: flex;
             align-items: center;
             min-width: 0;
+            padding-left: 26px;
+            border-left: 3px solid #333333;
         }
 
         .ticker-text {
-            font-size: 16px;
-            font-weight: 500;
+            width: 100%;
+            max-width: 100%;
+            height: 42px;
+            font-size: 18px;
+            font-weight: 400;
             color: #333333;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            word-break: break-word;
+            line-height: 42px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
             opacity: 1;
             transition: opacity 0.4s ease;
         }
@@ -270,18 +262,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 16px 20px 12px;
+            width: 829.04px;
+            height: 65.82px;
+            margin: 36px auto 0;
+            gap: 12px;
+            padding: 6px 0;
             flex-shrink: 0;
-            background: #EAE8E2;
+            background: transparent;
+            position: relative;
+            z-index: 20;
         }
 
         .cat-tab {
-            padding: 7px 22px;
-            border-radius: 20px;
-            font-size: 13px;
+            width: 152.7px;
+            height: 53.19px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            font-size: 24px;
             font-weight: 700;
-            color: #666;
+            line-height: 27px;
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333333;
             background: transparent;
             border: 1.5px solid transparent;
             cursor: pointer;
@@ -304,137 +307,6 @@
 
         .section-label.visible {
             display: none;
-        }
-
-        .restaurant-header {
-            width: 220px;
-            height: 53px;
-            margin: 40px auto 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Inter', 'Noto Sans JP', sans-serif;
-            font-size: 44px;
-            font-weight: 400;
-            line-height: 1;
-            letter-spacing: 0;
-            color: #333333;
-            flex-shrink: 0;
-            z-index: 20;
-        }
-
-        .context-bar {
-            display: none !important;
-        }
-
-        .ai-banner {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: 113.47px;
-            width: 1677px;
-            height: 87px;
-            margin: 0;
-            padding: 0 228px;
-            gap: 0;
-            z-index: 80;
-        }
-
-        .banner-speaker,
-        .banner-staff,
-        .banner-divider {
-            display: none;
-        }
-
-        .banner-ticker {
-            flex: 1;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            min-width: 0;
-            padding-left: 26px;
-            border-left: 3px solid #333333;
-        }
-
-        .ticker-text {
-            width: 100%;
-            height: 42px;
-            font-size: 18px;
-            font-weight: 400;
-            line-height: 42px;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-
-        .banner-close-btn {
-            position: absolute;
-            top: 10px;
-            right: 14px;
-            width: 32px;
-            height: 32px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(51, 51, 51, 0.08);
-            color: #6f6963;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 2;
-            transition: background 0.2s ease, color 0.2s ease;
-        }
-
-        .banner-close-btn:hover {
-            background: rgba(51, 51, 51, 0.14);
-            color: #333333;
-        }
-
-        .banner-close-btn i {
-            font-size: 14px;
-            line-height: 1;
-        }
-
-        .category-tabs {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 829.04px;
-            height: 65.82px;
-            margin: 36px auto 0;
-            gap: 12px;
-            padding: 6px 0;
-            flex-shrink: 0;
-            background: transparent;
-            flex-wrap: nowrap !important;
-        }
-
-        .cat-tab {
-            width: 152.7px;
-            height: 53.19px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 999px;
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 27px;
-            color: #666;
-            background: transparent;
-            border: 1.5px solid transparent;
-            cursor: pointer;
-            transition: 0.2s;
-            white-space: nowrap;
-        }
-
-        .cat-tab:hover {
-            color: var(--primary);
-        }
-
-        .cat-tab.active {
-            background: #333333;
-            color: #fff;
-            border-color: #333333;
         }
 
         .section-label-inner {
@@ -485,8 +357,6 @@
         }
 
         .menu-card {
-            width: 380.41px;
-            height: 449.79px;
             background: #FFFFFF;
             border-radius: 14px;
             overflow: hidden;
@@ -496,11 +366,20 @@
             flex-direction: column;
             border: none;
             transition: 0.18s, opacity 0.6s, filter 0.6s;
+            width: 380.41px;
+            height: 449.79px;
         }
 
         .menu-card.blurring {
             opacity: 0.18;
             filter: blur(3px);
+        }
+
+        .menu-card.staged {
+            opacity: 0;
+            filter: blur(10px);
+            transform: translateY(28px) scale(0.94);
+            pointer-events: none;
         }
 
         .menu-card.revealed {
@@ -531,9 +410,9 @@
             width: 324px;
             height: 231px;
             margin: 28.2px auto 0;
-            overflow: hidden;
-            border: 1px solid #e7e2d8;
             border-radius: 16px;
+            border: 1px solid #e7e2d8;
+            overflow: hidden;
         }
 
         .menu-card-img {
@@ -618,7 +497,7 @@
             width: 73px;
             height: 47px;
             display: inline-flex;
-            align-items: center;
+            align-items: baseline;
             font-size: 38px;
             font-weight: 400;
             line-height: 1;
@@ -629,21 +508,21 @@
             width: 13px;
             height: 29px;
             display: inline-flex;
-            align-items: center;
+            align-items: baseline;
             justify-content: center;
             font-size: 24px;
             line-height: 1;
             margin-right: 2px;
+            transform: none;
         }
 
         .add-btn {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
+            gap: 8px;
             width: 138.76px;
             height: 55.11px;
-            justify-content: center;
-            padding: 0;
             background: #fff;
             background-image: url('./cartborder.png');
             background-repeat: no-repeat;
@@ -667,12 +546,13 @@
             font-size: 23px;
             font-weight: 700;
             line-height: 1;
+            font-family: 'Noto Sans JP', sans-serif;
         }
 
         .add-btn i {
             width: 26.69px;
             height: 25.26px;
-            font-size: 24px;
+            font-size: 26px;
             line-height: 1;
             display: inline-flex;
             align-items: center;
@@ -680,7 +560,6 @@
         }
 
         .add-btn:hover {
-            border-color: var(--primary);
             background: #f5f3ef;
         }
 
@@ -751,25 +630,7 @@
         }
 
         .cart-count-badge {
-            position: absolute;
-            top: -8px;
-            right: -12px;
-            min-width: 18px;
-            height: 18px;
-            padding: 0 5px;
-            border-radius: 999px;
-            background: #d92d20;
-            color: #fff;
-            font-size: 10px;
-            font-weight: 800;
-            line-height: 18px;
-            text-align: center;
-            box-shadow: 0 3px 8px rgba(217, 45, 32, 0.28);
-            display: none;
-        }
-
-        .cart-count-badge.show {
-            display: block;
+            display: none !important;
         }
 
         .voice-guide-container {
@@ -777,13 +638,13 @@
             bottom: 128px;
             left: calc(100% - 132px);
             right: auto;
+            transform: translateX(-50%) translateY(20px);
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 18px;
             z-index: 150;
             opacity: 0;
-            transform: translateX(-50%) translateY(20px);
             transition: 0.5s;
         }
 
@@ -809,40 +670,28 @@
             align-items: center;
             justify-content: center;
             gap: 4px;
-            box-shadow: 0 6px 24px rgba(45, 58, 46, 0.38);
+            box-shadow: none;
             transition: 0.15s;
+            overflow: hidden;
+            isolation: isolate;
         }
 
-        .voice-order-btn::before { display: none; }
-
+        .voice-order-btn::before,
         .voice-order-btn::after {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 2px solid rgba(45, 58, 46, 0.28);
-            animation: voice-pulse 2.2s ease-out infinite;
+            display: none;
         }
 
-        @keyframes voice-pulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.55;
-            }
-
-            100% {
-                transform: scale(1.45);
-                opacity: 0;
-            }
+        .voice-order-btn svg {
+            display: none;
         }
-
-        .voice-order-btn svg { display: none; }
 
         .voice-order-icon {
             width: 40px;
             height: 40px;
             object-fit: contain;
             display: block;
+            position: relative;
+            z-index: 1;
         }
 
         .voice-order-text {
@@ -852,7 +701,10 @@
             letter-spacing: 0.06em;
             line-height: 1.25;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
+
 
         .voice-sub-btns {
             display: flex;
@@ -901,22 +753,165 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(45, 58, 46, 0.95);
-            color: white;
-            padding: 20px 40px;
-            border-radius: 12px;
-            font-size: 18px;
+            background: #FFFFFF;
+            color: #2e3335;
+            width: 512px;
+            height: 288px;
+            padding: 0;
+            border-radius: 20px;
+            font-size: 0;
             font-weight: 700;
             z-index: 3000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
             opacity: 0;
             transition: opacity 0.3s;
             pointer-events: none;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .cart-alert.show {
             opacity: 1;
+        }
+
+        .cart-alert-text {
+            width: 271px;
+            height: 33px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            line-height: 1;
+            color: #2e3335;
+        }
+
+        .quick-cart-sheet {
+            position: absolute;
+            left: 24px;
+            width: 468px;
+            bottom: 118px;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(224, 220, 212, 0.95);
+            border-radius: 18px;
+            box-shadow: 0 12px 28px rgba(30, 30, 30, 0.12);
+            padding: 14px 16px 12px;
+            z-index: 220;
+            opacity: 0;
+            transform: translateY(24px);
+            pointer-events: none;
+            transition: opacity 0.28s ease, transform 0.28s ease;
+        }
+
+        .quick-cart-sheet.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .quick-cart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+
+        .quick-cart-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #4a4a4a;
+        }
+
+        .quick-cart-clear {
+            border: none;
+            background: transparent;
+            color: #ef4444;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+
+        .quick-cart-items {
+            display: flex;
+            flex-direction: column;
+            max-height: 84px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .quick-cart-item {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto auto;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 0;
+            border-top: 1px solid rgba(160, 160, 160, 0.22);
+        }
+
+        .quick-cart-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #636363;
+            min-width: 0;
+        }
+
+        .quick-cart-price {
+            font-size: 13px;
+            font-weight: 800;
+            color: #707070;
+            white-space: nowrap;
+        }
+
+        .quick-cart-qty {
+            font-size: 13px;
+            font-weight: 800;
+            color: #4a4a4a;
+            white-space: nowrap;
+        }
+
+        .quick-cart-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .quick-cart-total {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            font-weight: 900;
+        }
+
+        .quick-cart-total i {
+            font-size: 21px;
+            color: #2f2a29;
+        }
+
+        .quick-cart-total-price {
+            font-size: 21px;
+            line-height: 1;
+        }
+
+        .quick-cart-confirm {
+            min-width: 138px;
+            height: 38px;
+            border: none;
+            border-radius: 10px;
+            background: #18324C;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 14px rgba(45, 58, 46, 0.14);
+            font-family: inherit;
         }
 
         /* LowCal filter styles */
@@ -1083,70 +1078,67 @@
         }
 
         .lang-modal {
-            width: 680px;
-            background: rgba(255, 255, 255, 0.96);
-            border-radius: 28px;
-            padding: 22px 18px;
-            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+            width: 770px;
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
             animation: modal-up 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-align: center;
         }
 
         .lang-modal-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #6b7280;
-            margin-bottom: 18px;
+            display: none;
         }
 
         .lang-options {
             display: flex;
-            gap: 18px;
+            gap: 24px;
             justify-content: center;
         }
 
         .lang-option-card {
-            flex: 1;
-            min-height: 134px;
-            background: #f4f0ea;
-            border: 3px solid transparent;
+            width: 360.33px;
+            height: 168.68px;
+            background: #F4F0EA;
+            border: none;
             border-radius: 24px;
-            padding: 22px 18px;
+            padding: 0 52px;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
             display: grid;
             grid-template-columns: auto 1fr;
             align-items: center;
-            gap: 18px;
+            gap: 28px;
             text-align: left;
         }
 
         .lang-option-card:hover {
-            border-color: var(--primary);
             transform: translateY(-3px);
-            background: #fff;
+            background: #EFE8DE;
             box-shadow: 0 12px 26px rgba(45, 58, 46, 0.12);
         }
 
         .lang-option-card.selected {
-            border-color: var(--primary);
-            background: #fff;
-            box-shadow: 0 10px 24px rgba(45, 58, 46, 0.16);
+            background: #E7DED1;
+            box-shadow: 0 10px 24px rgba(45, 58, 46, 0.14);
         }
 
         .lang-flag {
-            width: 58px;
-            height: 40px;
+            width: 60px;
+            height: 39.99px;
             object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            border-radius: 2px;
+            box-shadow: none;
         }
 
         .lang-label {
-            font-size: 22px;
-            font-weight: 800;
+            font-size: 41.59px;
+            font-weight: 400;
             color: #3b3b3b;
             letter-spacing: 0.01em;
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1;
         }
     </style>
 </head>
@@ -1154,27 +1146,10 @@
 <body>
     <div class="ipad-frame">
         <div class="ai-banner" id="aiBanner">
-            <div class="banner-speaker"><svg viewBox="0 0 24 24">
-                    <path
-                        d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                </svg></div>
-            <div class="banner-staff">
-                <div class="banner-avatar-wrap">
-                    <img class="banner-staff-avatar"
-                        src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&q=80"
-                        alt="さくら">
-                    <div class="banner-avatar-dot"></div>
-                </div>
-                <div class="banner-staff-text">
-                    <span class="banner-staff-name">さくら</span>
-                    <span class="banner-staff-label">AIスタッフ</span>
-                </div>
-            </div>
-            <div class="banner-divider"></div>
-            <div class="banner-ticker"><span class="ticker-text" id="tickerText"></span></div>
             <button class="banner-close-btn" type="button" onclick="hideAiBanner()" aria-label="AI speakを閉じる">
                 <i class="fa-solid fa-xmark"></i>
             </button>
+            <div class="banner-ticker"><span class="ticker-text" id="tickerText"></span></div>
         </div>
 
         <div class="context-bar">
@@ -1188,13 +1163,19 @@
             <div class="context-date" id="ctxDate"></div>
         </div>
 
-        <div class="restaurant-header">富士屋本店</div>
+        <div class="restaurant-header">
+            <div class="restaurant-title">富士屋本店</div>
+            <div class="restaurant-meta">
+                <div class="restaurant-table">テーブル12</div>
+                <div class="restaurant-ticket">受付番号A102</div>
+            </div>
+        </div>
 
         <div class="category-tabs">
-            <button class="cat-tab active">おすすめ</button>
+            <button class="cat-tab" onclick="window.location.href='menu_ai.html'">おすすめ</button>
             <button class="cat-tab">前菜</button>
             <button class="cat-tab">麺類</button>
-            <button class="cat-tab">ドリンク</button>
+            <button class="cat-tab active">ドリンク</button>
             <button class="cat-tab">サラダ</button>
             <button class="cat-tab" onclick="window.location.href='menu_ai_dessert.html'">デザート</button>
         </div>
@@ -1208,6 +1189,23 @@
 
         <div class="menu-grid-wrapper">
             <div class="menu-grid" id="menuGrid"></div>
+        </div>
+
+        <div class="quick-cart-sheet" id="quickCartSheet">
+            <div class="quick-cart-header">
+                <div class="quick-cart-title">カート内の商品</div>
+                <button class="quick-cart-clear" onclick="clearQuickCart()">
+                    <i class="fa-regular fa-trash-can"></i> 全て消去
+                </button>
+            </div>
+            <div class="quick-cart-items" id="quickCartItems"></div>
+            <div class="quick-cart-footer">
+                <div class="quick-cart-total">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="quick-cart-total-price" id="quickCartTotal">¥0</span>
+                </div>
+                <button class="quick-cart-confirm" onclick="window.location.href='cart.html?confirm=true'">注文を確定</button>
+            </div>
         </div>
 
         <div class="bottom-nav">
@@ -1360,7 +1358,7 @@
         function getLanguageConfig() {
             return {
                 code: 'jp',
-                welcome: 'ようこそいらっしゃいませ！\nご来店ありがとうございます。ご注文やおすすめについて、お気軽にお話しください。'
+                welcome: 'ようこそ！ご注文やおすすめはお気軽にどうぞ。'
             };
         }
 
@@ -1401,12 +1399,6 @@
             { name: 'マルゲリータピザ', desc: '石窯焼きのもちもち生地にフレッシュトマトとモッツァレラ', price: '1280', img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=80' }
         ];
 
-        const fastMenuItems = [
-            { name: '炙りチャーシュー丼', desc: '甘辛だれで仕上げた香ばしいチャーシュー丼。すぐに提供しやすい人気メニュー。', price: '880', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80', reason: '⚡ すぐ食べたい時におすすめ / 調理 約5分' },
-            { name: '鶏の唐揚げバスケット', desc: '揚げ置きではなく短時間でサクッと仕上げる、食べやすい定番メニュー。', price: '720', img: 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=600&q=80', reason: '🍗 片手で食べやすい定番 / 調理 約6分' },
-            { name: 'きつねうどん', desc: 'やさしい出汁とやわらかいうどんで、急いでいる時にも食べやすい一杯です。', price: '650', img: 'https://images.unsplash.com/photo-1618841557871-b4664fbf0cb3?w=600&q=80', reason: '🍜 さっと食べられる一杯 / 調理 約4分' }
-        ];
-
         const coolMenuItems = [
             { name: '冷やしラーメン', desc: '濃厚なゴマだれに冷たい麺。夏の定番の一品', price: '950', img: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400&q=80', reason: '🌡️ 暑い日に体を冷やす', lowCal: false },
             { name: 'レモンソーダ', desc: '国産レモンをたっぷり使った爽やかな炭酸飲料', price: '480', img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80', reason: '✨ 今日のNo.1人気ドリンク', lowCal: true },
@@ -1429,14 +1421,20 @@
         ];
 
         const CART_COUNT_STORAGE_KEY = 'posSpeakCartCount';
+        const CART_ITEMS_STORAGE_KEY = 'posSpeakCartItems';
+        const FRAME_WIDTH = 1705.72;
+        const FRAME_HEIGHT = 1144.13;
         let demoStep = 0, extendedFlow = false, selectedWineIndex = -1, currentLanguage = 'jp', cartItemCount = 0;
-        let streamInterval = null, streamTimer = null, headerResetTimer = null;
+        let quickCartItems = [];
+        let streamInterval = null, streamTimer = null, headerResetTimer = null, quickCartSheetTimer = null;
 
         function streamText(text, charDelay, pauseAfter, onDone) {
             const el = document.getElementById('tickerText');
             if (!el) return;
             el.classList.add('fading');
-            clearInterval(streamInterval); clearTimeout(streamTimer);
+            clearInterval(streamInterval);
+            clearTimeout(streamTimer);
+            if (headerResetTimer) clearTimeout(headerResetTimer);
             setTimeout(() => {
                 el.textContent = ''; el.classList.remove('fading'); el.classList.add('streaming');
                 const aiBanner = document.getElementById('aiBanner');
@@ -1448,6 +1446,7 @@
                     if (i < text.length) { el.textContent += text[i++]; }
                     else { 
                         clearInterval(streamInterval); el.classList.remove('streaming'); 
+                        headerResetTimer = setTimeout(() => hideAiBanner(), 7000);
                         if (onDone) streamTimer = setTimeout(onDone, pauseAfter); 
                     }
                 }, charDelay);
@@ -1474,6 +1473,22 @@
             `).join('');
         }
 
+        function renderCardsWithSimulation(items, options = {}) {
+            const { stagger = 170, initialDelay = 120, onComplete } = options;
+            renderCards(items);
+            const cards = Array.from(document.querySelectorAll('.menu-card'));
+            cards.forEach(card => card.classList.add('staged'));
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.remove('staged');
+                    card.classList.add('revealed');
+                }, initialDelay + (index * stagger));
+            });
+            if (onComplete) {
+                setTimeout(onComplete, initialDelay + (cards.length * stagger) + 260);
+            }
+        }
+
         function parsePrice(value) {
             return parseInt(String(value).replace(/[^\d]/g, ''), 10) || 0;
         }
@@ -1491,18 +1506,94 @@
             return shortDesc ? `${item.name} ${shortDesc}` : item.name;
         }
 
-        function hideAiBanner() {
-            const banner = document.getElementById('aiBanner');
-            const ticker = document.getElementById('tickerText');
-            if (ticker) ticker.classList.remove('streaming');
-            if (banner) banner.style.display = 'none';
+        function getAllKnownMenuItems() {
+            return [...regularMenuItems, ...coolMenuItems, ...wineItems, ...dessertItems];
+        }
+
+        function findMenuItemByName(name) {
+            return getAllKnownMenuItems().find(item => item.name === name) || null;
+        }
+
+        function loadQuickCartItems() {
+            try {
+                const raw = localStorage.getItem(CART_ITEMS_STORAGE_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                quickCartItems = Array.isArray(parsed) ? parsed : [];
+            } catch (error) {
+                quickCartItems = [];
+            }
+        }
+
+        function saveQuickCartItems() {
+            localStorage.setItem(CART_ITEMS_STORAGE_KEY, JSON.stringify(quickCartItems));
+        }
+
+        function renderQuickCartSheet() {
+            const list = document.getElementById('quickCartItems');
+            const totalEl = document.getElementById('quickCartTotal');
+            if (!list || !totalEl) return;
+
+            if (quickCartItems.length === 0) {
+                list.innerHTML = `<div class="quick-cart-item"><div class="quick-cart-name">カートは空です</div><div class="quick-cart-price">¥0</div><div class="quick-cart-qty">0</div></div>`;
+                totalEl.textContent = '¥0';
+                return;
+            }
+
+            const visibleItems = quickCartItems.slice(-3);
+            list.innerHTML = visibleItems.map(item => `
+                <div class="quick-cart-item">
+                    <div class="quick-cart-name">${item.name}</div>
+                    <div class="quick-cart-price">¥${formatPrice(item.price)}</div>
+                    <div class="quick-cart-qty">× ${item.qty}</div>
+                </div>
+            `).join('');
+
+            const total = quickCartItems.reduce((sum, item) => sum + parsePrice(item.price) * item.qty, 0);
+            totalEl.textContent = `¥${total.toLocaleString()}`;
+        }
+
+        function showQuickCartSheet() {
+            const sheet = document.getElementById('quickCartSheet');
+            if (!sheet) return;
+            renderQuickCartSheet();
+            sheet.classList.add('show');
+            clearTimeout(quickCartSheetTimer);
+            quickCartSheetTimer = setTimeout(() => {
+                sheet.classList.remove('show');
+            }, 3800);
+        }
+
+        function addItemToQuickCart(name) {
+            const menuItem = findMenuItemByName(name) || { name, price: '0' };
+            const existing = quickCartItems.find(item => item.name === name);
+            if (existing) existing.qty += 1;
+            else quickCartItems.push({ name: menuItem.name, price: String(menuItem.price || '0'), qty: 1 });
+            saveQuickCartItems();
+            renderQuickCartSheet();
+        }
+
+        function clearQuickCart() {
+            clearTimeout(quickCartSheetTimer);
+            quickCartItems = [];
+            localStorage.removeItem(CART_ITEMS_STORAGE_KEY);
+            cartItemCount = 0;
+            localStorage.setItem(CART_COUNT_STORAGE_KEY, '0');
+            const badge = document.getElementById('cartCountBadge');
+            if (badge) {
+                badge.textContent = '0';
+                badge.classList.remove('show');
+            }
+            renderQuickCartSheet();
+            const sheet = document.getElementById('quickCartSheet');
+            if (sheet) sheet.classList.remove('show');
         }
 
         function syncCartBadgeFromStorage() {
             const badge = document.getElementById('cartCountBadge');
             if (!badge) return;
             const storedCount = parseInt(localStorage.getItem(CART_COUNT_STORAGE_KEY) || '0', 10);
-            cartItemCount = Number.isNaN(storedCount) ? 0 : storedCount;
+            const storedItemCount = quickCartItems.reduce((sum, item) => sum + (item.qty || 0), 0);
+            cartItemCount = Math.max(Number.isNaN(storedCount) ? 0 : storedCount, storedItemCount);
             badge.textContent = String(cartItemCount);
             badge.classList.toggle('show', cartItemCount > 0);
         }
@@ -1516,11 +1607,12 @@
             badge.classList.toggle('show', cartItemCount > 0);
         }
 
-        function showCartAlert() {
+        function showCartAlert(itemName = '') {
             incrementCartBadge();
+            if (itemName) addItemToQuickCart(itemName);
             const alert = document.createElement('div');
             alert.className = 'cart-alert';
-            alert.textContent = 'カートに追加しました。';
+            alert.innerHTML = '<div class="cart-alert-text">カートに追加しました。</div>';
             document.body.appendChild(alert);
             setTimeout(() => alert.classList.add('show'), 10);
             setTimeout(() => {
@@ -1530,7 +1622,7 @@
         }
 
         function addToCart(name, isWine = false) {
-            showCartAlert();
+            showCartAlert(name);
             if (isWine) {
                 setTimeout(() => streamText(name + ' をカートに追加いたしました！ ご注文ありがとうございます。', 45, 2000, () => resetToInitialState()), 500);
             } else {
@@ -1548,13 +1640,9 @@
         function resetToInitialState() {
             demoStep = 0; extendedFlow = false; selectedWineIndex = -1;
             document.querySelectorAll('.menu-card').forEach(c => c.classList.remove('lowcal-filtered', 'lowcal-highlighted'));
-            renderCards(fastMenuItems);
+            renderCards(regularMenuItems);
             const label = document.getElementById('sectionLabel');
-            if (label) {
-                label.classList.add('visible');
-                label.querySelector('.section-label-badge').textContent = '✦ 時短メニュー';
-                label.querySelector('.section-label-text').textContent = 'お急ぎの方向け、すぐ出せるおすすめ 3 品';
-            }
+            if (label) label.classList.remove('visible');
 
             // Reset Staff Call button
             const btn = document.getElementById('callStaffBtn');
@@ -1568,7 +1656,7 @@
 
         function runDemo() {
             resetToInitialState();
-            streamText('お急ぎでしたら、調理時間の短いメニューをご案内します。\nこちらの 3 品はすぐにご用意しやすいおすすめです。', 45, 0);
+            streamText(getLanguageConfig().welcome, 45, 0);
         }
 
         function showVoiceGuide() {
@@ -1581,11 +1669,19 @@
             }
         }
 
+        function hideAiBanner() {
+            const banner = document.getElementById('aiBanner');
+            const ticker = document.getElementById('tickerText');
+            if (ticker) ticker.classList.remove('streaming');
+            if (headerResetTimer) clearTimeout(headerResetTimer);
+            if (banner) banner.style.display = 'none';
+        }
+
         function showUserSpeechBubble(text) {
             document.querySelectorAll('.user-speech-bubble').forEach(b => b.remove());
             const sub = document.createElement('div');
             sub.className = 'user-speech-bubble';
-            sub.style = `position: absolute; bottom: 220px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.85); color: #fff; padding: 14px 32px; border-radius: 40px; font-weight: 700; font-size: 18px; z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); pointer-events: none; animation: bubble-up 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;`;
+            sub.style = `position: absolute; bottom: 226px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.85); color: #fff; padding: 14px 32px; border-radius: 40px; font-weight: 700; font-size: 18px; z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); pointer-events: none; animation: bubble-up 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;`;
             sub.textContent = text;
             document.body.appendChild(sub);
             if (!document.getElementById('bubble-style')) {
@@ -1605,18 +1701,79 @@
             if (headerResetTimer) clearTimeout(headerResetTimer);
             btn.style.background = '#a0a0a0'; lbl.innerHTML = '聞き取り中';
             if (voiceSubBtns) voiceSubBtns.style.display = 'none';
-            setTimeout(() => showUserSpeechBubble('炙りチャーシュー丼を1つお願いします'), 500);
-            setTimeout(() => {
-                btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
-                if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
-                voiceGuide.classList.remove('show');
-                showCartAlert();
-                streamText('かしこまりました！ 炙りチャーシュー丼を 1 つカートに追加いたしました。\n調理時間は約 5 分です。', 42, 1200, () => {
-                    setTimeout(() => streamText('お急ぎでしたら、引き続きこちらの時短メニューからもお選びいただけます。', 42, 0, () => {
-                        setTimeout(showVoiceGuide, 1000);
-                    }), 500);
-                });
-            }, 1500);
+
+            if (demoStep === 0) {
+                setTimeout(() => showUserSpeechBubble('さっぱりした、涼しいメニューを教えて'), 500);
+                setTimeout(() => {
+                    btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
+                    if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
+                    voiceGuide.classList.remove('show');
+                    streamText('ありがとうございます。\nそれでは、本日の暑さにぴったりの涼やかメニューを6品ご紹介します。気になる一品をお選びください。', 45, 3000, () => {
+                        renderCardsWithSimulation(coolMenuItems, { stagger: 190, initialDelay: 180 });
+                        document.getElementById('sectionLabel').classList.add('visible');
+                        demoStep = 1;
+                        setTimeout(showVoiceGuide, 1600);
+                    });
+                }, 2000);
+            } else if (demoStep === 1) {
+                setTimeout(() => showUserSpeechBubble('この中で特に低カロリーなものはありますか？'), 500);
+                setTimeout(() => {
+                    btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
+                    if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
+                    streamText('はい、この 6 品の中では、こちらの 3 品が特に低カロリーでおすすめですよ！ 🌱', 45, 3000, () => {
+                        coolMenuItems.forEach((item, i) => {
+                            const card = document.getElementById('card' + i);
+                            if (card) {
+                                if (!item.lowCal) { card.style.filter = 'blur(4px)'; card.style.opacity = '0.4'; card.style.pointerEvents = 'none'; card.classList.add('lowcal-filtered'); }
+                                else { card.style.transform = 'scale(1.04)'; card.style.borderColor = 'rgba(45, 58, 46, 0.4)'; card.style.boxShadow = '0 12px 36px rgba(0,0,0,0.12)'; card.classList.add('lowcal-highlighted'); }
+                            }
+                        });
+                        const label = document.getElementById('sectionLabel');
+                        label.querySelector('.section-label-badge').textContent = '✦ Health Suggest';
+                        label.querySelector('.section-label-text').textContent = '体にも優しい、低カロリーなセレクション';
+                        setTimeout(() => streamText('3 品の低カロリーメニューがご用意できました！ 🎯 お好みの一品を「クリック」で選択するか、「音声でメニュー名」をお伝えください。', 45, 0), 1000);
+                        demoStep = 2; setTimeout(showVoiceGuide, 3000);
+                    });
+                }, 2000);
+            } else if (demoStep === 2) {
+                setTimeout(() => showUserSpeechBubble('レモンソーダを1つお願いします'), 500);
+                setTimeout(() => {
+                    btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
+                    if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
+                    const selectedItem = coolMenuItems.find(m => m.name === 'レモンソーダ');
+                    if (selectedItem) {
+                        showCartAlert(selectedItem.name);
+                        streamText('かしこまりました！ ' + selectedItem.name + ' を 1 つカートに追加いたしました。ありがとうございます！', 42, 1000, () => {
+                            setTimeout(() => streamText('他にご注文はございますか？\n例えば、お飲み物はいかがでしょうか？', 42, 3000, () => {
+                                extendedFlow = true; demoStep = 3; setTimeout(showVoiceGuide, 1000);
+                            }), 500);
+                        });
+                    }
+                }, 1500);
+            } else if (extendedFlow && demoStep === 3) {
+                setTimeout(() => showUserSpeechBubble('おすすめのドリンクは何ですか？'), 500);
+                setTimeout(() => {
+                    btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
+                    streamText('当店ではワインが大変人気です！ 特におすすめの3種類をご紹介します。', 45, 3000, () => {
+                        renderCards(wineItems);
+                        document.getElementById('sectionLabel').classList.add('visible');
+                        const label = document.getElementById('sectionLabel');
+                        label.querySelector('.section-label-badge').textContent = '✦ Wine Selection';
+                        label.querySelector('.section-label-text').textContent = '当店自慢の厳選ワイン';
+                        wineItems.forEach((_, i) => setTimeout(() => { const card = document.getElementById('card' + i); if (card) card.classList.add('revealed'); }, i * 250));
+                        demoStep = 4; setTimeout(showVoiceGuide, 1000);
+                    });
+                }, 2000);
+            } else if (extendedFlow && demoStep === 4) {
+                setTimeout(() => showUserSpeechBubble('シャルドネ 2022の味はどんな感じですか？'), 500);
+                setTimeout(() => {
+                    btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
+                    streamText('かしこまりました。「' + wineItems[0].name + '」について詳しくご説明します。', 45, 2000, () => {
+                        selectedWineIndex = 0;
+                        setTimeout(() => window.location.href = 'menu_ai_detail_wine.html?wine=0', 1500);
+                    });
+                }, 2000);
+            }
         }
 
         function handleCardClick(card) {
@@ -1632,9 +1789,6 @@
             setTimeout(() => window.location.href = 'menu_ai_detail.html', 120);
         }
 
-        const FRAME_WIDTH = 1705.72;
-        const FRAME_HEIGHT = 1144.13;
-
         function fitFrame() {
             const frame = document.querySelector('.ipad-frame');
             if (!frame) return;
@@ -1645,14 +1799,10 @@
         window.addEventListener('load', function () {
             fitFrame();
             currentLanguage = 'jp';
-            renderCards(fastMenuItems);
-            fastMenuItems.forEach((_, i) => {
-                setTimeout(() => {
-                    const card = document.getElementById('card' + i);
-                    if (card) card.classList.add('revealed');
-                }, i * 160);
-            });
+            renderCards(regularMenuItems);
             updateLanguageSelectionUI();
+            loadQuickCartItems();
+            renderQuickCartSheet();
             syncCartBadgeFromStorage();
 
             const langOverlay = document.getElementById('langModalOverlay');
@@ -1674,13 +1824,7 @@
                 document.getElementById('sectionLabel').classList.add('visible');
                 setTimeout(() => streamText('人気のスイーツ 3 点をご紹介します！ お好みのものをお選びください。', 45, 0), 500);
             } else {
-                const label = document.getElementById('sectionLabel');
-                if (label) {
-                    label.classList.add('visible');
-                    label.querySelector('.section-label-badge').textContent = '✦ 時短メニュー';
-                    label.querySelector('.section-label-text').textContent = 'お急ぎの方向け、すぐ出せるおすすめ 3 品';
-                }
-                setTimeout(() => streamText('お急ぎでしたら、こちらの 3 品がおすすめです。\n各メニューの調理時間を目安付きでご案内します。', 45, 0, () => setTimeout(showVoiceGuide, 1000)), 500);
+                setTimeout(() => streamText(getLanguageConfig().welcome, 45, 0, () => setTimeout(showVoiceGuide, 1000)), 500);
             }
         });
 

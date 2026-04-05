@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>posSpeak – Order Complete</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2d3a2e;
+            --bg: #F9F8F2;
+            --footer-bg: #EAE8E2;
+            --border: #e0dcd4;
+            --action-blue: #18324C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            height: 100vh;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .ipad-frame {
+            width: 1705.72px;
+            height: 1144.13px;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            position: relative;
+            transform-origin: center center;
+            will-change: transform;
+        }
+
+        .ipad-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 202px;
+            background: var(--bg);
+            z-index: 0;
+        }
+
+        .restaurant-header {
+            position: relative;
+            width: 100%;
+            height: 53px;
+            margin: 40px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            font-size: 44px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: 0;
+            color: #333333;
+            flex-shrink: 0;
+            z-index: 20;
+        }
+
+        .restaurant-title {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
+            height: 53px;
+        }
+
+        .restaurant-meta {
+            position: absolute;
+            right: 84px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            color: #333333;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .restaurant-table {
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: 0;
+        }
+
+        .restaurant-ticket {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1;
+            color: #7f7a74;
+            letter-spacing: 0;
+        }
+
+        .category-tabs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 829.04px;
+            height: 65.82px;
+            margin: 36px auto 0;
+            gap: 12px;
+            padding: 6px 0;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 20;
+        }
+
+        .cat-tab {
+            width: 152.7px;
+            height: 53.19px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 27px;
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333333;
+            background: transparent;
+            border: 1.5px solid transparent;
+            white-space: nowrap;
+        }
+
+        .cat-tab.active {
+            background: #333333;
+            color: #fff;
+            border-color: #333333;
+        }
+
+        .main-content {
+            flex: 1;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0 220px;
+        }
+
+        .thanks-stage {
+            width: 960px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: #333333;
+        }
+
+        .thanks-title {
+            font-size: 43.5px;
+            font-weight: 500;
+            line-height: 1.3;
+            margin-bottom: 22px;
+        }
+
+        .thanks-copy {
+            font-size: 27.49px;
+            font-weight: 700;
+            line-height: 1.6;
+            margin-bottom: 42px;
+        }
+
+        .queue-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #6f6963;
+            margin-bottom: 48px;
+        }
+
+        .eta-note {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #6f6963;
+            margin: -16px 0 38px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .eta-note.show {
+            opacity: 1;
+        }
+
+        .queue-face {
+            min-width: 56px;
+            height: 40px;
+            padding: 0 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1.5px solid #bcb5aa;
+            color: #8a8378;
+            font-size: 18px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .thanks-actions {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .thanks-btn {
+            width: 475.73px;
+            height: 89.13px;
+            border-radius: 14px;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .thanks-btn.primary {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+        }
+
+        .thanks-btn.secondary {
+            background: #fff;
+            color: var(--primary);
+            border: 2px solid #a6b2a6;
+        }
+
+        .ai-banner {
+            position: absolute;
+            left: 0;
+            right: 0;
+            transform: none;
+            bottom: 113.47px;
+            width: 100%;
+            height: 87px;
+            background: #EAE8E2;
+            padding: 0 228px;
+            display: flex;
+            align-items: center;
+            z-index: 80;
+        }
+
+        .banner-close-btn {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(51, 51, 51, 0.08);
+            color: #6f6963;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .banner-close-btn:hover {
+            background: rgba(51, 51, 51, 0.14);
+            color: #333333;
+        }
+
+        .banner-close-btn i {
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .banner-ticker {
+            flex: 1;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            min-width: 0;
+            padding-left: 26px;
+            border-left: 3px solid #333333;
+        }
+
+        .ticker-text {
+            width: 100%;
+            max-width: 100%;
+            height: 42px;
+            font-size: 18px;
+            font-weight: 400;
+            color: #333333;
+            line-height: 42px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ticker-text.streaming::after {
+            content: '▋';
+            display: inline-block;
+            font-size: 13px;
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: cur-blink 0.6s step-end infinite;
+        }
+
+        @keyframes cur-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .bottom-nav {
+            width: 100%;
+            height: 105.47px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--footer-bg);
+            border-top: 1px solid var(--border);
+            padding: 14px 0 18px;
+            flex-shrink: 0;
+        }
+
+        .bottom-nav-inner {
+            width: 829.04px;
+            height: 65.82px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            color: #888;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+        }
+
+        .nav-item span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42.68px;
+            height: 13.1px;
+            font-size: 13px;
+            line-height: 1;
+        }
+
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 33.29px; line-height: 1; }
+
+        .voice-guide-container {
+            position: absolute;
+            bottom: 128px;
+            left: calc(100% - 132px);
+            right: auto;
+            transform: translateX(-50%) translateY(20px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            z-index: 150;
+            opacity: 0;
+            transition: 0.5s;
+        }
+
+        .voice-guide-container.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .voice-order-btn {
+            width: 108px;
+            height: 108px;
+            border-radius: 50%;
+            background: transparent;
+            background-image: url('./bg_icon.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            box-shadow: none;
+            transition: 0.15s;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .voice-order-btn::before,
+        .voice-order-btn::after {
+            display: none;
+        }
+
+        .voice-order-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .voice-order-text {
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.82);
+            letter-spacing: 0.06em;
+            line-height: 1.25;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .voice-sub-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .voice-sub-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #666;
+            cursor: pointer;
+            min-width: 148px;
+            justify-content: center;
+            padding: 10px 16px;
+            border-radius: 999px;
+            border: 1.5px solid #d8d4cc;
+            background: rgba(255, 255, 255, 0.9);
+            transition: 0.15s;
+            font-family: inherit;
+        }
+
+        .voice-sub-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="ipad-frame">
+        <div class="restaurant-header">
+            <div class="restaurant-title">富士屋本店</div>
+            <div class="restaurant-meta">
+                <div class="restaurant-table">テーブル12</div>
+                <div class="restaurant-ticket">受付番号A102</div>
+            </div>
+        </div>
+
+        <div class="category-tabs">
+            <button class="cat-tab active">おすすめ</button>
+            <button class="cat-tab">会話履歴</button>
+            <button class="cat-tab">店員</button>
+            <button class="cat-tab">前菜</button>
+            <button class="cat-tab">焼き物</button>
+            <button class="cat-tab">サラダ</button>
+        </div>
+
+        <div class="main-content">
+            <div class="thanks-stage">
+                <div class="thanks-title">ご注文ありがとうございます。</div>
+                <div class="thanks-copy">ご注文を承りました。お料理の到着まで今しばらくお待ちください。</div>
+                <div class="queue-row">
+                    <span>現在の混雑具合:</span>
+                    <span class="queue-face"><i class="fa-regular fa-face-smile"></i></span>
+                </div>
+                <div class="eta-note" id="etaNote">
+                    <span>お料理のご提供予定時間:</span>
+                    <span class="queue-face">18分</span>
+                </div>
+                <div class="thanks-actions">
+                    <button class="thanks-btn primary" onclick="window.location.href='cart.html'">再度注文する</button>
+                    <button class="thanks-btn secondary" onclick="window.location.href='menu_ai.html'">ホームに戻る</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-banner">
+            <button class="banner-close-btn" type="button" onclick="hideAiBanner()" aria-label="AI speakを閉じる">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="banner-ticker">
+                <div class="ticker-text" id="tickerText"></div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="bottom-nav-inner">
+                <button class="nav-item" onclick="window.location.href='menu_ai.html'"><i class="fa-solid fa-utensils"></i><span>メニュー</span></button>
+                <button class="nav-item active" onclick="window.location.href='cart_confirmed.html'"><i class="fa-solid fa-cart-shopping"></i><span>カート</span></button>
+                <button class="nav-item" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></button>
+                <button class="nav-item" onclick="window.location.href='chat_ai.html'"><i class="fa-solid fa-comment-dots"></i><span>会話履歴</span></button>
+                <button class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></button>
+            </div>
+        </div>
+
+        <div class="voice-guide-container show">
+            <button class="voice-order-btn" type="button" onclick="window.location.href='chat_ai.html'">
+                <img class="voice-order-icon" src="./micro.png" alt="Voice">
+                <span class="voice-order-text">ボイス<br>オーダー</span>
+            </button>
+            <div class="voice-sub-btns">
+                <button class="voice-sub-btn" onclick="window.location.href='chat_ai.html'">
+                    <i class="fa-regular fa-comment-dots"></i>チャットに切替
+                </button>
+                <button class="voice-sub-btn" onclick="window.location.href='order_status.html'">
+                    <i class="fa-solid fa-bell"></i>店員を呼ぶ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const FRAME_WIDTH = 1705.72;
+        const FRAME_HEIGHT = 1144.13;
+
+        function fitFrame() {
+            const frame = document.querySelector('.ipad-frame');
+            if (!frame) return;
+            const scale = Math.min(window.innerWidth / FRAME_WIDTH, window.innerHeight / FRAME_HEIGHT);
+            frame.style.transform = `scale(${Math.min(scale, 1)})`;
+        }
+
+        function revealEta() {
+            setTimeout(() => {
+                const etaNote = document.getElementById('etaNote');
+                if (etaNote) etaNote.classList.add('show');
+            }, 2000);
+        }
+
+        function streamText(text, charDelay = 45) {
+            const ticker = document.getElementById('tickerText');
+            if (!ticker) return;
+            ticker.textContent = '';
+            ticker.classList.add('streaming');
+            let index = 0;
+
+            function step() {
+                ticker.textContent = text.slice(0, index);
+                if (index < text.length) {
+                    index += 1;
+                    setTimeout(step, charDelay);
+                } else {
+                    ticker.classList.remove('streaming');
+                }
+            }
+
+            step();
+        }
+
+        function hideAiBanner() {
+            const banner = document.querySelector('.ai-banner');
+            if (banner) banner.style.display = 'none';
+        }
+
+        window.addEventListener('resize', fitFrame);
+        window.onload = () => {
+            fitFrame();
+            streamText('ご注文ありがとうございます。お料理のご用意ができ次第ご案内いたします。');
+            revealEta();
+        };
+    </script>
+</body>
+</html>

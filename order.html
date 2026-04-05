@@ -26,30 +26,63 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
     .ipad-frame {
-      width: 1280px;
-      height: 800px;
+      width: 1705.72px;
+      height: 1144.13px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
       border-radius: 12px;
-      background: #f0ece4;
+      background: #F9F8F2;
       box-shadow: 0 0 80px rgba(0, 0, 0, 0.7);
       position: relative;
+      transform-origin: center center;
+      will-change: transform;
+    }
+
+    .ipad-frame::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 202px;
+      background: #F9F8F2;
+      z-index: 0;
     }
 
     /* ── Context Bar ── */
     .context-bar {
-      background: #2d3a2e;
-      color: #fff;
+      display: none !important;
+    }
+
+    .restaurant-header {
+      position: relative;
+      width: 100%;
+      height: 53px;
+      margin: 40px 0 0;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 10px 32px;
-      font-size: 13px;
+      justify-content: center;
+      font-family: 'Inter', 'Noto Sans JP', sans-serif;
+      font-size: 44px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: 0;
+      color: #333333;
       flex-shrink: 0;
+      z-index: 20;
+    }
+
+    .restaurant-title {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 220px;
+      height: 53px;
     }
 
     .context-left {
@@ -87,40 +120,48 @@
 
     /* ── Main ── */
     .main-content {
-      flex: 1;
-      background: #f0ece4;
+      flex: 0 0 auto;
+      width: 1189px;
+      margin: 0 auto;
+      background: #F9F8F2;
       display: flex;
-      padding: 40px 64px 30px;
-      gap: 40px;
+      align-items: stretch;
+      padding: 54px 0 0;
+      gap: 32px;
       overflow: hidden;
+      position: relative;
+      z-index: 10;
     }
 
     /* ── Left: AI Hero ── */
     .hero-side {
-      flex: 1;
+      width: 620px;
+      flex: 0 0 620px;
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
 
     .ai-card {
-      flex: 1;
+      flex: 0 0 auto;
       background: #fff;
-      border-radius: 20px;
-      padding: 40px 48px;
+      border-radius: 28px;
+      padding: 38px 28px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      min-height: 0;
+      height: 610px;
       cursor: pointer;
-      border: 3px solid #2d3a2e;
+      border: 1px solid #E2DDD4;
       position: relative;
       overflow: hidden;
       transition: all 0.2s;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      box-shadow: none;
     }
 
     .ai-card:hover {
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
       transform: translateY(-2px);
     }
 
@@ -174,7 +215,7 @@
       width: 64px;
       height: 64px;
       border-radius: 50%;
-      background: #2d3a2e;
+      background: #18324C;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -190,17 +231,17 @@
     }
 
     .ai-card-title {
-      font-size: 26px;
-      font-weight: 900;
-      color: #1a1a1a;
+      font-size: 38px;
+      font-weight: 400;
+      color: #333333;
       text-align: center;
       margin-bottom: 8px;
       letter-spacing: -0.5px;
     }
 
     .ai-card-sub {
-      font-size: 15px;
-      color: #666;
+      font-size: 23px;
+      color: #6F6B64;
       text-align: center;
       line-height: 1.6;
       margin-bottom: 30px;
@@ -208,7 +249,7 @@
 
     /* Language cards */
     .lang-section-label {
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.1em;
@@ -222,13 +263,13 @@
 
     .lang-section-label .material-symbols-outlined {
       font-size: 18px;
-      color: #2d3a2e;
+      color: #18324C;
     }
 
     .lang-cards {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 10px;
     }
 
     .lang-card {
@@ -237,10 +278,10 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 16px 10px;
-      border-radius: 14px;
-      border: 2px solid #e8e4de;
-      background: #f7f5f2;
+      padding: 16px 8px;
+      border-radius: 18px;
+      border: 1px solid #E2DDD4;
+      background: #FFFFFF;
       cursor: pointer;
       transition: all 0.15s;
       font-family: inherit;
@@ -248,26 +289,26 @@
     }
 
     .lang-card:hover {
-      border-color: #2d3a2e;
-      background: #f0f5f0;
+      border-color: #18324C;
+      background: #F7F6F1;
     }
 
     .lang-card.active {
-      background: #2d3a2e;
-      border-color: #2d3a2e;
+      background: #18324C;
+      border-color: #18324C;
       box-shadow: 0 2px 10px rgba(45, 58, 46, 0.2);
     }
 
     .lang-card.disabled {
-      background: #f2f0eb;
-      border-color: #ddd7ce;
+      background: #F2EFE8;
+      border-color: #DDD7CE;
       cursor: not-allowed;
       opacity: 0.7;
     }
 
     .lang-card.disabled:hover {
-      border-color: #ddd7ce;
-      background: #f2f0eb;
+      border-color: #DDD7CE;
+      background: #F2EFE8;
       transform: none;
     }
 
@@ -282,7 +323,7 @@
       right: 8px;
       padding: 3px 7px;
       border-radius: 999px;
-      background: #e7e2d9;
+      background: #E7E2D9;
       color: #7a6f62;
       font-size: 9px;
       font-weight: 800;
@@ -292,14 +333,14 @@
     }
 
     .lang-flag {
-      font-size: 22px;
+      font-size: 24px;
       line-height: 1;
     }
 
     .lang-name {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: #333;
+      font-size: 16px;
+      font-weight: 400;
+      color: #333333;
       line-height: 1.2;
     }
 
@@ -308,9 +349,9 @@
     }
 
     .lang-native {
-      font-size: 9.5px;
-      color: #999;
-      font-weight: 500;
+      font-size: 12px;
+      color: #8E877D;
+      font-weight: 400;
     }
 
     .lang-card.active .lang-native {
@@ -321,7 +362,7 @@
     .method-row {
       display: flex;
       gap: 12px;
-      margin-top: 24px;
+      margin-top: 18px;
     }
 
     .method-btn {
@@ -330,13 +371,13 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      padding: 14px 0;
-      border-radius: 12px;
-      border: 1.5px solid #ddd;
-      background: #f7f5f2;
+      padding: 18px 0;
+      border-radius: 16px;
+      border: 1px solid #E2DDD4;
+      background: #FFFFFF;
       cursor: pointer;
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 18px;
+      font-weight: 400;
       color: #444;
       transition: all 0.15s;
       font-family: inherit;
@@ -347,37 +388,39 @@
     }
 
     .method-btn.active {
-      background: #2d3a2e;
-      border-color: #2d3a2e;
+      background: #18324C;
+      border-color: #18324C;
       color: #fff;
     }
 
     /* ── Right: Settings + Normal ── */
     .right-side {
-      width: 380px;
+      width: 537px;
+      flex: 0 0 537px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 18px;
+      height: 100%;
     }
 
     /* Normal card */
     .normal-card {
       background: #fff;
-      border-radius: 20px;
-      padding: 24px 28px;
-      border: 2px solid #e0dcd4;
+      border-radius: 28px;
+      padding: 32px 32px;
+      border: 1px solid #E2DDD4;
       cursor: pointer;
       transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      box-shadow: none;
     }
 
     .normal-card:hover {
-      border-color: #bbb;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      border-color: #C9C2B7;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
     }
 
     .normal-card.selected {
-      border-color: #2d3a2e;
+      border-color: #18324C;
       background: #fdfdfd;
     }
 
@@ -389,10 +432,10 @@
     }
 
     .normal-icon {
-      width: 48px;
-      height: 48px;
+      width: 58px;
+      height: 58px;
       border-radius: 12px;
-      background: #f0ece4;
+      background: #EAE8E2;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -401,38 +444,39 @@
 
     .normal-icon .material-symbols-outlined {
       font-size: 24px;
-      color: #2d3a2e;
+      color: #18324C;
     }
 
     .normal-card-label {
-      font-size: 18px;
-      font-weight: 900;
-      color: #1a1a1a;
+      font-size: 27px;
+      font-weight: 400;
+      color: #333333;
     }
 
     .normal-card-sub {
-      font-size: 13px;
-      color: #888;
+      font-size: 18px;
+      color: #6F6B64;
       line-height: 1.5;
     }
 
     /* Settings panel */
     .settings-panel {
       background: #fff;
-      border-radius: 20px;
-      padding: 28px 32px;
+      border-radius: 28px;
+      padding: 32px 32px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      gap: 20px;
+      box-shadow: none;
+      border: 1px solid #E2DDD4;
     }
 
     .setting-row-label {
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: #999;
+      color: #8E877D;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -454,7 +498,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #f7f5f2;
+      background: #FFFFFF;
       border-radius: 8px;
       padding: 4px 6px;
     }
@@ -475,28 +519,28 @@
 
     .num-btn {
       flex: 1;
-      height: 64px;
+      height: 74px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: #fff;
-      border: 1.5px solid #e0dcd4;
+      border: 1px solid #E2DDD4;
       border-radius: 12px;
-      font-size: 20px;
-      font-weight: 800;
+      font-size: 24px;
+      font-weight: 400;
       color: #444;
       cursor: pointer;
       transition: all 0.15s;
     }
 
     .num-btn:hover {
-      border-color: #2d3a2e;
-      background: #fdfdfd;
+      border-color: #18324C;
+      background: #F7F6F1;
     }
 
     .num-btn.active {
-      background: #2d3a2e;
-      border-color: #2d3a2e;
+      background: #18324C;
+      border-color: #18324C;
       color: #fff;
       box-shadow: 0 4px 12px rgba(45, 58, 46, 0.25);
     }
@@ -509,21 +553,21 @@
 
     .visit-btn {
       flex: 1;
-      height: 52px;
-      border-radius: 10px;
-      border: 1.5px solid #e0dcd4;
+      height: 62px;
+      border-radius: 14px;
+      border: 1px solid #E2DDD4;
       background: #fff;
       font-family: inherit;
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 18px;
+      font-weight: 400;
       color: #555;
       cursor: pointer;
       transition: all 0.15s;
     }
 
     .visit-btn.active {
-      background: #2d3a2e;
-      border-color: #2d3a2e;
+      background: #18324C;
+      border-color: #18324C;
       color: #fff;
     }
 
@@ -547,9 +591,9 @@
 
     .modal-content {
       background: #fff;
-      width: 420px;
-      border-radius: 24px;
-      padding: 32px;
+      width: 520px;
+      border-radius: 28px;
+      padding: 40px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       text-align: center;
       transform: translateY(20px);
@@ -561,14 +605,14 @@
     }
 
     .modal-title {
-      font-size: 22px;
+      font-size: 28px;
       font-weight: 900;
       color: #2d3a2e;
       margin-bottom: 8px;
     }
 
     .modal-sub {
-      font-size: 14px;
+      font-size: 18px;
       color: #888;
       margin-bottom: 24px;
     }
@@ -579,10 +623,10 @@
 
     .modal-input {
       width: 100%;
-      height: 80px;
+      height: 92px;
       border-radius: 16px;
       border: 2.5px solid #2d3a2e;
-      font-size: 42px;
+      font-size: 52px;
       font-weight: 800;
       text-align: center;
       color: #2d3a2e;
@@ -608,12 +652,12 @@
     }
 
     .modal-btn-cancel {
-      background: #f0ece4;
+      background: #F9F8F2;
       color: #666;
     }
 
     .modal-btn-confirm {
-      background: #2d3a2e;
+      background: #18324C;
       color: #fff;
     }
 
@@ -634,35 +678,37 @@
 
     /* ── CTA ── */
     .cta-wrap {
-      padding: 0 64px 40px;
-      background: #f0ece4;
+      width: 1189px;
+      margin: 60px auto 0;
+      padding: 0 0 16px;
+      background: #F9F8F2;
       flex-shrink: 0;
+      display: flex;
+      justify-content: center;
     }
 
     .cta-btn {
-      width: 100%;
-      padding: 22px 0;
-      border-radius: 16px;
+      width: 475.73px;
+      height: 89.13px;
+      border-radius: 14px;
       border: none;
-      background: #2d3a2e;
+      background: #18324C;
       color: #fff;
-      font-size: 20px;
-      font-weight: 900;
+      font-size: 22px;
+      font-weight: 700;
       font-family: inherit;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 12px;
       transition: all 0.15s;
-      letter-spacing: 0.02em;
-      box-shadow: 0 10px 30px rgba(45, 58, 46, 0.2);
+      letter-spacing: 0.01em;
     }
 
     .cta-btn:hover {
-      background: #3a4d3b;
-      transform: translateY(-2px);
-      box-shadow: 0 15px 40px rgba(45, 58, 46, 0.3);
+      background: #10263A;
+      transform: translateY(-1px);
     }
 
     .cta-btn:active {
@@ -702,6 +748,10 @@
         </div>
       </div>
       <div class="context-date" id="ctxDate"></div>
+    </div>
+
+    <div class="restaurant-header">
+      <div class="restaurant-title">富士屋本店</div>
     </div>
 
     <!-- Main Content -->
@@ -860,12 +910,21 @@
   </div><!-- /ipad-frame -->
 
   <script>
+    const FRAME_WIDTH = 1705.72;
+    const FRAME_HEIGHT = 1144.13;
     let currentMode = 'ai';
     let currentMethod = 'voice';
     let adultCount = 2;
     let childCount = 0;
     let visitFrequency = 1; // 1: 1st time, 2: 2nd+ time
     let activeModalType = 'adult';
+
+    function fitFrame() {
+      const frame = document.querySelector('.ipad-frame');
+      if (!frame) return;
+      const scale = Math.min(window.innerWidth / FRAME_WIDTH, window.innerHeight / FRAME_HEIGHT);
+      frame.style.transform = `scale(${Math.min(scale, 1)})`;
+    }
 
     function selectMode(mode) {
       currentMode = mode;
@@ -875,13 +934,13 @@
       const ctaText = document.getElementById('cta-text');
 
       if (mode === 'ai') {
-        aiCard.style.borderColor = '#2d3a2e';
+        aiCard.style.borderColor = '#18324C';
         normalCard.classList.remove('selected');
         ctaIcon.innerText = currentMethod === 'voice' ? 'mic' : 'chat_bubble';
         ctaText.innerText = currentMethod === 'voice' ? '音声で注文を始める' : 'チャットで注文を始める';
       } else {
         normalCard.classList.add('selected');
-        aiCard.style.borderColor = '#e0dcd4';
+        aiCard.style.borderColor = '#E2DDD4';
         ctaIcon.innerText = 'restaurant_menu';
         ctaText.innerText = '通常注文で開始';
       }
@@ -979,12 +1038,13 @@
       localStorage.setItem('currentSession', JSON.stringify(session));
       if (isAI) {
         sessionStorage.setItem('showAiWelcome', 'yes');
-        window.location.href = currentMethod === 'chat' ? 'menu_ai_chat.html' : 'menu_ai.html';
+        window.location.href = 'menu_ai.html';
       } else {
-        window.location.href = 'menu.html';
+        window.location.href = 'menu_ai.html';
       }
     }
     (function initContext() {
+      fitFrame();
       const update = () => {
         const now = new Date();
         const y = now.getFullYear();
@@ -1008,6 +1068,7 @@
       update();
       setInterval(update, 1000);
     })();
+    window.addEventListener('resize', fitFrame);
   </script>
 </body>
 

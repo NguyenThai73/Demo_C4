@@ -10,17 +10,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #2d3a2e;
-            --primary-light: #3f5240;
+            --primary: #18324C;
+            --primary-light: #24425f;
             --accent: #d4a373;
-            --bg: #f0ece4;
+            --bg: #F9F8F2;
             --card-bg: #ffffff;
-            --footer-bg: #e8e4dc;
-            --border: #e0dcd4;
-            --text-main: #1a1a1a;
-            --text-sub: #666;
+            --footer-bg: #EAE8E2;
+            --border: #E2DDD4;
+            --text-main: #333333;
+            --text-sub: #6F6B64;
             --occupied: #ef4444;
-            --selected: #2d3a2e;
+            --selected: #18324C;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -36,8 +36,8 @@
         }
 
         .ipad-frame {
-            width: 1280px;
-            height: 800px;
+            width: 1705.72px;
+            height: 1144.13px;
             background: var(--bg);
             display: flex;
             flex-direction: column;
@@ -45,38 +45,70 @@
             box-shadow: 0 0 80px rgba(0,0,0,0.7);
             border-radius: 12px;
             position: relative;
+            transform-origin: center center;
+            will-change: transform;
+        }
+
+        .ipad-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 202px;
+            background: #F9F8F2;
+            z-index: 0;
         }
 
         /* ─── HEADER: CONTEXT BAR ───────────────────────── */
-        .context-bar {
-            background: var(--primary);
-            color: #fff;
+        .context-bar { display:none !important; }
+
+        .restaurant-header {
+            position: relative;
+            width: 100%;
+            height: 53px;
+            margin: 40px 0 0;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 32px;
-            height: 52px;
-            font-size: 13px;
+            justify-content: center;
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            font-size: 44px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: 0;
+            color: #333333;
             flex-shrink: 0;
-            z-index: 10;
+            z-index: 20;
         }
-        .staff-only-badge { background: #ef4444; color: #fff; padding: 4px 12px; border-radius: 4px; font-weight: 800; font-size: 10px; letter-spacing: 0.05em; }
+
+        .restaurant-title {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
+            height: 53px;
+        }
 
         /* ─── MAIN CONTENT ────────────────────────────────── */
         .main-content {
             flex: 1;
-            padding: 48px 64px;
+            width: 1189px;
+            margin: 0 auto;
+            padding: 56px 0 92px;
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 52px;
             overflow-y: auto;
+            background: #F9F8F2;
+            position: relative;
+            z-index: 10;
         }
 
         .page-header { text-align: center; }
-        .page-title { font-size: 32px; font-weight: 900; color: var(--text-main); margin-bottom: 8px; }
-        .page-subtitle { font-size: 16px; color: var(--text-sub); }
+        .page-title { font-size: 44px; font-weight: 400; color: var(--text-main); margin-bottom: 14px; }
+        .page-subtitle { font-size: 24px; color: var(--text-sub); }
 
-        .layout-grid { display: grid; grid-template-columns: 1fr 400px; gap: 48px; }
+        .layout-grid { display: grid; grid-template-columns: 1fr 520px; gap: 56px; }
 
         /* Table Selection Area */
         .selection-section { display: flex; flex-direction: column; gap: 24px; }
@@ -84,7 +116,7 @@
         .search-box {
             position: relative;
             background: #fff;
-            border-radius: 16px;
+            border-radius: 20px;
             border: 1.5px solid var(--border);
             padding: 4px;
             display: flex;
@@ -92,10 +124,10 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
         .search-box i { padding: 0 16px; color: #ccc; }
-        .search-box input { flex: 1; border: none; padding: 12px 0; font-size: 16px; font-weight: 600; outline: none; }
+        .search-box input { flex: 1; border: none; padding: 16px 0; font-size: 20px; font-weight: 400; outline: none; font-family: inherit; color: var(--text-main); background: transparent; }
 
-        .legend { display: flex; gap: 20px; }
-        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--text-sub); }
+        .legend { display: flex; gap: 20px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 400; color: var(--text-sub); }
         .status-dot { width: 12px; height: 12px; border-radius: 3px; border: 1.5px solid var(--border); }
         .status-dot.empty { background: #fff; }
         .status-dot.occupied { background: var(--occupied); border-color: var(--occupied); }
@@ -104,15 +136,15 @@
         .table-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
+            gap: 20px;
         }
         .table-btn {
-            height: 80px;
+            height: 104px;
             background: #fff;
-            border: 1.5px solid var(--border);
-            border-radius: 16px;
-            font-size: 18px;
-            font-weight: 800;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            font-size: 28px;
+            font-weight: 400;
             color: var(--text-main);
             cursor: pointer;
             transition: 0.2s;
@@ -122,30 +154,30 @@
         }
         .table-btn:hover { border-color: var(--primary); transform: translateY(-2px); }
         .table-btn.occupied { background: #fee2e2; border-color: #fecaca; color: #dc2626; }
-        .table-btn.selected { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 8px 20px rgba(45, 58, 46, 0.2); }
+        .table-btn.selected { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 8px 20px rgba(24, 50, 76, 0.18); }
 
         /* Info / Action Panel */
         .action-panel { display: flex; flex-direction: column; gap: 24px; }
         
         .active-list-card {
             background: #fff;
-            border-radius: 24px;
-            border: 1.5px solid var(--border);
-            padding: 32px;
+            border-radius: 28px;
+            border: 1px solid var(--border);
+            padding: 36px;
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-        .card-header { font-size: 14px; font-weight: 900; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.05em; }
+        .card-header { font-size: 16px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.05em; }
         .active-item { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1.5px solid #f5f5f5; }
         .active-item:last-child { border-bottom: none; padding-bottom: 0; }
         .active-info { display: flex; flex-direction: column; gap: 4px; }
-        .active-table { font-size: 17px; font-weight: 800; color: var(--text-main); }
-        .active-meta { font-size: 12px; color: #aaa; font-weight: 600; }
-        .status-pill { padding: 4px 10px; background: #f0fdf4; color: #166534; border-radius: 6px; font-size: 11px; font-weight: 800; }
+        .active-table { font-size: 26px; font-weight: 400; color: var(--text-main); }
+        .active-meta { font-size: 16px; color: #8E877D; font-weight: 400; }
+        .status-pill { padding: 8px 14px; background: #f0fdf4; color: #166534; border-radius: 999px; font-size: 14px; font-weight: 500; }
 
         .btn-start {
-            width: 100%; height: 72px; background: var(--primary); color: #fff; border: none; border-radius: 20px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 30px rgba(45, 58, 46, 0.2);
+            width: 100%; height: 89px; background: var(--primary); color: #fff; border: none; border-radius: 18px; font-size: 26px; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 30px rgba(24, 50, 76, 0.18);
             display: flex; align-items: center; justify-content: center; gap: 12px;
         }
         .btn-start:disabled { background: #ccc; box-shadow: none; cursor: not-allowed; }
@@ -159,6 +191,10 @@
         <div class="context-bar">
             <span class="staff-only-badge">MANAGER MODE – STAFF ONLY</span>
             <div id="ctxTime" style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.6);">11:24 AM</div>
+        </div>
+
+        <div class="restaurant-header">
+            <div class="restaurant-title">富士屋本店</div>
         </div>
 
         <div class="main-content">
@@ -342,7 +378,16 @@
             document.getElementById('ctxTime').innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
         }, 1000);
 
+        function fitFrame() {
+            const frame = document.querySelector('.ipad-frame');
+            if (!frame) return;
+            const scale = Math.min(window.innerWidth / 1705.72, window.innerHeight / 1144.13);
+            frame.style.transform = `scale(${scale})`;
+        }
+
         renderTables();
+        fitFrame();
+        window.addEventListener('resize', fitFrame);
     </script>
     <style>
         /* Extra styles for different seat types and chips */
@@ -355,7 +400,7 @@
             margin-top: 24px; transition: opacity 0.3s;
         }
         .nav-btn { 
-            width: 36px; height: 36px; border: 1.5px solid var(--border); background: #fff; 
+            width: 42px; height: 42px; border: 1.5px solid var(--border); background: #fff; 
             border-radius: 50%; color: var(--primary); cursor: pointer; transition: 0.2s;
             display: flex; align-items: center; justify-content: center;
         }
@@ -367,16 +412,17 @@
         .dot.active { background: var(--primary); width: 20px; border-radius: 10px; }
 
         .chip {
-            padding: 10px 20px;
+            padding: 12px 22px;
             background: #fff;
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-sub);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-main);
             cursor: pointer;
             transition: 0.2s;
             white-space: nowrap;
+            font-family: 'Noto Sans JP', sans-serif;
         }
         .chip.active {
             background: var(--primary);

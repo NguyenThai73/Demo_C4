@@ -12,9 +12,9 @@
         :root {
             --primary: #213f31;
             --primary-light: #335847;
-            --bg: #f2eee6;
+            --bg: #F9F8F2;
             --card-bg: #ffffff;
-            --footer-bg: #e8e4dc;
+            --footer-bg: #EAE8E2;
             --border: #ddd7cf;
             --text-main: #2e2a29;
             --text-sub: #7d7671;
@@ -25,89 +25,134 @@
 
         body {
             font-family: 'Noto Sans JP', sans-serif;
-            background: #1a1a1a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
+            background: #1a1a1a;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
+            display: flex;
         }
 
         .ipad-frame {
-            width: 1280px;
-            height: 800px;
+            width: 1705.72px;
+            height: 1144.13px;
             background: var(--bg);
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 80px rgba(0, 0, 0, 0.7);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            position: relative;
+            transform-origin: center center;
+            will-change: transform;
+        }
+
+        .ipad-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 202px;
+            background: #F9F8F2;
+            z-index: 0;
         }
 
         .context-bar {
-            background: var(--primary);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 32px;
-            height: 52px;
-            font-size: 13px;
-            flex-shrink: 0;
+            display: none !important;
         }
 
-        .context-left { display: flex; gap: 24px; align-items: center; }
-        .context-item { display: flex; align-items: center; gap: 8px; }
-        .context-label { color: rgba(255,255,255,0.42); font-weight: 500; }
-        .context-value { font-weight: 700; }
-        .context-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.16); }
-        .context-date { color: rgba(255,255,255,0.38); font-size: 12px; }
-
-        .page-header {
-            background: #fff;
-            border-bottom: 1px solid var(--border);
-            height: 78px;
+        .restaurant-header {
+            width: 220px;
+            height: 53px;
+            margin: 40px auto 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            font-size: 44px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: 0;
+            color: #333333;
+            flex-shrink: 0;
             position: relative;
+            z-index: 20;
+        }
+
+        .category-tabs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 829.04px;
+            height: 65.82px;
+            margin: 36px auto 0;
+            gap: 12px;
+            padding: 6px 0;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 20;
+        }
+
+        .cat-tab {
+            width: 152.7px;
+            height: 53.19px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 27px;
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333333;
+            background: transparent;
+            border: 1.5px solid transparent;
+            white-space: nowrap;
+        }
+
+        .cat-tab.active {
+            background: #333333;
+            color: #fff;
+            border-color: #333333;
+        }
+
+        .page-header {
+            position: relative;
+            width: 840px;
+            margin: 0 auto 18px;
+            background: transparent;
+            border-bottom: none;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .page-title {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--primary);
-        }
-
-        .back-btn {
-            position: absolute;
-            left: 24px;
-            top: 50%;
-            transform: translateY(-50%);
-            border: none;
-            background: transparent;
-            font-size: 22px;
-            color: #6d6966;
-            cursor: pointer;
-        }
-
-        .back-btn.hidden {
-            display: none;
+            font-size: 27px;
+            font-weight: 700;
+            color: #333333;
+            line-height: 1;
         }
 
         .main-content {
             flex: 1;
-            padding: 20px 26px 0;
-            overflow: hidden;
+            padding: 48px 0 220px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: #FFFFFF;
+            display: flex;
+            justify-content: center;
         }
 
         .payment-card {
-            height: 100%;
-            background: #fff;
-            border-radius: 24px 24px 0 0;
-            border: 1px solid var(--border);
-            padding: 24px 34px 26px;
+            width: 840px;
+            min-height: 100%;
+            background: transparent;
+            border-radius: 0;
+            border: none;
+            padding: 0;
             display: flex;
             flex-direction: column;
         }
@@ -121,11 +166,45 @@
         }
 
         .bill-total {
-            text-align: center;
+            width: 78%;
+            margin: 18px auto 20px;
+            text-align: right;
             color: var(--text-main);
             font-size: 28px;
             font-weight: 900;
-            margin: 18px 0 20px;
+        }
+
+        .bill-total .bill-tax-note {
+            font-size: 18px;
+            font-weight: 400;
+            color: #6a6661;
+            margin-left: 6px;
+        }
+
+        .tax-total {
+            width: 78%;
+            margin: -8px auto 24px;
+            text-align: right;
+            color: #6a6661;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .tax-total .tax-amount {
+            display: inline-flex;
+            align-items: baseline;
+            margin-left: 8px;
+            color: #2e3335;
+            font-size: 18px;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        .tax-total .tax-amount::before {
+            content: '¥';
+            font-size: 12.45px;
+            margin-right: 6px;
+            line-height: 1;
         }
 
         .summary-box {
@@ -156,13 +235,8 @@
             border-collapse: collapse;
         }
 
-        .items-table thead th {
-            text-align: left;
-            background: #f7f5f2;
-            color: #4d4947;
-            font-size: 14px;
-            font-weight: 800;
-            padding: 10px 16px;
+        .items-table thead {
+            display: none;
         }
 
         .items-table thead th:nth-child(2),
@@ -181,30 +255,78 @@
             padding: 12px 16px;
             border-bottom: 1px solid #efeae3;
             color: #5a5552;
-            font-size: 15px;
-            font-weight: 600;
-            vertical-align: top;
+            font-size: 16px;
+            font-weight: 400;
+            vertical-align: middle;
+        }
+
+        .items-table tbody td:first-child {
+            font-size: 26.4px;
+            color: #2e3335;
+        }
+
+        .items-table tbody td:nth-child(2) {
+            font-size: 20px;
+            color: #5a5552;
+        }
+
+        .items-table tbody td:nth-child(3) {
+            font-size: 20.37px;
+            color: #2e3335;
+            white-space: nowrap;
+        }
+
+        .price-value {
+            display: inline-flex;
+            align-items: baseline;
+            font-size: 20.37px;
+            font-weight: 400;
+            color: #2e3335;
+            white-space: nowrap;
+            line-height: 1;
+        }
+
+        .price-value::before {
+            content: '¥';
+            font-size: 12.45px;
+            margin-right: 6px;
+            line-height: 1;
         }
 
         .item-sub {
-            display: block;
-            font-size: 12px;
-            color: #8d8781;
-            margin-top: 4px;
-            font-weight: 600;
+            margin-left: 8px;
+            color: #9f9991;
+            font-size: 22px;
+            font-weight: 400;
         }
 
         .payment-cta {
-            margin: auto auto 0;
-            width: 78%;
-            height: 54px;
+            margin: 0 auto;
+            width: 475.73px;
+            height: 89.13px;
             border: none;
-            border-radius: 10px;
+            border-radius: 14px;
             background: var(--primary);
             color: #fff;
-            font-size: 18px;
-            font-weight: 800;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
             cursor: pointer;
+        }
+
+        .payment-actions {
+            margin-top: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 18px;
+            justify-content: center;
+        }
+
+        .payment-cta.secondary {
+            background: #fff;
+            color: var(--primary);
+            border: 2px solid #a6b2a6;
         }
 
         .overlay {
@@ -343,6 +465,11 @@
             text-align: center;
         }
 
+        .status-panel.square-mode {
+            width: 760px;
+            padding: 38px 42px 34px;
+        }
+
         .status-icon {
             width: 88px;
             height: 88px;
@@ -405,6 +532,61 @@
             letter-spacing: 0.04em;
         }
 
+        .square-screen {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .square-device {
+            width: 276px;
+            height: 190px;
+            border-radius: 32px;
+            background: linear-gradient(145deg, #fbfbfb 0%, #ededed 100%);
+            box-shadow: inset 0 3px 10px rgba(255,255,255,0.92), 0 18px 42px rgba(0,0,0,0.14);
+            position: relative;
+        }
+
+        .square-device::before {
+            content: '';
+            position: absolute;
+            width: 120px;
+            height: 18px;
+            border-radius: 12px;
+            background: #171717;
+            left: 50%;
+            top: 28px;
+            transform: translateX(-50%);
+        }
+
+        .square-device::after {
+            content: 'square';
+            position: absolute;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%);
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            color: #1d1d1d;
+        }
+
+        .square-instruction {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 54px;
+            padding: 0 22px;
+            border-radius: 999px;
+            background: #f5f2ec;
+            color: #5a5550;
+            font-size: 17px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
         .processing-ring {
             width: 92px;
             height: 92px;
@@ -443,6 +625,55 @@
             font-size: 14px;
             font-weight: 700;
         }
+
+        .bottom-nav {
+            width: 100%;
+            height: 105.47px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--footer-bg);
+            border-top: 1px solid var(--border);
+            padding: 14px 0 18px;
+            flex-shrink: 0;
+        }
+
+        .bottom-nav-inner {
+            width: 829.04px;
+            height: 65.82px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            color: #888;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+        }
+
+        .nav-item span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42.68px;
+            height: 13.1px;
+            font-size: 13px;
+            line-height: 1;
+        }
+
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 33.29px; line-height: 1; }
     </style>
 </head>
 <body>
@@ -458,23 +689,22 @@
             <div class="context-date" id="ctxDate"></div>
         </div>
 
-        <div class="page-header">
-            <button class="back-btn" id="backBtn" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="page-title">お支払い</div>
+        <div class="restaurant-header">富士屋本店</div>
+
+        <div class="category-tabs">
+            <button class="cat-tab active" onclick="window.location.href='menu_ai.html'">おすすめ</button>
+            <button class="cat-tab">前菜</button>
+            <button class="cat-tab">麺類</button>
+            <button class="cat-tab">ドリンク</button>
+            <button class="cat-tab">サラダ</button>
+            <button class="cat-tab" onclick="window.location.href='menu_ai_dessert.html'">デザート</button>
         </div>
 
         <div class="main-content">
             <div class="payment-card">
-                <div class="bill-caption">ご請求額</div>
-                <div class="bill-total">¥26,116(税込)</div>
-
-                <div class="summary-box">
-                    <div class="summary-row"><span>小計</span><span>¥24,950</span></div>
-                    <div class="summary-row"><span>外税計</span><span>¥1,166</span></div>
-                    <div class="summary-row total"><span>合計</span><span>¥26,116</span></div>
-                    <div class="summary-row"><span>(消費税等)</span><span>(¥2,374)</span></div>
+                <div class="page-header">
+                    <div class="page-title">お支払い</div>
                 </div>
-
                 <table class="items-table">
                     <thead>
                         <tr>
@@ -487,53 +717,32 @@
                         <tr>
                             <td>塩昆布</td>
                             <td>4</td>
-                            <td>1,592</td>
+                            <td><span class="price-value">1,592</span></td>
                         </tr>
                         <tr>
                             <td>メンチカツ</td>
                             <td>1</td>
-                            <td>¥698(税抜)</td>
+                            <td><span class="price-value">698</span></td>
                         </tr>
                         <tr>
                             <td>若鶏の唐揚げ</td>
                             <td>1</td>
-                            <td>¥698(税抜)</td>
+                            <td><span class="price-value">698</span></td>
                         </tr>
                         <tr>
                             <td>特選牛ステーキ<span class="item-sub">和食セット</span></td>
                             <td>1</td>
-                            <td>0円</td>
+                            <td><span class="price-value">0</span></td>
                         </tr>
                     </tbody>
                 </table>
 
-                <button class="payment-cta" onclick="openMethodModal()">お支払いに進む</button>
-            </div>
-        </div>
+                <div class="bill-total">¥26,116<span class="bill-tax-note">(税込)</span></div>
+                <div class="tax-total">税額合計<span class="tax-amount">1,166</span></div>
 
-        <div class="overlay" id="methodOverlay">
-            <div class="modal">
-                <div class="modal-title">お支払い方法を確認</div>
-                <div class="modal-desc">スタッフがテーブルで決済をサポートします。ご希望の方法を選択してください。</div>
-                <div class="method-options">
-                    <div class="method-card selected" data-method="card" onclick="selectMethod(this, 'card')">
-                        <div class="method-top">
-                            <div class="method-name">クレジットカード</div>
-                            <span class="method-radio"></span>
-                        </div>
-                        <div class="method-note">スタッフが Square リーダーをお持ちします。その場でタッチまたは挿入で決済できます。</div>
-                    </div>
-                    <div class="method-card" data-method="other" onclick="selectMethod(this, 'other')">
-                        <div class="method-top">
-                            <div class="method-name">クレジットカード以外</div>
-                            <span class="method-radio"></span>
-                        </div>
-                        <div class="method-note">現金などをご希望の場合も、まずスタッフがテーブルへ伺います。必要に応じて Square 端末でご案内します。</div>
-                    </div>
-                </div>
-                <div class="modal-actions">
-                    <button class="ghost-btn" onclick="closeMethodModal()">キャンセル</button>
-                    <button class="primary-btn" onclick="confirmMethod()">確定</button>
+                <div class="payment-actions">
+                    <button class="payment-cta" onclick="startSquarePayment()">お支払いに進む</button>
+                    <button class="payment-cta secondary" onclick="window.location.href='order_status.html'">注文状況に戻る</button>
                 </div>
             </div>
         </div>
@@ -541,92 +750,50 @@
         <div class="overlay" id="statusOverlay">
             <div class="status-panel" id="statusPanel"></div>
         </div>
+
+        <div class="bottom-nav">
+            <div class="bottom-nav-inner">
+                <button class="nav-item" onclick="window.location.href='menu_ai.html'"><i class="fa-solid fa-utensils"></i><span>メニュー</span></button>
+                <button class="nav-item" onclick="window.location.href='cart.html'"><i class="fa-solid fa-cart-shopping"></i><span>カート</span></button>
+                <button class="nav-item active" onclick="window.location.href='order_status.html'"><i class="fa-solid fa-clock-rotate-left"></i><span>注文履歴</span></button>
+                <button class="nav-item" onclick="window.location.href='chat_ai.html'"><i class="fa-solid fa-comment-dots"></i><span>会話履歴</span></button>
+                <button class="nav-item"><i class="fa-solid fa-globe"></i><span>言語</span></button>
+            </div>
+        </div>
     </div>
 
     <script>
-        let selectedMethod = 'card';
-
-        function setBackVisible(visible) {
-            const backBtn = document.getElementById('backBtn');
-            if (!backBtn) return;
-            backBtn.classList.toggle('hidden', !visible);
-        }
-
-        function selectMethod(card, method) {
-            selectedMethod = method;
-            document.querySelectorAll('.method-card').forEach(el => el.classList.remove('selected'));
-            card.classList.add('selected');
-        }
-
-        function openMethodModal() {
-            setBackVisible(true);
-            document.getElementById('methodOverlay').classList.add('show');
-        }
-
-        function closeMethodModal() {
-            document.getElementById('methodOverlay').classList.remove('show');
-            setBackVisible(true);
+        const FRAME_WIDTH = 1705.72;
+        const FRAME_HEIGHT = 1144.13;
+        function fitFrame() {
+            const frame = document.querySelector('.ipad-frame');
+            if (!frame) return;
+            const scale = Math.min(window.innerWidth / FRAME_WIDTH, window.innerHeight / FRAME_HEIGHT);
+            frame.style.transform = `scale(${Math.min(scale, 1)})`;
         }
 
         function showStatus(html) {
             const overlay = document.getElementById('statusOverlay');
             const panel = document.getElementById('statusPanel');
+            panel.className = 'status-panel';
             panel.innerHTML = html;
             overlay.classList.add('show');
-            setBackVisible(false);
         }
 
-        function confirmMethod() {
-            closeMethodModal();
-            if (selectedMethod === 'other') {
-                showStaffGuideNotice();
-                return;
-            }
-            showStaffArrival();
+        function startSquarePayment() {
+            showSquarePayment();
         }
 
-        function showStaffGuideNotice() {
+        function showSquarePayment() {
             showStatus(`
-                <div class="status-icon"><i class="fa-solid fa-circle-info"></i></div>
-                <div class="status-title">スタッフがご案内します</div>
-                <div class="status-text">クレジットカード以外のお支払いをご希望とのこと、承知しました。<br>スタッフがテーブルまで伺い、お支払い方法をご案内いたします。</div>
-                <div class="receipt-chip"><i class="fa-solid fa-handshake-angle"></i> お支払い方法をスタッフがサポートします</div>
+                <div class="square-screen">
+                    <div class="status-title">Squareでお支払い</div>
+                    <div class="status-text">スタッフがお持ちした Square リーダーでお支払いいただけます。<br>カードをタッチ、または挿入してお待ちください。</div>
+                    <div class="square-device"></div>
+                    <div class="square-instruction"><i class="fa-solid fa-credit-card" style="margin-right:10px;"></i>カードをタッチまたは挿入してください</div>
+                </div>
             `);
-
-            setTimeout(showRegisterGuide, 2200);
-        }
-
-        function showRegisterGuide() {
-            showStatus(`
-                <div class="status-icon"><i class="fa-solid fa-cash-register"></i></div>
-                <div class="status-title">レジでお支払い</div>
-                <div class="status-text">スタッフが到着しました。<br>クレジットカード以外のお支払いは、店内レジにてご案内いたします。<br>この後、スタッフがレジまでご案内します。</div>
-                <div class="receipt-chip"><i class="fa-solid fa-person-walking"></i> スタッフがレジまでご案内します</div>
-            `);
-
-            setTimeout(showRegisterComplete, 2400);
-        }
-
-        function showRegisterComplete() {
-            showStatus(`
-                <div class="success-badge"><i class="fa-solid fa-check"></i></div>
-                <div class="status-title">レジ会計完了</div>
-                <div class="status-text">レジでのお支払いが完了しました。<br>本日はご来店ありがとうございました。またのお越しをお待ちしております。</div>
-                <div class="receipt-chip"><i class="fa-regular fa-receipt"></i> 受付番号 #0042 / レジ会計済み</div>
-            `);
-            setTimeout(() => {
-                window.location.href = 'table_cleanup.html';
-            }, 2600);
-        }
-
-        function showStaffArrival() {
-            showStatus(`
-                <div class="status-icon"><i class="fa-solid fa-bell-concierge"></i></div>
-                <div class="status-title">スタッフが伺います</div>
-                <div class="status-text">お支払い方法は「${selectedMethod === 'card' ? 'クレジットカード' : 'クレジットカード以外'}」で承りました。<br>スタッフが Square リーダーを持ってテーブルまで参ります。</div>
-                <div class="square-reader"></div>
-                <div class="receipt-chip"><i class="fa-solid fa-credit-card"></i> テーブル会計を準備中</div>
-            `);
+            document.getElementById('statusPanel').classList.add('square-mode');
 
             setTimeout(showProcessing, 2600);
         }
@@ -638,6 +805,7 @@
                 <div class="status-text">スタッフが Square リーダーをお渡ししました。<br>お客様の操作を確認後、その場で決済を処理しています。</div>
                 <div class="receipt-chip"><i class="fa-solid fa-wifi"></i> Square端末と通信中</div>
             `);
+            document.getElementById('statusPanel').classList.remove('square-mode');
 
             setTimeout(showSuccess, 2600);
         }
@@ -649,10 +817,14 @@
                 <div class="status-text">決済が正常に完了しました。<br>スタッフがレシートのご案内をいたします。<br>本日はご来店ありがとうございました。またのお越しをお待ちしております。</div>
                 <div class="receipt-chip"><i class="fa-regular fa-receipt"></i> 受付番号 #0042 / 決済済み</div>
             `);
+            document.getElementById('statusPanel').classList.remove('square-mode');
             setTimeout(() => {
                 window.location.href = 'table_cleanup.html';
             }, 2600);
         }
+
+        fitFrame();
+        window.addEventListener('resize', fitFrame);
 
         setInterval(() => {
             const now = new Date();

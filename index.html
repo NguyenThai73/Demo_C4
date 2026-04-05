@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>富士屋本店 - スタッフログイン</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --app-bg: #F9F8F2;
+            --panel-bg: #FFFFFF;
+            --text-main: #333333;
+            --text-sub: #6f6b64;
+            --border: #E2DDD4;
+            --accent: #18324C;
+            --accent-strong: #10263A;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            height: 100vh;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .login-container {
+            display: flex;
+            width: 1705.72px;
+            height: 1144.13px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 80px rgba(0,0,0,0.7);
+            background: var(--app-bg);
+            position: relative;
+            transform-origin: center center;
+            will-change: transform;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 202px;
+            background: var(--app-bg);
+            z-index: 0;
+        }
+
+        .screen-shell {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            height: 100%;
+        }
+
+        .login-center-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: 56px;
+            gap: 70px;
+        }
+
+        .restaurant-header {
+            position: relative;
+            width: 100%;
+            height: 53px;
+            margin: 40px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            font-size: 44px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: 0;
+            color: var(--text-main);
+            flex-shrink: 0;
+            z-index: 20;
+        }
+
+        .restaurant-title {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
+            height: 53px;
+        }
+
+
+
+        .login-form-panel {
+            width: 560px;
+            height: auto;
+            background: var(--panel-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 52px 56px;
+            border-radius: 28px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+        }
+
+        .logo-icon {
+            width: 68px;
+            height: 68px;
+            background: #EAE8E2;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .logo-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--text-main);
+        }
+
+        .store-name {
+            font-size: 36px;
+            font-weight: 400;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .store-subtitle {
+            font-size: 19px;
+            color: var(--text-sub);
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 17px;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            height: 62px;
+            padding: 0 18px 0 52px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            font-size: 19px;
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+            color: var(--text-main);
+            font-family: inherit;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--accent);
+        }
+
+        .input-wrapper input::placeholder {
+            color: #B4AEA4;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            fill: #8E877D;
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            fill: #8E877D;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 6px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            font-size: 15px;
+            color: var(--text-sub);
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            height: 70px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 24px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+
+        .login-btn:hover {
+            background: var(--accent-strong);
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="screen-shell">
+            <div class="login-center-wrap">
+                <div class="restaurant-header">
+                    <div class="restaurant-title">富士屋本店</div>
+                </div>
+                <div class="login-form-panel">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm0 5h18v9a2 2 0 01-2 2H5a2 2 0 01-2-2v-9zm3-7h2v3H6V4zm10 0h2v3h-2V4zm-5 9h2v2h-2v-2z"/></svg>
+                    </div>
+                    <div class="store-name">スタッフログイン</div>
+                    <div class="store-subtitle">店舗オペレーションを開始するための認証画面です。</div>
+
+                    <form style="width:100%;" onsubmit="window.location.href='dashboard.html'; return false;">
+                        <div class="form-group">
+                            <label>ログインID</label>
+                            <div class="input-wrapper">
+                                <svg class="input-icon" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm0 5h18v9a2 2 0 01-2 2H5a2 2 0 01-2-2v-9zm3-7h2v3H6V4zm10 0h2v3h-2V4z"/></svg>
+                                <input type="text" placeholder="IDを入力" value="staff001">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>パスワード</label>
+                            <div class="input-wrapper">
+                                <svg class="input-icon" viewBox="0 0 24 24"><path d="M12 2a5 5 0 00-5 5v3H6a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2v-8a2 2 0 00-2-2h-1V7a5 5 0 00-5-5zm-3 5a3 3 0 116 0v3H9V7zm3 8a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"/></svg>
+                                <input type="password" id="passwordInput" value="password123">
+                                <svg class="eye-icon" viewBox="0 0 24 24" onclick="togglePassword()"><path d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z"/></svg>
+                            </div>
+                        </div>
+
+                        <div class="forgot-password">
+                            <a href="#">パスワードを忘れた場合?</a>
+                        </div>
+
+                        <button type="submit" class="login-btn">ログイン</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const FRAME_WIDTH = 1705.72;
+        const FRAME_HEIGHT = 1144.13;
+
+        function fitFrame() {
+            const frame = document.querySelector('.login-container');
+            if (!frame) return;
+            const scale = Math.min(window.innerWidth / FRAME_WIDTH, window.innerHeight / FRAME_HEIGHT);
+            frame.style.transform = `scale(${scale})`;
+        }
+
+        function togglePassword() {
+            const input = document.getElementById('passwordInput');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        fitFrame();
+        window.addEventListener('resize', fitFrame);
+    </script>
+</body>
+</html>

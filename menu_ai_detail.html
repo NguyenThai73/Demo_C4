@@ -14,7 +14,7 @@
         :root {
             --bg-sand: #f9f7f2;
             --primary: #2d3a2e;
-            --footer-bg: #f2eee4;
+            --footer-bg: #EAE8E2;
             --card-bg: #fff;
             --border: #f0eee8;
         }
@@ -32,11 +32,12 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
 
         .ipad-frame {
-            width: 1280px;
-            height: 800px;
+            width: 1705.72px;
+            height: 1144.13px;
             background: var(--bg-sand);
             display: flex;
             flex-direction: column;
@@ -44,20 +45,25 @@
             border-radius: 12px;
             position: relative;
             box-shadow: 0 0 80px rgba(0, 0, 0, 0.5);
+            transform-origin: center center;
+            will-change: transform;
         }
 
         /* AI Banner - Standardized */
         .ai-banner {
-            background: var(--primary);
-            color: #fff;
-            padding: 0 40px;
-            height: 52px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 113.47px;
+            background: #EAE8E2;
+            color: #333333;
+            height: 92px;
             display: flex;
             align-items: center;
-            gap: 20px;
-            flex-shrink: 0;
-            z-index: 100;
+            padding: 0 228px;
+            z-index: 80;
         }
+
 
         /* ─── HEADER: CONTEXT BAR ───────────────────────── */
         .context-bar {
@@ -66,9 +72,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 32px;
-            height: 52px;
-            font-size: 13px;
+            padding: 0 42px;
+            height: 60px;
+            font-size: 14px;
             flex-shrink: 0;
             z-index: 10;
             display: none;
@@ -110,49 +116,13 @@
 
         /* Speaker icon với pulse animation */
         .banner-speaker {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.13);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        .banner-speaker::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(255, 255, 255, 0.22);
-            animation: spk-pulse 2.2s ease-out infinite;
-        }
-
-        @keyframes spk-pulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-
-            100% {
-                transform: scale(1.6);
-                opacity: 0;
-            }
-        }
-
-        .banner-speaker i {
-            font-size: 18px;
-            color: #fff;
+            display: none;
         }
 
         /* Staff identity */
-        .banner-staff {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
+        .banner-staff,
+        .banner-divider {
+            display: none;
         }
 
         .banner-avatar-wrap {
@@ -161,11 +131,11 @@
         }
 
         .banner-staff-avatar {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.28);
+            border: 2px solid rgba(51, 51, 51, 0.12);
             display: block;
         }
 
@@ -177,7 +147,7 @@
             height: 10px;
             border-radius: 50%;
             background: #7ecb8f;
-            border: 2px solid var(--primary);
+            border: 2px solid var(--bg);
             animation: dot-blink 1.4s ease-in-out infinite;
         }
 
@@ -200,16 +170,16 @@
         }
 
         .banner-staff-name {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
-            color: #fff;
+            color: #333333;
             line-height: 1;
         }
 
         .banner-staff-label {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.48);
+            color: rgba(51, 51, 51, 0.48);
             letter-spacing: 0.03em;
         }
 
@@ -217,7 +187,7 @@
         .banner-divider {
             width: 1px;
             height: 26px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(51, 51, 51, 0.14);
             flex-shrink: 0;
         }
 
@@ -227,24 +197,24 @@
             display: flex;
             align-items: center;
             min-width: 0;
-            max-height: 24px;
-            /* Giới hạn chiều cao */
+            height: 42px;
             overflow: hidden;
+            padding-left: 26px;
+            border-left: 3px solid #333333;
         }
 
         .ticker-text {
-            font-size: 16px;
-            font-weight: 500;
-            color: #fff;
-            line-height: 1.2;
+            width: 100%;
+            height: 42px;
+            font-size: 18px;
+            font-weight: 400;
+            color: #333333;
+            line-height: 42px;
             white-space: nowrap;
-            /* CHỈ 1 DÒNG */
             text-overflow: ellipsis;
-            /* Thêm ... khi quá dài */
             overflow: hidden;
             opacity: 1;
             transition: opacity 0.4s ease;
-            max-width: 100%;
         }
 
         .ticker-text.fading {
@@ -294,23 +264,27 @@
         .main-content {
             flex: 1;
             display: flex;
-            padding: 20px 40px 4px;
-            gap: 40px;
+            margin-top: 206px;
+            padding: 0 164px 220px;
+            gap: 86px;
             overflow-y: auto;
+            overflow-x: hidden;
+            align-items: flex-start;
+            justify-content: center;
         }
 
-        /* Left: Image Section - Ảnh vuông lớn hơn */
+        /* Left: Image Section */
         .image-section {
-            width: 600px;
+            width: 663.58px;
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 16px;
         }
 
         .main-image-container {
             width: 100%;
-            height: 600px;
+            height: 473.09px;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
@@ -355,7 +329,7 @@
             right: 0;
             background: linear-gradient(to top, rgba(20, 28, 20, 0.85) 0%, rgba(20, 28, 20, 0) 100%);
             color: #fff;
-            font-size: 13px;
+            font-size: 18px;
             font-weight: 600;
             padding: 28px 20px 12px;
             display: flex;
@@ -376,15 +350,75 @@
         }
 
         .thumbnail-section {
+            display: none;
+        }
+
+        .related-section {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
+        }
+
+        .related-title {
+            font-size: 20px;
+            font-weight: 400;
+            color: #333333;
+        }
+
+        .related-list {
+            display: flex;
+            gap: 16px;
+        }
+
+        .related-card {
+            width: 250px;
+            background: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid rgba(224, 220, 212, 0.9);
+        }
+
+        .related-card img {
+            width: 100%;
+            height: 142px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .related-card-body {
+            padding: 12px 14px 14px;
+        }
+
+        .related-card-name {
+            font-size: 18px;
+            font-weight: 400;
+            color: #2e3335;
+            line-height: 1.35;
+            min-height: 50px;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+        }
+
+        .related-card-price {
+            font-size: 24px;
+            font-weight: 400;
+            color: #2e3335;
+        }
+
+        .related-card-price::before {
+            content: '¥';
+            font-size: 16px;
+            margin-right: 2px;
         }
 
         .thumbnail-label {
             font-size: 14px;
             font-weight: 700;
-            color: #666;
+            color: #333333;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -396,8 +430,8 @@
         }
 
         .thumbnail {
-            width: 100px;
-            height: 100px;
+            width: 101px;
+            height: 87px;
             border-radius: 12px;
             object-fit: cover;
             cursor: pointer;
@@ -421,114 +455,114 @@
 
         /* Right: Info Panel */
         .info-panel {
-            flex: 1;
+            flex: 0 0 420px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
-            min-width: 400px;
-            padding-bottom: 160px;
-            /* Thêm khoảng cách để không bị voice mode đè lên */
+            gap: 18px;
+            padding-top: 0;
+            padding-bottom: 0;
         }
 
         /* Dish Header */
         .dish-header {
-            background: var(--card-bg);
+            background: transparent;
             border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            /* Đã bỏ border: 1px solid var(--border); */
+            padding: 0;
+            box-shadow: none;
         }
 
         .dish-title {
-            font-size: 32px;
-            font-weight: 900;
+            font-size: 27.4px;
+            font-weight: 400;
             color: #2e3335;
-            line-height: 1.2;
-            margin-bottom: 12px;
+            line-height: 1.35;
+            margin-bottom: 14px;
+            max-width: 380px;
         }
 
         .dish-price-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 30px 0 40px 0;
-            padding-bottom: 20px;
-            position: relative;
-            z-index: 100;
-            /* Đảm bảo nằm trên voice mode */
+            margin: 28px 0 28px;
+            width: 332px;
         }
 
         .dish-price {
-            font-size: 36px;
-            font-weight: 900;
-            color: var(--primary);
+            font-size: 47.75px;
+            font-weight: 400;
+            color: #2e3335;
         }
 
         .dish-price::before {
             content: '¥';
-            font-size: 24px;
+            width: 16px;
+            height: 35px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 29.19px;
+            line-height: 1;
             margin-right: 4px;
         }
 
         .add-cart-btn {
-            padding: 14px 32px;
-            border-radius: 30px;
-            background: var(--primary);
+            width: 456.59px;
+            height: 85.55px;
+            border-radius: 14px;
+            background: #23412E;
             color: #fff;
             border: none;
-            font-size: 16px;
+            font-size: 26.38px;
             font-weight: 800;
             cursor: pointer;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
             transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(45, 58, 46, 0.2);
+            box-shadow: none;
         }
 
         .add-cart-btn:hover {
-            background: #3a4a3b;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(45, 58, 46, 0.3);
+            background: #2d5138;
         }
 
         .dish-description {
-            font-size: 16px;
-            color: #666;
-            line-height: 1.6;
-            padding: 0 0 20px 0;
-            margin-bottom: 20px;
+            width: 375px;
+            min-height: 71.53px;
+            font-size: 23.4px;
+            color: #86807a;
+            line-height: 1.45;
+            padding: 0;
+            margin-bottom: 0;
         }
 
-        /* Quick Info */
-        .quick-info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
+        .quick-info-grid,
+        .critical-tags {
+            display: none;
         }
 
-        .info-card {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 16px;
-            /* Đã bỏ border: 1px solid #e5e7eb; */
-        }
-
-        .info-label {
-            font-size: 12px;
-            color: #64748b;
-            font-weight: 700;
-            margin-bottom: 6px;
+        .customize-row {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 18px;
+            margin-top: 91px;
+            margin-bottom: 22px;
+            width: 456.59px;
+            justify-content: space-between;
         }
 
-        .info-value {
-            font-size: 18px;
-            font-weight: 800;
-            color: #2e3335;
+        .customize-pill {
+            width: 214px;
+            height: 43.29px;
+            border-radius: 999px;
+            border: none;
+            background: #d9d9d9;
+            color: #6d6d6d;
+            font-size: 22px;
+            font-weight: 400;
+            font-family: inherit;
         }
 
         /* Critical Tags */
@@ -567,68 +601,76 @@
 
 
 
-        /* Candidate Navigation */
-        .candidate-nav {
+        .category-tabs {
+            position: absolute;
+            top: 129px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 10px 40px;
+            justify-content: center;
+            width: 829.04px;
+            height: 65.82px;
+            gap: 12px;
+            padding: 6px 0;
             background: transparent;
+            z-index: 30;
         }
 
-        .back-to-menu-link {
+        .cat-tab {
+            width: 152.7px;
+            height: 53.19px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #888;
-            cursor: pointer;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .back-to-menu-link:hover {
-            color: var(--primary);
-        }
-
-        .back-btn {
+            justify-content: center;
+            border-radius: 999px;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 27px;
+            color: #333333;
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 6px;
-            color: #fff;
-            padding: 6px 14px;
+            border: 1.5px solid transparent;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-            transition: all 0.2s;
+            transition: 0.2s;
         }
 
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.6);
+        .cat-tab:hover {
+            color: #333333;
         }
 
-        .nav-counter {
-            font-size: 16px;
-            font-weight: 800;
-            color: #666;
-            min-width: 60px;
-            text-align: center;
+        .cat-tab.active {
+            background: #333333;
+            color: #fff;
+            border-color: #333333;
+        }
+
+        .back-to-menu-link i,
+        .back-btn,
+        .nav-counter,
+        .thumbnail-label,
+        .image-badge {
+            display: none !important;
         }
 
         /* Bottom Nav - Giống hệt menu_ai.html */
         .bottom-nav {
             display: flex;
+            align-items: center;
+            justify-content: center;
             background: var(--footer-bg);
             border-top: 1px solid var(--border);
-            padding: 10px 0 20px;
             width: 100%;
+            height: 105.47px;
+            padding: 14px 0 18px;
             flex-shrink: 0;
+        }
+
+        .bottom-nav-inner {
+            width: 829.04px;
+            height: 65.82px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .nav-item {
@@ -636,13 +678,24 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            gap: 7px;
             color: #888;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
             cursor: pointer;
             border: none;
             background: transparent;
+        }
+
+        .nav-item span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42.68px;
+            height: 13.1px;
+            font-size: 13px;
+            line-height: 1;
         }
 
         .nav-item.active {
@@ -650,38 +703,57 @@
         }
 
         .nav-item i {
-            font-size: 22px;
+            font-size: 33.29px;
+            line-height: 1;
+        }
+
+        .nav-icon-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-icon-img {
+            width: 33.29px;
+            height: 33.29px;
+            object-fit: contain;
+            display: block;
         }
 
         /* Voice Guide Container */
         .voice-guide-container {
             position: absolute;
-            bottom: 76px;
-            right: 28px;
+            bottom: 128px;
+            left: calc(100% - 132px);
+            right: auto;
+            transform: translateX(-50%) translateY(0);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
-            /* Tăng khoảng cách để không bị nhấn nhầm */
+            gap: 18px;
             z-index: 150;
             opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.4s ease, transform 0.4s ease;
+            transition: 0.5s;
         }
 
         .voice-guide-container.hidden {
             opacity: 0;
-            transform: translateY(12px);
+            transform: translateX(-50%) translateY(20px);
             pointer-events: none;
         }
 
 
         /* Voice circle button — matches menu_ai.html */
         .voice-order-btn {
-            width: 100px;
-            height: 100px;
+            width: 108px;
+            height: 108px;
             border-radius: 50%;
-            background: var(--primary);
+            background: transparent;
+            background-image: url('./bg_icon.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
             border: none;
             cursor: pointer;
             position: relative;
@@ -690,50 +762,107 @@
             align-items: center;
             justify-content: center;
             gap: 4px;
-            box-shadow: 0 6px 24px rgba(45, 58, 46, 0.38);
-            transition: transform 0.15s, box-shadow 0.15s;
-            font-family: inherit;
+            box-shadow: none;
+            transition: 0.15s;
+            overflow: hidden;
+            isolation: isolate;
         }
 
-        /* inner ring */
-        .voice-order-btn::before {
-            content: '';
-            position: absolute;
-            inset: 6px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(255, 255, 255, 0.28);
-            pointer-events: none;
-        }
-
-        /* outer pulse ring */
+        .voice-order-btn::before,
         .voice-order-btn::after {
-            content: '';
-            position: absolute;
-            inset: -8px;
-            border-radius: 50%;
-            border: 2px solid rgba(45, 58, 46, 0.28);
-            animation: voice-pulse 2.2s ease-out infinite;
-        }
-
-        .voice-order-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 32px rgba(45, 58, 46, 0.48);
+            display: none;
         }
 
         .voice-order-btn svg {
-            width: 36px;
-            height: 36px;
-            fill: rgba(255, 255, 255, 0.88);
+            display: none;
+        }
+
+        .voice-order-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            display: block;
+            position: relative;
+            z-index: 1;
         }
 
         .voice-order-text {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
             color: rgba(255, 255, 255, 0.82);
             letter-spacing: 0.06em;
             line-height: 1.25;
             text-align: center;
-            pointer-events: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .voice-sub-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .voice-sub-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #666;
+            cursor: pointer;
+            min-width: 148px;
+            justify-content: center;
+            padding: 10px 16px;
+            border-radius: 999px;
+            border: 1.5px solid #d8d4cc;
+            background: rgba(255, 255, 255, 0.9);
+            transition: 0.15s;
+            font-family: inherit;
+        }
+
+        .voice-sub-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .voice-sub-btn.calling {
+            background: #475569 !important;
+            color: #fff !important;
+            border-color: #334155 !important;
+        }
+
+        .banner-close-btn {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(51, 51, 51, 0.08);
+            color: #6f6963;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .banner-close-btn:hover {
+            background: rgba(51, 51, 51, 0.14);
+            color: #333333;
+        }
+
+        .banner-close-btn i {
+            font-size: 14px;
+            line-height: 1;
         }
 
         @keyframes voice-pulse {
@@ -750,13 +879,7 @@
 
         /* Chat switch link */
         .chat-switch-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #888;
-            cursor: pointer;
+            display: none;
             padding: 5px 12px;
             border-radius: 20px;
             border: 1.5px solid #d8d4cc;
@@ -798,6 +921,142 @@
             opacity: 1;
             transform: translateX(-4px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .staff-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(4px);
+        }
+
+        .staff-modal {
+            width: 720px;
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: modal-up 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modal-up {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .staff-modal-header {
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .staff-modal-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #1a365d;
+        }
+
+        .staff-modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: none;
+            color: #64748b;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .staff-modal-options {
+            padding: 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .staff-option-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .staff-option-card:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .staff-option-card.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+
+        .staff-option-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .staff-option-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .staff-modal-footer {
+            padding: 0 32px 32px;
+            text-align: center;
+        }
+
+        .staff-modal-hint {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .call-staff-confirm-btn {
+            width: 100%;
+            height: 64px;
+            background: #f87171;
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(248, 113, 113, 0.3);
+            transition: all 0.2s;
+        }
+
+        .call-staff-confirm-btn:hover {
+            background: #ef4444;
+            transform: translateY(-2px);
         }
 
         .switch-mode-text {
@@ -944,32 +1203,49 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
-            color: #fff;
-            padding: 20px 40px;
-            border-radius: 12px;
-            font-size: 18px;
+            width: 512px;
+            height: 288px;
+            background: #FFFFFF;
+            color: #2e3335;
+            padding: 0;
+            border-radius: 20px;
+            font-size: 0;
             font-weight: 700;
             z-index: 3000;
             opacity: 0;
             transition: opacity 0.3s;
             pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .cart-alert.show {
             opacity: 1;
         }
 
+        .cart-alert-text {
+            width: 271px;
+            height: 33px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            line-height: 1;
+            color: #2e3335;
+        }
+
         .quick-cart-sheet {
+            display: none !important;
             position: absolute;
-            left: 16px;
-            width: 520px;
-            bottom: 82px;
+            left: 24px;
+            width: 468px;
+            bottom: 118px;
             background: rgba(255, 255, 255, 0.98);
             border: 1px solid rgba(224, 220, 212, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 14px 36px rgba(30, 30, 30, 0.14);
-            padding: 16px 18px 14px;
+            border-radius: 18px;
+            box-shadow: 0 12px 28px rgba(30, 30, 30, 0.12);
+            padding: 14px 16px 12px;
             z-index: 220;
             opacity: 0;
             transform: translateY(24px);
@@ -987,12 +1263,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 8px;
+            gap: 12px;
+            margin-bottom: 6px;
         }
 
         .quick-cart-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: #4a4a4a;
         }
@@ -1001,34 +1277,34 @@
             border: none;
             background: transparent;
             color: #ef4444;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             font-family: inherit;
         }
 
         .quick-cart-items {
             display: flex;
             flex-direction: column;
-            max-height: 90px;
+            max-height: 84px;
             overflow-y: auto;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .quick-cart-item {
             display: grid;
             grid-template-columns: minmax(0, 1fr) auto auto;
             align-items: center;
-            gap: 12px;
-            padding: 8px 0;
+            gap: 10px;
+            padding: 7px 0;
             border-top: 1px solid rgba(160, 160, 160, 0.22);
         }
 
         .quick-cart-name {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #636363;
             min-width: 0;
@@ -1036,7 +1312,7 @@
 
         .quick-cart-price,
         .quick-cart-qty {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: #5a5653;
             white-space: nowrap;
@@ -1046,39 +1322,102 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
+            gap: 12px;
         }
 
         .quick-cart-total {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             color: var(--primary);
             font-weight: 900;
         }
 
         .quick-cart-total i {
-            font-size: 24px;
+            font-size: 21px;
             color: #2f2a29;
         }
 
         .quick-cart-total-price {
-            font-size: 24px;
+            font-size: 21px;
             line-height: 1;
         }
 
         .quick-cart-confirm {
-            min-width: 150px;
-            height: 42px;
+            min-width: 138px;
+            height: 38px;
             border: none;
             border-radius: 10px;
-            background: var(--primary);
+            background: #18324C;
             color: #fff;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 8px 18px rgba(45, 58, 46, 0.16);
+            box-shadow: 0 6px 14px rgba(45, 58, 46, 0.14);
             font-family: inherit;
+        }
+
+        .restaurant-header {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 53px;
+            margin: 0;
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            font-size: 44px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: 0;
+            color: #333333;
+            background: transparent;
+            flex-shrink: 0;
+            z-index: 30;
+        }
+
+        .restaurant-title {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
+            height: 53px;
+        }
+
+        .restaurant-meta {
+            position: absolute;
+            right: 84px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            color: #333333;
+            font-family: 'Noto Sans JP', sans-serif;
+            white-space: nowrap;
+        }
+
+        .restaurant-table {
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: 0;
+        }
+
+        .restaurant-ticket {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1;
+            color: #7f7a74;
+            letter-spacing: 0;
+        }
+
+        .context-bar {
+            display: none !important;
         }
     </style>
 </head>
@@ -1088,45 +1427,27 @@
         <!-- Voice Guide — bottom right -->
         <div class="voice-guide-container" id="voiceGuideContainer">
             <button class="voice-order-btn" id="voiceOrderBtn" onclick="startVoice()">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
-                </svg>
+                <img class="voice-order-icon" src="./micro.png" alt="Voice">
                 <span class="voice-order-text" id="voiceOrderText">ボイス<br>オーダー</span>
             </button>
-            <a class="chat-switch-link" id="chatLink" onclick="switchToChatMode()">
-                <i class="fa-regular fa-comment-dots"></i>チャットに切替
-            </a>
+            <div class="voice-sub-btns" id="voiceSubBtns">
+                <button class="voice-sub-btn" onclick="window.location.href='chat_ai.html'">
+                    <i class="fa-regular fa-comment-dots"></i>チャットに切替
+                </button>
+                <button class="voice-sub-btn" onclick="openStaffModal()" id="callStaffBtn">
+                    <i class="fa-solid fa-bell"></i>店員を呼ぶ
+                </button>
+            </div>
         </div>
 
         <!-- AI Banner -->
         <div class="ai-banner" id="aiBanner">
-            <div class="banner-speaker">
-                <i class="fa-solid fa-volume-high"></i>
-            </div>
-            <div class="banner-staff">
-                <div class="banner-avatar-wrap">
-                    <img class="banner-staff-avatar"
-                        src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&q=80"
-                        alt="さくら">
-                    <div class="banner-avatar-dot"></div>
-                </div>
-                <div class="banner-staff-text">
-                    <span class="banner-staff-name">さくら</span>
-                    <span class="banner-staff-label">AIスタッフ</span>
-                </div>
-            </div>
-            <div class="banner-divider"></div>
+            <button class="banner-close-btn" type="button" onclick="hideAiBanner()" aria-label="AI speakを閉じる">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
             <div class="banner-ticker">
                 <div class="ticker-text" id="aiTickerText">ご希望にぴったりの一品です。</div>
             </div>
-            <!-- Back button in banner -->
-            <div class="banner-divider"></div>
-            <button class="back-btn" onclick="window.location.href='menu_ai.html'"
-                style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3);">
-                <i class="fa-solid fa-chevron-left"></i>
-                戻る
-            </button>
         </div>
 
         <div class="context-bar">
@@ -1141,6 +1462,23 @@
                         class="context-value">#0042</span></div>
             </div>
             <div class="context-date" id="ctxDate"></div>
+        </div>
+
+        <div class="restaurant-header">
+            <div class="restaurant-title">富士屋本店</div>
+            <div class="restaurant-meta">
+                <div class="restaurant-table">テーブル12</div>
+                <div class="restaurant-ticket">受付番号A102</div>
+            </div>
+        </div>
+
+        <div class="category-tabs">
+            <button class="cat-tab active" onclick="window.location.href='menu_ai.html'">おすすめ</button>
+            <button class="cat-tab">前菜</button>
+            <button class="cat-tab">麺類</button>
+            <button class="cat-tab">ドリンク</button>
+            <button class="cat-tab">サラダ</button>
+            <button class="cat-tab" onclick="window.location.href='menu_ai_dessert.html'">デザート</button>
         </div>
 
         <!-- Main Content -->
@@ -1159,6 +1497,11 @@
                         <div class="ai-reason-dot"></div>
                         <span id="aiReasonText">🌡️ 暑い日に体を冷やす</span>
                     </div>
+                </div>
+
+                <div class="related-section">
+                    <div class="related-title">おすすめの他メニュー</div>
+                    <div class="related-list" id="relatedList"></div>
                 </div>
 
                 <div class="thumbnail-section">
@@ -1186,50 +1529,17 @@
                     <h2 id="itemTitle" class="dish-title">白身魚のグリル 〜香草ソース〜</h2>
 
                     <p id="itemDesc" class="dish-description">
-                        白身魚をハーブでさっぱりと仕上げました。香草の豊かな香りが白ワインとの相性抜群。軽やかな味わいで前菜にもメインにも。
+                        ＊アレルギーがある場合ここに表示<br>＊小麦アレルギー
                     </p>
 
-                    <div class="dish-price-row">
+                    <div class="customize-row">
+                        <button class="customize-pill">カスタマイズ</button>
                         <span id="itemPrice" class="dish-price">980</span>
-                        <button class="add-cart-btn" onclick="addToCart()">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            カートに入れる
-                        </button>
                     </div>
 
-                    <!-- Quick Info -->
-                    <div class="quick-info-grid">
-                        <div class="info-card">
-                            <div class="info-label"><i class="fa-solid fa-fire"></i> エネルギー</div>
-                            <div class="info-value">320 kcal</div>
-                        </div>
-                        <div class="info-card">
-                            <div class="info-label"><i class="fa-solid fa-clock"></i> 調理時間</div>
-                            <div class="info-value">約15分</div>
-                        </div>
-                    </div>
-
-                    <!-- Critical Tags -->
-                    <div class="critical-tags">
-                        <span class="critical-tag warning">
-                            <i class="fa-solid fa-exclamation-triangle"></i>
-                            乳製品・小麦を含む
-                        </span>
-                        <span class="critical-tag success">
-                            <i class="fa-solid fa-check-circle"></i>
-                            カスタマイズ可能
-                        </span>
-                    </div>
+                    <button class="add-cart-btn" onclick="addToCart()">カートに入れる</button>
                 </div>
             </div>
-        </div>
-
-        <!-- Back to menu -->
-        <div class="candidate-nav">
-            <a class="back-to-menu-link" onclick="showNextCandidate()">
-                <i class="fa-solid fa-chevron-right"></i>
-                他のメニューを見る
-            </a>
         </div>
 
         <div class="quick-cart-sheet" id="quickCartSheet">
@@ -1249,27 +1559,82 @@
             </div>
         </div>
 
+        <div class="staff-modal-overlay" id="staffModalOverlay">
+            <div class="staff-modal">
+                <div class="staff-modal-header">
+                    <div class="staff-modal-title">
+                        <span style="font-size: 24px;">🤖</span> 何かお手伝いできることはありますか？
+                    </div>
+                    <button class="staff-modal-close" onclick="closeStaffModal()">&times;</button>
+                </div>
+                <div class="staff-modal-options">
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-droplet" style="color: #3b82f6;"></i></div>
+                        <div class="staff-option-label">水を追加</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-restroom" style="color: #3b82f6;"></i></div>
+                        <div class="staff-option-label">トイレの場所</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-utensils" style="color: #94a3b8;"></i></div>
+                        <div class="staff-option-label">お皿を片付ける</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-circle-question" style="color: #ef4444;"></i></div>
+                        <div class="staff-option-label">その他ご質問</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-baby" style="color: #f59e0b;"></i></div>
+                        <div class="staff-option-label">子ども用食器</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-chair" style="color: #845ef7;"></i></div>
+                        <div class="staff-option-label">ベビーチェア</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-hand-holding-heart" style="color: #ec4899;"></i></div>
+                        <div class="staff-option-label">箸・フォークを追加</div>
+                    </div>
+                    <div class="staff-option-card" onclick="toggleStaffOption(this)">
+                        <div class="staff-option-icon"><i class="fa-solid fa-soap" style="color: #10b981;"></i></div>
+                        <div class="staff-option-label">テーブルの清掃</div>
+                    </div>
+                </div>
+                <div class="staff-modal-footer">
+                    <div class="staff-modal-hint">複数選択できます。選択後、下のボタンでスタッフを呼び出します。</div>
+                    <button class="call-staff-confirm-btn" onclick="confirmStaffCall()">
+                        <i class="fa-solid fa-bell"></i> スタッフ呼び出し
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Bottom Nav - Giống hệt menu_ai.html -->
         <div class="bottom-nav">
-            <div class="nav-item active" onclick="window.location.href='menu_ai.html'">
-                <i class="fa-solid fa-utensils"></i>
-                <span>メニュー</span>
-            </div>
-            <div class="nav-item" onclick="window.location.href='cart.html'">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span>カート</span>
-            </div>
-            <div class="nav-item" onclick="window.location.href='order_status.html'">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-                <span>注文履歴</span>
-            </div>
-            <div class="nav-item" onclick="window.location.href='chat_ai.html'">
-                <i class="fa-solid fa-comment-dots"></i>
-                <span>会話</span>
-            </div>
-            <div class="nav-item" onclick="changeLanguage()">
-                <i class="fa-solid fa-globe"></i>
-                <span>言語</span>
+            <div class="bottom-nav-inner">
+                <div class="nav-item active" onclick="window.location.href='menu_ai.html'">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>メニュー</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='cart.html'">
+                    <div class="nav-icon-wrap">
+                        <img class="footer-icon-img" src="./cart.png" alt="カート">
+                    </div>
+                    <span>カート</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='order_status.html'">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>注文履歴</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='chat_ai.html'">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <span>会話</span>
+                </div>
+                <div class="nav-item" onclick="changeLanguage()">
+                    <i class="fa-solid fa-globe"></i>
+                    <span>日本語</span>
+                </div>
             </div>
         </div>
 
@@ -1278,6 +1643,8 @@
     <script>
         const CART_COUNT_STORAGE_KEY = 'posSpeakCartCount';
         const CART_ITEMS_STORAGE_KEY = 'posSpeakCartItems';
+        const FRAME_WIDTH = 1705.72;
+        const FRAME_HEIGHT = 1144.13;
         let quickCartItems = [];
         let quickCartSheetTimer = null;
 
@@ -1286,21 +1653,21 @@
                 title: '白身魚のグリル 〜香草ソース〜',
                 price: '980',
                 desc: '白身魚をハーブでさっぱりと仕上げました。香草の豊かな香りが白ワインとの相性抜群。軽やかな味わいで前菜にもメインにも。',
-                img: 'https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=600&q=80',
+                img: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=600&q=80',
                 reason: '🌡️ 暑い日に体を冷やす'
             },
             {
                 title: '完熟トマトのカプレーゼ',
                 price: '720',
                 desc: '完熟トマトとモッツァレラのフレッシュな組み合わせ。バジルとオリーブオイルのハーモニー。',
-                img: 'https://images.unsplash.com/photo-1510629954389-c1e0da47d214?w=600&q=80',
+                img: 'https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=600&q=80',
                 reason: '🍅 さっぱり軽めのランチに'
             },
             {
                 title: '旬野菜のバーニャカウダ',
                 price: '880',
                 desc: '採れたて旬野菜を濃厚ソースで。温かいソースと冷たい野菜のコントラスト。',
-                img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&q=80',
+                img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80',
                 reason: '🌿 野菜たっぷりでヘルシー'
             }
         ];
@@ -1308,6 +1675,13 @@
         let currentIndex = 0;
         let headerResetTimer = null;
         let flowStep = 1; // 1: Order wine, 2: Ask dessert, 3: Confirm dessert
+
+        function fitFrame() {
+            const frame = document.querySelector('.ipad-frame');
+            if (!frame) return;
+            const scale = Math.min(window.innerWidth / FRAME_WIDTH, window.innerHeight / FRAME_HEIGHT);
+            frame.style.transform = `scale(${Math.min(scale, 1)})`;
+        }
 
         function showUserSpeechBubble(text) {
             // Remove existing bubbles first to prevent duplication
@@ -1359,7 +1733,7 @@
             const item = candidates[currentIndex];
             document.getElementById('itemTitle').innerText = item.title;
             document.getElementById('itemPrice').innerText = item.price;
-            document.getElementById('itemDesc').innerText = item.desc;
+            document.getElementById('itemDesc').innerHTML = '＊アレルギーがある場合ここに表示<br>＊小麦アレルギー';
             document.getElementById('mainImg').src = item.img;
 
             // Update AI reason badge
@@ -1370,18 +1744,34 @@
                 document.getElementById('aiReasonBadge').style.display = 'none';
             }
 
-            // Update link label: last item → loop back, others → next
-            const link = document.querySelector('.back-to-menu-link');
-            if (link) {
-                const isLast = currentIndex === candidates.length - 1;
-                link.innerHTML = isLast
-                    ? '<i class="fa-solid fa-rotate-left"></i> 最初の候補に戻る'
-                    : '<i class="fa-solid fa-chevron-right"></i> 他のメニューを見る';
-            }
+            renderRelatedItems();
+
         }
 
         function showNextCandidate() {
             currentIndex = (currentIndex + 1) % candidates.length;
+            updateUI();
+        }
+
+        function renderRelatedItems() {
+            const list = document.getElementById('relatedList');
+            if (!list) return;
+            const relatedItems = candidates.filter((_, index) => index !== currentIndex).slice(0, 3);
+            list.innerHTML = relatedItems.map(item => `
+                <div class="related-card" onclick="selectCandidateByTitle('${item.title.replace(/'/g, "\\'")}')">
+                    <img src="${item.img}" alt="${item.title}">
+                    <div class="related-card-body">
+                        <div class="related-card-name">${item.title}</div>
+                        <div class="related-card-price">${parsePrice(item.price).toLocaleString()}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectCandidateByTitle(title) {
+            const nextIndex = candidates.findIndex(item => item.title === title);
+            if (nextIndex === -1) return;
+            currentIndex = nextIndex;
             updateUI();
         }
 
@@ -1467,14 +1857,13 @@
             if (itemName) addItemToQuickCart(itemName, itemPrice, qty);
             const alert = document.createElement('div');
             alert.className = 'cart-alert';
-            alert.textContent = 'カートに追加しました。';
+            alert.innerHTML = '<div class="cart-alert-text">カートに追加しました。</div>';
             document.body.appendChild(alert);
             setTimeout(() => alert.classList.add('show'), 10);
             setTimeout(() => {
                 alert.classList.remove('show');
                 setTimeout(() => alert.remove(), 300);
             }, 2000);
-            showQuickCartSheet();
         }
 
         function addToCart() {
@@ -1500,29 +1889,78 @@
             // In real app: Implement language switching logic
         }
 
+        function hideAiBanner() {
+            const aiBanner = document.getElementById('aiBanner');
+            const contextBar = document.querySelector('.context-bar');
+            if (aiBanner) aiBanner.style.display = 'none';
+            if (contextBar) contextBar.style.display = 'none';
+            if (headerResetTimer) {
+                clearTimeout(headerResetTimer);
+                headerResetTimer = null;
+            }
+        }
+
+        function openStaffModal() {
+            const modal = document.getElementById('staffModalOverlay');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.querySelectorAll('.staff-option-card').forEach(c => c.classList.remove('selected'));
+            }
+        }
+
+        function closeStaffModal() {
+            const modal = document.getElementById('staffModalOverlay');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function toggleStaffOption(el) {
+            el.classList.toggle('selected');
+        }
+
+        function confirmStaffCall() {
+            const selectedCount = document.querySelectorAll('.staff-option-card.selected').length;
+            if (selectedCount === 0) {
+                alert('ご希望の項目を選択してください。');
+                return;
+            }
+            closeStaffModal();
+            const btn = document.getElementById('callStaffBtn');
+            if (btn) {
+                btn.classList.add('calling');
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>店員呼出中';
+            }
+            const alertBox = document.createElement('div');
+            alertBox.className = 'cart-alert';
+            alertBox.innerHTML = '<div class="cart-alert-text">少々お待ちください。</div>';
+            document.body.appendChild(alertBox);
+            setTimeout(() => alertBox.classList.add('show'), 10);
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+                setTimeout(() => alertBox.remove(), 300);
+                if (btn) {
+                    btn.classList.remove('calling');
+                    btn.innerHTML = '<i class="fa-solid fa-bell"></i>店員を呼ぶ';
+                }
+            }, 3000);
+        }
+
         function startVoice() {
             const btn = document.getElementById('voiceOrderBtn');
             const lbl = document.getElementById('voiceOrderText');
-            const chat = document.getElementById('chatLink');
             const aiBanner = document.getElementById('aiBanner');
             const contextBar = document.querySelector('.context-bar');
 
             if (headerResetTimer) clearTimeout(headerResetTimer);
 
-            // Listening state - Hide Chat Switch
             btn.style.background = '#a0a0a0';
             lbl.innerHTML = '聞き取り中';
-            chat.style.display = 'none';
 
             setTimeout(() => {
-                // Restore button & Show Chat Switch
                 btn.style.background = '';
                 lbl.innerHTML = 'ボイス<br>オーダー';
-                chat.style.display = 'inline-flex';
 
-                // Display Banner & Hide Header
-                aiBanner.style.display = 'flex';
-                contextBar.style.display = 'none';
+                if (aiBanner) aiBanner.style.display = 'flex';
+                if (contextBar) contextBar.style.display = 'none';
 
                 // Simulate AI response logic
                 startAiTicker();
@@ -1551,8 +1989,8 @@
 
             // Hide voice input when AI starts talking
             voiceGuide.classList.add('hidden');
-            aiBanner.style.display = 'flex';
-            contextBar.style.display = 'none';
+            if (aiBanner) aiBanner.style.display = 'flex';
+            if (contextBar) contextBar.style.display = 'none';
 
             tickerText.textContent = '';
             tickerText.classList.add('streaming');
@@ -1577,8 +2015,8 @@
 
                     // 8s Restoration Timer
                     headerResetTimer = setTimeout(() => {
-                        aiBanner.style.display = 'none';
-                        contextBar.style.display = 'flex';
+                        if (aiBanner) aiBanner.style.display = 'none';
+                        if (contextBar) contextBar.style.display = 'flex';
                     }, 8000);
                 }
             }
@@ -1594,7 +2032,15 @@
 
         // Start AI ticker on page load
         window.addEventListener('load', function () {
+            fitFrame();
             startAiTicker();
+
+            const staffModal = document.getElementById('staffModalOverlay');
+            if (staffModal) {
+                staffModal.addEventListener('click', (event) => {
+                    if (event.target === staffModal) closeStaffModal();
+                });
+            }
 
             // Tự động khởi động lại AI nói sau mỗi 15 giây (mô phỏng)
             setInterval(function () {
@@ -1756,6 +2202,8 @@
                 }
             }
         });
+
+        window.addEventListener('resize', fitFrame);
     </script>
 </body>
 

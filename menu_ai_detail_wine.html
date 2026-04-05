@@ -14,7 +14,7 @@
         :root {
             --bg-sand: #f9f7f2;
             --primary: #2d3a2e;
-            --footer-bg: #f2eee4;
+            --footer-bg: #EAE8E2;
             --card-bg: #fff;
             --border: #f0eee8;
         }
@@ -48,8 +48,8 @@
 
         /* AI Banner - Standardized */
         .ai-banner {
-            background: var(--primary);
-            color: #fff;
+            background: #EAE8E2;
+            color: #333333;
             padding: 0 40px;
             height: 52px;
             display: none; /* Hidden by default, shown by startAiTicker */
@@ -57,7 +57,9 @@
             gap: 20px;
             flex-shrink: 0;
             z-index: 100;
+            margin-bottom: 8px;
         }
+
 
         /* ─── HEADER: CONTEXT BAR ───────────────────────── */
         .context-bar {
@@ -111,7 +113,7 @@
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.13);
+            background: rgba(51, 51, 51, 0.08);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -124,7 +126,7 @@
             position: absolute;
             inset: -4px;
             border-radius: 50%;
-            border: 1.5px solid rgba(255, 255, 255, 0.22);
+            border: 1.5px solid rgba(51, 51, 51, 0.18);
             animation: spk-pulse 2.2s ease-out infinite;
         }
 
@@ -142,7 +144,7 @@
 
         .banner-speaker i {
             font-size: 18px;
-            color: #fff;
+            color: #333333;
         }
 
         /* Staff identity */
@@ -163,7 +165,7 @@
             height: 36px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.28);
+            border: 2px solid rgba(51, 51, 51, 0.12);
             display: block;
         }
 
@@ -175,7 +177,7 @@
             height: 10px;
             border-radius: 50%;
             background: #7ecb8f;
-            border: 2px solid var(--primary);
+            border: 2px solid var(--bg);
             animation: dot-blink 1.4s ease-in-out infinite;
         }
 
@@ -200,14 +202,14 @@
         .banner-staff-name {
             font-size: 15px;
             font-weight: 700;
-            color: #fff;
+            color: #333333;
             line-height: 1;
         }
 
         .banner-staff-label {
             font-size: 10px;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.48);
+            color: rgba(51, 51, 51, 0.48);
             letter-spacing: 0.03em;
         }
 
@@ -215,7 +217,7 @@
         .banner-divider {
             width: 1px;
             height: 26px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(51, 51, 51, 0.14);
             flex-shrink: 0;
         }
 
@@ -233,7 +235,7 @@
         .ticker-text {
             font-size: 16px;
             font-weight: 500;
-            color: #fff;
+            color: #333333;
             line-height: 1.4;
             white-space: pre-wrap;
             /* Hỗ trợ xuống dòng */
@@ -455,8 +457,7 @@
             margin: 30px 0 40px 0;
             padding-bottom: 20px;
             position: relative;
-            z-index: 100;
-            /* Đảm bảo nằm trên voice mode */
+            z-index: 100;\n            margin-bottom: 8px;\n/            /* Đảm bảo nằm trên voice mode */
         }
 
         .dish-price {
@@ -686,16 +687,15 @@
         /* Voice Guide Container */
         .voice-guide-container {
             position: absolute;
-            bottom: 76px;
-            right: 28px;
+            bottom: 132px;
+            right: 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
-            /* Tăng khoảng cách để không bị nhấn nhầm */
+            gap: 12px;
             z-index: 150;
             opacity: 1;
-            transform: translateY(0);
+            transform: none;
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
@@ -708,10 +708,14 @@
 
         /* Voice circle button — matches menu_ai.html */
         .voice-order-btn {
-            width: 100px;
-            height: 100px;
+            width: 108px;
+            height: 108px;
             border-radius: 50%;
-            background: var(--primary);
+            background: transparent;
+            background-image: url('./bg_icon.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
             border: none;
             cursor: pointer;
             position: relative;
@@ -725,14 +729,8 @@
             font-family: inherit;
         }
 
-        /* inner ring */
         .voice-order-btn::before {
-            content: '';
-            position: absolute;
-            inset: 6px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(255, 255, 255, 0.28);
-            pointer-events: none;
+            display: none;
         }
 
         /* outer pulse ring */
@@ -751,9 +749,14 @@
         }
 
         .voice-order-btn svg {
-            width: 36px;
-            height: 36px;
-            fill: rgba(255, 255, 255, 0.88);
+            display: none;
+        }
+
+        .voice-order-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            display: block;
         }
 
         .voice-order-text {
@@ -1021,6 +1024,129 @@
         .quick-cart-total i { font-size:24px; color:#2f2a29; }
         .quick-cart-total-price { font-size:24px; line-height:1; }
         .quick-cart-confirm { min-width:150px; height:42px; border:none; border-radius:10px; background:var(--primary); color:#fff; font-size:15px; font-weight:800; cursor:pointer; box-shadow:0 8px 18px rgba(45,58,46,0.16); font-family:inherit; }
+        .restaurant-header { width:220px; height:53px; margin:40px auto 0; display:flex; align-items:center; justify-content:center; font-family:'Inter','Noto Sans JP',sans-serif; font-size:44px; font-weight:400; line-height:1; letter-spacing:0; color:#333333; flex-shrink:0; z-index:20; }
+        body { overflow:hidden; }
+        .ipad-frame { width:1705.72px; height:1144.13px; transform-origin:center center; will-change:transform; }
+        .context-bar { display:none !important; }
+        .ai-banner { position:absolute; left:50%; transform:translateX(-50%); bottom:113.47px; width:1677px; height:87px; margin:0; padding:0 228px; gap:0; z-index:80; display:none; background:#EAE8E2; color:#333333; }
+        .banner-speaker, .banner-staff, .banner-divider, .back-btn, .chat-switch-link, .candidate-nav { display:none !important; }
+        .banner-ticker { flex:1; height:42px; display:flex; align-items:center; min-width:0; padding-left:26px; border-left:3px solid #333333; }
+        .ticker-text { width:100%; height:42px; font-size:18px; font-weight:400; line-height:42px; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
+        .banner-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(51, 51, 51, 0.08);
+            color: #6f6963;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.2s ease, color 0.2s ease;
+            z-index: 2;
+        }
+        .banner-close-btn:hover {
+            background: rgba(51, 51, 51, 0.14);
+            color: #333333;
+        }
+        .banner-close-btn i {
+            font-size: 14px;
+            line-height: 1;
+        }
+        .category-tabs { position:absolute; top:129px; left:50%; transform:translateX(-50%); display:flex; align-items:center; justify-content:center; width:829.04px; height:65.82px; gap:12px; padding:6px 0; background:transparent; z-index:30; }
+        .cat-tab { width:152.7px; height:53.19px; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; font-size:24px; font-weight:700; line-height:27px; color:#666; background:transparent; border:1.5px solid transparent; cursor:pointer; transition:0.2s; font-family:inherit; }
+        .cat-tab:hover { color:var(--primary); }
+        .cat-tab.active { background:#333333; color:#fff; border-color:#333333; }
+        .main-content { padding:167px 164px 220px; gap:86px; overflow-y:auto; overflow-x:hidden; align-items:flex-start; justify-content:center; }
+        .image-section { width:663.58px; flex-shrink:0; display:flex; flex-direction:column; gap:14px; }
+        .main-image-container { width:100%; height:473.09px; }
+        .ai-reason-badge {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(20, 28, 20, 0.85) 0%, rgba(20, 28, 20, 0) 100%);
+            color: #fff;
+            font-size: 18px !important;
+            font-weight: 600;
+            padding: 28px 20px 12px;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            line-height: 1.4;
+            z-index: 5;
+        }
+        .thumbnail-section { display:none; }
+        .related-section { display:flex; flex-direction:column; gap:14px; }
+        .related-title { font-size:20px; font-weight:400; color:#333333; }
+        .related-list { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:16px; width:100%; }
+        .related-card { width:100%; background:#fff; border-radius:16px; overflow:hidden; cursor:pointer; border:1px solid rgba(224,220,212,0.9); }
+        .related-card img { width:100%; height:160px; object-fit:cover; display:block; }
+        .related-card-body { padding:12px 14px 14px; }
+        .related-card-name { font-size:18px; font-weight:400; color:#2e3335; line-height:1.35; min-height:50px; margin-bottom:8px; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+        .related-card-price { font-size:24px; font-weight:400; color:#2e3335; }
+        .related-card-price::before { content:'¥'; font-size:16px; margin-right:2px; }
+        .info-panel { flex:0 0 420px; display:flex; flex-direction:column; gap:18px; padding-top:0; padding-bottom:0; }
+        .dish-header { background:transparent; border-radius:16px; padding:0; box-shadow:none; }
+        .dish-title { font-size:27.4px; font-weight:400; color:#2e3335; line-height:1.35; margin-bottom:14px; max-width:380px; }
+        .dish-description { width:375px; min-height:0; font-size:23.4px; color:#86807a; line-height:1.45; padding:0; margin-bottom:0; }
+        .wine-meta {
+            width: 375px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .wine-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 21px;
+            font-weight: 400;
+            color: #5f5953;
+            line-height: 1.35;
+        }
+        .wine-meta-item::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #23412E;
+            flex-shrink: 0;
+        }
+        .wine-meta-item.warning {
+            color: #b42318;
+        }
+        .wine-meta-item.warning::before {
+            background: #dc2626;
+        }
+        .wine-meta-item.healthy {
+            color: #166534;
+        }
+        .wine-meta-item.healthy::before {
+            background: #16a34a;
+        }
+        .customize-row { display:flex; align-items:center; gap:18px; margin-top:91px; margin-bottom:22px; width:456.59px; justify-content:space-between; }
+        .customize-pill { width:214px; height:43.29px; border-radius:999px; border:none; background:#d9d9d9; color:#6d6d6d; font-size:22px; font-weight:400; font-family:inherit; }
+        .dish-price-row { display:block; width:456.59px; margin:0; }
+        .dish-price { font-size:47.75px; font-weight:400; color:#2e3335; }
+        .dish-price::before { width:16px; height:35px; display:inline-flex; align-items:center; justify-content:center; font-size:29.19px; line-height:1; margin-right:4px; }
+        .add-cart-btn { width:456.59px; height:85.55px; border-radius:14px; background:#23412E; color:#fff; border:none; font-size:26.38px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:none; padding:0; }
+        .add-cart-btn:hover { background:#2d5138; transform:none; box-shadow:none; }
+        .critical-tags { margin-top:18px; }
+        .bottom-nav { display:flex; align-items:center; justify-content:center; background:var(--footer-bg); border-top:1px solid var(--border); width:100%; height:105.47px; padding:14px 0 18px; flex-shrink:0; }
+        .bottom-nav-inner { width:829.04px; height:65.82px; display:flex; align-items:center; justify-content:space-between; }
+        .nav-item { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px; color:#888; font-size:12px; font-weight:700; cursor:pointer; border:none; background:transparent; }
+        .nav-item span { display:inline-flex; align-items:center; justify-content:center; min-width:42.68px; height:13.1px; font-size:13px; line-height:1; }
+        .nav-item.active { color:var(--primary); }
+        .nav-item i { font-size:33.29px; line-height:1; }
+        .nav-icon-wrap { position:relative; display:inline-flex; align-items:center; justify-content:center; }
+        .footer-icon-img { width:33.29px; height:33.29px; object-fit:contain; display:block; }
     </style>
 </head>
 
@@ -1029,10 +1155,7 @@
         <!-- Voice Guide — bottom right -->
         <div class="voice-guide-container" id="voiceGuideContainer">
             <button class="voice-order-btn" id="voiceOrderBtn" onclick="startVoice()">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
-                </svg>
+                <img class="voice-order-icon" src="./micro.png" alt="Voice">
                 <span class="voice-order-text" id="voiceOrderText">ボイス<br>オーダー</span>
             </button>
             <a class="chat-switch-link" id="chatLink" onclick="switchToChatMode()">
@@ -1061,6 +1184,9 @@
             <div class="banner-ticker">
                 <div class="ticker-text" id="aiTickerText"></div>
             </div>
+            <button class="banner-close-btn" type="button" onclick="hideAiBanner()" aria-label="AI speakを閉じる">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
             <!-- Back button in banner -->
             <div class="banner-divider"></div>
             <button class="back-btn" onclick="window.location.href='menu_ai.html'"
@@ -1084,6 +1210,17 @@
             <div class="context-date" id="ctxDate"></div>
         </div>
 
+        <div class="restaurant-header">富士屋本店</div>
+
+        <div class="category-tabs">
+            <button class="cat-tab active" onclick="window.location.href='menu_ai.html'">おすすめ</button>
+            <button class="cat-tab">前菜</button>
+            <button class="cat-tab">麺類</button>
+            <button class="cat-tab">ドリンク</button>
+            <button class="cat-tab">サラダ</button>
+            <button class="cat-tab" onclick="window.location.href='menu_ai_dessert.html'">デザート</button>
+        </div>
+
         <!-- Main Content -->
         <div class="main-content">
             <!-- Left: Image Section -->
@@ -1098,6 +1235,11 @@
                         <div class="ai-reason-dot"></div>
                         お客様の好みに合わせた、バランスの取れた爽やかな白ワインです。
                     </div>
+                </div>
+
+                <div class="related-section">
+                    <div class="related-title">おすすめの他メニュー</div>
+                    <div class="related-list" id="relatedList"></div>
                 </div>
 
                 <div class="thumbnail-section">
@@ -1119,42 +1261,25 @@
                     <h2 id="itemTitle" class="dish-title">シャルドネ 2022</h2>
 
                     <p id="itemDesc" class="dish-description">
-                        カリフォルニアの温暖な気候で育まれたシャルドネ. 豊かな果実味と, 樽熟成由来のバニラの香りが絶妙なハーモニーを奏で, 爽やかな酸味が料理を一層引き立てます. 完熟した白桃やパッションフルーツの香りに加え, ほのかなトーストのニュアンスが複雑さを添えます. 適度な酸味とクリーミーな口当たりのバランスが絶妙で, 魚介類や鶏肉料理, クリームソースパスタとの相性が抜群です. 2022年という素晴らしいヴィンテージの恵みを存分に感じられる一本です.
+                        柑橘の爽やかさと、ほのかなバニラ香が調和した上品な白ワインです。
                     </p>
 
-                    <div class="dish-price-row">
-                        <span id="itemPrice" class="dish-price">1,280</span>
-                        <button class="add-cart-btn" onclick="addToCart()">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            カートに入れる
-                        </button>
+                    <div class="wine-meta">
+                        <div class="wine-meta-item warning">酸化防止剤（亜硫酸塩）を含む</div>
+                        <div class="wine-meta-item healthy">ヴィーガン対応</div>
+                        <div class="wine-meta-item healthy">樽熟成</div>
                     </div>
 
-                    <!-- Critical Tags -->
-                    <div class="critical-tags">
-                        <span class="critical-tag warning">
-                            <i class="fa-solid fa-exclamation-triangle"></i>
-                            酸化防止剤（亜硫酸塩）を含む
-                        </span>
-                        <span class="critical-tag success">
-                            <i class="fa-solid fa-check-circle"></i>
-                            ヴィーガン対応
-                        </span>
-                        <span class="critical-tag success">
-                            <i class="fa-solid fa-check-circle"></i>
-                            樽熟成
-                        </span>
+                    <div class="customize-row">
+                        <button class="customize-pill">カスタマイズ</button>
+                        <span id="itemPrice" class="dish-price">1,280</span>
                     </div>
+                    <div class="dish-price-row">
+                        <button class="add-cart-btn" onclick="addToCart()">カートに入れる</button>
+                    </div>
+
                 </div>
             </div>
-        </div>
-
-        <!-- Back to menu -->
-        <div class="candidate-nav">
-            <a class="back-to-menu-link" onclick="showNextCandidate()">
-                <i class="fa-solid fa-chevron-right"></i>
-                他のメニューを見る
-            </a>
         </div>
 
         <div class="quick-cart-sheet" id="quickCartSheet">
@@ -1176,34 +1301,46 @@
 
         <!-- Bottom Nav - Giống hệt menu_ai.html -->
         <div class="bottom-nav">
-            <div class="nav-item active" onclick="window.location.href='menu_ai.html'">
-                <i class="fa-solid fa-utensils"></i>
-                <span>メニュー</span>
-            </div>
-            <div class="nav-item" onclick="window.location.href='cart.html'">
-                <div class="nav-icon-wrap">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="cart-count-badge" id="cartCountBadge">0</span>
+            <div class="bottom-nav-inner">
+                <div class="nav-item active" onclick="window.location.href='menu_ai.html'">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>メニュー</span>
                 </div>
-                <span>カート</span>
-            </div>
-            <div class="nav-item" onclick="window.location.href='order_status.html'">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-                <span>注文履歴</span>
-            </div>
-            <div class="nav-item" onclick="window.location.href='chat_ai.html'">
-                <i class="fa-solid fa-comment-dots"></i>
-                <span>会話</span>
-            </div>
-            <div class="nav-item" onclick="changeLanguage()">
-                <i class="fa-solid fa-globe"></i>
-                <span>日本語</span>
+                <div class="nav-item" onclick="window.location.href='cart.html'">
+                    <div class="nav-icon-wrap">
+                        <img class="footer-icon-img" src="./cart.png" alt="カート">
+                        <span class="cart-count-badge" id="cartCountBadge">0</span>
+                    </div>
+                    <span>カート</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='order_status.html'">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>注文履歴</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='chat_ai.html'">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <span>会話</span>
+                </div>
+                <div class="nav-item" onclick="changeLanguage()">
+                    <i class="fa-solid fa-globe"></i>
+                    <span>日本語</span>
+                </div>
             </div>
         </div>
 
     </div>
 
     <script>
+        const FRAME_WIDTH = 1705.72;
+        const FRAME_HEIGHT = 1144.13;
+
+        function fitFrame() {
+            const frame = document.querySelector('.ipad-frame');
+            if (!frame) return;
+            const scale = Math.min(window.innerWidth / FRAME_WIDTH, window.innerHeight / FRAME_HEIGHT);
+            frame.style.transform = `scale(${Math.min(scale, 1)})`;
+        }
+
         const candidates = [
             {
                 title: '白身魚のグリル 〜香草ソース〜',
@@ -1216,7 +1353,7 @@
                 title: '完熟トマトのカプレーゼ',
                 price: '720',
                 desc: '完熟トマトとモッツァレラのフレッシュな組み合わせ. バジルとオリーブオイルのハーモニー.',
-                img: 'https://images.unsplash.com/photo-1510629954389-c1e0da47d214?w=600&q=80',
+                img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80',
                 reason: '🍅 さっぱり軽めのランチに'
             },
             {
@@ -1322,16 +1459,6 @@
         function showCartAlert(itemName = '', itemPrice = '0', qty = 1) {
             incrementCartBadge();
             if (itemName) addItemToQuickCart(itemName, itemPrice, qty);
-            const alert = document.createElement('div');
-            alert.className = 'cart-alert';
-            alert.textContent = 'カートに追加しました。';
-            document.body.appendChild(alert);
-            setTimeout(() => alert.classList.add('show'), 10);
-            setTimeout(() => {
-                alert.classList.remove('show');
-                setTimeout(() => alert.remove(), 300);
-            }, 2000);
-            showQuickCartSheet();
         }
 
         function showUserSpeechBubble(text) {
@@ -1384,12 +1511,35 @@
             const item = candidates[currentIndex];
             document.getElementById('itemTitle').innerText = item.title;
             document.getElementById('itemPrice').innerText = item.price;
-            document.getElementById('itemDesc').innerText = item.desc;
+            document.getElementById('itemDesc').innerText = '柑橘の爽やかさと、ほのかなバニラ香が調和した上品な白ワインです。';
             document.getElementById('foodImg').src = item.img;
+            renderRelatedItems();
         }
 
         function showNextCandidate() {
             currentIndex = (currentIndex + 1) % candidates.length;
+            updateUI();
+        }
+
+        function renderRelatedItems() {
+            const list = document.getElementById('relatedList');
+            if (!list) return;
+            const relatedItems = candidates.filter((_, index) => index !== currentIndex).slice(0, 2);
+            list.innerHTML = relatedItems.map(item => `
+                <div class="related-card" onclick="selectCandidateByTitle('${item.title.replace(/'/g, "\\'")}')">
+                    <img src="${item.img}" alt="${item.title}">
+                    <div class="related-card-body">
+                        <div class="related-card-name">${item.title}</div>
+                        <div class="related-card-price">${parsePrice(item.price).toLocaleString()}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectCandidateByTitle(title) {
+            const nextIndex = candidates.findIndex(item => item.title === title);
+            if (nextIndex === -1) return;
+            currentIndex = nextIndex;
             updateUI();
         }
 
@@ -1422,6 +1572,16 @@
 
         function changeLanguage() {
             alert('言語切り替え機能 (Language switch)\n\n実際の実装では、英語/日本語/ベトナム語などの切り替えを行います。');
+        }
+
+        function hideAiBanner() {
+            const aiBanner = document.getElementById('aiBanner');
+            const tickerText = document.getElementById('aiTickerText');
+            const voiceGuide = document.getElementById('voiceGuideContainer');
+            if (headerResetTimer) clearTimeout(headerResetTimer);
+            if (tickerText) tickerText.classList.remove('streaming');
+            if (aiBanner) aiBanner.style.display = 'none';
+            if (voiceGuide) voiceGuide.classList.remove('hidden');
         }
 
         function startVoice() {
@@ -1515,11 +1675,9 @@
                     }, 500);
 
                     if (callback) callback();
-
                     headerResetTimer = setTimeout(() => {
-                        aiBanner.style.display = 'none';
-                        contextBar.style.display = 'flex';
-                    }, 8000);
+                        hideAiBanner();
+                    }, 350);
                 }
             }
 
@@ -1530,7 +1688,7 @@
         const wineItems = [
             {
                 name: 'シャルドネ 2022',
-                desc: 'カリフォルニアの温暖な気候で育まれたシャルドネ. 豊かな果実味と, 樽熟成由来のバニラの香りが絶妙なハーモニーを奏で, 爽やかな酸味が料理を一層引き立てます.',
+                desc: '柑橘の爽やかさと、ほのかなバニラ香が調和した上品な白ワインです。',
                 price: '1,280',
                 img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80',
                 taste: '柑橘系の爽やかな酸味と、ほのかなバニラの香りが特徴の白ワインです。 お料理との相性も抜群ですよ！'
@@ -1539,6 +1697,7 @@
 
         // Initialize page on load
         window.addEventListener('load', function () {
+            fitFrame();
             const urlParams = new URLSearchParams(window.location.search);
             const wineIndex = urlParams.get('wine');
             const aiTickerText = document.getElementById('aiTickerText');
@@ -1556,6 +1715,8 @@
                 document.getElementById('foodImg').src = wine.img;
             }
 
+            renderRelatedItems();
+
             // Start streaming immediately on load
             startAiTicker();
 
@@ -1567,6 +1728,8 @@
                 }
             }, 15000);
         });
+
+        window.addEventListener('resize', fitFrame);
     </script>
 </body>
 
