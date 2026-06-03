@@ -88,32 +88,35 @@
             height: 53px;
         }
 
-        .restaurant-meta {
+        .staff-header-btn {
             position: absolute;
             right: 84px;
             top: 50%;
             transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 4px;
-            color: #333333;
-            font-family: 'Noto Sans JP', sans-serif;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1px solid rgba(216, 212, 204, 0.72);
+            background: rgba(255, 255, 255, 0.68);
+            color: #7a746d;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, color 0.15s ease;
         }
 
-        .restaurant-table {
-            font-size: 26px;
-            font-weight: 600;
-            line-height: 1;
-            letter-spacing: 0;
+        .staff-header-btn:hover {
+            transform: translateY(-50%) scale(1.04);
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
         }
 
-        .restaurant-ticket {
-            font-size: 14px;
-            font-weight: 400;
+        .staff-header-btn i {
+            font-size: 16px;
             line-height: 1;
-            color: #7f7a74;
-            letter-spacing: 0;
         }
 
         .context-bar {
@@ -410,7 +413,7 @@
             width: 324px;
             height: 231px;
             margin: 28.2px auto 0;
-            border-radius: 16px;
+            border-radius: 48px;
             border: 1px solid #e7e2d8;
             overflow: hidden;
         }
@@ -640,9 +643,8 @@
             right: auto;
             transform: translateX(-50%) translateY(20px);
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 18px;
+            justify-content: center;
             z-index: 150;
             opacity: 0;
             transition: 0.5s;
@@ -666,10 +668,8 @@
             cursor: pointer;
             position: relative;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
             box-shadow: none;
             transition: 0.15s;
             overflow: hidden;
@@ -677,75 +677,16 @@
         }
 
         .voice-order-btn::before,
-        .voice-order-btn::after {
-            display: none;
-        }
-
+        .voice-order-btn::after,
         .voice-order-btn svg {
             display: none;
         }
 
-        .voice-order-icon {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            display: block;
-            position: relative;
-            z-index: 1;
-        }
-
+        .voice-order-icon,
         .voice-order-text {
-            font-size: 12px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.82);
-            letter-spacing: 0.06em;
-            line-height: 1.25;
-            text-align: center;
-            position: relative;
-            z-index: 1;
+            display: none !important;
         }
 
-
-        .voice-sub-btns {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-end;
-        }
-
-        .voice-sub-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #666;
-            cursor: pointer;
-            min-width: 148px;
-            justify-content: center;
-            padding: 10px 16px;
-            border-radius: 999px;
-            border: 1.5px solid #d8d4cc;
-            background: rgba(255, 255, 255, 0.9);
-            transition: 0.15s;
-            font-family: inherit;
-        }
-
-        .voice-sub-btn:hover {
-            color: var(--primary);
-            border-color: var(--primary);
-            background: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .voice-sub-btn.calling {
-            background: #475569 !important;
-            color: #fff !important;
-            border-color: #334155 !important;
-            pointer-events: none;
-            opacity: 0.9;
-        }
 
         /* Cart Alert Message */
         .cart-alert {
@@ -1358,19 +1299,18 @@
 
         <div class="restaurant-header">
             <div class="restaurant-title">富士屋本店</div>
-            <div class="restaurant-meta">
-                <div class="restaurant-table">テーブル12</div>
-                <div class="restaurant-ticket">受付番号A102</div>
-            </div>
+            <button class="staff-header-btn" type="button" onclick="openStaffModal()" aria-label="店員を呼ぶ">
+                <i class="fa-solid fa-bell"></i>
+            </button>
         </div>
 
         <div class="category-tabs">
             <button class="cat-tab active">おすすめ</button>
             <button class="cat-tab">前菜</button>
-            <button class="cat-tab">麺類</button>
+            <button class="cat-tab">料理</button>
             <button class="cat-tab" onclick="window.location.href='menu_ai_drink.html'">ドリンク</button>
-            <button class="cat-tab">サラダ</button>
             <button class="cat-tab" onclick="window.location.href='menu_ai_dessert.html'">デザート</button>
+            <button class="cat-tab">その他</button>
         </div>
 
         <div class="section-label" id="sectionLabel">
@@ -1422,14 +1362,6 @@
                 <img class="voice-order-icon" src="./micro.png" alt="Voice">
                 <span class="voice-order-text" id="voiceOrderText">ボイス<br>オーダー</span>
             </button>
-            <div class="voice-sub-btns" id="voiceSubBtns">
-                <button class="voice-sub-btn" onclick="window.location.href='chat_ai.html'">
-                    <i class="fa-regular fa-comment-dots"></i>チャットに切替
-                </button>
-                <button class="voice-sub-btn" onclick="openStaffModal()" id="callStaffBtn">
-                    <i class="fa-solid fa-bell"></i>店員を呼ぶ
-                </button>
-            </div>
         </div>
 
         <!-- Staff Call Modal -->
@@ -2034,7 +1966,6 @@
                 setTimeout(() => {
                     btn.style.background = ''; lbl.innerHTML = 'ボイス<br>オーダー';
                     if (voiceSubBtns) voiceSubBtns.style.display = 'flex';
-                    voiceGuide.classList.remove('show');
                     streamText('ありがとうございます。\nそれでは、本日の暑さにぴったりの涼やかメニューを6品ご紹介します。気になる一品をお選びください。', 45, 3000, () => {
                         renderCardsWithSimulation(coolMenuItems, { stagger: 190, initialDelay: 180 });
                         document.getElementById('sectionLabel').classList.add('visible');
